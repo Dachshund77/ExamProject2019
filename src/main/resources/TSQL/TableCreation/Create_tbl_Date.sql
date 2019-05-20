@@ -1,3 +1,4 @@
+USE db_SmartAcademy;
 CREATE TABLE tbl_Date
 (
     fld_DateID INT IDENTITY (1,1) PRIMARY KEY,

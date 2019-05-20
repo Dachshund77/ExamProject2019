@@ -1,3 +1,4 @@
+USE db_SmartAcademy;
 CREATE TABLE tbl_Education_EducationList_Bridge
 (
     fld_AmuNR           INT NOT NULL,

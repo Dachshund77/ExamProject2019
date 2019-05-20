@@ -1,3 +1,4 @@
+USE db_SmartAcademy;
 CREATE TABLE tbl_Consultation_Employee_bridge
 (
     fld_ConsultationID INT NOT NULL,

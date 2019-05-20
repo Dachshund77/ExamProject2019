@@ -1,3 +1,4 @@
+USE db_SmartAcademy;
 CREATE TABLE tbl_EducationWish_Interview_Bridge
 (
     fld_EducationWishID INT NOT NULL,

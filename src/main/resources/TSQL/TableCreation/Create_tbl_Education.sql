@@ -1,3 +1,4 @@
+USE db_SmartAcademy;
 CREATE TABLE tbl_Education
 (
     fld_AmuNR         Int IDENTITY (1,1) PRIMARY KEY,

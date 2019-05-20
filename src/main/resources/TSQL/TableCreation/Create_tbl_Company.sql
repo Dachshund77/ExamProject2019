@@ -1,3 +1,4 @@
+USE db_SmartAcademy;
 CREATE TABLE tbl_Company
 (
     fld_CompanyID       INT IDENTITY (1,1) PRIMARY KEY,

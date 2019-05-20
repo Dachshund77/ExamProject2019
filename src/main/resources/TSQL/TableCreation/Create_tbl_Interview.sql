@@ -1,3 +1,4 @@
+USE db_SmartAcademy;
 CREATE TABLE tbl_Interview(
     fld_InterviewID int IDENTITY (1,1) PRIMARY KEY ,
     fld_InterviewName VARCHAR(30) NOT NULL ,

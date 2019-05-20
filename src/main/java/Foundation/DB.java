@@ -29,6 +29,7 @@ public class DB {
     private PreparedStatement ps;
     private ResultSet rs;
 
+
     private DB() {
         Properties props = new Properties();
 

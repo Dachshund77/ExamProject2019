@@ -1,3 +1,4 @@
+USE db_SmartAcademy;
 CREATE TABLE tbl_FinishedEducation
 (
     fld_FinishedEducationID INT IDENTITY (1,1) PRIMARY KEY,
