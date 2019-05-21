@@ -1,8 +1,8 @@
-package Application.ControllerImp;
+package Application.Controller;
 
 import javafx.event.ActionEvent;
 
-public class DelCounController {
+public class DelCompController {
     public void getText(ActionEvent actionEvent) {
     }
 }

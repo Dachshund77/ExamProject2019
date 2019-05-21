@@ -1,6 +1,6 @@
 package Application;
 
-public abstract class Controller implements Controllers {
+public abstract class AbstractController implements Controllers {
 
 
     @Override

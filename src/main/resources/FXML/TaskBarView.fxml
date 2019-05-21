@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<MenuBar xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Application.Controller.TaskBarController">
+  <menus>
+    <Menu mnemonicParsing="false" text="New">
+      <items>
+            <MenuItem mnemonicParsing="false" onAction="#HandleNewEducation" text="Education" />
+            <MenuItem mnemonicParsing="false" onAction="#handleNewInterview" text="Interview" />
+            <MenuItem mnemonicParsing="false" onAction="#handleNewEmployee" text="Employee" />
+            <MenuItem mnemonicParsing="false" onAction="#handleNewConsultation" text="Consulation" />
+        <MenuItem mnemonicParsing="false" onAction="#handleNewCompany" text="Company" />
+            <MenuItem mnemonicParsing="false" onAction="#handleNewProvider" text="Provider" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Change">
+      <items>
+            <MenuItem mnemonicParsing="false" onAction="#handleChangeEducation" text="Education" />
+            <MenuItem mnemonicParsing="false" onAction="#handleChangeInterview" text="Interview" />
+            <MenuItem mnemonicParsing="false" onAction="#handleChangeEmployee" text="Employee" />
+            <MenuItem mnemonicParsing="false" onAction="#handleChangeConsultation" text="Consulation" />
+            <MenuItem mnemonicParsing="false" onAction="#handleChangeCompany" text="Company" />
+      </items>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Delete">
+      <items>
+            <MenuItem mnemonicParsing="false" onAction="#handleDeleteEducation" text="Education" />
+            <MenuItem mnemonicParsing="false" onAction="#handleDeleteInterview" text="Interview" />
+            <MenuItem mnemonicParsing="false" onAction="#handleDeleteEmployee" text="Employee" />
+            <MenuItem mnemonicParsing="false" onAction="#handleDeleteConsultation" text="Consulation" />
+            <MenuItem mnemonicParsing="false" onAction="#handleDeleteCompany" text="Company" />
+      </items>
+    </Menu>
+      <Menu mnemonicParsing="false" text="Find">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#handleFindEducation" text="Education" />
+            <MenuItem mnemonicParsing="false" onAction="#handleFindInterview" text="Interview" />
+            <MenuItem mnemonicParsing="false" onAction="#handleFindEmployee" text="Employee" />
+            <MenuItem mnemonicParsing="false" onAction="#handleFindConsultation" text="Consulation" />
+            <MenuItem mnemonicParsing="false" onAction="#handleFindCompany" text="Company" />
+         </items>
+      </Menu>
+      <Menu mnemonicParsing="false" text="Options" />
+  </menus>
+</MenuBar>

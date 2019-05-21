@@ -1,4 +1,4 @@
-package Application.ControllerImp;
+package Application.Controller;
 
 import javafx.event.ActionEvent;
 

@@ -13,7 +13,8 @@ import java.net.URL;
  * The enum class will store the relative path to the fxml so that we don't need to type it multiple times.
  */
 public enum ViewController {
-    LOGIN_CONTROLLER("/FXML/LoginView.fxml"); //TODO Needs removing
+    LOGIN_CONTROLLER("/FXML/LoginView.fxml"),
+    START_PAGE_CONTROLLER("/FXML/StartPageView.fxml");
 
 
     private final String URL;
@@ -23,9 +24,9 @@ public enum ViewController {
     }
 
     /**
-     * Returns the root node for the Application.Controller.
+     * Returns the root node for the Application.AbstractController.
      * This method should be used when no previous scene is loaded.
-     * @return Parent of Application.Controller
+     * @return Parent of Application.AbstractController
      */
     public Parent loadParent(){
         Parent root = null;
@@ -62,7 +63,7 @@ public enum ViewController {
      * <font color="red">
      * IMPORTANT:
      * </font>
-     * In order to pass a value the new controller needs to extends the 'Application.Controller' abstract class and override its methods.
+     * In order to pass a value the new controller needs to extends the 'Application.AbstractController' abstract class and override its methods.
      * </p>
      *
      * @param scene  The scene that will be replaced on reLoad
@@ -70,8 +71,8 @@ public enum ViewController {
      */
             /*
             If another parameter needs to passed follow thees steps:
-            1) Create a initValues( - your parameters -) in the Application.ControllerImp interface
-            2) Create the same initValues in the Abstract class Application.Controller, and please keep the style of error messages
+            1) Create a initValues( - your parameters -) in the Application.Controller interface
+            2) Create the same initValues in the Abstract class Application.AbstractController, and please keep the style of error messages
             3) Copy paste this method in here and change the parameter
             4) Make sure you call the correct initValues in this method
             */
