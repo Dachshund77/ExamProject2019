@@ -1,6 +1,5 @@
 package Application;
 
-import Application.Controllers;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -68,11 +67,11 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param string Value that will passed on to the controller
-     * @see Controllers
+     * @see ControllerImp
      */
             /*
             If another parameter needs to passed follow thees steps:
-            1) Create a initValues( - your parameters -) in the Application.Controllers interface
+            1) Create a initValues( - your parameters -) in the Application.ControllerImp interface
             2) Create the same initValues in the Abstract class Application.Controller, and please keep the style of error messages
             3) Copy paste this method in here and change the parameter
             4) Make sure you call the correct initValues in this method

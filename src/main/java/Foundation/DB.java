@@ -1,7 +1,6 @@
 package Foundation;
 
-import Domain.Company;
-import com.sun.deploy.security.ValidationState;
+import Persistance.DbFacade;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.*;
@@ -9,7 +8,6 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Properties;
 
 /**

@@ -1,14 +1,16 @@
+package UI;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class NewEmpMain extends Application {
+public class ChangeEmpMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("NewEmpView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ChangeEmpView.fxml"));
         primaryStage.setTitle("Template");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
