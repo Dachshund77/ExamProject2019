@@ -41,9 +41,15 @@ public class ScriptRunner {
             for (String s : executionOrder) {
                 DB.getInstance().executeScript(s);
             }
-            DB.getInstance().disconnect();
+
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                DB.getInstance().disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

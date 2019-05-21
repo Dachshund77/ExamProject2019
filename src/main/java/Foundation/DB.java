@@ -1,5 +1,6 @@
 package Foundation;
 
+import Domain.Company;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.*;
@@ -7,6 +8,8 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -26,9 +29,10 @@ public class DB {
 
     private Connection conn;
     private CallableStatement cstmt;
-    private PreparedStatement ps;
+
     private ResultSet rs;
 
+    private Map typeMape;
 
     private DB() {
         Properties props = new Properties();
@@ -41,7 +45,7 @@ public class DB {
             userName = props.getProperty("userName", "sa");
             password = props.getProperty("password");
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); //Step 2
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException |ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -136,6 +140,7 @@ public class DB {
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
     private void setCallParameter(int index, String dataType, Object dataValue) throws SQLException {
+        System.err.println(dataType);
         switch (dataType) {
             case "int":
                 if (dataValue == null) {
@@ -172,6 +177,8 @@ public class DB {
                     cstmt.setDate(index, (Date) dataValue);
                 }
                 break;
+
+                //TODO maybe make a default type for Java object?
         }
 
     }
@@ -184,6 +191,18 @@ public class DB {
      */
     public void connect() throws SQLException {
         conn = DriverManager.getConnection("jdbc:sqlserver://localhost:" + port + ";databaseName=" + databaseName, userName, password);
+        setTypeMap();
+    }
+
+    /**
+     * Helper method that maps the sql typfes for the SqlData interface
+     * @see SQLData
+     * @throws SQLException Exception when SQL encounter a fatal problem
+     */
+    private void setTypeMap() throws SQLException {
+        //Setting the Type map fpr SQLData interface
+        Map<String, Class<?>> typeMap= conn.getTypeMap();
+        typeMap.put("type_Company", Company.class);
     }
 
     /**

@@ -13,7 +13,7 @@ public class RsData {
     private ResultSet rs;
     private HashMap columnMap;
 
-    public RsData(ResultSet rs) throws SQLException{
+    public RsData(ResultSet rs) throws SQLException{ //TODO we proably dont evnen eed ti BS here anymore
         this.rs = rs;
         this.columnMap = getResultSetMap();
     }
