@@ -2,6 +2,9 @@ package Domain;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class EducationWish {
     private SimpleIntegerProperty educationWishID;
     private Education education;
@@ -11,5 +14,16 @@ public class EducationWish {
         this.educationWishID = new SimpleIntegerProperty(educationWishID);
         this.education = education;
         this.priority = new SimpleIntegerProperty(priority);
+    }
+
+    /**
+     * Constructor that builds an object from ResultSet.
+     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
+     * @param rs ResultSet that will be used to build the object.
+     * @throws SQLException Thrown when encoutered a fatal error.
+     */
+    public EducationWish(ResultSet rs) throws SQLException {
+        this.educationWishID = new SimpleIntegerProperty(rs.getInt("fld_EducationWishID"));
+        this.priority = new SimpleIntegerProperty(rs.getInt("fld_WishPriority"));
     }
 }

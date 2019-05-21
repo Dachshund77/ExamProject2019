@@ -60,7 +60,7 @@ public class DB {
      */
 
     @SuppressWarnings("Duplicates")
-    public RsData executeStoredProcedure(String sp, Object... param) throws SQLException {
+    public ResultSet executeStoredProcedure(String sp, Object... param) throws SQLException {
 
         // Preparing metaData
         Map<Integer,String> metaDataMap = getSPMetaData(sp);
@@ -73,7 +73,7 @@ public class DB {
         //Getting results
         rs = cstmt.executeQuery();
 
-        return new RsData(rs);
+        return rs;
     }
 
 

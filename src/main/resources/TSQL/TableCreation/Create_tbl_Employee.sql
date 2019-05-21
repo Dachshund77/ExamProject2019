@@ -5,6 +5,8 @@ CREATE TABLE tbl_Employee
     fld_EmployeeFirstName VARCHAR(30),
     fld_EmployeeLastName  VARCHAR(30),
     fld_CprNr             VARCHAR(10) NOT NULL,
-    fld_CompanyID         INT         NOT NULL,
-    FOREIGN KEY (fld_CompanyID) REFERENCES tbl_Company (fld_CompanyID)
+    fld_Email VARCHAR(30),
+    fld_PhoneNr VARCHAR(20),
+    fld_ConsultationID         INT         NOT NULL,
+    FOREIGN KEY (fld_ConsultationID) REFERENCES tbl_Consultation (fld_ConsultationID)
 );
