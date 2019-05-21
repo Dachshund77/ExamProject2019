@@ -1,14 +1,16 @@
+package UI.Views;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class DelCompMain extends Application {
+public class DelCounMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("DelCompView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Application/Model/DelCounView.fxml"));
         primaryStage.setTitle("Template");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="266.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="DelCounController">
+<AnchorPane prefHeight="266.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.ControllerImp.DelCounController">
    <children>
       <ComboBox fx:id="companyName" layoutX="100.0" layoutY="22.0" onAction="#getText" prefWidth="150.0" />
       <ComboBox fx:id="consultationName" layoutX="366.0" layoutY="22.0" onAction="#getText" prefWidth="150.0" />
