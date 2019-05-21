@@ -1,6 +1,7 @@
 package Foundation;
 
 import Domain.Company;
+import com.sun.deploy.security.ValidationState;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.*;
@@ -32,7 +33,6 @@ public class DB {
 
     private ResultSet rs;
 
-    private Map typeMape;
 
     private DB() {
         Properties props = new Properties();
@@ -45,7 +45,7 @@ public class DB {
             userName = props.getProperty("userName", "sa");
             password = props.getProperty("password");
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); //Step 2
-        } catch (IOException |ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -92,7 +92,6 @@ public class DB {
 
     @SuppressWarnings("Duplicates")
     public Boolean executeStoredProcedureNoRS(String sp, Object... param) throws SQLException {
-        ArrayList<Object[]> returnArrayList = new ArrayList<>();
         // Preparing metaData
         ArrayList<ProcedureMetaData> metaDataArray = getSPMetaData(sp);
         //Setting callable statement
@@ -102,6 +101,7 @@ public class DB {
             ProcedureMetaData tempMetaData = metaDataArray.get(i);
             setCallParameter(tempMetaData.position, tempMetaData.dataType, param[i]);
         }
+        cstmt.executeQuery();
         return true;
     }
 
@@ -177,10 +177,9 @@ public class DB {
                     cstmt.setDate(index, (Date) dataValue);
                 }
                 break;
-
-                //TODO maybe make a default type for Java object?
+            default:
+                System.out.println("ERROR: Could not define Procedue type");
         }
-
     }
 
     /**
@@ -189,21 +188,10 @@ public class DB {
      *
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
-    public void connect() throws SQLException {
+    public void connect() throws SQLException { //TODO make thread save
         conn = DriverManager.getConnection("jdbc:sqlserver://localhost:" + port + ";databaseName=" + databaseName, userName, password);
-        setTypeMap();
     }
 
-    /**
-     * Helper method that maps the sql typfes for the SqlData interface
-     * @see SQLData
-     * @throws SQLException Exception when SQL encounter a fatal problem
-     */
-    private void setTypeMap() throws SQLException {
-        //Setting the Type map fpr SQLData interface
-        Map<String, Class<?>> typeMap= conn.getTypeMap();
-        typeMap.put("type_Company", Company.class);
-    }
 
     /**
      * Method to close connection to the Database.
@@ -252,7 +240,7 @@ public class DB {
         return returnArrayList;
     }
 
-    public void executeScript(String path){
+    public void executeScript(String path) {
         try {
             ScriptRunner runner = new ScriptRunner(conn);
             InputStreamReader reader = new InputStreamReader(new FileInputStream(path));

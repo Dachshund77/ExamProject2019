@@ -33,7 +33,7 @@ public class ScriptRunner {
         executionOrder.add(getClass().getResource("/TSQL/TableCreation/Create_tbl_EducationWish_Interview_Bridge.sql").getFile());
 
         //Add Stored procedures
-        executionOrder.add(getClass().getResource("/TSQL/StoredProcedures/Create_sp_GetSPMetaData.sql").getFile());
+        executionOrder.add(getClass().getResource("/TSQL/StoredProcedures/Meta/Create_sp_GetSPMetaData.sql").getFile());
 
         // run the scripts
         try {
