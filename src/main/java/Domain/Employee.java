@@ -13,15 +13,13 @@ public class Employee { //TODO SIMPLE PROPERTY VS PROPERTY?
     private SimpleStringProperty cprNr;
     private SimpleStringProperty eMail;
     private SimpleStringProperty phoneNr;
-    private ArrayList<Interview> interviews;
 
-    public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, SimpleStringProperty phoneNr, ArrayList<Interview> interviews) {
+    public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, SimpleStringProperty phoneNr) {
         this.employeeID = new SimpleIntegerProperty(employeeID);
         this.employeeFirstName = new SimpleStringProperty(employeeFirstName);
         this.employeeLastName = new SimpleStringProperty(employeeLastName);
         this.cprNr = new SimpleStringProperty(cprNr);
         this.eMail = new SimpleStringProperty(eMail);
         this.phoneNr = phoneNr;
-        this.interviews = interviews;
     }
 }

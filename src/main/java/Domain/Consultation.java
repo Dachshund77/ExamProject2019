@@ -12,13 +12,13 @@ public class Consultation {
     private SimpleStringProperty consultationName;
     private Date startDate;
     private Date endDate;
-    private ArrayList<Employee> employees;
+    private ArrayList<Interview> interviews;
 
-    public Consultation(Integer consultationID, String consultationName, Date startDate, Date endDate, ArrayList<Employee> employees) {
+    public Consultation(Integer consultationID, String consultationName, Date startDate, Date endDate, ArrayList<Interview> interviews) {
         this.consultationID = new SimpleIntegerProperty(consultationID);
         this.consultationName = new SimpleStringProperty(consultationName);
         this.startDate = startDate;
         this.endDate = endDate;
-        this.employees = employees;
+        this.interviews = interviews;
     }
 }
