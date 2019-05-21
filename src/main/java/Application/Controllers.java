@@ -1,7 +1,7 @@
 package Application;
 
 /**
- * Interface to allow polymorphism between this applications Application.Controllers.
+ * Interface to allow polymorphism between this applications Application.ControllerImp.
  */
 public interface Controllers {
 
