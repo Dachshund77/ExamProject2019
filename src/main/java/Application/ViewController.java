@@ -13,14 +13,13 @@ import java.net.URL;
  * The enum class will store the relative path to the fxml so that we don't need to type it multiple times.
  */
 public enum ViewController {
-    LOGIN_CONTROLLER("FXML/LoginView.fxml"); //TODO Needs removing
+    LOGIN_CONTROLLER("/FXML/LoginView.fxml"); //TODO Needs removing
 
 
     private final String URL;
 
     ViewController(String url) {
         this.URL = url;
-        URL resourcesURL = getClass().getResource("/Database/db.Properties");
     }
 
     /**
@@ -68,7 +67,6 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param string Value that will passed on to the controller
-     * @see ControllerImp
      */
             /*
             If another parameter needs to passed follow thees steps:
