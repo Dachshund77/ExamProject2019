@@ -234,10 +234,10 @@ public class DB {
         return returnMap;
     }
 
-    public void executeScript(String path) {
+    public void executeScript(File file) {
         try {
             ScriptRunner runner = new ScriptRunner(conn);
-            InputStreamReader reader = new InputStreamReader(new FileInputStream(path));
+            InputStreamReader reader = new InputStreamReader(new FileInputStream(file));
             //runner.setStopOnError(false);
             //runner.setSendFullScript(true);
             runner.runScript(reader);

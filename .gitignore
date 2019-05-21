@@ -10,3 +10,4 @@ gen
 .gradle/
 build/
 gradle/
+src/main/resources/Database/db.Properties
