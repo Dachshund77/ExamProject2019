@@ -1,8 +1,18 @@
 package Application.Controller;
 
+import Application.ViewController;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.MenuBar;
 
+/**
+ * TaskBar Controller that can be used as a subController across the whole application.
+ */
 public class TaskBarController {
+
+    @FXML
+    public MenuBar taskBar; //Need this to get scene
+
     public void HandleNewEducation(ActionEvent event) {
     }
 
@@ -18,7 +28,12 @@ public class TaskBarController {
     public void handleNewCompany(ActionEvent event) {
     }
 
+    /**
+     * Changes the Scene to {@link NewProviderController}.
+     * @param event Clicked menuButton new -> Provider
+     */
     public void handleNewProvider(ActionEvent event) {
+        ViewController.NEW_PROVIDER_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleChangeEducation(ActionEvent event) {

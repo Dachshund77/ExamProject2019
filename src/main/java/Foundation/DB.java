@@ -68,7 +68,7 @@ public class DB {
         cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
         //Build parameters
         for (int i = 0; i < metaDataMap.size(); i++) {
-            setCallParameter(i, metaDataMap.get(i), param[i]);
+            setCallParameter(i+1, metaDataMap.get(i+1), param[i]);
         }
         //Getting results
         rs = cstmt.executeQuery();
@@ -95,10 +95,9 @@ public class DB {
         cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size()));
         //Build parameters
         for (int i = 0; i < metaDataMap.size(); i++) {
-            setCallParameter(i, metaDataMap.get(i), param[i]);
+            setCallParameter(i+1, metaDataMap.get(i+1), param[i]);
         }
-        cstmt.executeQuery();
-        return true;
+        return cstmt.execute();
     }
 
 
@@ -136,7 +135,6 @@ public class DB {
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
     private void setCallParameter(int index, String dataType, Object dataValue) throws SQLException {
-        System.err.println(dataType);
         switch (dataType) {
             case "int":
                 if (dataValue == null) {
@@ -172,6 +170,9 @@ public class DB {
                 } else {
                     cstmt.setDate(index, (Date) dataValue);
                 }
+                break;
+            case "null":
+                cstmt.setNull(index, Types.NULL);
                 break;
             default:
                 System.out.println("ERROR: Could not define Procedue type");
