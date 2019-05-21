@@ -6,20 +6,21 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * Can be used to change and load the scenes easily.
  * The enum class will store the relative path to the fxml so that we don't need to type it multiple times.
  */
 public enum ViewController {
-    WELCOME_CONTROLLER("Model/Welcome.fxml"), //TODO Needs removing
-    NEW_CUSTOMER("Model/NewCustomer.fxml");
+    LOGIN_CONTROLLER("FXML/LoginView.fxml"); //TODO Needs removing
 
 
     private final String URL;
 
     ViewController(String url) {
         this.URL = url;
+        URL resourcesURL = getClass().getResource("/Database/db.Properties");
     }
 
     /**
