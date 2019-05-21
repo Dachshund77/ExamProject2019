@@ -1,4 +1,6 @@
-CREATE PROCEDURE sp_InsertProvider(@ProviderID INT, @newProviderName VARCHAR(30)) AS
+CREATE PROCEDURE sp_InsertProvider(@ProviderID INT,
+                                   @newProviderName VARCHAR(30))
+AS
 BEGIN
     IF EXISTS(SELECT * FROM tbl_Provider WHERE fld_ProviderID = @ProviderID)
         BEGIN

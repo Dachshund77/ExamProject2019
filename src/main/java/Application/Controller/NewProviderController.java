@@ -1,5 +1,6 @@
 package Application.Controller;
 
+import Application.AbstractController;
 import Foundation.DB;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 /**
  * Controller class for a simple scene where the User can enter a new provider for later use.
  */
-public class NewProviderController {
+public class NewProviderController extends AbstractController {
 
     @FXML
     public TextField newProviderTextField;

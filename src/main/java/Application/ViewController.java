@@ -15,7 +15,8 @@ import java.net.URL;
 public enum ViewController {
     LOGIN_CONTROLLER("/FXML/LoginView.fxml"),
     START_PAGE_CONTROLLER("/FXML/StartPageView.fxml"),
-    NEW_PROVIDER_CONTROLLER("/FXML/NewProviderView.fxml");
+    NEW_PROVIDER_CONTROLLER("/FXML/NewProviderView.fxml"),
+    NEW_EMPLOYEE_CONTROLLER("/FXML/NewEmpView");
 
 
     private final String URL;

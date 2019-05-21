@@ -1,5 +1,6 @@
 package Application.Controller;
 
+import Application.AbstractController;
 import Application.ViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,7 +9,7 @@ import javafx.scene.control.MenuBar;
 /**
  * TaskBar Controller that can be used as a subController across the whole application.
  */
-public class TaskBarController {
+public class TaskBarController extends AbstractController {
 
     @FXML
     public MenuBar taskBar; //Need this to get scene
@@ -19,7 +20,12 @@ public class TaskBarController {
     public void handleNewInterview(ActionEvent event) {
     }
 
+    /**
+     * Changes the Scene to {@link NewEmpController}.
+     * @param event Clicked menuButton new -> Provider
+     */
     public void handleNewEmployee(ActionEvent event) {
+        ViewController.NEW_EMPLOYEE_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleNewConsultation(ActionEvent event) {
