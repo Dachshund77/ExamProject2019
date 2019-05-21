@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SACustController">
+   <children>
+      <MenuBar layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="570.0">
+        <menus>
+          <Menu fx:id="find" mnemonicParsing="false" text="Find">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Employee" />
+                  <MenuItem mnemonicParsing="false" text="Consultation" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Delete">
+            <items>
+              <MenuItem fx:id="DelEmp" mnemonicParsing="false" onAction="#handleDelEmp" text="Delete employee" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Option">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Change password" />
+                  <MenuItem mnemonicParsing="false" text="Log out" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+</AnchorPane>
