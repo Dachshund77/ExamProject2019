@@ -14,7 +14,12 @@ public class TaskBarController extends AbstractController {
     @FXML
     public MenuBar taskBar; //Need this to get scene
 
+    /**
+     * Changes the Scene to {@link NewEducationController}.
+     * @param event Clicked menuButton new -> Education
+     */
     public void HandleNewEducation(ActionEvent event) {
+        ViewController.NEW_EDUCATION_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleNewInterview(ActionEvent event) {
@@ -22,7 +27,7 @@ public class TaskBarController extends AbstractController {
 
     /**
      * Changes the Scene to {@link NewEmpController}.
-     * @param event Clicked menuButton new -> Provider
+     * @param event Clicked menuButton new -> Employee
      */
     public void handleNewEmployee(ActionEvent event) {
         ViewController.NEW_EMPLOYEE_CONTROLLER.reLoad(taskBar.getScene());

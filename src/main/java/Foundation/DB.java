@@ -76,6 +76,26 @@ public class DB {
         return rs;
     }
 
+    @SuppressWarnings("Duplicates")
+    public void addStoredProcedureToBatch(String sp, Object... param) throws SQLException{
+        conn.setAutoCommit(false);
+        // Preparing metaData
+        Map<Integer,String> metaDataMap = getSPMetaData(sp);
+        //Setting callable statement
+        cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
+        //Build parameters
+        for (int i = 0; i < metaDataMap.size(); i++) {
+            setCallParameter(i+1, metaDataMap.get(i+1), param[i]);
+        }
+        cstmt.addBatch();
+    }
+
+    public boolean executeBatch() throws SQLException {
+        boolean returnBoolean = cstmt.execute();
+        conn.commit();
+        return returnBoolean;
+    }
+
 
     /**
      * Method that will execute a stored procedure and return the no resultSet

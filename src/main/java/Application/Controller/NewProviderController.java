@@ -1,7 +1,9 @@
 package Application.Controller;
 
 import Application.AbstractController;
+import Domain.Provider;
 import Foundation.DB;
+import Persistance.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -19,6 +21,7 @@ public class NewProviderController extends AbstractController {
     /**
      * Confirms the form and writes the new Provider to the to the database.
      * @param event Clicked Conform button
+     * @see DbFacade
      */
     @FXML
     public void handleConfirmForm(ActionEvent event) {
@@ -29,7 +32,7 @@ public class NewProviderController extends AbstractController {
         DB database = DB.getInstance();
         try{
             database.connect();
-            database.executeStoredProcedureNoRS("sp_InsertProvider",null,newProviderName);
+            DbFacade.insertProvider(new Provider(null,newProviderName));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

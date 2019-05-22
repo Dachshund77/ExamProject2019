@@ -7,11 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Provider {
-    private SimpleIntegerProperty providerID;
+    private SimpleIntegerProperty providerID = null;
     private SimpleStringProperty providerName;
 
     public Provider(Integer providerID, String providerName) {
-        this.providerID = new SimpleIntegerProperty(providerID);
+        if (providerID != null) {
+            this.providerID = new SimpleIntegerProperty(providerID);
+        }
         this.providerName = new SimpleStringProperty(providerName);
     }
 
@@ -24,5 +26,24 @@ public class Provider {
     public Provider(ResultSet rs) throws SQLException {
         this.providerID = new SimpleIntegerProperty(rs.getInt("fld_ProviderID"));
         this.providerName = new SimpleStringProperty(rs.getString("fld_ProviderName"));
+    }
+
+    public Integer getProviderID() {
+        if (providerID == null){
+            return null;
+        }
+        return providerID.get();
+    }
+
+    public SimpleIntegerProperty providerIDProperty() {
+        return providerID;
+    }
+
+    public String getProviderName() {
+        return providerName.get();
+    }
+
+    public SimpleStringProperty providerNameProperty() {
+        return providerName;
     }
 }
