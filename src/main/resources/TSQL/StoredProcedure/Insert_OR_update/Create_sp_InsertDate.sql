@@ -10,6 +10,6 @@ BEGIN
         END
     ELSE
         BEGIN
-            INSERT INTO tbl_Date VALUES (@newAmuNr, @DateID)
+            INSERT INTO tbl_Date VALUES (@newAmuNr, @newDate)
         END
 END;
