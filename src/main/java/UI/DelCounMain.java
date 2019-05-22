@@ -1,4 +1,4 @@
-package UI.Views;
+package UI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,11 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class SACustMain extends Application {
+public class DelCounMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Application/Model/SACustView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Application/Model/DelCounView.fxml"));
         primaryStage.setTitle("Template");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
