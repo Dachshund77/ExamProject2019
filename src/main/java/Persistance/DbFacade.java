@@ -1,5 +1,6 @@
 package Persistance;
 
+import Domain.Company;
 import Domain.Education;
 import Domain.Employee;
 import Domain.Provider;
