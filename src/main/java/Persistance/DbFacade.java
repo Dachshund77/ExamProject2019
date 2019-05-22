@@ -208,10 +208,12 @@ public class DbFacade {
     }
 
     /**
-     * Use {@link #insertEmployeeToBatch(Employee)} instead
+     * Method that will write the employee object to the database.
+     * @param employee The container of values, that will be inserted.
+     * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    @Deprecated
-    public static boolean insertEmployee(Employee employee) throws SQLException {
+    public static boolean insertEmployee(Employee employee) throws SQLException //TODO need javaDOC and maybe fix
+    {
         Integer employeeID = employee.getEmployeeId();
         String employeeFirstName = employee.getEmployeeFirstName();
         String employeeLastName = employee.getEmployeeLastName();
@@ -219,7 +221,7 @@ public class DbFacade {
         String eMail = employee.getMail();
         String phoneNr = employee.getPhoneNr();
 
-        return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
+        return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee",employeeFirstName,employeeLastName,CPRnr,eMail,phoneNr);
     }
 
     /*
