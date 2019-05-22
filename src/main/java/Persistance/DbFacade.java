@@ -35,6 +35,12 @@ public class DbFacade {
         DB.getInstance().addStoredProcedureToBatch("sp_InsertProvider",providerID,providerName);
     }
 
+    /**
+     * Method that will write the a provider object to the database.
+     * Will also make sure that its children objects are written correctly to the database.
+     * @param education The Container for the values that will be inserted.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void insertEducation(Education education) throws SQLException{ //TODO we should reduce round trips to the Database
         DB database = DB.getInstance();
 
@@ -62,7 +68,8 @@ public class DbFacade {
         }
     }
 
-    public static boolean insertEmployee(Employee employee) throws SQLException
+
+    public static boolean insertEmployee(Employee employee) throws SQLException //TODO need javaDOC and maybe fix
     {
         Integer employeeID = employee.getEmployeeId();
         String employeeFirstName = employee.getEmployeeFirstName();
