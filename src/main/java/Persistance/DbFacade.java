@@ -1,9 +1,6 @@
 package Persistance;
 
-import Domain.Company;
-import Domain.Education;
-import Domain.Employee;
-import Domain.Provider;
+import Domain.*;
 import Foundation.DB;
 import javafx.collections.ObservableList;
 
@@ -19,12 +16,17 @@ import java.util.HashMap;
  */
 public class DbFacade {
 
-   /*
-    * INSERTION
-    */
+    /*
+     * INSERTION
+     */
 
     /**
-     * Method that will write the a provider object to the database.
+     * Method that will write a provider object to the database.
+     * <br>
+     * <br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     *
      * @param provider The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
@@ -33,16 +35,21 @@ public class DbFacade {
         Integer providerID = provider.getProviderID();
         String providerName = provider.getProviderName();
         //Write to Db
-        DB.getInstance().addStoredProcedureToBatch("sp_InsertProvider",providerID,providerName);
+        DB.getInstance().addStoredProcedureToBatch("sp_InsertProvider", providerID, providerName);
     }
 
     /**
-     * Method that will write the a provider object to the database.
+     * Method that will write a Education object to the database.
      * Will also make sure that its children objects are written correctly to the database.
+     * <br>
+     * <br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     *
      * @param education The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    private static void insertEducation(Education education) throws SQLException{ //TODO we should reduce round trips to the Database
+    private static void insertEducationToBatch(Education education) throws SQLException {
         DB database = DB.getInstance();
 
         //First we Insert the provider (has 1 to m cardinality)
@@ -56,22 +63,73 @@ public class DbFacade {
         String description = education.getDescription();
         Integer noOfDays = education.getNoOfDays();
 
-        database.addStoredProcedureToBatch("sp_InsertEducation",amuNr,providerID, educationName,description,noOfDays);
+        database.addStoredProcedureToBatch("sp_InsertEducation", amuNr, providerID, educationName, description, noOfDays);
 
         //Then we write dates to database
         // Delete by educationID first
-        database.addStoredProcedureToBatch("sp_DeleteDateByAmuNr",amuNr);
+        database.addStoredProcedureToBatch("sp_DeleteDateByAmuNr", amuNr);
 
         // Then reInsert
         ArrayList<Date> dates = education.getDates();
         for (Date date : dates) {
-            database.addStoredProcedureToBatch("sp_InsertDate",null,amuNr,date);
+            database.addStoredProcedureToBatch("sp_InsertDate", null, amuNr, date);
         }
     }
 
+    /**
+     * Method that will write a EducationWish object to the database.
+     * Will also make sure that its children objects are written correctly to the database.
+     * <br>
+     * <br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     *
+     * @param educationWish The Container for the values that will be inserted.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
+    private static void insertEducationWishToBatch(EducationWish educationWish) throws SQLException {
+        DB database = DB.getInstance();
 
-    public static boolean insertEmployee(Employee employee) throws SQLException //TODO need javaDOC and maybe fix
-    {
+        //First we make sure that the Education is written/updated in the database
+        Education education = educationWish.getEducation();
+        insertEducationToBatch(education);
+
+        //Next we write this EducationWish to the batch
+        Integer educationWishID = educationWish.getEducationWishID();
+        Integer amuNr = education.getAmuNr();
+        Integer priority = educationWish.getPriority();
+
+        database.addStoredProcedureToBatch("sp_InsertEducationWish", educationWishID, amuNr, priority);
+    }
+
+    /**
+     * Method that will write a EducationWish object to the database.
+     * Will also make sure that its children objects are written correctly to the database.
+     * <br>
+     * <br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     *
+     * @param finishedEducation The Container for the values that will be inserted.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
+    private static void insertFinishedEducationToBach(FinishedEducation finishedEducation) throws SQLException {
+        DB database = DB.getInstance();
+
+        //First we make sure that the Education is written/updated in the database
+        Education education = finishedEducation.getEducation();
+        insertEducationToBatch(education);
+
+        //Next we write this FinishedEducation to the database
+        Integer finishedEducationID = finishedEducation.getFinishedEducationID();
+        Integer amuNr = education.getAmuNr();
+        Date finishedDate = finishedEducation.getDateFinished();
+
+        database.addStoredProcedureToBatch("sp_InsertFinishedEducation", finishedEducationID, amuNr, finishedDate);
+    }
+
+
+    public static boolean insertEmployee(Employee employee) throws SQLException {
         Integer employeeID = employee.getEmployeeId();
         String employeeFirstName = employee.getEmployeeFirstName();
         String employeeLastName = employee.getEmployeeLastName();
@@ -79,7 +137,7 @@ public class DbFacade {
         String eMail = employee.getMail();
         String phoneNr = employee.getPhoneNr();
 
-        return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee",employeeID,employeeFirstName,employeeLastName,CPRnr,eMail,phoneNr);
+        return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
     }
 
     /*
@@ -89,7 +147,8 @@ public class DbFacade {
     /**
      * Method that will search the Database for Provider objects.
      * Values may be null and be used as wildCard.
-     * @param providerID Integer ID of the provider, may be null as wildcard
+     *
+     * @param providerID   Integer ID of the provider, may be null as wildcard
      * @param ProviderName String name of the provider, may be null as wildcard
      * @return HashMap of all the found provider. Key values equals the unique ProviderID
      * @throws SQLException Exception when encountered a fatal error
@@ -100,11 +159,11 @@ public class DbFacade {
         HashMap<Integer, Provider> returnMap = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindProvider",providerID, ProviderName);
+        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindProvider", providerID, ProviderName);
 
-        while (rs.next()){
+        while (rs.next()) {
             Provider tempProvider = new Provider(rs);
-            returnMap.put(tempProvider.getProviderID(),tempProvider);
+            returnMap.put(tempProvider.getProviderID(), tempProvider);
         }
         return returnMap;
     }
@@ -116,6 +175,7 @@ public class DbFacade {
     /**
      * Method that will search the Database for ALL Provider objects.
      * Values may be null and be used as wildCard.
+     *
      * @return HashMap of all the found provider. Key values equals the unique ProviderID
      * @throws SQLException Exception when encountered a fatal error
      * @see Provider
@@ -125,11 +185,11 @@ public class DbFacade {
         HashMap<Integer, Provider> returnMap = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindProvider",null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindProvider", null, null);
 
-        while (rs.next()){
+        while (rs.next()) {
             Provider tempProvider = new Provider(rs);
-            returnMap.put(tempProvider.getProviderID(),tempProvider);
+            returnMap.put(tempProvider.getProviderID(), tempProvider);
         }
         return returnMap;
     }

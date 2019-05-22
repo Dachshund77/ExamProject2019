@@ -43,7 +43,6 @@ public class Education {
         } else {
             this.dates = dates;
         }
-
         // init provider
         this.provider = new SimpleObjectProperty<>(provider);
 

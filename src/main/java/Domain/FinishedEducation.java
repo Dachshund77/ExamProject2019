@@ -27,4 +27,20 @@ public class FinishedEducation {
         this.finishedEducationID = new SimpleIntegerProperty(rs.getInt("fld_fld_FinishedEducationID"));
         this.dateFinished = rs.getDate("fld_FinishedDate");
     }
+
+    public int getFinishedEducationID() {
+        return finishedEducationID.get();
+    }
+
+    public SimpleIntegerProperty finishedEducationIDProperty() {
+        return finishedEducationID;
+    }
+
+    public Education getEducation() {
+        return education;
+    }
+
+    public Date getDateFinished() {
+        return dateFinished;
+    }
 }

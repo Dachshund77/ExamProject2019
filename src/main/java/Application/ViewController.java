@@ -88,7 +88,5 @@ public enum ViewController {
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(string);
-
-
     }
 }
