@@ -17,6 +17,7 @@ public class Employee {
     private SimpleStringProperty phoneNr;
 
     public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, String phoneNr) {
+        if(employeeID != null)
         this.employeeID = new SimpleIntegerProperty(employeeID);
         this.employeeFirstName = new SimpleStringProperty(employeeFirstName);
         this.employeeLastName = new SimpleStringProperty(employeeLastName);
@@ -38,5 +39,33 @@ public class Employee {
         this.cprNr = new SimpleStringProperty(rs.getString("fld_CprNr"));
         this.eMail = new SimpleStringProperty(rs.getString("fld_EMail"));
         this.phoneNr = new SimpleStringProperty(rs.getString("fld_PhoneNr"));
+    }
+
+    public Integer getEmployeeId()
+    {
+        if(employeeID == null)
+        return null;
+
+        return employeeID.get();
+    }
+
+    public String getEmployeeFirstName() {
+        return employeeFirstName.get();
+    }
+
+    public String getEmployeeLastName() {
+        return employeeLastName.get();
+    }
+
+    public String getCprNr() {
+        return cprNr.get();
+    }
+
+    public String getMail() {
+        return eMail.get();
+    }
+
+    public String getPhoneNr() {
+        return phoneNr.get();
     }
 }

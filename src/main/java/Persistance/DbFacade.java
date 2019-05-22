@@ -1,6 +1,7 @@
 package Persistance;
 
 import Domain.Education;
+import Domain.Employee;
 import Domain.Provider;
 import Foundation.DB;
 
@@ -35,6 +36,18 @@ public class DbFacade {
 
     private static boolean insertEducation(Education education) throws SQLException{
         return true; /// FIXME: 22/05/2019 Need implementation
+    }
+
+    public static boolean insertEmployee(Employee employee) throws SQLException
+    {
+        Integer employeeID = employee.getEmployeeId();
+        String employeeFirstName = employee.getEmployeeFirstName();
+        String employeeLastName = employee.getEmployeeLastName();
+        String CPRnr = employee.getCprNr();
+        String eMail = employee.getMail();
+        String phoneNr = employee.getPhoneNr();
+
+        return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee",employeeID,employeeFirstName,employeeLastName,CPRnr,eMail,phoneNr);
     }
 
     /*
