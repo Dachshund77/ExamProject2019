@@ -10,9 +10,9 @@ public class SAEmpMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = ViewController.SA_EMPLOYEE_CONTROLLER.loadParent();
+        //Parent root = ViewController.SA_EMPLOYEE_CONTROLLER.loadParent(); //TODO having issue here
         primaryStage.setTitle("Template");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        //primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         primaryStage.setResizable(true);
     }

@@ -13,9 +13,9 @@ public class Company {
     private SimpleStringProperty cvrNr;
     private SimpleStringProperty companyName;
     private ArrayList<Consultation> consultations;
-    private EducationList educationList;
+    private ArrayList<Education> educationList;
 
-    public Company(Integer companyID, String cvrNr, String companyName, ArrayList<Consultation> consultations, EducationList educationList) {
+    public Company(Integer companyID, String cvrNr, String companyName, ArrayList<Consultation> consultations, ArrayList<Education> educationList) {
         this.companyID = new SimpleIntegerProperty(companyID);
         this.cvrNr = new SimpleStringProperty(cvrNr);
         this.companyName = new SimpleStringProperty(companyName);
