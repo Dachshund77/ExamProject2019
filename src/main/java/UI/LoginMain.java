@@ -1,4 +1,4 @@
-package UI.Views;
+package UI;
 
 import javafx.application.Application;
 import javafx.scene.Parent;
@@ -6,11 +6,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import Application.ViewController;
 
-public class NewEmpMain extends Application {
+public class LoginMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = ViewController.NEW_EMPLOYEE_CONTROLLER.loadParent();
+        Parent root = ViewController.LOGIN_CONTROLLER.loadParent();
         primaryStage.setTitle("Template");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
