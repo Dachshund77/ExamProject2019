@@ -12,10 +12,6 @@ import javafx.scene.control.TextField;
 import java.sql.SQLException;
 
 public class NewEmployeeController extends AbstractController {
-
-
-    public class NewEmpController extends AbstractController {
-
         @FXML
         public TextField firstNameTextfield;
         @FXML
@@ -79,5 +75,4 @@ public class NewEmployeeController extends AbstractController {
                 }
             }
         }
-    }
 }
