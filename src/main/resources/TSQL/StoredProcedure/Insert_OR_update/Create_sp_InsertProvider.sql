@@ -13,3 +13,4 @@ BEGIN
             INSERT INTO tbl_Provider VALUES (@newProviderName)
         END
 END;
+
