@@ -5,12 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import Application.ViewController;
 
-public class ChangeEmpMain extends Application {
+public class NewInterviewMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/FXML/ChangeEmpView.fxml"));
+        Parent root = ViewController.NEW_INTERVIEW_CONTROLLER.loadParent();
         primaryStage.setTitle("Template");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();

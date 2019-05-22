@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Can be used to change and load the scenes easily.
@@ -17,7 +16,9 @@ public enum ViewController {
     START_PAGE_CONTROLLER("/FXML/StartPageView.fxml"),
     NEW_PROVIDER_CONTROLLER("/FXML/NewProviderView.fxml"),
     NEW_EMPLOYEE_CONTROLLER("/FXML/NewEmpView"),
-    NEW_EDUCATION_CONTROLLER("/FXML/NewEducationController.fxml");
+    NEW_EDUCATION_CONTROLLER("/FXML/NewEducationController.fxml"),
+    NEW_INTERVIEW_CONTROLLER("/FXML/NewInterview.fxml");
+
 
 
     private final String URL;

@@ -10,7 +10,7 @@ public class DelCounMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Application/Model/DelCounView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/FXML/DelCounView.fxml"));
         primaryStage.setTitle("Template");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
