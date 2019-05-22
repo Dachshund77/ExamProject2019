@@ -1,4 +1,3 @@
-USE db_SmartAcademy
 CREATE PROCEDURE sp_InsertCompany(@NewCompID INT, @CvrNr INT, @CompanyName VARCHAR(50))
 AS
 BEGIN

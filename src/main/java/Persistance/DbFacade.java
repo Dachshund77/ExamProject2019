@@ -113,7 +113,7 @@ public class DbFacade {
      * @param finishedEducation The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    private static void insertFinishedEducationToBach(FinishedEducation finishedEducation) throws SQLException {
+    private static void insertFinishedEducationToBatch(FinishedEducation finishedEducation) throws SQLException {
         DB database = DB.getInstance();
 
         //First we make sure that the Education is written/updated in the database
@@ -128,7 +128,49 @@ public class DbFacade {
         database.addStoredProcedureToBatch("sp_InsertFinishedEducation", finishedEducationID, amuNr, finishedDate);
     }
 
+    /**
+     * Method that will write a Employee object to the database.
+     * Will also make sure that its children objects are written correctly to the database.
+     * <br>
+     * <br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     *
+     * @param employee The Container for the values that will be inserted.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
+    private static void insertEmployeeToBatch(Employee employee) throws SQLException{
+        DB database = DB.getInstance();
 
+        //Unpacking the object
+        Integer employeeID = employee.getEmployeeId();
+        String employeeFirstName = employee.getEmployeeFirstName();
+        String employeeLastName = employee.getEmployeeLastName();
+        String CPRnr = employee.getCprNr();
+        String eMail = employee.getMail();
+        String phoneNr = employee.getPhoneNr();
+
+        database.addStoredProcedureToBatch("sp_InsertEmployee", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
+    }
+
+    private static void insertInterviewToBatch(Interview interview) throws SQLException{
+        //We write the finished education
+        ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
+        for (FinishedEducation finishedEducation : finishedEducations) {
+            insertFinishedEducationToBatch(finishedEducation);
+        }
+
+        //We write the education wishes
+
+        //We write the employee
+
+        //We write this interview
+    }
+
+    /**
+     * Use {@link #insertEmployeeToBatch(Employee)} instead
+     */
+    @Deprecated
     public static boolean insertEmployee(Employee employee) throws SQLException {
         Integer employeeID = employee.getEmployeeId();
         String employeeFirstName = employee.getEmployeeFirstName();

@@ -14,7 +14,7 @@ public class Interview {
     private SimpleIntegerProperty productUnderstanding;
     private SimpleIntegerProperty problemUnderstanding;
     private SimpleIntegerProperty flexibility;
-    private SimpleIntegerProperty qualityAwarness;
+    private SimpleIntegerProperty qualityAwareness;
     private SimpleIntegerProperty cooperation;
     private ArrayList<FinishedEducation> finishedEducations;
     private ArrayList<EducationWish> educationWishes;
@@ -26,7 +26,7 @@ public class Interview {
         this.productUnderstanding = new SimpleIntegerProperty(productUnderstanding);
         this.problemUnderstanding = new SimpleIntegerProperty(problemUnderstanding);
         this.flexibility = new SimpleIntegerProperty(flexibility);
-        this.qualityAwarness = new SimpleIntegerProperty(qualityAwareness);
+        this.qualityAwareness = new SimpleIntegerProperty(qualityAwareness);
         this.cooperation = new SimpleIntegerProperty(cooperation);
         this.finishedEducations = finishedEducations;
         this.educationWishes = educationWishes;
@@ -45,7 +45,75 @@ public class Interview {
         this.productUnderstanding = new SimpleIntegerProperty(rs.getInt("fld_ProductUnderstanding"));
         this.problemUnderstanding = new SimpleIntegerProperty(rs.getInt("fld_ProblemUnderstanding"));
         this.flexibility = new SimpleIntegerProperty(rs.getInt("fld_Flexibility"));
-        this.qualityAwarness = new SimpleIntegerProperty(rs.getInt("fld_QualityAwareness"));
+        this.qualityAwareness = new SimpleIntegerProperty(rs.getInt("fld_QualityAwareness"));
         this.cooperation = new SimpleIntegerProperty(rs.getInt("fld_Cooperation"));
+    }
+
+    public int getInterviewID() {
+        return interviewID.get();
+    }
+
+    public SimpleIntegerProperty interviewIDProperty() {
+        return interviewID;
+    }
+
+    public String getInterviewName() {
+        return interviewName.get();
+    }
+
+    public SimpleStringProperty interviewNameProperty() {
+        return interviewName;
+    }
+
+    public int getProductUnderstanding() {
+        return productUnderstanding.get();
+    }
+
+    public SimpleIntegerProperty productUnderstandingProperty() {
+        return productUnderstanding;
+    }
+
+    public int getProblemUnderstanding() {
+        return problemUnderstanding.get();
+    }
+
+    public SimpleIntegerProperty problemUnderstandingProperty() {
+        return problemUnderstanding;
+    }
+
+    public int getFlexibility() {
+        return flexibility.get();
+    }
+
+    public SimpleIntegerProperty flexibilityProperty() {
+        return flexibility;
+    }
+
+    public int getQualityAwareness() {
+        return qualityAwareness.get();
+    }
+
+    public SimpleIntegerProperty qualityAwarenessProperty() {
+        return qualityAwareness;
+    }
+
+    public int getCooperation() {
+        return cooperation.get();
+    }
+
+    public SimpleIntegerProperty cooperationProperty() {
+        return cooperation;
+    }
+
+    public ArrayList<FinishedEducation> getFinishedEducations() {
+        return finishedEducations;
+    }
+
+    public ArrayList<EducationWish> getEducationWishes() {
+        return educationWishes;
+    }
+
+    public Employee getEmployee() {
+        return employee;
     }
 }
