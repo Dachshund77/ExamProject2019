@@ -76,6 +76,12 @@ public class DB {
         return rs;
     }
 
+    /**
+     * Add a stored procedure to a batch. To execute the batch call {@link #executeBatch()}.
+     * @param sp String with the name of the Stored Procedure
+     * @param param Variable parameter for the Procedure
+     * @throws SQLException Exception when SQL encounter a fatal problem
+     */
     @SuppressWarnings("Duplicates")
     public void addStoredProcedureToBatch(String sp, Object... param) throws SQLException{
         conn.setAutoCommit(false);
@@ -90,6 +96,12 @@ public class DB {
         cstmt.addBatch();
     }
 
+    /**
+     * Execute the batch. To add to the Batch call {@link #addStoredProcedureToBatch(String, Object...)}.
+     * Note that the batch files will be execute as first in fir out order.
+     * @return True if successful added to database
+     * @throws SQLException Exception when SQL encounter a fatal problem
+     */
     public boolean executeBatch() throws SQLException {
         boolean returnBoolean = cstmt.execute();
         conn.commit();

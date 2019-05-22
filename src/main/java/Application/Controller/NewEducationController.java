@@ -4,16 +4,20 @@ import Domain.Education;
 import Domain.Provider;
 import Foundation.DB;
 import Persistance.DbFacade;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 
 public class NewEducationController {
@@ -26,9 +30,18 @@ public class NewEducationController {
     public MenuButton providerMenuButton;
     @FXML
     public MenuButton noOfDaysMenuButton;
+    @FXML
+    public DatePicker datePicker;
+    @FXML
+    public TableView<Date> datesTable;
+    @FXML
+    public TableColumn<Date,Date> datesColumn;
+
 
     private Provider selectedProvider = null;
-    private Integer selectedNoOfDays = null;
+    private Integer selectedNoOfDays = 1;
+
+    private Education selectedEducation;
 
     public void initialize() {
         //Populate providers
@@ -48,6 +61,21 @@ public class NewEducationController {
 
         //populate Days menu button
         populateNoOfDaysMenuButton();
+
+        //Create empty Education container
+        selectedEducation = new Education(null,null,null,null,null,null);
+        selectedEducation.educationNameProperty().bind(educationNameTextfield.textProperty());
+        selectedEducation.descriptionProperty().bind(descriptionTextArea.textProperty());
+        selectedEducation.noOfDaysProperty().bind(new SimpleIntegerProperty(selectedNoOfDays));
+        selectedEducation.providerProperty().bind(new SimpleObjectProperty<>(selectedProvider));
+
+        //set Table
+        datesTable.setItems(FXCollections.observableArrayList(selectedEducation.getDates()));
+
+        //Set columns
+        datesColumn.setCellValueFactory(new PropertyValueFactory<>("dates")); //TODO SO DAMN STUCK
+
+
     }
 
     @FXML
@@ -67,7 +95,7 @@ public class NewEducationController {
         HashMap<Integer, Provider> providers = DbFacade.findAllProviders();
         //We want to sort its easier with array
         Collection<Provider> values = providers.values();
-        ArrayList<Provider> providerArrayList = new ArrayList<Provider>(values);
+        ArrayList<Provider> providerArrayList = new ArrayList<Provider>(values); /// FIXME: 22/05/2019 need to implement comperator to make this work
         // Adding menuItem
         for (Provider provider : providerArrayList) {
             MenuItem newMenuItem = new MenuItem(provider.getProviderName());
@@ -99,4 +127,16 @@ public class NewEducationController {
         }
     }
 
+    @SuppressWarnings("MagicConstant")
+    @FXML
+    public void handleAddDate(ActionEvent event) {
+        LocalDate datePicked = datePicker.getValue();
+        Date date = Date.from(datePicked.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        selectedEducation.getDates().add(date);
+        datesTable.getItems().add(date);
+        System.out.println(selectedEducation.getDates()); //TODO remove later
+
+
+    }
 }

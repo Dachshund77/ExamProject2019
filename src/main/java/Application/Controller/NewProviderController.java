@@ -1,6 +1,7 @@
 package Application.Controller;
 
 import Application.AbstractController;
+import Application.ViewController;
 import Domain.Provider;
 import Foundation.DB;
 import Persistance.DbFacade;
@@ -18,6 +19,16 @@ public class NewProviderController extends AbstractController {
     @FXML
     public TextField newProviderTextField;
 
+    private Provider selectedProvider;
+
+    /**
+     * Builds and empty provider and binds the values to the fields of this controller.
+     */
+    public void initialize(){
+        selectedProvider = new Provider(null,null);
+        selectedProvider.providerNameProperty().bind(newProviderTextField.textProperty());
+    }
+
     /**
      * Confirms the form and writes the new Provider to the to the database.
      * @param event Clicked Conform button
@@ -25,19 +36,19 @@ public class NewProviderController extends AbstractController {
      */
     @FXML
     public void handleConfirmForm(ActionEvent event) {
-        //Getting needed values
-        String newProviderName = newProviderTextField.getText();
-
         //Connecting to the and executing sp_InsertProvider
         DB database = DB.getInstance();
         try{
             database.connect();
-            DbFacade.insertProvider(new Provider(null,newProviderName));
+            DbFacade.insertProviderToBatch(selectedProvider);
+            database.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
                 database.disconnect();
+                //Change to mainView
+                ViewController.START_PAGE_CONTROLLER.reLoad(newProviderTextField.getScene());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
