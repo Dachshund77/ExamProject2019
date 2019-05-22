@@ -2,6 +2,7 @@ package Persistance;
 
 import Domain.*;
 import Foundation.DB;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class DbFacade {
      * @param education The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    private static void insertEducationToBatch(Education education) throws SQLException {
+    public static void insertEducationToBatch(Education education) throws SQLException {
         DB database = DB.getInstance();
 
         //First we Insert the provider (has 1 to m cardinality)
@@ -66,7 +67,6 @@ public class DbFacade {
         database.addStoredProcedureToBatch("sp_InsertEducation", amuNr, providerID, educationName, description, noOfDays);
 
         //Then we write dates to database
-        // Delete by educationID first
         database.addStoredProcedureToBatch("sp_DeleteDateByAmuNr", amuNr);
 
         // Then reInsert
@@ -85,9 +85,10 @@ public class DbFacade {
      * To execute this batch call {@link DB#executeBatch()} before disconnecting.
      *
      * @param educationWish The Container for the values that will be inserted.
+     * @param interViewID   ID of interview the tbl_EducationWish record will point to.
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    private static void insertEducationWishToBatch(EducationWish educationWish) throws SQLException {
+    private static void insertEducationWishToBatch(EducationWish educationWish, int interViewID) throws SQLException {
         DB database = DB.getInstance();
 
         //First we make sure that the Education is written/updated in the database
@@ -99,7 +100,7 @@ public class DbFacade {
         Integer amuNr = education.getAmuNr();
         Integer priority = educationWish.getPriority();
 
-        database.addStoredProcedureToBatch("sp_InsertEducationWish", educationWishID, amuNr, priority);
+        database.addStoredProcedureToBatch("sp_InsertEducationWish", educationWishID, amuNr, interViewID, priority);
     }
 
     /**
@@ -111,9 +112,10 @@ public class DbFacade {
      * To execute this batch call {@link DB#executeBatch()} before disconnecting.
      *
      * @param finishedEducation The Container for the values that will be inserted.
+     * @param interViewID       ID of the interview the tbl_FinishedEduction record wil point to
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    private static void insertFinishedEducationToBatch(FinishedEducation finishedEducation) throws SQLException {
+    private static void insertFinishedEducationToBatch(FinishedEducation finishedEducation, int interViewID) throws SQLException {
         DB database = DB.getInstance();
 
         //First we make sure that the Education is written/updated in the database
@@ -125,7 +127,7 @@ public class DbFacade {
         Integer amuNr = education.getAmuNr();
         Date finishedDate = finishedEducation.getDateFinished();
 
-        database.addStoredProcedureToBatch("sp_InsertFinishedEducation", finishedEducationID, amuNr, finishedDate);
+        database.addStoredProcedureToBatch("sp_InsertFinishedEducation", finishedEducationID, amuNr, interViewID, finishedDate);
     }
 
     /**
@@ -139,7 +141,7 @@ public class DbFacade {
      * @param employee The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    private static void insertEmployeeToBatch(Employee employee) throws SQLException{
+    public static void insertEmployeeToBatch(Employee employee) throws SQLException {
         DB database = DB.getInstance();
 
         //Unpacking the object
@@ -153,18 +155,56 @@ public class DbFacade {
         database.addStoredProcedureToBatch("sp_InsertEmployee", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
     }
 
-    private static void insertInterviewToBatch(Interview interview) throws SQLException{
-        //We write the finished education
-        ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
-        for (FinishedEducation finishedEducation : finishedEducations) {
-            insertFinishedEducationToBatch(finishedEducation);
-        }
-
-        //We write the education wishes
+    /**
+     * Method that will write a Interview object to the database.
+     * Will also make sure that its children objects are written correctly to the database.
+     * <br>
+     * <br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     *
+     * @param interview The Container for the values that will be inserted.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
+    public static void insertInterviewToBatch(Interview interview) throws SQLException {
+        DB database = DB.getInstance();
 
         //We write the employee
+        insertEmployeeToBatch(interview.getEmployee());
 
         //We write this interview
+        Integer interViewID = interview.getInterviewID();
+        String interViewName = interview.getInterviewName();
+        Integer employeeID = interview.getEmployee().getEmployeeId();
+        Integer productUnderstanding = interview.getProductUnderstanding();
+        Integer problemUnderstanding = interview.getProblemUnderstanding();
+        Integer flexibility = interview.getFlexibility();
+        Integer qualityAwareness = interview.getQualityAwareness();
+        Integer cooperation = interview.getCooperation();
+
+        database.addStoredProcedureToBatch("sp_InsertInterview",
+                interViewID,
+                interViewName,
+                employeeID, productUnderstanding,
+                problemUnderstanding,
+                flexibility,
+                qualityAwareness,
+                cooperation);
+
+        //We write the finished education, we have to delete all FinishedEducation with this interView beforehand else we create unwanted relics
+        database.addStoredProcedureToBatch("sp_DeleteFinishedEducationByInterviewID",interViewID);
+        ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
+        for (FinishedEducation finishedEducation : finishedEducations) {
+            insertFinishedEducationToBatch(finishedEducation, interViewID);
+        }
+
+        //We write the education wishes, we have to delete all EducationWishes with this interviewID beforehand else we create unwanted relics
+        database.addStoredProcedureToBatch("sp_DeleteEducationWishByID",interViewID);
+        ArrayList<EducationWish> educationWishes = interview.getEducationWishes();
+        for (EducationWish educationWish : educationWishes) {
+            insertEducationWishToBatch(educationWish, interViewID);
+        }
+
     }
 
     /**
