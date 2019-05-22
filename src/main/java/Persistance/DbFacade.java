@@ -3,10 +3,12 @@ package Persistance;
 import Domain.Education;
 import Domain.Provider;
 import Foundation.DB;
+import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -22,19 +24,41 @@ public class DbFacade {
     /**
      * Method that will write the a provider object to the database.
      * @param provider The Container for the values that will be inserted.
-     * @return True, if inserted correctly
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    public static boolean insertProvider(Provider provider) throws SQLException {
+    public static void insertProviderToBatch(Provider provider) throws SQLException {
         //Get values for insertion
         Integer providerID = provider.getProviderID();
         String providerName = provider.getProviderName();
         //Write to Db
-        return DB.getInstance().executeStoredProcedureNoRS("sp_InsertProvider",providerID,providerName);
+        DB.getInstance().addStoredProcedureToBatch("sp_InsertProvider",providerID,providerName);
     }
 
-    private static boolean insertEducation(Education education) throws SQLException{
-        return true; /// FIXME: 22/05/2019 Need implementation
+    private static void insertEducation(Education education) throws SQLException{ //TODO we should reduce round trips to the Database
+        DB database = DB.getInstance();
+
+        //First we Insert the provider (has 1 to m cardinality)
+        Provider provider = education.getProvider();
+        insertProviderToBatch(provider);
+
+        //Secondly write the education to the database
+        Integer amuNr = education.getAmuNr();
+        Integer providerID = education.getProvider().getProviderID();
+        String educationName = education.getEducationName();
+        String description = education.getDescription();
+        Integer noOfDays = education.getNoOfDays();
+
+        database.addStoredProcedureToBatch("sp_InsertEducation",amuNr,providerID, educationName,description,noOfDays);
+
+        //Then we write dates to database
+        // Delete by educationID first
+        database.addStoredProcedureToBatch("sp_DeleteDateByAmuNr",amuNr);
+
+        // Then reInsert
+        ArrayList<Date> dates = education.getDates();
+        for (Date date : dates) {
+            database.addStoredProcedureToBatch("sp_InsertDate",null,amuNr,date);
+        }
     }
 
     /*

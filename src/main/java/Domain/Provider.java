@@ -39,7 +39,14 @@ public class Provider {
         return providerID;
     }
 
+    /**
+     * Helper method that will return null if the value is an empty String
+     * @return String value of providerName
+     */
     public String getProviderName() {
+        if (providerName.get().equals("")){
+            return null;
+        }
         return providerName.get();
     }
 

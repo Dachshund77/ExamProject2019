@@ -5,7 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class NewEmpController extends AbstractController {
+public class NewEmployeeController extends AbstractController {
 
     @FXML
     public TextField firstNameTextfield;

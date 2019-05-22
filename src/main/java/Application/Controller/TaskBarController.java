@@ -26,7 +26,7 @@ public class TaskBarController extends AbstractController {
     }
 
     /**
-     * Changes the Scene to {@link NewEmpController}.
+     * Changes the Scene to {@link NewEmployeeController}.
      * @param event Clicked menuButton new -> Employee
      */
     public void handleNewEmployee(ActionEvent event) {
