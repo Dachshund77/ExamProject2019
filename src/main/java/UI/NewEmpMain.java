@@ -1,16 +1,16 @@
-package UI.Views;
+package UI;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import Application.ViewController;
 
-public class DelCounMain extends Application {
+public class NewEmpMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/FXML/DelCounView.fxml"));
+        Parent root = ViewController.NEW_EMPLOYEE_CONTROLLER.loadParent();
         primaryStage.setTitle("Template");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
