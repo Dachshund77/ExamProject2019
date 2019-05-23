@@ -12,7 +12,11 @@ public class FinishedEducation {
     private Date dateFinished;
 
     public FinishedEducation(Integer finishedEducationID, Education education, Date dateFinished) {
-        this.finishedEducationID = new SimpleIntegerProperty(finishedEducationID);
+        if (finishedEducationID != null) {
+            this.finishedEducationID = new SimpleIntegerProperty(finishedEducationID);
+        } else {
+            this.finishedEducationID = null;
+        }
         this.education = education;
         this.dateFinished = dateFinished;
     }
@@ -24,16 +28,15 @@ public class FinishedEducation {
      * @throws SQLException Thrown when encoutered a fatal error.
      */
     public FinishedEducation(ResultSet rs) throws SQLException {
-        this.finishedEducationID = new SimpleIntegerProperty(rs.getInt("fld_fld_FinishedEducationID"));
+        this.finishedEducationID = new SimpleIntegerProperty(rs.getInt("fld_FinishedEducationID"));
         this.dateFinished = rs.getDate("fld_FinishedDate");
     }
 
-    public int getFinishedEducationID() {
+    public Integer getFinishedEducationID() {
+        if (finishedEducationID == null){
+            return null;
+        }
         return finishedEducationID.get();
-    }
-
-    public SimpleIntegerProperty finishedEducationIDProperty() {
-        return finishedEducationID;
     }
 
     public Education getEducation() {

@@ -11,6 +11,7 @@ import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Education {
     private final SimpleIntegerProperty amuNr;
@@ -35,14 +36,10 @@ public class Education {
         if (noOfDays != null) {
             this.noOfDays = new SimpleIntegerProperty(noOfDays);
         } else {
-            this.noOfDays = new SimpleIntegerProperty(1);
+            this.noOfDays = new SimpleIntegerProperty(-1);
         }
         //init dates
-        if (dates == null){
-            this.dates = new ArrayList<>();
-        } else {
-            this.dates = dates;
-        }
+        this.dates = Objects.requireNonNullElseGet(dates, ArrayList::new);
         // init provider
         this.provider = new SimpleObjectProperty<>(provider);
 
@@ -62,18 +59,17 @@ public class Education {
         this.noOfDays = new SimpleIntegerProperty(rs.getInt("fld_NoOfFays"));
     }
 
-    public Integer getAmuNr() { //TODO validategetters
+    public Integer getAmuNr() {
         if (amuNr == null) {
             return null;
         }
         return amuNr.get();
     }
 
-    public SimpleIntegerProperty amuNrProperty() {
-        return amuNr;
-    }
-
     public String getEducationName() {
+        if (educationName.get().equals("")){
+            return null;
+        }
         return educationName.get();
     }
 
@@ -82,6 +78,9 @@ public class Education {
     }
 
     public String getDescription() {
+        if (description.get().equals("")){
+            return null;
+        }
         return description.get();
     }
 
@@ -89,7 +88,10 @@ public class Education {
         return description;
     }
 
-    public int getNoOfDays() {
+    public Integer getNoOfDays() {
+        if (noOfDays.get() == -1) {
+            return null;
+        }
         return noOfDays.get();
     }
 

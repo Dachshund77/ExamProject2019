@@ -6,6 +6,7 @@ import Foundation.Sp;
 import Foundation.SpWithRs;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
+import org.apache.ibatis.jdbc.Null;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,11 +33,15 @@ public class DbFacade {
      *
      * @param provider The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    public static void insertProviderToBatch(Provider provider) throws SQLException {
+    public static void insertProviderToBatch(Provider provider) throws SQLException, NullPointerException {
         //Get values for insertion
         Integer providerID = provider.getProviderID();
         String providerName = provider.getProviderName();
+        if (providerName == null){
+            throw new NullPointerException();
+        }
         //Write to Db
         DB.getInstance().addStoredProcedureToBatch(Sp.PLACE_PROVIDER, providerID, providerName);
     }
@@ -51,21 +56,29 @@ public class DbFacade {
      *
      * @param education The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
     @SuppressWarnings("Duplicates")
-    public static void insertEducationToBatch(Education education) throws SQLException {
+    public static void insertEducationToBatch(Education education) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         //First we Insert the provider (has 1 to m cardinality)
         Provider provider = education.getProvider();
+        if (provider == null){
+            throw new NullPointerException();
+        }
         insertProviderToBatch(provider);
 
         //Secondly write the education to the database
         Integer amuNr = education.getAmuNr();
-        Integer providerID = education.getProvider().getProviderID();
+        Integer providerID = provider.getProviderID();
         String educationName = education.getEducationName();
         String description = education.getDescription();
         Integer noOfDays = education.getNoOfDays();
+
+        if (providerID == null || educationName  == null || noOfDays == null){
+            throw new NullPointerException();
+        }
 
         database.addStoredProcedureToBatch(Sp.PLACE_EDUCATION, amuNr, providerID, educationName, description, noOfDays);
 
@@ -79,12 +92,30 @@ public class DbFacade {
         }
     }
 
+    /**
+     * Method that will write a Education object to the database.
+     * This method will immediately create a relationship between tbl_Education and tbl_Company.
+     * Will also make sure that its children objects are written correctly to the database.
+     * <br>
+     * <br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     *
+     * @param education The Container for the values that will be inserted.
+     * @param companyID The Id the Education will have a reference to
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     */
     @SuppressWarnings("Duplicates")
-    private static void insertEducationFromCompanyToBatch(Education education, int companyID) throws SQLException {
+    private static void insertEducationFromCompanyToBatch(Education education, int companyID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         //First we Insert the provider (has 1 to m cardinality)
         Provider provider = education.getProvider();
+        if (provider == null){
+            throw new NullPointerException();
+        }
+
         insertProviderToBatch(provider);
 
         //Secondly write the education to the database
@@ -93,6 +124,10 @@ public class DbFacade {
         String educationName = education.getEducationName();
         String description = education.getDescription();
         Integer noOfDays = education.getNoOfDays();
+
+        if (providerID == null || educationName  == null || noOfDays == null){
+            throw new NullPointerException();
+        }
 
         database.addStoredProcedureToBatch(Sp.PLACE_EMPLOYEE_FROM_CONSULTATION, amuNr, providerID, educationName, description, noOfDays, companyID);
 
@@ -106,8 +141,22 @@ public class DbFacade {
         }
     }
 
+    /**
+     * Method that will write a Employee object to the database.
+     * This method will immediately create a relationship between tbl_Employee and tbl_Consultation.
+     * Will also make sure that its children objects are written correctly to the database.
+     * <br>
+     * <br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     *
+     * @param employee The Container for the values that will be inserted.
+     * @param consultationID The Id the Employee will have a reference too.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     */
     @SuppressWarnings("Duplicates")
-    private static void insertEmployeeFromConsultationToBatch(Employee employee, int consultationID) throws SQLException {
+    private static void insertEmployeeFromConsultationToBatch(Employee employee, int consultationID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
         Integer employeeID = employee.getEmployeeId();
 
@@ -117,6 +166,10 @@ public class DbFacade {
         String CPRnr = employee.getCprNr();
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
+
+        if (CPRnr == null){
+            throw new NullPointerException();
+        }
 
         database.addStoredProcedureToBatch(Sp.PLACE_EMPLOYEE_FROM_CONSULTATION, employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr, consultationID);
 
@@ -139,18 +192,26 @@ public class DbFacade {
      * @param educationWish The Container for the values that will be inserted.
      * @param interViewID   ID of interview the tbl_EducationWish record will point to.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static void insertEducationWishToBatch(EducationWish educationWish, int interViewID) throws SQLException {
+    private static void insertEducationWishToBatch(EducationWish educationWish, int interViewID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         //First we make sure that the Education is written/updated in the database
         Education education = educationWish.getEducation();
+        if (education == null){
+            throw  new NullPointerException();
+        }
         insertEducationToBatch(education);
 
         //Next we write this EducationWish to the batch
         Integer educationWishID = educationWish.getEducationWishID();
         Integer amuNr = education.getAmuNr();
         Integer priority = educationWish.getPriority();
+
+        if (amuNr == null || priority == null){
+            throw new NullPointerException();
+        }
 
         database.addStoredProcedureToBatch(Sp.PLACE_EDUCATION_WISH, educationWishID, amuNr, interViewID, priority);
     }
@@ -166,18 +227,26 @@ public class DbFacade {
      * @param finishedEducation The Container for the values that will be inserted.
      * @param interViewID       ID of the interview the tbl_FinishedEduction record wil point to
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static void insertFinishedEducationToBatch(FinishedEducation finishedEducation, int interViewID) throws SQLException {
+    private static void insertFinishedEducationToBatch(FinishedEducation finishedEducation, int interViewID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         //First we make sure that the Education is written/updated in the database
         Education education = finishedEducation.getEducation();
+        if (education == null){
+            throw  new NullPointerException();
+        }
         insertEducationToBatch(education);
 
         //Next we write this FinishedEducation to the database
         Integer finishedEducationID = finishedEducation.getFinishedEducationID();
         Integer amuNr = education.getAmuNr();
         Date finishedDate = finishedEducation.getDateFinished();
+
+        if (amuNr == null){
+            throw new NullPointerException();
+        }
 
         database.addStoredProcedureToBatch(Sp.PLACE_FINISHED_EDUCATION, finishedEducationID, amuNr, interViewID, finishedDate);
     }
@@ -228,9 +297,11 @@ public class DbFacade {
      * To execute this batch call {@link DB#executeBatch()} before disconnecting.
      *
      * @param interview The Container for the values that will be inserted.
+     * @param employeeID The employee Id tbl_interview Record will point too.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    public static void insertInterviewToBatch(Interview interview, int employeeID) throws SQLException {
+    private static void insertInterviewToBatch(Interview interview, int employeeID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
 
@@ -242,6 +313,10 @@ public class DbFacade {
         Integer flexibility = interview.getFlexibility();
         Integer qualityAwareness = interview.getQualityAwareness();
         Integer cooperation = interview.getCooperation();
+
+        if (interViewName == null){
+            throw new NullPointerException();
+        }
 
         database.addStoredProcedureToBatch(Sp.PLACE_INTERVIEW,
                 interViewID,
@@ -277,14 +352,20 @@ public class DbFacade {
      *
      * @param company The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    public static void insertCompanyToBatch(Company company) throws SQLException {
+    public static void insertCompanyToBatch(Company company) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 write this object to db
         Integer companyID = company.getCompanyID();
         String cvrNr = company.getCvrNr();
         String companyName = company.getCompanyName();
+
+        if (cvrNr == null || companyName == null){
+            throw new NullPointerException();
+        }
+
         database.addStoredProcedureToBatch(Sp.PLACE_COMPANY, companyID, cvrNr, companyName);
 
         // 2 write education list relationship. We delete references from the table and then reinsert
@@ -311,9 +392,11 @@ public class DbFacade {
      * To execute this batch call {@link DB#executeBatch()} before disconnecting.
      *
      * @param consultation The Container for the values that will be inserted.
+     * @param companyID The companyID that the tbl_Consultation will point to.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static void insertConsultationToBatch(Consultation consultation, int companyID) throws SQLException {
+    private static void insertConsultationToBatch(Consultation consultation, int companyID) throws SQLException, NullPointerException{
         DB database = DB.getInstance();
 
         // 1 Write this object to db
@@ -321,6 +404,10 @@ public class DbFacade {
         String consultationName = consultation.getConsultationName();
         Date startDate = consultation.getStartDate();
         Date endDate = consultation.getEndDate();
+
+        if (consultationName== null || startDate == null || endDate == null){
+            throw new NullPointerException();
+        }
 
         database.addStoredProcedureToBatch(Sp.PLACE_CONSULTATION, consultationID, consultationName, startDate, endDate, companyID);
 
