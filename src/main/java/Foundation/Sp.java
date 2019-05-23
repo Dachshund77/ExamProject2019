@@ -6,11 +6,12 @@ package Foundation;
  */
 public enum Sp implements Procedure {
     //DELETE
-    DELETE_COMPANY_EDUCATION_BRIDGE("sp_DeleteCompany_EducationBridge"),
+    DELETE_COMPANY_EDUCATION_BRIDGE_BY_COMPANY_ID("sp_DeleteCompany_Education_Bridge_ByCompanyID"),
     DELETE_CONSULTATION_BY_COMPANY_ID("sp_DeleteConsultationByCompanyID"),
     DELETE_DATE_BY_AMU_NR("sp_DeleteDateByAmuNr"),
     DELETE_EMPLOYEE_BY_CONSULTATION_ID("sp_DeleteEmployeeByConsultationID"),
     DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID("sp_DeleteFinishedEducationByInterviewID"),
+    DELETE_INTERVIEW_BY_EMPLOYEE_ID("sp_DeleteInterviewByEmployeeID"),
     DELETE_EDUCATION_WISH_BY_INTERVIEW_ID("sp_DeleteEducationWishByInterviewID"),
 
     //INSERT
@@ -20,6 +21,7 @@ public enum Sp implements Procedure {
     //PLACE //TODO need to change names for this
     PLACE_CONSULTATION("sp_InsertConsultation"),
     PLACE_DATE("sp_InsertDate"),
+    PLACE_EDUCATION("sp_InsertEducation"),
     PLACE_EDUCATION_FROM_COMPANY("sp_InsertEducationAsCompany"),
     PLACE_EDUCATION_WISH("sp_InsertEducationWish"),
     PLACE_EMPLOYEE("sp_InsertEmployee"),

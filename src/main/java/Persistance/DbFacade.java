@@ -2,6 +2,8 @@ package Persistance;
 
 import Domain.*;
 import Foundation.DB;
+import Foundation.Sp;
+import Foundation.SpWithRs;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 
@@ -36,9 +38,8 @@ public class DbFacade {
         Integer providerID = provider.getProviderID();
         String providerName = provider.getProviderName();
         //Write to Db
-        DB.getInstance().addStoredProcedureToBatch("sp_InsertProvider", providerID, providerName);
+        DB.getInstance().addStoredProcedureToBatch(Sp.PLACE_PROVIDER, providerID, providerName);
     }
-
 
     /**
      * Method that will write a Education object to the database.
@@ -66,15 +67,15 @@ public class DbFacade {
         String description = education.getDescription();
         Integer noOfDays = education.getNoOfDays();
 
-        database.addStoredProcedureToBatch("sp_InsertEducation", amuNr, providerID, educationName, description, noOfDays);
+        database.addStoredProcedureToBatch(Sp.PLACE_EDUCATION, amuNr, providerID, educationName, description, noOfDays);
 
         //Then we write dates to database
-        database.addStoredProcedureToBatch("sp_DeleteDateByAmuNr", amuNr);
+        database.addStoredProcedureToBatch(Sp.DELETE_DATE_BY_AMU_NR, amuNr); // FIXME: 23/05/2019 cascade on delete or update
 
         // Then reInsert
         ArrayList<Date> dates = education.getDates();
         for (Date date : dates) {
-            database.addStoredProcedureToBatch("sp_InsertDate", null, amuNr, date);
+            database.addStoredProcedureToBatch(Sp.PLACE_DATE, null, amuNr, date);
         }
     }
 
@@ -93,15 +94,15 @@ public class DbFacade {
         String description = education.getDescription();
         Integer noOfDays = education.getNoOfDays();
 
-        database.addStoredProcedureToBatch("sp_InsertEducationAsCompany", amuNr, providerID, educationName, description, noOfDays, companyID);
+        database.addStoredProcedureToBatch(Sp.PLACE_EMPLOYEE_FROM_CONSULTATION, amuNr, providerID, educationName, description, noOfDays, companyID);
 
         //Then we write dates to database
-        database.addStoredProcedureToBatch("sp_DeleteDateByAmuNr", amuNr); // FIXME: 23/05/2019 Cascade on delete/Update
+        database.addStoredProcedureToBatch(Sp.DELETE_DATE_BY_AMU_NR, amuNr); // FIXME: 23/05/2019 Cascade on delete/Update
 
         // Then reInsert
         ArrayList<Date> dates = education.getDates();
         for (Date date : dates) {
-            database.addStoredProcedureToBatch("sp_InsertDate", null, amuNr, date);
+            database.addStoredProcedureToBatch(Sp.PLACE_DATE, null, amuNr, date);
         }
     }
 
@@ -117,10 +118,10 @@ public class DbFacade {
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        database.addStoredProcedureToBatch("sp_InsertEmployeeAsConsultation", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr, consultationID);
+        database.addStoredProcedureToBatch(Sp.PLACE_EMPLOYEE_FROM_CONSULTATION, employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr, consultationID);
 
         // First we need to write interviews to db, w need to purge interview record by employee Consultation
-        database.addStoredProcedureToBatch("sp_DeleteInterviewByEmployeeID", employeeID); // FIXME: 23/05/2019 casscade delete update
+        database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, employeeID); // FIXME: 23/05/2019 casscade delete update
         ArrayList<Interview> interviews = employee.getInterviews();
         for (Interview interview : interviews) {
             insertInterviewToBatch(interview, employeeID);
@@ -151,7 +152,7 @@ public class DbFacade {
         Integer amuNr = education.getAmuNr();
         Integer priority = educationWish.getPriority();
 
-        database.addStoredProcedureToBatch("sp_InsertEducationWish", educationWishID, amuNr, interViewID, priority);
+        database.addStoredProcedureToBatch(Sp.PLACE_EDUCATION_WISH, educationWishID, amuNr, interViewID, priority);
     }
 
     /**
@@ -178,7 +179,7 @@ public class DbFacade {
         Integer amuNr = education.getAmuNr();
         Date finishedDate = finishedEducation.getDateFinished();
 
-        database.addStoredProcedureToBatch("sp_InsertFinishedEducation", finishedEducationID, amuNr, interViewID, finishedDate);
+        database.addStoredProcedureToBatch(Sp.PLACE_FINISHED_EDUCATION, finishedEducationID, amuNr, interViewID, finishedDate);
     }
 
     /**
@@ -202,7 +203,7 @@ public class DbFacade {
         Integer employeeID = employee.getEmployeeId();
 
         // First we need to write interviews to db, w need to purge interview record by employee Consultation
-        database.addStoredProcedureToBatch("sp_DeleteInterviewByEmployeeID", employeeID);
+        database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, employeeID);
         ArrayList<Interview> interviews = employee.getInterviews();
         for (Interview interview : interviews) {
             insertInterviewToBatch(interview, employeeID);
@@ -215,7 +216,7 @@ public class DbFacade {
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        database.addStoredProcedureToBatch("sp_InsertEmployee", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
+        database.addStoredProcedureToBatch(Sp.PLACE_EMPLOYEE, employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
     }
 
     /**
@@ -242,7 +243,7 @@ public class DbFacade {
         Integer qualityAwareness = interview.getQualityAwareness();
         Integer cooperation = interview.getCooperation();
 
-        database.addStoredProcedureToBatch("sp_InsertInterview",
+        database.addStoredProcedureToBatch(Sp.PLACE_INTERVIEW,
                 interViewID,
                 interViewName,
                 employeeID, productUnderstanding,
@@ -252,19 +253,18 @@ public class DbFacade {
                 cooperation);
 
         //We write the finished education, we have to delete all FinishedEducation with this interView beforehand else we create unwanted relics
-        database.addStoredProcedureToBatch("sp_DeleteFinishedEducationByInterviewID", interViewID); // FIXME: 23/05/2019 update/delete cascade
+        database.addStoredProcedureToBatch(Sp.DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID, interViewID); // FIXME: 23/05/2019 update/delete cascade
         ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
         for (FinishedEducation finishedEducation : finishedEducations) {
             insertFinishedEducationToBatch(finishedEducation, interViewID);
         }
 
         //We write the education wishes, we have to delete all EducationWishes with this interviewID beforehand else we create unwanted relics
-        database.addStoredProcedureToBatch("sp_DeleteEducationWishByID", interViewID); //FIXME: 23/05/2019 update/delete cascade
+        database.addStoredProcedureToBatch(Sp.DELETE_EDUCATION_WISH_BY_INTERVIEW_ID, interViewID); //FIXME: 23/05/2019 update/delete cascade
         ArrayList<EducationWish> educationWishes = interview.getEducationWishes();
         for (EducationWish educationWish : educationWishes) {
             insertEducationWishToBatch(educationWish, interViewID);
         }
-
     }
 
     /**
@@ -285,17 +285,17 @@ public class DbFacade {
         Integer companyID = company.getCompanyID();
         String cvrNr = company.getCvrNr();
         String companyName = company.getCompanyName();
-        database.addStoredProcedureToBatch("sp_InsertCompany", companyID, cvrNr, companyName);
+        database.addStoredProcedureToBatch(Sp.PLACE_COMPANY, companyID, cvrNr, companyName);
 
         // 2 write education list relationship. We delete references from the table and then reinsert
         ArrayList<Education> educations = company.getEducationList(); 
-        database.addStoredProcedureToBatch("sp_DeleteCompany_Education_BridgeByCompanyID", companyID); // FIXME: 23/05/2019 Cascade on delete or update for FK fld_companyID
+        database.addStoredProcedureToBatch(Sp.DELETE_COMPANY_EDUCATION_BRIDGE_BY_COMPANY_ID, companyID); // FIXME: 23/05/2019 Cascade on delete or update for FK fld_companyID
         for (Education education : educations) { // Here we want to execute education
             insertEducationFromCompanyToBatch(education, companyID); // FIXME: 23/05/2019 Definitly needs testing
         }
 
         // 3 Write consultations
-        database.addStoredProcedureToBatch("sp_DeleteConsultationByCompanyID", companyID); // FIXME: 23/05/2019 cascade on delete and update for FK_CompanyID
+        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID, companyID); // FIXME: 23/05/2019 cascade on delete and update for FK_CompanyID
         ArrayList<Consultation> consultations = company.getConsultations();
         for (Consultation consultation : consultations) {
             insertConsultationToBatch(consultation, companyID);
@@ -322,11 +322,11 @@ public class DbFacade {
         Date startDate = consultation.getStartDate();
         Date endDate = consultation.getEndDate();
 
-        database.addStoredProcedureToBatch("sp_InsertConsultation", consultationID, consultationName, startDate, endDate, companyID);
+        database.addStoredProcedureToBatch(Sp.PLACE_CONSULTATION, consultationID, consultationName, startDate, endDate, companyID);
 
         // 2 Write Employee list relationship to db
         //First we delete all employees where we have a relation to this consultation
-        database.addStoredProcedureToBatch("sp_DeleteEmployeeByConsultationID", consultationID); // FIXME: 23/05/2019 Cascade delete/update fk_Consultation ID
+        database.addStoredProcedureToBatch(Sp.DELETE_EMPLOYEE_BY_CONSULTATION_ID, consultationID); // FIXME: 23/05/2019 Cascade delete/update fk_Consultation ID
         //Then we insert employee and the employee relationship
         ArrayList<Employee> employees = consultation.getEmployees();
         for (Employee employee : employees) {
@@ -351,7 +351,7 @@ public class DbFacade {
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee", employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
+        return DB.getInstance().executeStoredProcedureNoRS(Sp.PLACE_EMPLOYEE, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
     }
 
     /*
@@ -373,7 +373,7 @@ public class DbFacade {
         HashMap<Integer, Provider> returnMap = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindProvider", providerID, ProviderName);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, providerID, ProviderName);
 
         while (rs.next()) {
             Provider tempProvider = new Provider(rs);
@@ -399,7 +399,7 @@ public class DbFacade {
         HashMap<Integer, Provider> returnMap = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindProvider", null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, null, null);
 
         while (rs.next()) {
             Provider tempProvider = new Provider(rs);
