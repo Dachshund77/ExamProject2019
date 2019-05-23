@@ -79,7 +79,7 @@ public class DbFacade {
     }
 
     @SuppressWarnings("Duplicates")
-    private static void insertEducationFromCompanyToBatch(Education education, int companyID) throws SQLException{
+    private static void insertEducationFromCompanyToBatch(Education education, int companyID) throws SQLException {
         DB database = DB.getInstance();
 
         //First we Insert the provider (has 1 to m cardinality)
@@ -106,7 +106,7 @@ public class DbFacade {
     }
 
     @SuppressWarnings("Duplicates")
-    private static void insertEmployeeFromConsultationToBatch(Employee employee, int consultationID) throws SQLException{
+    private static void insertEmployeeFromConsultationToBatch(Employee employee, int consultationID) throws SQLException {
         DB database = DB.getInstance();
         Integer employeeID = employee.getEmployeeId();
 
@@ -117,13 +117,13 @@ public class DbFacade {
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        database.addStoredProcedureToBatch("sp_InsertEmployeeAsConsultation", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr,consultationID);
+        database.addStoredProcedureToBatch("sp_InsertEmployeeAsConsultation", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr, consultationID);
 
         // First we need to write interviews to db, w need to purge interview record by employee Consultation
         database.addStoredProcedureToBatch("sp_DeleteInterviewByEmployeeID", employeeID);
         ArrayList<Interview> interviews = employee.getInterviews();
         for (Interview interview : interviews) {
-            insertInterviewToBatch(interview,employeeID);
+            insertInterviewToBatch(interview, employeeID);
         }
     }
 
@@ -201,7 +201,7 @@ public class DbFacade {
         database.addStoredProcedureToBatch("sp_DeleteInterviewByEmployeeID", employeeID);
         ArrayList<Interview> interviews = employee.getInterviews();
         for (Interview interview : interviews) {
-            insertInterviewToBatch(interview,employeeID);
+            insertInterviewToBatch(interview, employeeID);
         }
 
         //Unpacking the object
@@ -288,7 +288,7 @@ public class DbFacade {
         ArrayList<Education> educations = company.getEducationList();
         database.addStoredProcedureToBatch("sp_DeleteCompany_Education_BridgeByCompanyID", companyID);
         for (Education education : educations) { // Here we want to execute education
-            insertEducationFromCompanyToBatch(education,companyID); // FIXME: 23/05/2019 Definitly needs testing
+            insertEducationFromCompanyToBatch(education, companyID); // FIXME: 23/05/2019 Definitly needs testing
         }
 
         // 3 Write consultations
@@ -327,8 +327,7 @@ public class DbFacade {
         //Then we insert employee and the employee relationship
         ArrayList<Employee> employees = consultation.getEmployees();
         for (Employee employee : employees) {
-            insertEmployeeFromConsultationToBatch(employee,consultationID); // here we need to insert emp as Consultation
-            //database.addStoredProcedureToBatch("sp_InsertConsultation_Employee_Bridge", consultationID, employee.getEmployeeId()); // FIXME: 23/05/2019 But what if the Employee was just created? POSSIBLE FIXis to ue scope identity
+            insertEmployeeFromConsultationToBatch(employee, consultationID); // here we need to insert emp as Consultation
         }
 
     }
