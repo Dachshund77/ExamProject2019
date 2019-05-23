@@ -35,4 +35,35 @@ public class Company {
         this.companyName = new SimpleStringProperty("fld_CompanyName");
     }
 
+    public int getCompanyID() {
+        return companyID.get();
+    }
+
+    public SimpleIntegerProperty companyIDProperty() {
+        return companyID;
+    }
+
+    public String getCvrNr() {
+        return cvrNr.get();
+    }
+
+    public SimpleStringProperty cvrNrProperty() {
+        return cvrNr;
+    }
+
+    public String getCompanyName() {
+        return companyName.get();
+    }
+
+    public SimpleStringProperty companyNameProperty() {
+        return companyName;
+    }
+
+    public ArrayList<Consultation> getConsultations() {
+        return consultations;
+    }
+
+    public ArrayList<Education> getEducationList() {
+        return educationList;
+    }
 }

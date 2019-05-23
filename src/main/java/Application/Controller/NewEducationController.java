@@ -35,7 +35,7 @@ public class NewEducationController {
     @FXML
     public TableView<Date> datesTable;
     @FXML
-    public TableColumn<Date,Date> datesColumn;
+    public TableColumn<Date,Date> datesColumn; //2 skal være bindable property
 
 
     private Provider selectedProvider = null;

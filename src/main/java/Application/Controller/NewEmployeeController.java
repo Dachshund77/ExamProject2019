@@ -63,7 +63,7 @@ public class NewEmployeeController extends AbstractController {
                 DB database = DB.getInstance();
                 try {
                     database.connect();
-                    DbFacade.insertEmployee(new Employee(null, employeeFirstName, employeeLastName, cprNr, eMail, phoneNr));
+                    DbFacade.insertEmployee(new Employee(null, employeeFirstName, employeeLastName, cprNr, eMail, phoneNr,null));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } finally {

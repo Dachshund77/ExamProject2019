@@ -14,7 +14,7 @@ public class ScriptRunner {
         scriptRunner.runScripts();
     }
 
-    private void runScripts(){
+    private void runScripts() {
         ArrayList<File> executionOrder = new ArrayList<>();
 
         // Create DB
@@ -26,14 +26,12 @@ public class ScriptRunner {
         executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Date.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Company.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Company_Education_Bridge.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_EducationWish.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_FinishedEducation.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Consultation.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Employee.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Consultation_Employee_Bridge.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Interview.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_FinishedEducation_Interview_Bridge.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_EducationWish_Interview_Bridge.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_EducationWish.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_FinishedEducation.sql").getFile()));
 
         //It should not matter what order stored procedure get added to the db
 
@@ -48,7 +46,7 @@ public class ScriptRunner {
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 DB.getInstance().disconnect();
             } catch (SQLException e) {
@@ -57,14 +55,14 @@ public class ScriptRunner {
         }
     }
 
-    private ArrayList<File> getFilesFromResourceDir(File folder){
+    private ArrayList<File> getFilesFromResourceDir(File folder) {
         ArrayList<File> returnArrayList = new ArrayList<>();
 
         File[] listOfFiles = folder.listFiles();
-        for (File file: Objects.requireNonNull(listOfFiles)){
-            if (file.isDirectory()){
+        for (File file : Objects.requireNonNull(listOfFiles)) {
+            if (file.isDirectory()) {
                 returnArrayList.addAll(getFilesFromResourceDir(file));
-            } else if (file.isFile()){
+            } else if (file.isFile()) {
                 returnArrayList.add(file);
             } else {
                 System.out.println("Unexpected element at");
