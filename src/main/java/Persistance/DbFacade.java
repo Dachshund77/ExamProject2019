@@ -1,7 +1,11 @@
 package Persistance;
 
-import Domain.*;
+import Domain.Company;
+import Domain.Education;
+import Domain.Employee;
+import Domain.Provider;
 import Foundation.DB;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -133,20 +137,4 @@ public class DbFacade {
         }
         return returnMap;
     }
-
-    public static HashMap<Integer, Company> findAllCompanies() throws SQLException{
-
-        HashMap<Integer, Company> returnCompNames = new HashMap<>();
-
-        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindCompanyNames");
-
-        while (rs.next()){
-            Company tempCompNames = new Company(rs);
-            returnCompNames.put(tempCompNames.getCompanyID(), tempCompNames);
-        }
-        return returnCompNames;
-
-
-    }
-
 }

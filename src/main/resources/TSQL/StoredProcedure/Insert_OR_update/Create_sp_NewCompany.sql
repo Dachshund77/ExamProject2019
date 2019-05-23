@@ -1,5 +1,4 @@
-USE db_SmartAcademy
-CREATE PROCEDURE sp_InsertCompany(@NewCompID INT, @CvrNr INT, @CompanyName VARCHAR(50))
+CREATE PROCEDURE sp_InsertCompany(@NewCompID INT, @CvrNr VARCHAR(8), @CompanyName VARCHAR(50))
 AS
 BEGIN
     IF EXISTS(SELECT * FROM tbl_Company WHERE fld_CompanyID = @NewCompID)

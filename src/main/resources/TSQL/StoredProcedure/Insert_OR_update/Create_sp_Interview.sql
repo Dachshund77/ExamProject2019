@@ -1,11 +1,11 @@
-CREATE PROCEDURE sp_InsertInterview(@NewInterviewID INT, @EmpFullName INT, @EmpID VARCHAR(30), @ProdRating INT,
+CREATE PROCEDURE sp_InsertInterview(@NewInterviewID INT, @interviewName VARCHAR(30), @EmpID INT, @ProdRating INT,
                                     @ProbRating INT, @FlexRating INT, @QualRating INT, @CoopRating INT)
 AS
 BEGIN
     IF EXISTS(SELECT * FROM tbl_Interview WHERE fld_InterviewID = @NewInterViewID)
         BEGIN
             UPDATE tbl_Interview
-            SET fld_InterviewName= @EmpFullName,
+            SET fld_InterviewName= @interviewName,
                 fld_Employee_ID = @EmpID,
                 fld_ProductUnderstanding = @ProdRating,
                 fld_ProblemUnderstanding = @ProbRating,
@@ -17,6 +17,6 @@ BEGIN
     ELSE
         BEGIN
             INSERT INTO tbl_Interview
-            VALUES (@EmpFullName, @EmpID, @ProdRating, @ProbRating, @FlexRating, @QualRating, @CoopRating)
+            VALUES (@EmpID, @interviewName, @ProdRating, @ProbRating, @FlexRating, @QualRating, @CoopRating)
         end
 end;

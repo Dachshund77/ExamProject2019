@@ -26,4 +26,24 @@ public class EducationWish {
         this.educationWishID = new SimpleIntegerProperty(rs.getInt("fld_EducationWishID"));
         this.priority = new SimpleIntegerProperty(rs.getInt("fld_WishPriority"));
     }
+
+    public int getEducationWishID() {
+        return educationWishID.get();
+    }
+
+    public SimpleIntegerProperty educationWishIDProperty() {
+        return educationWishID;
+    }
+
+    public Education getEducation() {
+        return education;
+    }
+
+    public int getPriority() {
+        return priority.get();
+    }
+
+    public SimpleIntegerProperty priorityProperty() {
+        return priority;
+    }
 }

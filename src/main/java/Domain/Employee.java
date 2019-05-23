@@ -15,8 +15,9 @@ public class Employee {
     private SimpleStringProperty cprNr;
     private SimpleStringProperty eMail;
     private SimpleStringProperty phoneNr;
+    private ArrayList<Interview> interviews;
 
-    public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, String phoneNr) {
+    public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, String phoneNr, ArrayList<Interview> interviews) {
         if(employeeID != null)
         this.employeeID = new SimpleIntegerProperty(employeeID);
         this.employeeFirstName = new SimpleStringProperty(employeeFirstName);
@@ -24,6 +25,7 @@ public class Employee {
         this.cprNr = new SimpleStringProperty(cprNr);
         this.eMail = new SimpleStringProperty(eMail);
         this.phoneNr = new SimpleStringProperty(phoneNr);
+        this.interviews = interviews;
     }
 
     /**
@@ -49,23 +51,55 @@ public class Employee {
         return employeeID.get();
     }
 
+    public int getEmployeeID() {
+        return employeeID.get();
+    }
+
+    public SimpleIntegerProperty employeeIDProperty() {
+        return employeeID;
+    }
+
     public String getEmployeeFirstName() {
         return employeeFirstName.get();
+    }
+
+    public SimpleStringProperty employeeFirstNameProperty() {
+        return employeeFirstName;
     }
 
     public String getEmployeeLastName() {
         return employeeLastName.get();
     }
 
+    public SimpleStringProperty employeeLastNameProperty() {
+        return employeeLastName;
+    }
+
     public String getCprNr() {
         return cprNr.get();
     }
 
-    public String getMail() {
+    public SimpleStringProperty cprNrProperty() {
+        return cprNr;
+    }
+
+    public String geteMail() {
         return eMail.get();
+    }
+
+    public SimpleStringProperty eMailProperty() {
+        return eMail;
     }
 
     public String getPhoneNr() {
         return phoneNr.get();
+    }
+
+    public SimpleStringProperty phoneNrProperty() {
+        return phoneNr;
+    }
+
+    public ArrayList<Interview> getInterviews() {
+        return interviews;
     }
 }
