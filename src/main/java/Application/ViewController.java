@@ -18,7 +18,7 @@ public enum ViewController {
     NEW_PROVIDER_CONTROLLER("/FXML/NewProviderView.fxml"),
     NEW_EMPLOYEE_CONTROLLER("/FXML/NewEmployeeView.fxml"),
     NEW_EDUCATION_CONTROLLER("/FXML/NewEducationView.fxml"),
-    NEW_INTERVIEW_CONTROLLER("/FXML/NewInterviewView.fxml"),
+    NEW_INTERVIEW_CONTROLLER("/FXML/NewInterview.fxml"),
     NEW_COONSULTATION_CONTROLLER("/FXML/NewConsultView.fxml"),
     NEW_COMPANY_CONTROLLER("/FXML/NewCompController.fxml"),
     CHANGE_EMP_CONTROLLER("/FXML/ChangeEmpView.fxml"),

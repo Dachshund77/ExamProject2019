@@ -5,10 +5,7 @@ import Foundation.DB;
 import Persistance.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +15,9 @@ import java.util.HashSet;
 
 
 public class ChangeEmpController {
+
+    @FXML
+    public MenuBar taskBar;
 
     @FXML
     TextField firstNameField;
