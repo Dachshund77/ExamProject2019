@@ -39,11 +39,17 @@ public class ChangeEmpController {
     Button confirmBtn;
     @FXML
     Button deleteBtn;
+    @FXML
+    ChoiceBox empDrop;
 
     private Company companyName = null;
 
+    /**
+     * Calling the database and asking for all company names
+     * with the populateCompany() method
+     */
     public void initialize() {
-        //Populate providers
+        //Populate company choice box
         DB database = DB.getInstance();
         try {
             database.connect();
@@ -60,23 +66,31 @@ public class ChangeEmpController {
         }
     }
 
+    //stuck trying to fill the first choice box with company names
+    //TODO tried a lot of things but, console says that fld_CompanyID is INVALID -MC
     private void populateCompany() throws SQLException {
-        HashMap<Integer, Company> companyNames = DbFacade.findAllCompanies();
+        HashMap<Integer, Company> companyNames = DbFacade.FindAllCompanies();
         Collection<Company> names = companyNames.values();
         ArrayList<Company> namesArraylist = new ArrayList<>(names);
 
-/*
-        for (Company companies : namesArraylist) {
-            ChoiceBox compDrop = new ChoiceBox(companies.getCompanyID());
-            compDrop.setOnAction(event -> {
-
-            });
+        for (Company companies: namesArraylist) {
+            compDrop.getItems().addAll(companyNames);
         }
-
-*/
     }
 
 
     public void handleText(ActionEvent actionEvent) {
+
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailField.getText();
+        int phoneNo = Integer.parseInt(phoneNrField.getText());
+        int cprNo = Integer.parseInt(cprNrField.getText());
+
+
+    }
+
+
+    public void handleDiscard(ActionEvent actionEvent) {
     }
 }

@@ -1,58 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SAEmpController">
-   <children>
-      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="600.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="New">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Company" />
-                  <MenuItem mnemonicParsing="false" text="Consultation" />
-                  <MenuItem mnemonicParsing="false" text="Employee" />
-                  <MenuItem mnemonicParsing="false" text="Interview" />
-                  <MenuItem mnemonicParsing="false" text="Education" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Change">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Company" />
-                  <MenuItem mnemonicParsing="false" text="Consultation" />
-                  <MenuItem mnemonicParsing="false" text="Employee" />
-                  <MenuItem mnemonicParsing="false" text="Interview" />
-                  <MenuItem mnemonicParsing="false" text="Education" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Delete">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Company" />
-                  <MenuItem mnemonicParsing="false" text="Consultation" />
-                  <MenuItem mnemonicParsing="false" text="Employee" />
-                  <MenuItem mnemonicParsing="false" text="Interview" />
-                  <MenuItem mnemonicParsing="false" text="Education" />
-            </items>
-          </Menu>
-            <Menu mnemonicParsing="false" text="Find">
-              <items>
-                  <MenuItem mnemonicParsing="false" text="Company" />
-                <MenuItem mnemonicParsing="false" text="Consultation" />
-                  <MenuItem mnemonicParsing="false" text="Employee" />
-                  <MenuItem mnemonicParsing="false" text="Interview" />
-                  <MenuItem mnemonicParsing="false" text="Education" />
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Options">
-              <items>
-                <MenuItem mnemonicParsing="false" text="Create company account" />
-                  <MenuItem mnemonicParsing="false" text="Change password" />
-                  <MenuItem mnemonicParsing="false" text="Log out" />
-              </items>
-            </Menu>
-        </menus>
-      </MenuBar>
-   </children>
-</AnchorPane>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+       <fx:include source="TaskBarView.fxml"/>
+   </top>
+    <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 
+import javax.swing.text.View;
+
 /**
  * TaskBar Controller that can be used as a subController across the whole application.
  */
@@ -23,6 +25,7 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleNewInterview(ActionEvent event) {
+        ViewController.NEW_INTERVIEW_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     /**
@@ -34,9 +37,11 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleNewConsultation(ActionEvent event) {
+        ViewController.NEW_COONSULTATION_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleNewCompany(ActionEvent event) {
+        ViewController.NEW_COMPANY_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     /**
@@ -54,6 +59,7 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleChangeEmployee(ActionEvent event) {
+        ViewController.CHANGE_EMP_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleChangeConsultation(ActionEvent event) {
@@ -72,9 +78,11 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleDeleteConsultation(ActionEvent event) {
+        ViewController.DEL_COUN_VIEW.reLoad(taskBar.getScene());
     }
 
     public void handleDeleteCompany(ActionEvent event) {
+        ViewController.DEL_COMP_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleFindEducation(ActionEvent event) {

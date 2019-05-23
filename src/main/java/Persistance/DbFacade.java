@@ -80,7 +80,7 @@ public class DbFacade {
         String employeeFirstName = employee.getEmployeeFirstName();
         String employeeLastName = employee.getEmployeeLastName();
         String CPRnr = employee.getCprNr();
-        String eMail = employee.getMail();
+        String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
         return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee",employeeFirstName,employeeLastName,CPRnr,eMail,phoneNr);
@@ -136,5 +136,21 @@ public class DbFacade {
             returnMap.put(tempProvider.getProviderID(),tempProvider);
         }
         return returnMap;
+    }
+
+    public static HashMap<Integer, Company> FindAllCompanies() throws SQLException{
+
+        //init needed values
+        HashMap<Integer, Company> returnCompNames = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindCompanyNames");
+
+        while (rs.next()){
+            Company tempCompanyNames = new Company(rs);
+            returnCompNames.put(tempCompanyNames.getCompanyID(),tempCompanyNames);
+        }
+        return returnCompNames;
+
     }
 }
