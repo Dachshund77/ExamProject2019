@@ -96,7 +96,7 @@ public class DbFacade {
         database.addStoredProcedureToBatch("sp_InsertEducationAsCompany", amuNr, providerID, educationName, description, noOfDays, companyID);
 
         //Then we write dates to database
-        database.addStoredProcedureToBatch("sp_DeleteDateByAmuNr", amuNr);
+        database.addStoredProcedureToBatch("sp_DeleteDateByAmuNr", amuNr); // FIXME: 23/05/2019 Cascade on delete/Update
 
         // Then reInsert
         ArrayList<Date> dates = education.getDates();
@@ -120,7 +120,7 @@ public class DbFacade {
         database.addStoredProcedureToBatch("sp_InsertEmployeeAsConsultation", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr, consultationID);
 
         // First we need to write interviews to db, w need to purge interview record by employee Consultation
-        database.addStoredProcedureToBatch("sp_DeleteInterviewByEmployeeID", employeeID);
+        database.addStoredProcedureToBatch("sp_DeleteInterviewByEmployeeID", employeeID); // FIXME: 23/05/2019 casscade delete update
         ArrayList<Interview> interviews = employee.getInterviews();
         for (Interview interview : interviews) {
             insertInterviewToBatch(interview, employeeID);
@@ -184,6 +184,8 @@ public class DbFacade {
     /**
      * Method that will write a Employee object to the database.
      * Will also make sure that its children objects are written correctly to the database.
+     * Note that his method will not create a relationship between an employee and consultation.
+     * Use {@link #insertConsultationToBatch(Consultation, int)} for that.
      * <br>
      * <br>
      * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
@@ -191,8 +193,10 @@ public class DbFacade {
      *
      * @param employee The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @deprecated Since 23/05/19. And employee without an consultation does not make any sense in the database. Use {@link #insertConsultationToBatch(Consultation, int)} instead.
      */
     @SuppressWarnings("Duplicates")
+    @Deprecated
     public static void insertEmployeeToBatch(Employee employee) throws SQLException {
         DB database = DB.getInstance();
         Integer employeeID = employee.getEmployeeId();
@@ -232,7 +236,6 @@ public class DbFacade {
         //We write this interview
         Integer interViewID = interview.getInterviewID();
         String interViewName = interview.getInterviewName();
-        //Integer employeeID = interview.getEmployee().getEmployeeId();
         Integer productUnderstanding = interview.getProductUnderstanding();
         Integer problemUnderstanding = interview.getProblemUnderstanding();
         Integer flexibility = interview.getFlexibility();
@@ -249,14 +252,14 @@ public class DbFacade {
                 cooperation);
 
         //We write the finished education, we have to delete all FinishedEducation with this interView beforehand else we create unwanted relics
-        database.addStoredProcedureToBatch("sp_DeleteFinishedEducationByInterviewID", interViewID);
+        database.addStoredProcedureToBatch("sp_DeleteFinishedEducationByInterviewID", interViewID); // FIXME: 23/05/2019 update/delete cascade
         ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
         for (FinishedEducation finishedEducation : finishedEducations) {
             insertFinishedEducationToBatch(finishedEducation, interViewID);
         }
 
         //We write the education wishes, we have to delete all EducationWishes with this interviewID beforehand else we create unwanted relics
-        database.addStoredProcedureToBatch("sp_DeleteEducationWishByID", interViewID);
+        database.addStoredProcedureToBatch("sp_DeleteEducationWishByID", interViewID); //FIXME: 23/05/2019 update/delete cascade
         ArrayList<EducationWish> educationWishes = interview.getEducationWishes();
         for (EducationWish educationWish : educationWishes) {
             insertEducationWishToBatch(educationWish, interViewID);
@@ -275,7 +278,7 @@ public class DbFacade {
      * @param company The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    private static void insertCompanyToBatch(Company company) throws SQLException {
+    public static void insertCompanyToBatch(Company company) throws SQLException {
         DB database = DB.getInstance();
 
         // 1 write this object to db
@@ -285,14 +288,14 @@ public class DbFacade {
         database.addStoredProcedureToBatch("sp_InsertCompany", companyID, cvrNr, companyName);
 
         // 2 write education list relationship. We delete references from the table and then reinsert
-        ArrayList<Education> educations = company.getEducationList();
-        database.addStoredProcedureToBatch("sp_DeleteCompany_Education_BridgeByCompanyID", companyID);
+        ArrayList<Education> educations = company.getEducationList(); 
+        database.addStoredProcedureToBatch("sp_DeleteCompany_Education_BridgeByCompanyID", companyID); // FIXME: 23/05/2019 Cascade on delete or update for FK fld_companyID
         for (Education education : educations) { // Here we want to execute education
             insertEducationFromCompanyToBatch(education, companyID); // FIXME: 23/05/2019 Definitly needs testing
         }
 
         // 3 Write consultations
-        database.addStoredProcedureToBatch("sp_DeleteConsultationByCompanyID", companyID);
+        database.addStoredProcedureToBatch("sp_DeleteConsultationByCompanyID", companyID); // FIXME: 23/05/2019 cascade on delete and update for FK_CompanyID
         ArrayList<Consultation> consultations = company.getConsultations();
         for (Consultation consultation : consultations) {
             insertConsultationToBatch(consultation, companyID);
@@ -323,7 +326,7 @@ public class DbFacade {
 
         // 2 Write Employee list relationship to db
         //First we delete all employees where we have a relation to this consultation
-        database.addStoredProcedureToBatch("sp_DeleteEmployeeByConsultationID", consultationID);
+        database.addStoredProcedureToBatch("sp_DeleteEmployeeByConsultationID", consultationID); // FIXME: 23/05/2019 Cascade delete/update fk_Consultation ID
         //Then we insert employee and the employee relationship
         ArrayList<Employee> employees = consultation.getEmployees();
         for (Employee employee : employees) {
@@ -337,6 +340,7 @@ public class DbFacade {
      *
      * @param employee The container of values, that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @deprecated use {@link #insertEmployeeToBatch(Employee)} or {@link #insertConsultationToBatch(Consultation, int)}.
      */
     @Deprecated
     public static boolean insertEmployee(Employee employee) throws SQLException {
@@ -344,11 +348,10 @@ public class DbFacade {
         String employeeFirstName = employee.getEmployeeFirstName();
         String employeeLastName = employee.getEmployeeLastName();
         String CPRnr = employee.getCprNr();
-        //String eMail = employee.getMail();
+        String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        //return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee", employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
-        return true;
+        return DB.getInstance().executeStoredProcedureNoRS("sp_InsertEmployee", employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
     }
 
     /*
