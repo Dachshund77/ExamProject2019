@@ -84,7 +84,7 @@ public class DB {
      */
     @SuppressWarnings("Duplicates")
     public void addStoredProcedureToBatch(String sp, Object... param) throws SQLException{
-        conn.setAutoCommit(false);
+        conn.setAutoCommit(false); //TODO can we rollback if exception
         // Preparing metaData
         Map<Integer,String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement

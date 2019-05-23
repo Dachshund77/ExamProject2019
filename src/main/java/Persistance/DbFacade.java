@@ -110,13 +110,6 @@ public class DbFacade {
         DB database = DB.getInstance();
         Integer employeeID = employee.getEmployeeId();
 
-        // First we need to write interviews to db, w need to purge interview record by employee Consultation
-        database.addStoredProcedureToBatch("sp_DeleteInterviewByEmployeeID", employeeID);
-        ArrayList<Interview> interviews = employee.getInterviews();
-        for (Interview interview : interviews) {
-            insertInterviewToBatch(interview,employeeID);
-        }
-
         //Unpacking the object
         String employeeFirstName = employee.getEmployeeFirstName();
         String employeeLastName = employee.getEmployeeLastName();
@@ -126,6 +119,12 @@ public class DbFacade {
 
         database.addStoredProcedureToBatch("sp_InsertEmployeeAsConsultation", employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr,consultationID);
 
+        // First we need to write interviews to db, w need to purge interview record by employee Consultation
+        database.addStoredProcedureToBatch("sp_DeleteInterviewByEmployeeID", employeeID);
+        ArrayList<Interview> interviews = employee.getInterviews();
+        for (Interview interview : interviews) {
+            insertInterviewToBatch(interview,employeeID);
+        }
     }
 
     /**
@@ -229,8 +228,6 @@ public class DbFacade {
     public static void insertInterviewToBatch(Interview interview, int employeeID) throws SQLException {
         DB database = DB.getInstance();
 
-        //We write the employee
-        //insertEmployeeToBatch(employeeID);
 
         //We write this interview
         Integer interViewID = interview.getInterviewID();
@@ -330,8 +327,8 @@ public class DbFacade {
         //Then we insert employee and the employee relationship
         ArrayList<Employee> employees = consultation.getEmployees();
         for (Employee employee : employees) {
-            insertEmployeeToBatch(employee); // here we need to insert emp as Consultation
-            database.addStoredProcedureToBatch("sp_InsertConsultation_Employee_Bridge", consultationID, employee.getEmployeeId()); // FIXME: 23/05/2019 But what if the Employee was just created? POSSIBLE FIXis to ue scope identity
+            insertEmployeeFromConsultationToBatch(employee,consultationID); // here we need to insert emp as Consultation
+            //database.addStoredProcedureToBatch("sp_InsertConsultation_Employee_Bridge", consultationID, employee.getEmployeeId()); // FIXME: 23/05/2019 But what if the Employee was just created? POSSIBLE FIXis to ue scope identity
         }
 
     }

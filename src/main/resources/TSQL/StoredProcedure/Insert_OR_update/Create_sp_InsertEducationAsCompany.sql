@@ -7,6 +7,7 @@ CREATE PROCEDURE sp_InsertEducationAsCompany(@AmuNr INT,
                                     @CompanyID INT)
 AS
 BEGIN
+    DECLARE @insertedAmuNr INT
     IF EXISTS(SELECT * FROM tbl_Education WHERE fld_AmuNR = @AmuNr)
         BEGIN
             UPDATE tbl_Education
@@ -14,13 +15,14 @@ BEGIN
                 fld_EducationName = @NewEducationName,
                 fld_Description   = @newDescription,
                 fld_NoOfDays      = @newNoOfDays
-            WHERE fld_AmuNR = @AmuNr;
-            EXECUTE sp_insertCompany_Education_Bridge @CompanyID,@AmuNr;
+            WHERE fld_AmuNR = @AmuNr
+            Set @insertedAmuNr = SCOPE_IDENTITY()
+            EXECUTE sp_insertCompany_Education_Bridge @CompanyID,@insertedAmuNr
         END
     ELSE
         BEGIN
-            INSERT INTO tbl_Education VALUES (@NewProviderID,@NewEducationName, @newDescription,@newNoOfDays);
-            Set @AmuNr = SCOPE_IDENTITY();
-            EXECUTE sp_insertCompany_Education_Bridge @CompanyID,@AmuNr;
+            INSERT INTO tbl_Education VALUES (@NewProviderID,@NewEducationName, @newDescription,@newNoOfDays)
+            Set @insertedAmuNr = SCOPE_IDENTITY()
+            EXECUTE sp_insertCompany_Education_Bridge @CompanyID,@insertedAmuNr
         END
 END;
