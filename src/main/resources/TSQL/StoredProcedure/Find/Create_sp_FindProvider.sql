@@ -8,3 +8,4 @@ BEGIN
     WHERE (@ProviderID IS NULL OR fld_ProviderID = @ProviderID)
       AND (@ProviderName IS NULL OR fld_ProviderName = @ProviderName)
 END;
+

@@ -1,17 +1,14 @@
 package Persistance;
 
-import Domain.Company;
-import Domain.Education;
-import Domain.Employee;
-import Domain.Provider;
+import Domain.*;
 import Foundation.DB;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Facade class that helps convert SQL data to objects.
@@ -137,4 +134,20 @@ public class DbFacade {
         }
         return returnMap;
     }
+
+    public static HashSet<Company> findAllCompanies() throws SQLException{
+
+        HashSet<Company> returnCompNames = new HashSet<>();
+
+        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindCompanyNames");
+
+        while (rs.next()){
+            Company tempCompNames = new Company(rs);
+            returnCompNames.add(tempCompNames);
+        }
+        return returnCompNames;
+
+
+    }
+
 }

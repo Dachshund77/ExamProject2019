@@ -19,7 +19,8 @@ public enum ViewController {
     NEW_EMPLOYEE_CONTROLLER("/FXML/NewEmployeeView.fxml"),
     NEW_EDUCATION_CONTROLLER("/FXML/NewEducationController.fxml"),
     NEW_INTERVIEW_CONTROLLER("/FXML/NewInterviewController.fxml"),
-    NEW_COMPANY_CONTROLLER("/FXML/NewCompController.fxml");
+    NEW_COMPANY_CONTROLLER("/FXML/NewCompController.fxml"),
+    CHANGE_EMP_CONTROLLER("/FXML/ChangeEmpView.fxml");
 
 
     private final String URL;

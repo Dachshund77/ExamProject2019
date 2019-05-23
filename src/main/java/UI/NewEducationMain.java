@@ -1,17 +1,18 @@
 package UI;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import Application.ViewController;
 
-public class NewEmpMain extends Application {
+public class NewEducationMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = ViewController.NEW_EMPLOYEE_CONTROLLER.loadParent();
-        primaryStage.setTitle("New employer");
+        Parent root = ViewController.NEW_EDUCATION_CONTROLLER.loadParent();
+        primaryStage.setTitle("New Education");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         primaryStage.setResizable(true);
