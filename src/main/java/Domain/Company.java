@@ -35,4 +35,10 @@ public class Company {
         this.companyName = new SimpleStringProperty("fld_CompanyName");
     }
 
+    public Integer getCompanyID() {
+        if (companyID == null)
+            return null;
+
+        return companyID.get();
+    }
 }

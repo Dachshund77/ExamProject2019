@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 
@@ -60,14 +61,19 @@ public class ChangeEmpController {
     }
 
     private void populateCompany() throws SQLException {
-        HashSet<Company> companyNames = DbFacade.findAllCompanies();
-        ArrayList<Company> companyArrayList = new ArrayList<>(companyNames);
+        HashMap<Integer, Company> companyNames = DbFacade.findAllCompanies();
+        Collection<Company> names = companyNames.values();
+        ArrayList<Company> namesArraylist = new ArrayList<>(names);
 
-        for (Company companies : companyArrayList) {
-            compDrop.getItems().addAll(companies);
+/*
+        for (Company companies : namesArraylist) {
+            ChoiceBox compDrop = new ChoiceBox(companies.getCompanyID());
+            compDrop.setOnAction(event -> {
+
+            });
         }
 
-
+*/
     }
 
 
