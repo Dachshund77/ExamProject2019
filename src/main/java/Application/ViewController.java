@@ -20,8 +20,12 @@ public enum ViewController {
     NEW_EDUCATION_CONTROLLER("/FXML/NewEducationView.fxml"),
     NEW_INTERVIEW_CONTROLLER("/FXML/NewInterview.fxml"),
     NEW_COONSULTATION_CONTROLLER("/FXML/NewConsultView.fxml"),
-    NEW_COMPANY_CONTROLLER("/FXML/NewCompController.fxml"),
+    NEW_COMPANY_CONTROLLER("/FXML/NewCompView.fxml"),
     CHANGE_EMP_CONTROLLER("/FXML/ChangeEmpView.fxml"),
+    CHANGE_CONSULTATION_CONTROLLER("/FXML/ChangeConsultation.fxml"),
+    CHANGE_EDUCATION_CONTROLLER("/FXML/ChangeEducation.fxml"),
+    CHANGE_INTERVIEW_CONTROLLER("/FXML/ChangeInterview.fxml"),
+    CHANGE_COMPANY_CONTROLLER("/FXML/ChangeCompany.fxml"),
     DEL_COMP_CONTROLLER("/FXML/DelCompView.FXML"),
     DEL_COUN_VIEW("/FXML/DelCounView.fxml"),
     SA_CUST_VIEW("/FXML/SACustView.fxml");

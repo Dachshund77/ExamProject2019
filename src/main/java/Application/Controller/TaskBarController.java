@@ -53,9 +53,11 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleChangeEducation(ActionEvent event) {
+        ViewController.CHANGE_EDUCATION_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleChangeInterview(ActionEvent event) {
+        ViewController.CHANGE_INTERVIEW_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleChangeEmployee(ActionEvent event) {
@@ -63,9 +65,11 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleChangeConsultation(ActionEvent event) {
+        ViewController.CHANGE_CONSULTATION_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleChangeCompany(ActionEvent event) {
+        ViewController.CHANGE_COMPANY_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleDeleteEducation(ActionEvent event) {
