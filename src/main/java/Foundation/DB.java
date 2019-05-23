@@ -149,15 +149,20 @@ public class DB {
     }
 
     /**
-     * Execute the batch. To add to the Batch call {@link #addStoredProcedureToBatch(String, Object...)}.
+     * Execute the batch. To add to the Batch call {@link #addStoredProcedureToBatch(Sp, Object...)}.
      * Note that the batch files will be execute as first in fir out order.
      *
      * @return True if successful added to database
-     * @throws SQLException Exception when SQL encounter a fatal problem
+     * @throws SQLException Exception when SQL encounter a fatal problem. Will Rollback this transaction.
      */
     public boolean executeBatch() throws SQLException {
         boolean returnBoolean = cstmt.execute();
-        conn.commit();
+        try {
+            conn.commit();
+        }catch (SQLException e){
+            conn.rollback(); //Rollback
+            throw e; //Propagate exception upwards.
+        }
         return returnBoolean;
     }
 
