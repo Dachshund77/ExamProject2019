@@ -18,9 +18,8 @@ public class Interview {
     private SimpleIntegerProperty cooperation;
     private ArrayList<FinishedEducation> finishedEducations;
     private ArrayList<EducationWish> educationWishes;
-    private Employee employee;
 
-    public Interview(Integer interviewID, String interviewName, Integer productUnderstanding, Integer problemUnderstanding, Integer flexibility, Integer qualityAwareness, Integer cooperation, ArrayList<FinishedEducation> finishedEducations, ArrayList<EducationWish> educationWishes, Employee employee) {
+    public Interview(Integer interviewID, String interviewName, Integer productUnderstanding, Integer problemUnderstanding, Integer flexibility, Integer qualityAwareness, Integer cooperation, ArrayList<FinishedEducation> finishedEducations, ArrayList<EducationWish> educationWishes) {
         this.interviewID = new SimpleIntegerProperty(interviewID);
         this.interviewName = new SimpleStringProperty(interviewName);
         this.productUnderstanding = new SimpleIntegerProperty(productUnderstanding);
@@ -30,7 +29,6 @@ public class Interview {
         this.cooperation = new SimpleIntegerProperty(cooperation);
         this.finishedEducations = finishedEducations;
         this.educationWishes = educationWishes;
-        this.employee = employee;
     }
 
     /**
@@ -113,7 +111,4 @@ public class Interview {
         return educationWishes;
     }
 
-    public Employee getEmployee() {
-        return employee;
-    }
 }

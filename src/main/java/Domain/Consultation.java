@@ -14,14 +14,14 @@ public class Consultation {
     private SimpleStringProperty consultationName;
     private Date startDate;
     private Date endDate;
-    private ArrayList<Interview> interviews;
+    private ArrayList<Employee> employees;
 
-    public Consultation(Integer consultationID, String consultationName, Date startDate, Date endDate, ArrayList<Interview> interviews) {
+    public Consultation(Integer consultationID, String consultationName, Date startDate, Date endDate, ArrayList<Employee> employees) {
         this.consultationID = new SimpleIntegerProperty(consultationID);
         this.consultationName = new SimpleStringProperty(consultationName);
         this.startDate = startDate;
         this.endDate = endDate;
-        this.interviews = interviews;
+        this.employees = employees;
     }
 
     /**
@@ -35,5 +35,33 @@ public class Consultation {
         this.consultationName = new SimpleStringProperty(rs.getString("fld_ConsultationName"));
         this.startDate = rs.getDate("fld_StartDate");
         this.endDate = rs.getDate("fld_EndDate");
+    }
+
+    public int getConsultationID() {
+        return consultationID.get();
+    }
+
+    public SimpleIntegerProperty consultationIDProperty() {
+        return consultationID;
+    }
+
+    public String getConsultationName() {
+        return consultationName.get();
+    }
+
+    public SimpleStringProperty consultationNameProperty() {
+        return consultationName;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public ArrayList<Employee> getEmployees() {
+        return employees;
     }
 }
