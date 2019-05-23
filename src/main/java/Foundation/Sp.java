@@ -4,7 +4,7 @@ package Foundation;
  * Enum class that hold the actual name of the stored procedure that return no RS.
  * Prevents spelling mistakes and makes migration of names easier.
  */
-public enum Sp {
+public enum Sp implements Procedure{
     //DELETE
     DELETE_COMPANY_EDUCATION_BRIDGE("sp_DeleteCompany_EducationBridge"),
     DELETE_CONSULTATION_BY_COMPANY_ID("sp_DeleteConsultationByCompanyID"),
@@ -36,9 +36,10 @@ public enum Sp {
     }
 
     /**
-     * Gets the actual name of the Stored procedure as a name.
+     * Gets the actual name of the Stored procedure as a String.
      * @return String of sp name
      */
+    @Override
     public String get(){
         return NAME;
     }

@@ -1,10 +1,10 @@
 package Foundation;
 
 /**
- * Enum class that hold the actual name of the stored procedure that return no RS.
+ * Enum class that hold the actual name of the stored procedure that return with a RS.
  * Prevents spelling mistakes and makes migration of names easier.
  */
-public enum SpWithRs {
+public enum SpWithRs implements Procedure{
 
     //FIND
     FIND_PROVIDER("sp_FindProvider"),
@@ -19,9 +19,10 @@ public enum SpWithRs {
     }
 
     /**
-     * Gets the actual name of the Stored procedure as a name.
+     * Gets the actual name of the Stored procedure as a String.
      * @return String of sp name
      */
+    @Override
     public String get(){
         return NAME;
     }
