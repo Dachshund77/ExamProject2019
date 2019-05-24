@@ -4,8 +4,6 @@ CREATE PROCEDURE sp_Find_Provider(@ProviderID INT,
 AS
 BEGIN
     SELECT *
-    FROM tbl_Provider
-    WHERE (@ProviderID IS NULL OR fld_ProviderID = @ProviderID)
-      AND (@ProviderName IS NULL OR fld_ProviderName = @ProviderName)
+    FROM udf_Filter_Provider (@ProviderID,@ProviderName)
 END;
 
