@@ -1,7 +1,8 @@
-CREATE PROCEDURE sp_InsertInterview(@NewInterviewID INT, @interviewName VARCHAR(30), @EmpID INT, @ProdRating INT,
+CREATE OR ALTER PROCEDURE sp_Place_Interview(@NewInterviewID INT OUTPUT , @interviewName VARCHAR(30), @EmpID INT, @ProdRating INT,
                                     @ProbRating INT, @FlexRating INT, @QualRating INT, @CoopRating INT)
 AS
 BEGIN
+    SET NOCOUNT ON
     IF EXISTS(SELECT * FROM tbl_Interview WHERE fld_InterviewID = @NewInterViewID)
         BEGIN
             UPDATE tbl_Interview
@@ -18,5 +19,6 @@ BEGIN
         BEGIN
             INSERT INTO tbl_Interview
             VALUES (@EmpID, @interviewName, @ProdRating, @ProbRating, @FlexRating, @QualRating, @CoopRating)
+            SET @NewInterviewID = SCOPE_IDENTITY()
         end
 end;

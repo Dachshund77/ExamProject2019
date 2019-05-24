@@ -1,5 +1,5 @@
 USE db_SmartAcademy;
-CREATE PROCEDURE sp_DeleteCompany_Education_Bridge_ByCompanyID(@CompanyID INT)
+CREATE PROCEDURE sp_Delete_Company_Education_Bridge_By_Company_ID(@CompanyID INT)
 AS
 BEGIN
     DELETE

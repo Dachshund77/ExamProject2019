@@ -7,12 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Provider {
-    private SimpleIntegerProperty providerID = null;
+    private SimpleIntegerProperty providerID;
     private SimpleStringProperty providerName;
 
     public Provider(Integer providerID, String providerName) {
         if (providerID != null) {
             this.providerID = new SimpleIntegerProperty(providerID);
+        } else {
+            this.providerID = null;
         }
         this.providerName = new SimpleStringProperty(providerName);
     }
@@ -35,9 +37,7 @@ public class Provider {
         return providerID.get();
     }
 
-    public SimpleIntegerProperty providerIDProperty() {
-        return providerID;
-    }
+
 
     /**
      * Helper method that will return null if the value is an empty String

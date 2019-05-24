@@ -1,7 +1,7 @@
-USE db_SmartAcademy;
-CREATE PROCEDURE sp_InsertEducationWish(@educationWishID INT, @newAmuNr INT, @newInterviewID INT, @newPriority INT)
+CREATE or ALTER PROCEDURE sp_Place_Education_Wish(@educationWishID INT OUTPUT , @newAmuNr INT, @newInterviewID INT, @newPriority INT)
 AS
 BEGIN
+    SET NOCOUNT ON
     IF EXISTS(SELECT * FROM tbl_EducationWish WHERE fld_EducationWishID = @educationWishID)
         BEGIN
             UPDATE tbl_EducationWish
@@ -13,5 +13,6 @@ BEGIN
     ELSE
         BEGIN
             INSERT INTO tbl_EducationWish VALUES (@newAmuNr,@newInterviewID, @newPriority)
+            SET @educationWishID = SCOPE_IDENTITY()
         END
 END;

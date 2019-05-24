@@ -11,9 +11,18 @@ public class EducationWish {
     private SimpleIntegerProperty priority;
 
     public EducationWish(Integer educationWishID, Education education, Integer priority) {
-        this.educationWishID = new SimpleIntegerProperty(educationWishID);
+        if (educationWishID != null) {
+            this.educationWishID = new SimpleIntegerProperty(educationWishID);
+        } else {
+            this.educationWishID = null;
+        }
         this.education = education;
-        this.priority = new SimpleIntegerProperty(priority);
+
+        if (priority != null) {
+            this.priority = new SimpleIntegerProperty(priority);
+        } else {
+            this.priority = new SimpleIntegerProperty(-1);
+        }
     }
 
     /**
@@ -27,19 +36,21 @@ public class EducationWish {
         this.priority = new SimpleIntegerProperty(rs.getInt("fld_WishPriority"));
     }
 
-    public int getEducationWishID() {
+    public Integer getEducationWishID() {
+        if (educationWishID == null){
+            return null;
+        }
         return educationWishID.get();
-    }
-
-    public SimpleIntegerProperty educationWishIDProperty() {
-        return educationWishID;
     }
 
     public Education getEducation() {
         return education;
     }
 
-    public int getPriority() {
+    public Integer getPriority() {
+        if (priority == null) {
+            return null;
+        }
         return priority.get();
     }
 

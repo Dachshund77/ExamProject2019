@@ -1,5 +1,5 @@
 USE db_SmartAcademy;
-CREATE PROCEDURE sp_FindProvider(@ProviderID INT,
+CREATE PROCEDURE sp_Find_Provider(@ProviderID INT,
                                  @ProviderName VARCHAR(30))
 AS
 BEGIN

@@ -7,20 +7,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Education {
     private final SimpleIntegerProperty amuNr;
     private SimpleStringProperty educationName;
     private SimpleStringProperty description;
     private SimpleIntegerProperty noOfDays;
-    private ArrayList<Date> dates;
+    private ArrayList<LocalDate> dates;
     private SimpleObjectProperty<Provider> provider;
 
-    public Education(Integer amuNr, String educationName, String description, Integer noOfDays, ArrayList<Date> dates, Provider provider) {
+    public Education(Integer amuNr, String educationName, String description, Integer noOfDays, ArrayList<LocalDate> dates, Provider provider) {
         //Init amuNr
         if (amuNr != null) {
             this.amuNr = new SimpleIntegerProperty(amuNr);
@@ -35,14 +37,10 @@ public class Education {
         if (noOfDays != null) {
             this.noOfDays = new SimpleIntegerProperty(noOfDays);
         } else {
-            this.noOfDays = new SimpleIntegerProperty(1);
+            this.noOfDays = new SimpleIntegerProperty(-1);
         }
         //init dates
-        if (dates == null){
-            this.dates = new ArrayList<>();
-        } else {
-            this.dates = dates;
-        }
+        this.dates = Objects.requireNonNullElseGet(dates, ArrayList::new);
         // init provider
         this.provider = new SimpleObjectProperty<>(provider);
 
@@ -62,18 +60,17 @@ public class Education {
         this.noOfDays = new SimpleIntegerProperty(rs.getInt("fld_NoOfFays"));
     }
 
-    public Integer getAmuNr() { //TODO validategetters
+    public Integer getAmuNr() {
         if (amuNr == null) {
             return null;
         }
         return amuNr.get();
     }
 
-    public SimpleIntegerProperty amuNrProperty() {
-        return amuNr;
-    }
-
     public String getEducationName() {
+        if (educationName.get().equals("")){
+            return null;
+        }
         return educationName.get();
     }
 
@@ -82,6 +79,9 @@ public class Education {
     }
 
     public String getDescription() {
+        if (description.get().equals("")){
+            return null;
+        }
         return description.get();
     }
 
@@ -89,7 +89,10 @@ public class Education {
         return description;
     }
 
-    public int getNoOfDays() {
+    public Integer getNoOfDays() {
+        if (noOfDays.get() == -1) {
+            return null;
+        }
         return noOfDays.get();
     }
 
@@ -97,7 +100,7 @@ public class Education {
         return noOfDays;
     }
 
-    public ArrayList<Date> getDates() {
+    public ArrayList<LocalDate> getDates() {
         return dates;
     }
 

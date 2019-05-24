@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Interview {
 
@@ -20,15 +21,45 @@ public class Interview {
     private ArrayList<EducationWish> educationWishes;
 
     public Interview(Integer interviewID, String interviewName, Integer productUnderstanding, Integer problemUnderstanding, Integer flexibility, Integer qualityAwareness, Integer cooperation, ArrayList<FinishedEducation> finishedEducations, ArrayList<EducationWish> educationWishes) {
-        this.interviewID = new SimpleIntegerProperty(interviewID);
+        if (interviewID != null) {
+            this.interviewID = new SimpleIntegerProperty(interviewID);
+        }else {
+            this.interviewID = null;
+        }
+
         this.interviewName = new SimpleStringProperty(interviewName);
-        this.productUnderstanding = new SimpleIntegerProperty(productUnderstanding);
-        this.problemUnderstanding = new SimpleIntegerProperty(problemUnderstanding);
-        this.flexibility = new SimpleIntegerProperty(flexibility);
-        this.qualityAwareness = new SimpleIntegerProperty(qualityAwareness);
-        this.cooperation = new SimpleIntegerProperty(cooperation);
-        this.finishedEducations = finishedEducations;
-        this.educationWishes = educationWishes;
+
+        if (productUnderstanding != null) {
+            this.productUnderstanding = new SimpleIntegerProperty(productUnderstanding);
+        } else {
+            this.productUnderstanding = new SimpleIntegerProperty(-1);
+        }
+
+        if (problemUnderstanding != null) {
+            this.problemUnderstanding = new SimpleIntegerProperty(problemUnderstanding);
+        } else {
+            this.problemUnderstanding = new SimpleIntegerProperty(-1);
+        }
+
+        if (flexibility != null) {
+            this.flexibility = new SimpleIntegerProperty(flexibility);
+        } else {
+            this.flexibility = new SimpleIntegerProperty(-1);
+        }
+
+        if (qualityAwareness != null) {
+            this.qualityAwareness = new SimpleIntegerProperty(qualityAwareness);
+        } else {
+            this.qualityAwareness = new SimpleIntegerProperty(-1);
+        }
+
+        if (cooperation != null) {
+            this.cooperation = new SimpleIntegerProperty(cooperation);
+        } else {
+            this.cooperation = new SimpleIntegerProperty(-1);
+        }
+        this.finishedEducations = Objects.requireNonNullElseGet(finishedEducations,ArrayList::new);
+        this.educationWishes = Objects.requireNonNullElseGet(educationWishes,ArrayList::new);
     }
 
     /**
@@ -47,15 +78,17 @@ public class Interview {
         this.cooperation = new SimpleIntegerProperty(rs.getInt("fld_Cooperation"));
     }
 
-    public int getInterviewID() {
+    public Integer getInterviewID() {
+        if (interviewID == null){
+            return null;
+        }
         return interviewID.get();
     }
 
-    public SimpleIntegerProperty interviewIDProperty() {
-        return interviewID;
-    }
-
     public String getInterviewName() {
+        if (interviewName.get().equals("")){
+            return null;
+        }
         return interviewName.get();
     }
 
@@ -63,7 +96,10 @@ public class Interview {
         return interviewName;
     }
 
-    public int getProductUnderstanding() {
+    public Integer getProductUnderstanding() {
+        if (productUnderstanding.get() == -1){
+            return null;
+        }
         return productUnderstanding.get();
     }
 
@@ -71,7 +107,10 @@ public class Interview {
         return productUnderstanding;
     }
 
-    public int getProblemUnderstanding() {
+    public Integer getProblemUnderstanding() {
+        if (problemUnderstanding.get() == -1) {
+            return null;
+        }
         return problemUnderstanding.get();
     }
 
@@ -79,7 +118,10 @@ public class Interview {
         return problemUnderstanding;
     }
 
-    public int getFlexibility() {
+    public Integer getFlexibility() {
+        if (flexibility.get() == -1){
+            return null;
+        }
         return flexibility.get();
     }
 
@@ -87,7 +129,10 @@ public class Interview {
         return flexibility;
     }
 
-    public int getQualityAwareness() {
+    public Integer getQualityAwareness() {
+        if (qualityAwareness.get() == -1){
+            return null;
+        }
         return qualityAwareness.get();
     }
 
@@ -95,7 +140,10 @@ public class Interview {
         return qualityAwareness;
     }
 
-    public int getCooperation() {
+    public Integer getCooperation() {
+        if (cooperation.get() == -1){
+            return null;
+        }
         return cooperation.get();
     }
 

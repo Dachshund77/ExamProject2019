@@ -40,7 +40,7 @@ public class NewProviderController extends AbstractController {
         DB database = DB.getInstance();
         try{
             database.connect();
-            DbFacade.insertProviderToBatch(selectedProvider);
+            DbFacade.insertProvider(selectedProvider);
             database.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
