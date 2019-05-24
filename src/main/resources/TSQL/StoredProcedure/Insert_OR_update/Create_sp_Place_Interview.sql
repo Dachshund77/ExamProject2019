@@ -1,5 +1,6 @@
-CREATE OR ALTER PROCEDURE sp_Place_Interview(@NewInterviewID INT OUTPUT , @interviewName VARCHAR(30), @EmpID INT, @ProdRating INT,
-                                    @ProbRating INT, @FlexRating INT, @QualRating INT, @CoopRating INT)
+CREATE OR ALTER PROCEDURE sp_Place_Interview(@NewInterviewID INT OUTPUT, @interviewName VARCHAR(30), @EmpID INT,
+                                             @ProdRating INT,
+                                             @ProbRating INT, @FlexRating INT, @QualRating INT, @CoopRating INT)
 AS
 BEGIN
     SET NOCOUNT ON
@@ -18,7 +19,7 @@ BEGIN
     ELSE
         BEGIN
             INSERT INTO tbl_Interview
-            VALUES (@EmpID, @interviewName, @ProdRating, @ProbRating, @FlexRating, @QualRating, @CoopRating)
+            VALUES (@interviewName, @EmpID, @ProdRating, @ProbRating, @FlexRating, @QualRating, @CoopRating)
             SET @NewInterviewID = SCOPE_IDENTITY()
-        end
-end;
+        END
+END;

@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE sp_Place_Company(@NewCompID INT OUTPUT , @CvrNr VARCHAR(8), @CompanyName VARCHAR(50))
+CREATE OR ALTER PROCEDURE sp_Place_Company(@NewCompID INT OUTPUT , @CvrNr VARCHAR(80), @CompanyName VARCHAR(50))
 AS
 BEGIN
     SET NOCOUNT ON
@@ -11,7 +11,7 @@ BEGIN
         END
     ELSE
         BEGIN
-            INSERT INTO tbl_Company VALUES (@CompanyName, @CvrNr)
+            INSERT INTO tbl_Company VALUES (@CvrNr, @CompanyName)
             SET @NewCompID = SCOPE_IDENTITY()
         END
 END;

@@ -92,7 +92,13 @@ public class DB {
 
     @SuppressWarnings("Duplicates")
     public ResultSet executeStoredProcedure(SpWithRs sp, Object... param) throws SQLException {
-
+        for (Object o : param) {
+            if (o!=null) {
+                System.out.println("o.toString() = " + o.toString());
+            }else {
+                System.out.println("o is null");
+            }
+        }
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
@@ -109,7 +115,13 @@ public class DB {
 
     @SuppressWarnings("Duplicates")
     public int executeStoredProcedureGetID(SpGetKey sp, Object... param) throws SQLException {
-
+        for (Object o : param) {
+            if (o!=null) {
+                System.out.println("o.toString() = " + o.toString());
+            }else {
+                System.out.println("o is null");
+            }
+        }
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
@@ -157,6 +169,13 @@ public class DB {
      */
     @SuppressWarnings("Duplicates")
     public void addStoredProcedureToBatch(Sp sp, Object... param) throws SQLException {
+        for (Object o : param) {
+            if (o!=null) {
+                System.out.println("o.toString() = " + o.toString());
+            }else {
+                System.out.println("o is null");
+            }
+        }
         conn.setAutoCommit(false); //TODO can we rollback if exception
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
@@ -274,6 +293,7 @@ public class DB {
 
     @SuppressWarnings("Duplicates")
     private String buildProcedureCall(Procedure procedure, int parameters) {
+        System.out.println("procedure = " + procedure.get());
         StringBuilder builder = new StringBuilder();
         builder.append("{call ");
         builder.append(procedure.get());
@@ -301,6 +321,9 @@ public class DB {
      */
 
     private void setCallParameter(int index, String dataType, Object dataValue) throws SQLException {
+        System.out.println("index = " + index);
+        System.out.println("dataType = " + dataType);
+        System.out.println("dataValue = " + dataValue);
         switch (dataType) {
             case "int":
                 if (dataValue == null) {

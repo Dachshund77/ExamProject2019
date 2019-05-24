@@ -96,7 +96,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static int insertEducationWish(EducationWish educationWish, int interViewID) throws SQLException, NullPointerException {
+    public static int insertEducationWish(EducationWish educationWish, int interViewID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 Write education to db and get returnvalue
@@ -127,7 +127,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static int insertFinishedEducation(FinishedEducation finishedEducation, int interViewID) throws SQLException, NullPointerException {
+    public static int insertFinishedEducation(FinishedEducation finishedEducation, int interViewID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 Write education to db and get return value
@@ -201,7 +201,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static int insertInterview(Interview interview, int employeeID) throws SQLException, NullPointerException {
+    public static int insertInterview(Interview interview, int employeeID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 We write this interview to the db and get ID
@@ -309,7 +309,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static int insertConsultation(Consultation consultation, int companyID) throws SQLException, NullPointerException {
+    public static int insertConsultation(Consultation consultation, int companyID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 Insert Consultations
@@ -320,8 +320,10 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
 
         int newConsultationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_CONSULTATION,oldConsultationID,consultationName,startDate,endDate,companyID);
 
-        // 2 purge bridge table
-        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_EMPLOYEE_BRIDGE_BY_CONSULTATION_ID,oldConsultationID); //TODO make asearch
+        if (oldConsultationID != null) {
+            // 2 purge bridge table
+            database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_EMPLOYEE_BRIDGE_BY_CONSULTATION_ID, oldConsultationID); //TODO make asearch
+        }
         database.executeBatch();
 
         // 3 Insert Employees via method
@@ -333,7 +335,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
 
         // 4 with the return value of insert employee we can reinsert bridge table
         for (Integer newEmployeeID : newEmployeeIDs) {
-            database.addStoredProcedureToBatch(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE,newConsultationID,newEmployeeIDs);
+            database.addStoredProcedureToBatch(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE,newConsultationID,newEmployeeID);
         }
         database.executeBatch();
 
