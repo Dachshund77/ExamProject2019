@@ -1,5 +1,5 @@
 USE db_SmartAcademy;
-CREATE PROCEDURE sp_InsertDate(@DateID INT, @newAmuNr INT, @newDate DATE) AS
+CREATE PROCEDURE sp_Place_Date(@DateID INT, @newAmuNr INT, @newDate DATE) AS
 BEGIN
     IF EXISTS(SELECT * FROM tbl_Date WHERE fld_DateID = @DateID)
         BEGIN

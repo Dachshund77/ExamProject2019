@@ -1,15 +1,18 @@
 package Foundation;
 
 import Persistance.DbFacade;
+import com.microsoft.sqlserver.jdbc.SQLServerCallableStatement;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.sql.Date;
 
 /**
  * Access point for Database interaction. This class wil be facaded by {@link DbFacade} to get usable objects from the resultSet.
@@ -104,6 +107,24 @@ public class DB {
         return rs;
     }
 
+    @SuppressWarnings("Duplicates")
+    public int executeStoredProcedureGetID(SpGetKey sp, Object... param) throws SQLException {
+
+        // Preparing metaData
+        Map<Integer, String> metaDataMap = getSPMetaData(sp);
+        //Setting callable statement
+        cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
+        //Build parameters
+        for (int i = 0; i < metaDataMap.size(); i++) {
+            setCallParameter(i + 1, metaDataMap.get(i + 1), param[i]);
+        }
+        //Getting results
+        cstmt.registerOutParameter(1,Types.INTEGER);
+        cstmt.execute();
+        return cstmt.getInt(1);
+
+    }
+
     /**
      * Add a stored procedure to a batch. To execute the batch call {@link #executeBatch()}.
      *
@@ -141,6 +162,7 @@ public class DB {
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
         cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
+
         //Build parameters
         for (int i = 0; i < metaDataMap.size(); i++) {
             setCallParameter(i + 1, metaDataMap.get(i + 1), param[i]);
@@ -312,11 +334,12 @@ public class DB {
                 if (dataValue == null) {
                     cstmt.setNull(index, Types.DATE);
                 } else {
-                    cstmt.setDate(index, (Date) dataValue);
+                    cstmt.setDate(index, java.sql.Date.valueOf((LocalDate)dataValue));
                 }
                 break;
             case "null":
                 cstmt.setNull(index, Types.NULL);
+
                 break;
             default:
                 System.out.println("ERROR: Could not define Procedue type");
@@ -365,7 +388,7 @@ public class DB {
     private Map<Integer, String> getSPMetaData(String sp) throws SQLException {
         Map<Integer, String> returnMap = new HashMap<>();
         //Establishing call
-        cstmt = conn.prepareCall("{call sp_GetSPMetaData(?)}");
+        cstmt = conn.prepareCall("{call "+SpWithRs.GET_PROCEDURE_META_DATA.get()+"(?)}");
         cstmt.setString(1, sp);
         rs = cstmt.executeQuery();
         // Getting the Metadata
@@ -394,7 +417,7 @@ public class DB {
     private Map<Integer, String> getSPMetaData(Procedure procedure) throws SQLException {
         Map<Integer, String> returnMap = new HashMap<>();
         //Establishing call
-        cstmt = conn.prepareCall("{call sp_GetSPMetaData(?)}");
+        cstmt = conn.prepareCall("{call "+SpWithRs.GET_PROCEDURE_META_DATA.get()+"(?)}");
         cstmt.setString(1, procedure.get());
         rs = cstmt.executeQuery();
         // Getting the Metadata

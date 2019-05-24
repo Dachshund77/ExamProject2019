@@ -1,5 +1,5 @@
 USE db_SmartAcademy;
-CREATE PROCEDURE sp_DeleteEmployeeByConsultationID(@ConsultationID INT)
+CREATE PROCEDURE sp_Delete_Employee_By_Consultation_ID(@ConsultationID INT)
 AS
 BEGIN
     DELETE

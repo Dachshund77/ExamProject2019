@@ -6,30 +6,24 @@ package Foundation;
  */
 public enum Sp implements Procedure {
     //DELETE
-    DELETE_COMPANY_EDUCATION_BRIDGE_BY_COMPANY_ID("sp_DeleteCompany_Education_Bridge_ByCompanyID"),
-    DELETE_CONSULTATION_BY_COMPANY_ID("sp_DeleteConsultationByCompanyID"),
-    DELETE_DATE_BY_AMU_NR("sp_DeleteDateByAmuNr"),
-    DELETE_EMPLOYEE_BY_CONSULTATION_ID("sp_DeleteEmployeeByConsultationID"),
-    DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID("sp_DeleteFinishedEducationByInterviewID"),
-    DELETE_INTERVIEW_BY_EMPLOYEE_ID("sp_DeleteInterviewByEmployeeID"),
-    DELETE_EDUCATION_WISH_BY_INTERVIEW_ID("sp_DeleteEducationWishByInterviewID"),
+    DELETE_COMPANY_EDUCATION_BRIDGE_BY_COMPANY_ID("sp_Delete_Company_Education_Bridge_By_Company_ID"),
+    DELETE_CONSULTATION_BY_COMPANY_ID("sp_Delete_Consultation_By_Company_ID"),
+    DELETE_DATE_BY_AMU_NR("sp_Delete_Date_By_AmuNr"),
+    DELETE_EMPLOYEE_BY_CONSULTATION_ID("sp_Delete_Employee_By_Consultation_ID"),
+    DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID("sp_Delete_Finished_Education_By_Interview_ID"),
+    DELETE_INTERVIEW_BY_EMPLOYEE_ID("sp_Delete_Interview_By_Employee_ID"),
+    DELETE_EDUCATION_WISH_BY_INTERVIEW_ID("sp_Delete_Education_Wish_By_Interview_ID"),
+    DELETE_CONSULTATION_EMPLOYEE_BRIDGE_BY_CONSULTATION_ID("sp_Delete_Consultation_Employee_Bridge_By_Consultation_ID"),
 
     //INSERT
-    INSERT_COMPANY_EDUCATION_BRIDGE("sp_InsertCompany_Education_Bridge"),
-    INSERT_CONSULTATION_EMPLOYEE_BRIDGE("sp_InsertConsultation_Employee_Bridge"),
+    INSERT_COMPANY_EDUCATION_BRIDGE("sp_Insert_Company_Education_Bridge"),
+    INSERT_CONSULTATION_EMPLOYEE_BRIDGE("sp_Insert_Consultation_Employee_Bridge"),
 
-    //PLACE //TODO need to change names for this
-    PLACE_CONSULTATION("sp_InsertConsultation"),
-    PLACE_DATE("sp_InsertDate"),
-    PLACE_EDUCATION("sp_InsertEducation"),
-    PLACE_EDUCATION_FROM_COMPANY("sp_InsertEducationAsCompany"),
-    PLACE_EDUCATION_WISH("sp_InsertEducationWish"),
-    PLACE_EMPLOYEE("sp_InsertEmployee"),
-    PLACE_EMPLOYEE_FROM_CONSULTATION("sp_InsertEmployeeAsConsultation"),
-    PLACE_FINISHED_EDUCATION("sp_InsertFinishedEducation"),
-    PLACE_PROVIDER("sp_InsertProvider"),
-    PLACE_INTERVIEW("sp_InsertInterview"),
-    PLACE_COMPANY("sp_InsertCompany");
+    //PLACE
+    PLACE_DATE("sp_Place_Date"),
+    PLACE_EDUCATION_FROM_COMPANY("sp_Place_Education_From_Company"),
+    PLACE_EMPLOYEE_FROM_CONSULTATION("sp_Place_Employee_From_Consultation");
+
 
     private final String NAME;
 

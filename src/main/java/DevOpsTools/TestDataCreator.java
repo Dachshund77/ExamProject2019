@@ -6,9 +6,11 @@ import Foundation.DB;
 import Persistance.DbFacade;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class TestDataCreator {
 
@@ -63,7 +65,7 @@ public class TestDataCreator {
         for (Education education : educationArrayList) {
             try {
                 database.connect();
-                DbFacade.insertEducationToBatch(education);
+                DbFacade.insertEducation(education);
                 database.executeBatch();
                 database.disconnect();
             } catch (SQLException e) {
@@ -92,7 +94,7 @@ public class TestDataCreator {
         educationName.append(EDUCATION_SUFFIX[randomInt(0, EDUCATION_SUFFIX.length-1)]);
 
         //Build date arrayList
-        ArrayList<Date> dates = new ArrayList<>();
+        ArrayList<LocalDate> dates = new ArrayList<>();
         for (int i = 0; i < MAX_DATES_EACH_EDUCATION; i++) {
             dates.add(randomDate());
         }
@@ -100,14 +102,17 @@ public class TestDataCreator {
         return new Education(null, educationName.toString(), loremIpsum, randomInt(0, 5), dates,providerArrayList.get(randomInt(0,providerArrayList.size()-1)));
     }
 
-    private Date randomDate(){
-        Random rnd = new Random();
-        long ms = -946771200000L + (Math.abs(rnd.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000));
-        return new Date(ms);
+    private LocalDate randomDate(){ //TODO parameterize and maybe understand that damn code block
+        long minDay = LocalDate.of(1970, 1, 1).toEpochDay();
+        long maxDay = LocalDate.of(2015, 12, 31).toEpochDay();
+        long randomDay = ThreadLocalRandom.current().nextLong(minDay, maxDay);
+        LocalDate randomDate = LocalDate.ofEpochDay(randomDay);
+        return randomDate;
     }
 
     int randomInt(int min, int max) {
         int range = Math.abs(max - min) + 1;
         return (int) (Math.random() * range) + (min <= max ? min : max);
     }
+
 }

@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,10 +19,10 @@ public class Education {
     private SimpleStringProperty educationName;
     private SimpleStringProperty description;
     private SimpleIntegerProperty noOfDays;
-    private ArrayList<Date> dates;
+    private ArrayList<LocalDate> dates;
     private SimpleObjectProperty<Provider> provider;
 
-    public Education(Integer amuNr, String educationName, String description, Integer noOfDays, ArrayList<Date> dates, Provider provider) {
+    public Education(Integer amuNr, String educationName, String description, Integer noOfDays, ArrayList<LocalDate> dates, Provider provider) {
         //Init amuNr
         if (amuNr != null) {
             this.amuNr = new SimpleIntegerProperty(amuNr);
@@ -99,7 +100,7 @@ public class Education {
         return noOfDays;
     }
 
-    public ArrayList<Date> getDates() {
+    public ArrayList<LocalDate> getDates() {
         return dates;
     }
 

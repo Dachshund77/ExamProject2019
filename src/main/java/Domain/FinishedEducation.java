@@ -5,13 +5,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class FinishedEducation {
     private SimpleIntegerProperty finishedEducationID;
     private Education education;
-    private Date dateFinished;
+    private LocalDate dateFinished;
 
-    public FinishedEducation(Integer finishedEducationID, Education education, Date dateFinished) {
+    public FinishedEducation(Integer finishedEducationID, Education education, LocalDate dateFinished) {
         if (finishedEducationID != null) {
             this.finishedEducationID = new SimpleIntegerProperty(finishedEducationID);
         } else {
@@ -29,7 +30,7 @@ public class FinishedEducation {
      */
     public FinishedEducation(ResultSet rs) throws SQLException {
         this.finishedEducationID = new SimpleIntegerProperty(rs.getInt("fld_FinishedEducationID"));
-        this.dateFinished = rs.getDate("fld_FinishedDate");
+        this.dateFinished = rs.getDate("fld_FinishedDate").toLocalDate();
     }
 
     public Integer getFinishedEducationID() {
@@ -43,7 +44,7 @@ public class FinishedEducation {
         return education;
     }
 
-    public Date getDateFinished() {
+    public LocalDate getDateFinished() {
         return dateFinished;
     }
 }

@@ -3,11 +3,13 @@ package Persistance;
 import Domain.*;
 import Foundation.DB;
 import Foundation.Sp;
+import Foundation.SpGetKey;
 import Foundation.SpWithRs;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.ObservableList;
 import org.apache.ibatis.jdbc.Null;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.sql.ResultSet;
@@ -18,7 +20,7 @@ import java.util.HashMap;
  * Facade class that helps convert SQL data to objects.
  * Note that this class will not establish a Db connection on its own.
  */
-public class DbFacade {
+public class DbFacade { //TODO This whole god forsaken shit class need to have an overhaul on documentation.
 
     /*
      * INSERTION
@@ -36,16 +38,16 @@ public class DbFacade {
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    public static boolean insertProviderToBatch(Provider provider) throws SQLException, NullPointerException {
-        //Get values for insertion
+    public static int insertProvider(Provider provider) throws SQLException, NullPointerException { // FIXME: 24/05/2019 Javadoc
+        DB database = DB.getInstance();
+
         Integer providerID = provider.getProviderID();
         String providerName = provider.getProviderName();
-        if (providerName == null) {
-            throw new NullPointerException();
-        }
-        //Write to Db
-        DB.getInstance().addStoredProcedureToBatch(Sp.PLACE_PROVIDER, providerID, providerName);
-        return true;
+        // 1 Insert this provider
+        providerID = database.executeStoredProcedureGetID(SpGetKey.PLACE_PROVIDER, providerID, providerName);
+
+        // 2 return inserted ID
+        return providerID;
     }
 
     /**
@@ -62,131 +64,32 @@ public class DbFacade {
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
     @SuppressWarnings("Duplicates")
-    public static boolean insertEducationToBatch(Education education) throws SQLException, NullPointerException {
+    public static int insertEducation(Education education) throws SQLException, NullPointerException { //todo old amu stuff
         DB database = DB.getInstance();
 
-        //First we Insert the provider (has 1 to m cardinality)
-        Provider provider = education.getProvider();
-        if (provider == null) {
-            throw new NullPointerException();
-        }
-        insertProviderToBatch(provider);
+        // 1 insert provider via other method that return its ID
+        int providerID = insertProvider(education.getProvider());
 
-        //Secondly write the education to the database
+        // 2 Insert this education and get AmuNr
         Integer amuNr = education.getAmuNr();
-        Integer providerID = provider.getProviderID();
         String educationName = education.getEducationName();
-        String description = education.getDescription();
-        Integer noOfDays = education.getNoOfDays();
+        String educationDescription = education.getDescription();
+        int noOfDays = education.getNoOfDays();
 
-        if (providerID == null || educationName == null || noOfDays == null) {
-            throw new NullPointerException();
-        }
+        amuNr = database.executeStoredProcedureGetID(SpGetKey.PLACE_EDUCATION, amuNr, providerID, educationName, educationDescription, noOfDays);
 
-        database.addStoredProcedureToBatch(Sp.PLACE_EDUCATION, amuNr, providerID, educationName, description, noOfDays);
+        // 3 Purge dates table
+        database.addStoredProcedureToBatch(Sp.DELETE_DATE_BY_AMU_NR, amuNr);
 
-        //Then we write dates to database
-        database.addStoredProcedureToBatch(Sp.DELETE_DATE_BY_AMU_NR, amuNr); // FIXME: 23/05/2019 cascade on delete or update
-
-        // Then reInsert
-        ArrayList<Date> dates = education.getDates();
-        for (Date date : dates) {
+        // 4 Insert dates with amurNr
+        ArrayList<LocalDate> dates = education.getDates();
+        for (LocalDate date : dates) {
             database.addStoredProcedureToBatch(Sp.PLACE_DATE, null, amuNr, date);
         }
-        return true;
-    }
+        database.executeBatch();
 
-    /**
-     * Method that will write a Education object to the database.
-     * This method will immediately create a relationship between tbl_Education and tbl_Company.
-     * Will also make sure that its children objects are written correctly to the database.
-     * <br>
-     * <br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
-     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
-     *
-     * @param education The Container for the values that will be inserted.
-     * @param companyID The Id the Education will have a reference to
-     * @return True if successful added to batch.
-     * @throws SQLException         Exception thrown when encountered a fatal error.
-     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
-     */
-    @SuppressWarnings("Duplicates")
-    private static boolean insertEducationFromCompanyToBatch(Education education, int companyID) throws SQLException, NullPointerException {
-        DB database = DB.getInstance();
-
-        //First we Insert the provider (has 1 to m cardinality)
-        Provider provider = education.getProvider();
-        if (provider == null) {
-            throw new NullPointerException();
-        }
-
-        insertProviderToBatch(provider);
-
-        //Secondly write the education to the database
-        Integer amuNr = education.getAmuNr();
-        Integer providerID = education.getProvider().getProviderID();
-        String educationName = education.getEducationName();
-        String description = education.getDescription();
-        Integer noOfDays = education.getNoOfDays();
-
-        if (providerID == null || educationName == null || noOfDays == null) {
-            throw new NullPointerException();
-        }
-
-        database.addStoredProcedureToBatch(Sp.PLACE_EMPLOYEE_FROM_CONSULTATION, amuNr, providerID, educationName, description, noOfDays, companyID);
-
-        //Then we write dates to database
-        database.addStoredProcedureToBatch(Sp.DELETE_DATE_BY_AMU_NR, amuNr); // FIXME: 23/05/2019 Cascade on delete/Update
-
-        // Then reInsert
-        ArrayList<Date> dates = education.getDates();
-        for (Date date : dates) {
-            database.addStoredProcedureToBatch(Sp.PLACE_DATE, null, amuNr, date);
-        }
-        return true;
-    }
-
-    /**
-     * Method that will write a Employee object to the database.
-     * This method will immediately create a relationship between tbl_Employee and tbl_Consultation.
-     * Will also make sure that its children objects are written correctly to the database.
-     * <br>
-     * <br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
-     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
-     *
-     * @param employee       The Container for the values that will be inserted.
-     * @param consultationID The Id the Employee will have a reference too.
-     * @return True if successful added to batch.
-     * @throws SQLException         Exception thrown when encountered a fatal error.
-     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
-     */
-    @SuppressWarnings("Duplicates")
-    private static boolean insertEmployeeFromConsultationToBatch(Employee employee, int consultationID) throws SQLException, NullPointerException {
-        DB database = DB.getInstance();
-        Integer employeeID = employee.getEmployeeId();
-
-        //Unpacking the object
-        String employeeFirstName = employee.getEmployeeFirstName();
-        String employeeLastName = employee.getEmployeeLastName();
-        String CPRnr = employee.getCprNr();
-        String eMail = employee.geteMail();
-        String phoneNr = employee.getPhoneNr();
-
-        if (CPRnr == null) {
-            throw new NullPointerException();
-        }
-
-        database.addStoredProcedureToBatch(Sp.PLACE_EMPLOYEE_FROM_CONSULTATION, employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr, consultationID);
-
-        // First we need to write interviews to db, w need to purge interview record by employee Consultation
-        database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, employeeID); // FIXME: 23/05/2019 casscade delete update
-        ArrayList<Interview> interviews = employee.getInterviews();
-        for (Interview interview : interviews) {
-            insertInterviewToBatch(interview, employeeID);
-        }
-        return true;
+        // 5 return amu nr
+        return amuNr;
     }
 
     /**
@@ -203,27 +106,21 @@ public class DbFacade {
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static boolean insertEducationWishToBatch(EducationWish educationWish, int interViewID) throws SQLException, NullPointerException {
+    private static int insertEducationWish(EducationWish educationWish, int interViewID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
-        //First we make sure that the Education is written/updated in the database
+        // 1 Write education to db and get returnvalue
         Education education = educationWish.getEducation();
-        if (education == null) {
-            throw new NullPointerException();
-        }
-        insertEducationToBatch(education);
+        int amuNr = insertEducation(education);
 
-        //Next we write this EducationWish to the batch
+        // 2 We insert this education wish and get inserted id
         Integer educationWishID = educationWish.getEducationWishID();
-        Integer amuNr = education.getAmuNr();
         Integer priority = educationWish.getPriority();
 
-        if (amuNr == null || priority == null) {
-            throw new NullPointerException();
-        }
+        educationWishID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EDUCATION_WISH, educationWishID, amuNr, interViewID, priority);
 
-        database.addStoredProcedureToBatch(Sp.PLACE_EDUCATION_WISH, educationWishID, amuNr, interViewID, priority);
-        return true;
+        // 3 return value
+        return educationWishID;
     }
 
     /**
@@ -240,34 +137,29 @@ public class DbFacade {
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static boolean insertFinishedEducationToBatch(FinishedEducation finishedEducation, int interViewID) throws SQLException, NullPointerException {
+    private static int insertFinishedEducation(FinishedEducation finishedEducation, int interViewID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
-        //First we make sure that the Education is written/updated in the database
+        // 1 Write education to db and get return value
         Education education = finishedEducation.getEducation();
-        if (education == null) {
-            throw new NullPointerException();
-        }
-        insertEducationToBatch(education);
+        int amuNr = insertEducation(education);
 
-        //Next we write this FinishedEducation to the database
+        // 2 Write this finished education to db
         Integer finishedEducationID = finishedEducation.getFinishedEducationID();
-        Integer amuNr = education.getAmuNr();
-        Date finishedDate = finishedEducation.getDateFinished();
+        LocalDate dateFinished = finishedEducation.getDateFinished();
 
-        if (amuNr == null) {
-            throw new NullPointerException();
-        }
+        finishedEducationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_FINISHED_EDUCATION, finishedEducationID, amuNr, interViewID, dateFinished);
 
-        database.addStoredProcedureToBatch(Sp.PLACE_FINISHED_EDUCATION, finishedEducationID, amuNr, interViewID, finishedDate);
-        return true;
+        // 3 return value
+        return finishedEducationID;
+
     }
 
     /**
      * Method that will write a Employee object to the database.
      * Will also make sure that its children objects are written correctly to the database.
      * Note that his method will not create a relationship between an employee and consultation.
-     * Use {@link #insertConsultationToBatch(Consultation, int)} for that.
+     * Use {@link #insertConsultation(Consultation, int)} for that.
      * <br>
      * <br>
      * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
@@ -275,29 +167,34 @@ public class DbFacade {
      *
      * @param employee The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
-     * @deprecated Since 23/05/19. And employee without an consultation does not make any sense in the database. Use {@link #insertConsultationToBatch(Consultation, int)} instead.
      */
     @SuppressWarnings("Duplicates")
-    @Deprecated
-    public static void insertEmployeeToBatch(Employee employee) throws SQLException {
+
+    public static int insertEmployee(Employee employee) throws SQLException {
         DB database = DB.getInstance();
-        Integer employeeID = employee.getEmployeeId();
 
-        // First we need to write interviews to db, w need to purge interview record by employee Consultation
-        database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, employeeID);
-        ArrayList<Interview> interviews = employee.getInterviews();
-        for (Interview interview : interviews) {
-            insertInterviewToBatch(interview, employeeID);
-        }
-
-        //Unpacking the object
+        // 1 Insert this employee and get the id
+        Integer oldEmployeeID = employee.getEmployeeId();
         String employeeFirstName = employee.getEmployeeFirstName();
         String employeeLastName = employee.getEmployeeLastName();
         String CPRnr = employee.getCprNr();
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        database.addStoredProcedureToBatch(Sp.PLACE_EMPLOYEE, employeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
+        int newEmployeeID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EMPLOYEE,oldEmployeeID,employeeFirstName,employeeLastName,CPRnr,eMail,phoneNr);
+
+        // 2 Purge interview table
+        database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, oldEmployeeID);
+        database.executeBatch();
+
+        // 3 Insert interview by calling method and passing
+        ArrayList<Interview> employees = employee.getInterviews();
+        for (Interview interview : employees) {
+            insertInterview(interview,newEmployeeID);
+        }
+
+        // 4 return employee id
+        return newEmployeeID;
     }
 
     /**
@@ -314,12 +211,11 @@ public class DbFacade {
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static boolean insertInterviewToBatch(Interview interview, int employeeID) throws SQLException, NullPointerException {
+    private static int insertInterview(Interview interview, int employeeID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
-
-        //We write this interview
-        Integer interViewID = interview.getInterviewID();
+        // 1 We write this interview to the db and get ID
+        Integer oldInterViewID = interview.getInterviewID();
         String interViewName = interview.getInterviewName();
         Integer productUnderstanding = interview.getProductUnderstanding();
         Integer problemUnderstanding = interview.getProblemUnderstanding();
@@ -327,33 +223,37 @@ public class DbFacade {
         Integer qualityAwareness = interview.getQualityAwareness();
         Integer cooperation = interview.getCooperation();
 
-        if (interViewName == null) {
-            throw new NullPointerException();
-        }
-
-        database.addStoredProcedureToBatch(Sp.PLACE_INTERVIEW,
-                interViewID,
+        int newInterViewID = database.executeStoredProcedureGetID(SpGetKey.PLACE_INTERVIEW,
+                oldInterViewID,
                 interViewName,
-                employeeID, productUnderstanding,
+                employeeID,
+                productUnderstanding,
                 problemUnderstanding,
                 flexibility,
                 qualityAwareness,
                 cooperation);
 
-        //We write the finished education, we have to delete all FinishedEducation with this interView beforehand else we create unwanted relics
-        database.addStoredProcedureToBatch(Sp.DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID, interViewID); // FIXME: 23/05/2019 update/delete cascade
-        ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
-        for (FinishedEducation finishedEducation : finishedEducations) {
-            insertFinishedEducationToBatch(finishedEducation, interViewID);
-        }
+        // 2 Purge EducationWish table
+        database.addStoredProcedureToBatch(Sp.DELETE_EDUCATION_WISH_BY_INTERVIEW_ID, oldInterViewID);
+        database.executeBatch();
 
-        //We write the education wishes, we have to delete all EducationWishes with this interviewID beforehand else we create unwanted relics
-        database.addStoredProcedureToBatch(Sp.DELETE_EDUCATION_WISH_BY_INTERVIEW_ID, interViewID); //FIXME: 23/05/2019 update/delete cascade
+        // 3 Reinster by calling method
         ArrayList<EducationWish> educationWishes = interview.getEducationWishes();
         for (EducationWish educationWish : educationWishes) {
-            insertEducationWishToBatch(educationWish, interViewID);
+            insertEducationWish(educationWish, newInterViewID);
         }
-        return true;
+
+        // 4 Purge Finished Education
+        database.addStoredProcedureToBatch(Sp.DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID, oldInterViewID);
+        database.executeBatch();
+
+        // 5 reinsert by calling method
+        ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
+        for (FinishedEducation finishedEducation : finishedEducations) {
+            insertFinishedEducation(finishedEducation, newInterViewID);
+        }
+
+        return newInterViewID;
     }
 
     /**
@@ -369,34 +269,40 @@ public class DbFacade {
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    public static boolean insertCompanyToBatch(Company company) throws SQLException, NullPointerException {
+    public static int insertCompany(Company company) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
-        // 1 write this object to db
-        Integer companyID = company.getCompanyID();
+        // 1 Insert this Company into db and get company id
+        Integer oldCompanyID = company.getCompanyID();
         String cvrNr = company.getCvrNr();
         String companyName = company.getCompanyName();
 
-        if (cvrNr == null || companyName == null) {
-            throw new NullPointerException();
-        }
+        int newCompanyID = database.executeStoredProcedureGetID(SpGetKey.PLACE_COMPANY,oldCompanyID,cvrNr,companyName);
 
-        database.addStoredProcedureToBatch(Sp.PLACE_COMPANY, companyID, cvrNr, companyName);
+        // 2 cleanse Consultation table by company id
+        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID,oldCompanyID);
+        database.executeBatch();
 
-        // 2 write education list relationship. We delete references from the table and then reinsert
-        ArrayList<Education> educations = company.getEducationList();
-        database.addStoredProcedureToBatch(Sp.DELETE_COMPANY_EDUCATION_BRIDGE_BY_COMPANY_ID, companyID); // FIXME: 23/05/2019 Cascade on delete or update for FK fld_companyID
-        for (Education education : educations) { // Here we want to execute education
-            insertEducationFromCompanyToBatch(education, companyID); // FIXME: 23/05/2019 Definitly needs testing
-        }
-
-        // 3 Write consultations
-        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID, companyID); // FIXME: 23/05/2019 cascade on delete and update for FK_CompanyID
+        // 3 Insert Consultation should be done by other method
         ArrayList<Consultation> consultations = company.getConsultations();
         for (Consultation consultation : consultations) {
-            insertConsultationToBatch(consultation, companyID);
+            insertConsultation(consultation,newCompanyID);
         }
-        return true;
+
+        // 4 Insert education via method that returns the inserted ID
+        ArrayList<Education> educations = company.getEducationList();
+        ArrayList<Integer> newEducationIDs = new ArrayList<>();
+        for (Education education : educations) {
+            newEducationIDs.add(insertEducation(education));
+        }
+
+        // 5 With the returnValue we can make the bridge table, purge old one
+        for (Integer newEducationID : newEducationIDs) {
+            database.addStoredProcedureToBatch(Sp.INSERT_COMPANY_EDUCATION_BRIDGE,newCompanyID,newEducationID);
+        }
+
+        // 6 return value
+        return newCompanyID;
     }
 
     /**
@@ -413,49 +319,35 @@ public class DbFacade {
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static boolean insertConsultationToBatch(Consultation consultation, int companyID) throws SQLException, NullPointerException {
+    private static int insertConsultation(Consultation consultation, int companyID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
-        // 1 Write this object to db
-        Integer consultationID = consultation.getConsultationID();
+        // 1 Insert Consultations
+        Integer oldConsultationID = consultation.getConsultationID();
         String consultationName = consultation.getConsultationName();
-        Date startDate = consultation.getStartDate();
-        Date endDate = consultation.getEndDate();
+        LocalDate startDate = consultation.getStartDate();
+        LocalDate endDate = consultation.getEndDate();
 
-        if (consultationName == null || startDate == null || endDate == null) {
-            throw new NullPointerException();
-        }
+        int newConsultationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_CONSULTATION,oldConsultationID,consultationName,startDate,endDate,companyID);
 
-        database.addStoredProcedureToBatch(Sp.PLACE_CONSULTATION, consultationID, consultationName, startDate, endDate, companyID);
+        // 2 purge bridge table
+        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_EMPLOYEE_BRIDGE_BY_CONSULTATION_ID,oldConsultationID); //TODO make asearch
+        database.executeBatch();
 
-        // 2 Write Employee list relationship to db
-        //First we delete all employees where we have a relation to this consultation
-        database.addStoredProcedureToBatch(Sp.DELETE_EMPLOYEE_BY_CONSULTATION_ID, consultationID); // FIXME: 23/05/2019 Cascade delete/update fk_Consultation ID
-        //Then we insert employee and the employee relationship
+        // 3 Insert Employees via method
         ArrayList<Employee> employees = consultation.getEmployees();
+        ArrayList<Integer> newEmployeeIDs = new ArrayList<>();
         for (Employee employee : employees) {
-            insertEmployeeFromConsultationToBatch(employee, consultationID); // here we need to insert emp as Consultation
+            newEmployeeIDs.add(insertEmployee(employee));
         }
-        return true;
-    }
 
-    /**
-     * Method that will write the employee object to the database.
-     *
-     * @param employee The container of values, that will be inserted.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @deprecated use {@link #insertEmployeeToBatch(Employee)} or {@link #insertConsultationToBatch(Consultation, int)}.
-     */
-    @Deprecated
-    public static boolean insertEmployee(Employee employee) throws SQLException {
-        Integer employeeID = employee.getEmployeeId();
-        String employeeFirstName = employee.getEmployeeFirstName();
-        String employeeLastName = employee.getEmployeeLastName();
-        String CPRnr = employee.getCprNr();
-        String eMail = employee.geteMail();
-        String phoneNr = employee.getPhoneNr();
+        // 4 with the return value of insert employee we can reinsert bridge table
+        for (Integer newEmployeeID : newEmployeeIDs) {
+            database.addStoredProcedureToBatch(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE,newConsultationID,newEmployeeIDs);
+        }
+        database.executeBatch();
 
-        return DB.getInstance().executeStoredProcedureNoRS(Sp.PLACE_EMPLOYEE, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
+        return newConsultationID;
     }
 
     /*

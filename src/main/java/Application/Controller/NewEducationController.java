@@ -33,9 +33,9 @@ public class NewEducationController {
     @FXML
     public DatePicker datePicker;
     @FXML
-    public TableView<Date> datesTable;
+    public TableView<LocalDate> datesTable;
     @FXML
-    public TableColumn<Date,Date> datesColumn; //2 skal være bindable property
+    public TableColumn<LocalDate,LocalDate> datesColumn; //2 skal være bindable property
 
 
     private Provider selectedProvider = null;
@@ -131,10 +131,10 @@ public class NewEducationController {
     @FXML
     public void handleAddDate(ActionEvent event) {
         LocalDate datePicked = datePicker.getValue();
-        Date date = Date.from(datePicked.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        //Date date = Date.from(datePicked.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        selectedEducation.getDates().add(date);
-        datesTable.getItems().add(date);
+        selectedEducation.getDates().add(datePicked);
+        datesTable.getItems().add(datePicked);
         System.out.println(selectedEducation.getDates()); //TODO remove later
 
 

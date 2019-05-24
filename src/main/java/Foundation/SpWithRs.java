@@ -8,10 +8,13 @@ package Foundation;
 public enum SpWithRs implements Procedure {
 
     //FIND
-    FIND_PROVIDER("sp_FindProvider"),
+    FIND_PROVIDER("sp_Find_Provider"),
+
+    //PlACE
+
 
     //GET
-    GET_PROCEDURE_META_DATA("sp_GetSPMetaData");
+    GET_PROCEDURE_META_DATA("sp_Get_SP_Meta_Data");
 
     private final String NAME;
 

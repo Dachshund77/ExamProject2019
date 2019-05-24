@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -14,11 +15,11 @@ public class Consultation {
 
     private SimpleIntegerProperty consultationID;
     private SimpleStringProperty consultationName;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private ArrayList<Employee> employees;
 
-    public Consultation(Integer consultationID, String consultationName, Date startDate, Date endDate, ArrayList<Employee> employees) {
+    public Consultation(Integer consultationID, String consultationName, LocalDate startDate, LocalDate endDate, ArrayList<Employee> employees) {
         if (consultationID != null) {
             this.consultationID = new SimpleIntegerProperty(consultationID);
         } else {
@@ -40,8 +41,8 @@ public class Consultation {
     public Consultation(ResultSet rs) throws SQLException {
         this.consultationID = new SimpleIntegerProperty(rs.getInt("fld_ConsultationID"));
         this.consultationName = new SimpleStringProperty(rs.getString("fld_ConsultationName"));
-        this.startDate = rs.getDate("fld_StartDate");
-        this.endDate = rs.getDate("fld_EndDate");
+        this.startDate = rs.getDate("fld_StartDate").toLocalDate();
+        this.endDate = rs.getDate("fld_EndDate").toLocalDate();
     }
 
     public Integer getConsultationID() {
@@ -62,11 +63,11 @@ public class Consultation {
         return consultationName;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
