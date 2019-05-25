@@ -46,23 +46,6 @@ public class Education {
 
     }
 
-    /**
-     * Constructor that builds an object from ResultSet.
-     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
-     *
-     * @param rs ResultSet that will be used to build the object.
-     * @throws SQLException Thrown when encoutered a fatal error.
-     */
-    public Education(ResultSet rs) throws SQLException {
-        this.amuNr = new SimpleIntegerProperty(rs.getInt("fld_AmuNR"));
-        this.educationName = new SimpleStringProperty(rs.getString("fld_EducationName"));
-        this.description = new SimpleStringProperty(rs.getString("fld_Description"));
-        this.noOfDays = new SimpleIntegerProperty(rs.getInt("fld_NoOfDays"));
-        LocalDate localDate = rs.getDate("fld_Date").toLocalDate();
-        this.dates = new ArrayList<>();
-        this.dates.add(localDate);
-    }
-
     public Integer getAmuNr() {
         if (amuNr == null) {
             return null;

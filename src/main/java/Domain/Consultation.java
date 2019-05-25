@@ -31,20 +31,6 @@ public class Consultation {
         this.employees = Objects.requireNonNullElseGet(employees, ArrayList::new);
     }
 
-    /**
-     * Constructor that builds an object from ResultSet.
-     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
-     *
-     * @param rs ResultSet that will be used to build the object.
-     * @throws SQLException Thrown when encoutered a fatal error.
-     */
-    public Consultation(ResultSet rs) throws SQLException {
-        this.consultationID = new SimpleIntegerProperty(rs.getInt("fld_ConsultationID"));
-        this.consultationName = new SimpleStringProperty(rs.getString("fld_ConsultationName"));
-        this.startDate = rs.getDate("fld_StartDate").toLocalDate();
-        this.endDate = rs.getDate("fld_EndDate").toLocalDate();
-    }
-
     public Integer getConsultationID() {
         if (consultationID == null) {
             return null;
