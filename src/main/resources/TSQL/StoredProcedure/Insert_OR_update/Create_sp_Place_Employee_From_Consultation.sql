@@ -1,5 +1,4 @@
-USE db_SmartAcademy;
-CREATE PROCEDURE sp_Place_Employee_From_Consultation(@EmployeeID INT,
+CREATE OR ALTER PROCEDURE sp_Place_Employee_From_Consultation(@EmployeeID INT,
                                                  @NewEmployeeFirstName varchar(30),
                                                  @NewEmployeeLastName varchar(30),
                                                  @NewCprNr varchar(10),

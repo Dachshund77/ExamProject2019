@@ -1,5 +1,4 @@
-USE db_SmartAcademy;
-CREATE PROCEDURE sp_Place_Education_From_Company(@AmuNr INT,
+CREATE OR ALTER PROCEDURE sp_Place_Education_From_Company(@AmuNr INT,
                                     @NewProviderID INT,
                                     @NewEducationName VARCHAR(30),
                                     @newDescription NVARCHAR(MAX),

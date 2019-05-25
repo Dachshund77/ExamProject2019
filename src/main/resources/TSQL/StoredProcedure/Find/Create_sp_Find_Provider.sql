@@ -4,6 +4,6 @@ AS
 BEGIN
     SELECT fld_ProviderID AS tbl_Provider_PK_fld_ProviderID,
            fld_ProviderName AS tbl_Provider_fld_ProviderName
-    FROM udf_Filter_Provider(@ProviderID, @ProviderName)
+    FROM udf_Filter_tbl_Provider(@ProviderID, @ProviderName)
 END;
 

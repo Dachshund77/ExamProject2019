@@ -10,6 +10,10 @@ public enum SpWithRs implements Procedure {
     //FIND
     FIND_PROVIDER("sp_Find_Provider"),
     FIND_EDUCATION("sp_Find_Education"),
+    FIND_COMPANY("sp_Find_Company"),
+    FIND_CONSULTATION("sp_Find_Consultation"),
+    FIND_EMPLOYEE("sp_Find_Employee"),
+    FIND_INTERVIEW("sp_Find_Interview"),
 
     //PlACE
 

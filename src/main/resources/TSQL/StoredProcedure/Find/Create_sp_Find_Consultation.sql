@@ -73,13 +73,13 @@ BEGIN
         @tbl_Date AS TableType_Date
     INSERT INTO @tbl_Date
     SELECT fld_DateID, fld_AmuNr, fld_Date
-    FROM udf_Filter_Date(@DateID, @DateMinDate, @DateMaxDate)
+    FROM udf_Filter_tbl_Date(@DateID, @DateMinDate, @DateMaxDate)
 
     DECLARE
         @tbl_Provider AS TableType_Provider
     INSERT INTO @tbl_Provider
     SELECT fld_ProviderID, fld_ProviderName
-    FROM udf_Filter_Provider(@ProviderID, @ProviderName)
+    FROM udf_Filter_tbl_Provider(@ProviderID, @ProviderName)
 
     SELECT [@tbl_Consultation].fld_ConsultationID           AS tbl_Consultation_PK_fld_ConsultationID,           --Consultation
            [@tbl_Consultation].fld_ConsultationName         AS tbl_Consultation_fld_ConsultationName,
@@ -100,7 +100,7 @@ BEGIN
            [@tbl_Interview].fld_Flexibility                 AS tbl_Interview_fld_Flexibility,
            [@tbl_Interview].fld_QualityAwareness            AS tbl_Interview_fld_QualityAwarness,
            [@tbl_Interview].fld_Cooperation                 AS tbl_Interview_fld_Cooperation,
-           [@tbl_EducationWish].fld_InterviewID             AS tbl_EducationWish_PK_fld_EducationWishID,         --education wish
+           [@tbl_EducationWish].fld_EducationWishID             AS tbl_EducationWish_PK_fld_EducationWishID,         --education wish
            [@tbl_EducationWish].fld_AmuNR                   AS tbl_EducationWish_FK_fld_AmuNr,
            [@tbl_EducationWish].fld_InterviewID             AS tbl_EducationWish_FK_fld_InterviewID,
            [@tbl_EducationWish].fld_WishPriority            AS tbl_EducationWish_fld_WishPriority,

@@ -13,13 +13,13 @@ BEGIN
         @tbl_Date AS TableType_Date
     INSERT INTO @tbl_Date
     SELECT fld_DateID, fld_AmuNr, fld_Date
-    FROM udf_Filter_Date(@DateID, @DateMinDate, @DateMaxDate)
+    FROM udf_Filter_tbl_Date(@DateID, @DateMinDate, @DateMaxDate)
 
     DECLARE
         @tbl_Provider AS TableType_Provider
     INSERT INTO @tbl_Provider
     SELECT fld_ProviderID, fld_ProviderName
-    FROM udf_Filter_Provider(@ProviderID, @ProviderName)
+    FROM udf_Filter_tbl_Provider(@ProviderID, @ProviderName)
 
     SELECT [@tbl_Date].fld_DateID           AS tbl_Date_PK_fld_DateID,         -- Date of educations
            [@tbl_Date].fld_Date             AS tbl_Date_fld_Date,

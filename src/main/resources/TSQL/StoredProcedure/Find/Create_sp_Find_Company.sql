@@ -16,7 +16,7 @@ BEGIN
     SELECT fld_CompanyID,
            fld_CvrNr,
            fld_CompanyName
-    FROM udf_Filter_Company(@CompanyID, @CvrNr, @CompanyName)
+    FROM udf_Filter_tbl_Company(@CompanyID, @CvrNr, @CompanyName)
 
     DECLARE
         @tbl_Company_Education_Bridge AS TableType_Company_Education_Bridge
@@ -89,13 +89,13 @@ BEGIN
         @tbl_Date AS TableType_Date
     INSERT INTO @tbl_Date
     SELECT fld_DateID, fld_AmuNr, fld_Date
-    FROM udf_Filter_Date(@DateID, @DateMinDate, @DateMaxDate)
+    FROM udf_Filter_tbl_Date(@DateID, @DateMinDate, @DateMaxDate)
 
     DECLARE
         @tbl_Provider AS TableType_Provider
     INSERT INTO @tbl_Provider
     SELECT fld_ProviderID, fld_ProviderName
-    FROM udf_Filter_Provider(@ProviderID, @ProviderName)
+    FROM udf_Filter_tbl_Provider(@ProviderID, @ProviderName)
 
     SELECT [@tbl_Company].fld_CompanyID                           AS tbl_Company_PK_fld_CompanyID,                     --Company
            [@tbl_Company].fld_CvrNr                               AS tbl_Company_fld_CvrNr,
@@ -123,7 +123,7 @@ BEGIN
            [@tbl_Interview].fld_Flexibility                       AS tbl_Interview_fld_Flexibility,
            [@tbl_Interview].fld_QualityAwareness                  AS tbl_Interview_fld_QualityAwarness,
            [@tbl_Interview].fld_Cooperation                       AS tbl_Interview_fld_Cooperation,
-           [@tbl_EducationWish].fld_InterviewID                   AS tbl_EducationWish_PK_fld_EducationWishID,         --education wish
+           [@tbl_EducationWish].fld_EducationWishID               AS tbl_EducationWish_PK_fld_EducationWishID,         --education wish
            [@tbl_EducationWish].fld_AmuNR                         AS tbl_EducationWish_FK_fld_AmuNr,
            [@tbl_EducationWish].fld_InterviewID                   AS tbl_EducationWish_FK_fld_InterviewID,
            [@tbl_EducationWish].fld_WishPriority                  AS tbl_EducationWish_fld_WishPriority,
@@ -142,7 +142,6 @@ BEGIN
            [@tbl_Provider].fld_ProviderID                         AS tbl_Provider_PK_fld_ProviderID,                   -- Provider
            [@tbl_Provider].fld_ProviderName                       AS tbl_Provider_fld_ProviderName
 
-           --Bridges?
 
     FROM @tbl_Company
              INNER JOIN @tbl_Consultation

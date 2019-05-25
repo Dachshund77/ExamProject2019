@@ -1,4 +1,4 @@
-CREATE OR ALTER FUNCTION udf_Filter_Company(@CompanyID INT, @CvrNr VARCHAR(80),
+CREATE OR ALTER FUNCTION udf_Filter_tbl_Company(@CompanyID INT, @CvrNr VARCHAR(80),
                                             @CompanyName VARCHAR(50))
     RETURNS TABLE
         AS

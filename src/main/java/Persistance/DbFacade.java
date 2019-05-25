@@ -5,10 +5,7 @@ import Foundation.DB;
 import Foundation.Sp;
 import Foundation.SpGetKey;
 import Foundation.SpWithRs;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 
-import java.security.DomainCombiner;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.ResultSet;
@@ -18,8 +15,10 @@ import java.util.HashMap;
 /**
  * Facade class that helps convert SQL data to objects.
  * Note that this class will not establish a Db connection on its own.
+ * @deprecated
  */
-public class DbFacade { //TODO This whole god forsaken shit class need to have an overhaul on documentation.
+@Deprecated
+public class DbFacade { //TODO missing deprecated.
 
     /*
      * INSERTION
@@ -358,18 +357,18 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException Exception when encountered a fatal error
      * @see Provider
      */
-    public static HashMap<Integer, Provider> findProviders(Integer providerID, String ProviderName) throws SQLException {
+    public static ArrayList<Provider> findProviders(Integer providerID, String ProviderName) throws SQLException {
         //init needed values
-        HashMap<Integer, Provider> returnMap = new HashMap<>();
+        HashMap<Integer,Provider> providers = new HashMap<>();
 
         //Getting data
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, providerID, ProviderName);
 
         while (rs.next()) {
-            Provider tempProvider = new Provider(rs);
-            returnMap.put(tempProvider.getProviderID(), tempProvider);
+            buildProvider(rs,providers);
+
         }
-        return returnMap;
+        return new ArrayList<Provider>(providers.values());
     }
 
     /*
@@ -384,15 +383,15 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
 
     public static Provider findProvider(int ID) throws SQLException { //TODO MAKE JAVA DOC
         //init needed values
-        Provider returnProvider = null;
+        HashMap<Integer,Provider> providers = new HashMap<>();
 
         //Getting data
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, ID, null);
 
         while (rs.next()) {
-            returnProvider = new Provider(rs);
+            buildProvider(rs,providers);
         }
-        return returnProvider;
+        return new ArrayList<>(providers.values()).get(0);
     }
 
     public static Education findEducation(int ID) throws SQLException {
@@ -407,8 +406,8 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
 
         //get row by row
         while (rs.next()) {
-            buildProvider(rs,providers);
-            buildEducation(rs,educations,providers);
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
         }
 
         for (Education education : educations.values()) {
@@ -431,16 +430,15 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      */
     public static ArrayList<Provider> findAllProviders() throws SQLException {
         //init needed values
-        HashMap<Integer, Provider> returnMap = new HashMap<>();
+        HashMap<Integer, Provider> providers = new HashMap<>();
 
         //Getting data
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, null, null);
 
         while (rs.next()) {
-            Provider tempProvider = new Provider(rs);
-            returnMap.put(tempProvider.getProviderID(), tempProvider);
+            buildProvider(rs,providers);
         }
-        return new ArrayList<>(returnMap.values());
+        return new ArrayList<>(providers.values());
     }
 
 
@@ -449,39 +447,46 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      */
 
     private static void buildProvider(ResultSet rs, HashMap<Integer, Provider> providerHashMap) throws SQLException {
-        //Fetch values from rs
-        int id = rs.getInt("fld_ProviderID");
-        String providerName = rs.getString("fld_ProviderName");
+        //Fetch values from rs and test if the rs contain the object
+        int id = rs.getInt("tbl_Provider_PK_fld_ProviderID");
+        if (!rs.wasNull()) { //Test for existences
+            String providerName = rs.getString("tbl_Provider_fld_ProviderName");
 
-        // Make new Provider
-        Provider provider = new Provider(id, providerName);
+            // Make new Provider
+            Provider provider = new Provider(id, providerName);
 
-        //Put provider in HashMap
-        providerHashMap.putIfAbsent(id, provider);
+            //Put provider in HashMap
+            providerHashMap.putIfAbsent(id, provider);
+        }
     }
 
     //Should be done AFTER call to buildProvider
     private static void buildEducation(ResultSet rs,
                                        HashMap<Integer, Education> educationHashMap,
                                        HashMap<Integer, Provider> providerHashMap) throws SQLException {
-        //Fetch values from rs
-        int id = rs.getInt("fld_AmuNR");
-        String name = rs.getString("fld_EducationName");
-        String description = rs.getString("fld_Description");
-        int noOfDays = rs.getInt("fld_NoOfDays");
-        LocalDate localDate = rs.getDate("fld_Date").toLocalDate();
+        //Fetch values from rs and test if the rs contain the object
+        int id = rs.getInt("tbl_Education_PK_fld_AmuNr");
+        if (!rs.wasNull()) { //Test for existences
+            String name = rs.getString("tbl_Education_fld_EducationName");
+            String description = rs.getString("tbl_Education_fld_Description");
+            int noOfDays = rs.getInt("tbl_Education_fld_NoOfDays"); //Can not be null in db
+            LocalDate localDate = rs.getDate("tbl_Date_fld_Date").toLocalDate();
 
-        //fetch the provider from the hashMap
-        int providerId = rs.getInt("fld_ProviderID");
-        Provider provider = providerHashMap.get(providerId);
+            //fetch the provider from the hashMap
+            Provider provider = null;
+            int providerId = rs.getInt("tbl_Education_FK_fld_ProviderID");
+            if (!rs.wasNull()) {
+                provider = providerHashMap.get(providerId);
+            }
 
-        //Make new Education
-        Education education = new Education(id, name, description, noOfDays, new ArrayList<>(), provider);
+            //Make new Education
+            Education education = new Education(id, name, description, noOfDays, new ArrayList<>(), provider);
 
-        // Put education in hashMap and add date to the right reference
-        education = educationHashMap.putIfAbsent(id, education);
-        if (education != null) {
-            education.getDates().add(localDate);
+            // Put education in hashMap and add date to the right reference
+            education = educationHashMap.putIfAbsent(id, education);
+            if (education != null) {
+                education.getDates().add(localDate);
+            }
         }
     }
 
@@ -490,18 +495,23 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
                                                HashMap<Integer, FinishedEducation> finishedEducationHashMap,
                                                HashMap<Integer, Education> educationHashMap) throws SQLException {
         // Fetch values from rs
-        int id = rs.getInt("fld_FinishedEducationID");
-        LocalDate localDate = rs.getDate("fld_FinishedDate").toLocalDate();
+        int id = rs.getInt("tbl_FinishedEducation_PK_fld_FinishedEducationID");
+        if (!rs.wasNull()) { //Test for existences
+            LocalDate localDate = rs.getDate("tbl_FinishedEducation_fld_FinishedDate").toLocalDate();
 
-        // Fetch values from updated hashMap
-        int educationId = rs.getInt("fld_AmuNR");
-        Education education = educationHashMap.get(educationId);
+            // Fetch values from updated hashMap
+            int educationId = rs.getInt("tbl_FinishedEducation_FK_fld_AmuNr");
+            Education education = null;
+            if (!rs.wasNull()) {
+                education = educationHashMap.get(educationId);
+            }
 
-        // make new object
-        FinishedEducation finishedEducation = new FinishedEducation(id, education, localDate);
+            // make new object
+            FinishedEducation finishedEducation = new FinishedEducation(id, education, localDate);
 
-        //Put Object in hashMap and add references
-        finishedEducationHashMap.putIfAbsent(id, finishedEducation);
+            //Put Object in hashMap and add references
+            finishedEducationHashMap.putIfAbsent(id, finishedEducation);
+        }
     }
 
     //should be called after  education we need the updated HashMap
@@ -509,18 +519,23 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
                                            HashMap<Integer, EducationWish> educationWishHashMap,
                                            HashMap<Integer, Education> educationHashMap) throws SQLException {
         // Fetch values from rs
-        int id = rs.getInt("fld_EducationWishID");
-        int priority = rs.getInt("fld_WishPriority");
+        int id = rs.getInt("tbl_EducationWish_PK_fld_EducationWishID");
+        if (!rs.wasNull()) { //Test for existences
+            int priority = rs.getInt("tbl_EducationWish_fld_WishPriority");
 
-        // Fetch values from updated hashMap
-        int educationId = rs.getInt("fld_AmuNR");
-        Education education = educationHashMap.get(educationId);
+            // Fetch values from updated hashMap
+            int educationId = rs.getInt("tbl_EducationWish_FK_fld_AmuNr");
+            Education education = null;
+            if (!rs.wasNull()) {
+                education = educationHashMap.get(educationId);
+            }
 
-        // make new object
-        EducationWish educationWish = new EducationWish(id, education, priority);
+            // make new object
+            EducationWish educationWish = new EducationWish(id, education, priority);
 
-        //Put Object in hashMap and add references
-        educationWishHashMap.putIfAbsent(id, educationWish);
+            //Put Object in hashMap and add references
+            educationWishHashMap.putIfAbsent(id, educationWish);
+        }
     }
 
     //should be called after both finished education and education wish
@@ -529,55 +544,82 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
                                        HashMap<Integer, FinishedEducation> finishedEducationHashMap,
                                        HashMap<Integer, Interview> interviewHashMap) throws SQLException {
         // Fetch values from rs
-        int id = rs.getInt("fld_InterviewID");
-        String name = rs.getString("fld_InterviewName");
-        int productUnderstanding = rs.getInt("fld_ProductUnderstanding");
-        int problemUnderstanding = rs.getInt("fld_ProblemUnderstanding");
-        int flexibility = rs.getInt("fld_Flexibility");
-        int qualityAwareness = rs.getInt("fld_QualityAwareness");
-        int cooperation = rs.getInt("fld_Cooperation");
+        int id = rs.getInt("tbl_Interview_PK_fld_InterviewID");
+        if (!rs.wasNull()) { //Test for existence
+            String name = rs.getString("tbl_Interview_fld_InterviewName");
+            Integer productUnderstanding = rs.getInt("tbl_Interview_fld_ProductUnderstanding"); //Can be null, rs set it to 0
+            if (rs.wasNull()) {
+                productUnderstanding = null;
+            }
+            Integer problemUnderstanding = rs.getInt("tbl_Interview_fld_ProblemUnderstanding");
+            if (rs.wasNull()) {
+                problemUnderstanding = null;
+            }
+            Integer flexibility = rs.getInt("tbl_Interview_fld_Flexibility");
+            if (rs.wasNull()) {
+                flexibility = null;
+            }
+            Integer qualityAwareness = rs.getInt("tbl_Interview_fld_QualityAwarness");
+            if (rs.wasNull()) {
+                qualityAwareness = null;
+            }
+            Integer cooperation = rs.getInt("tbl_Interview_fld_Cooperation");
+            if (rs.wasNull()) {
+                cooperation = null;
+            }
 
-        // Fetch values from updated hashMap
-        int eduWishID = rs.getInt("fld_EducationWishID");
-        EducationWish educationWish = educationWishHashMap.get(eduWishID);
+            // Fetch values from updated hashMap
+            int eduWishID = rs.getInt("tbl_EducationWish_PK_fld_EducationWishID");
+            EducationWish educationWish = null;
+            if (!rs.wasNull()) {
+                educationWish = educationWishHashMap.get(eduWishID);
+            }
 
-        int finEduID = rs.getInt("fld_FinishedEducationID");
-        FinishedEducation finishedEducation = finishedEducationHashMap.get(finEduID);
+            int finEduID = rs.getInt("tbl_FinishedEducation_PK_fld_FinishedEducationID");
+            FinishedEducation finishedEducation = null;
+            if (!rs.wasNull()) {
+                finishedEducation = finishedEducationHashMap.get(finEduID);
+            }
 
-        // make new object
-        Interview interview = new Interview(id,name,productUnderstanding,problemUnderstanding,flexibility,qualityAwareness,cooperation,new ArrayList<>(),new ArrayList<>());
+            // make new object
+            Interview interview = new Interview(id, name, productUnderstanding, problemUnderstanding, flexibility, qualityAwareness, cooperation, new ArrayList<>(), new ArrayList<>());
 
-        //Put Object in hashMap and add references
-        interview = interviewHashMap.putIfAbsent(id,interview);
-        if (interview != null){
-            interview.getEducationWishes().add(educationWish);
-            interview.getFinishedEducations().add(finishedEducation);
+            //Put Object in hashMap and add references
+            interview = interviewHashMap.putIfAbsent(id, interview);
+            if (interview != null) {
+                interview.getEducationWishes().add(educationWish);
+                interview.getFinishedEducations().add(finishedEducation);
+            }
         }
     }
 
     //should be called after interview
     private static void buildEmployee(ResultSet rs,
-                                      HashMap<Integer,Interview> interviewHashMap,
-                                      HashMap<Integer, Employee> employeeHashMap) throws SQLException{
+                                      HashMap<Integer, Interview> interviewHashMap,
+                                      HashMap<Integer, Employee> employeeHashMap) throws SQLException {
         // Fetch values from rs
-        int id = rs.getInt("fld_EmployeeID");
-        String firstName = rs.getString("fld_EmployeeFirstName");
-        String lastName = rs.getString("fld_EmployeeLastName");
-        String cpr =rs.getString("fld_CprNr");
-        String eMail = rs.getString("fld_EMail");
-        String phoneNr = rs.getString("fld_PhoneNr");
+        int id = rs.getInt("tbl_Employee_PK_fld_EmployeeID");
+        if (!rs.wasNull()) {
+            String firstName = rs.getString("tbl_Employee_fld_EmployeeFirstName");
+            String lastName = rs.getString("tbl_Employee_fld_EmployeeLastName");
+            String cpr = rs.getString("tbl_Employee_fld_CprNr");
+            String eMail = rs.getString("tbl_Employee_fld_Email");
+            String phoneNr = rs.getString("tbl_Employee_fld_PhoneNr");
 
-        // Fetch values from updated hashMap
-        int interviewId = rs.getInt("fld_InterviewID");
-        Interview interview = interviewHashMap.get(interviewId);
+            // Fetch values from updated hashMap
+            int interviewId = rs.getInt("tbl_Interview_PK_fld_InterviewID");
+            Interview interview = null;
+            if (!rs.wasNull()) {
+                interview = interviewHashMap.get(interviewId);
+            }
+            // make new object
+            Employee employee = new Employee(id, firstName, lastName, cpr, eMail, phoneNr, new ArrayList<>());
 
-        // make new object
-        Employee employee = new Employee(id,firstName,lastName,cpr,eMail,phoneNr,new ArrayList<>());
-
-        //Put Object in hashMap and add references
-        employee = employeeHashMap.putIfAbsent(id,employee);
-        if (employee != null){
-            employee.getInterviews().add(interview);
+            //Put Object in hashMap and add references
+            employee = employeeHashMap.putIfAbsent(id, employee);
+            if (employee != null) {
+                employee.getInterviews().add(interview);
+            }
         }
     }
 
@@ -586,75 +628,64 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
                                           HashMap<Integer, Employee> employeeHashMap,
                                           HashMap<Integer, Consultation> consultationHashMap) throws SQLException {
         // Fetch values from rs
-        int id = rs.getInt("fld_ConsultationID");
-        String name = rs.getString("fld_ConsultationName");
-        LocalDate startDate = rs.getDate("fld_StartDate").toLocalDate();
-        LocalDate endDate = rs.getDate("fld_EndDate").toLocalDate();
+        int id = rs.getInt("tbl_Consultation_PK_fld_ConsultationID");
+        if (!rs.wasNull()) {
+            String name = rs.getString("tbl_Consultation_fld_ConsultationName");
+            LocalDate startDate = rs.getDate("tbl_Consultation_fld_StartDate").toLocalDate();
+            LocalDate endDate = rs.getDate("tbl_Consultation_fld_EndDate").toLocalDate();
 
-        // Fetch values from updated hashMap
-        int employeeId = rs.getInt("fld_EmployeeID");
-        Employee employee = employeeHashMap.get(employeeId);
+            // Fetch values from updated hashMap
+            int employeeId = rs.getInt("tbl_Consultation_Employee_Bridge_FK_fld_EmployeeID");
+            Employee employee = null;
+            if (!rs.wasNull()) {
+                employee = employeeHashMap.get(employeeId);
+            }
 
-        // make new object
-        Consultation consultation = new Consultation(id,name,startDate,endDate,new ArrayList<>());
+            // make new object
+            Consultation consultation = new Consultation(id, name, startDate, endDate, new ArrayList<>());
 
-        //Put Object in hashMap and add references
-        consultation = consultationHashMap.putIfAbsent(id,consultation);
-        if (consultation != null){
-            consultation.getEmployees().add(employee);
+            //Put Object in hashMap and add references
+            consultation = consultationHashMap.putIfAbsent(id, consultation);
+            if (consultation != null) {
+                consultation.getEmployees().add(employee);
+            }
         }
     }
 
     //should be called after education and consultation
     private static void buildCompany(ResultSet rs,
                                      HashMap<Integer, Consultation> consultationHashMap,
-                                     HashMap<Integer,Education> educationHashMap,
-                                     HashMap<Integer,Company> companyHashMap) throws SQLException  {
+                                     HashMap<Integer, Education> educationHashMap,
+                                     HashMap<Integer, Company> companyHashMap) throws SQLException {
         // Fetch values from rs
-        int id = rs.getInt("fld_CompanyID");
-        String cvr = rs.getString("fld_CvrNr");
-        String name = rs.getString("fld_CompanyName");
+        int id = rs.getInt("tbl_Company_PK_fld_CompanyID");
+        if (!rs.wasNull()) {
+            String cvr = rs.getString("tbl_Company_fld_CvrNr");
+            String name = rs.getString("tbl_Company_fld_CompanyName");
 
-        // Fetch values from updated hashMap
-        int consultationId = rs.getInt("fld_ConsultationID");
-        Consultation consultation = consultationHashMap.get(consultationId);
+            // Fetch values from updated hashMap
+            int consultationId = rs.getInt("tbl_Consultation_PK_fld_ConsultationID");
+            Consultation consultation = null;
+            if (!rs.wasNull()) {
+                consultation = consultationHashMap.get(consultationId);
+            }
 
-        int educatiionId = rs.getInt("fld_EducationID");
-        Education education = educationHashMap.get(educatiionId);
+            int educatiionId = rs.getInt("tbl_Company_Education_Bridge_FK_fld_AmurNr");
+            Education education = null;
+            if (!rs.wasNull()) {
+                education = educationHashMap.get(educatiionId);
+            }
 
-        // make new object
-        Company company = new Company(id,cvr,name,new ArrayList<>(),new ArrayList<>());
+            // make new object
+            Company company = new Company(id, cvr, name, new ArrayList<>(), new ArrayList<>());
 
-        //Put Object in hashMap and add references
-        company = companyHashMap.putIfAbsent(id,company);
-        if (company != null){
-            company.getConsultations().add(consultation);
-            company.getEducationList().add(education);
+            //Put Object in hashMap and add references
+            company = companyHashMap.putIfAbsent(id, company);
+            if (company != null) {
+                company.getConsultations().add(consultation);
+                company.getEducationList().add(education);
+            }
         }
-    }
-
-
-    /***
-     * Is bugged
-     * @return bug
-     * @throws SQLException 100 percent of thetime
-     * @deprecated is bugged, see DbFace.
-     */
-    @Deprecated
-    public static HashMap<Integer, Company> FindAllCompanies() throws SQLException {
-
-        //init needed values
-        HashMap<Integer, Company> returnCompNames = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindCompanyNames");
-
-        while (rs.next()) {
-            Company tempCompanyNames = new Company(rs);
-            returnCompNames.put(tempCompanyNames.getCompanyID(), tempCompanyNames);
-        }
-        return returnCompNames;
-
     }
 
 }
