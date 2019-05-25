@@ -1,9 +1,10 @@
 USE db_SmartAcademy;
 CREATE PROCEDURE sp_Find_Provider(@ProviderID INT,
-                                 @ProviderName VARCHAR(30))
+                                  @ProviderName VARCHAR(30))
 AS
 BEGIN
-    SELECT *
-    FROM udf_Filter_Provider (@ProviderID,@ProviderName)
+    SELECT fld_ProviderID AS tbl_Provider_fld_ProviderID,
+           fld_ProviderName AS tbl_Provider_fld_ProviderName
+    FROM udf_Filter_Provider(@ProviderID, @ProviderName)
 END;
 
