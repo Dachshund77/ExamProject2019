@@ -1,5 +1,5 @@
 CREATE OR ALTER PROCEDURE sp_Find_Education(@AmuNr INT, @EducationName VARCHAR(30), @NoOfDays INT, @DateID INT,
-                                            @DateFirstDate DATE, @DateSecondDate DATE, @ProviderID INT,
+                                            @DateMinDate DATE, @DateMaxDate DATE, @ProviderID INT,
                                             @ProviderName VARCHAR(30))
 AS
 BEGIN
@@ -13,7 +13,7 @@ BEGIN
         @tbl_Date AS TableType_Date
     INSERT INTO @tbl_Date
     SELECT fld_DateID, fld_AmuNr, fld_Date
-    FROM udf_Filter_Date(@DateID, @DateFirstDate, @DateSecondDate)
+    FROM udf_Filter_Date(@DateID, @DateMinDate, @DateMaxDate)
 
     DECLARE
         @tbl_Provider AS TableType_Provider
