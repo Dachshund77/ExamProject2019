@@ -1,9 +1,24 @@
-CREATE OR ALTER PROCEDURE sp_Find_Interview(@fld_InterviewID INT, @fld_InterviewName VARCHAR(30), @AmuNr INT,
-                                            @EducationName VARCHAR(30), @NoOfDays INT, @DateID INT,
-                                            @DateMinDate DATE, @DateMaxDate DATE, @ProviderID INT,
-                                            @ProviderName VARCHAR(30))
+CREATE OR ALTER PROCEDURE sp_Find_Employee(@fld_EmployeeID INT, @fld_EmployeeFirstName VARCHAR(30),
+                                           @fld_EmployeeLastName VARCHAR(30), @fld_CprNr VARCHAR(10),
+                                           @fld_Email VARCHAR(30), @fld_PhoneNr VARCHAR(20), @fld_InterviewID INT,
+                                           @fld_InterviewName VARCHAR(30), @AmuNr INT,
+                                           @EducationName VARCHAR(30), @NoOfDays INT, @DateID INT,
+                                           @DateMinDate DATE, @DateMaxDate DATE, @ProviderID INT,
+                                           @ProviderName VARCHAR(30))
 AS
 BEGIN
+    DECLARE
+        @tbl_Employee AS TableType_Employee
+    INSERT INTO @tbl_Employee
+    SELECT fld_EmployeeID,
+           fld_EmployeeFirstName,
+           fld_EmployeeLastName,
+           fld_CprNr,
+           fld_Email,
+           fld_PhoneNr
+    FROM udf_Filter_tbl_Employee(@fld_EmployeeID, @fld_EmployeeFirstName, @fld_EmployeeLastName, @fld_CprNr, @fld_Email,
+                                 @fld_PhoneNr)
+
     DECLARE
         @tbl_Interview AS TableType_Interview
     INSERT INTO @tbl_Interview
@@ -47,7 +62,13 @@ BEGIN
     SELECT fld_ProviderID, fld_ProviderName
     FROM udf_Filter_Provider(@ProviderID, @ProviderName)
 
-    SELECT [@tbl_Interview].fld_InterviewID,                 --Interview
+    SELECT [@tbl_Employee].fld_EmployeeID,                  --employee
+           [@tbl_Employee].fld_EmployeeFirstName,
+           [@tbl_Employee].fld_EmployeeLastName,
+           [@tbl_Employee].fld_CprNr,
+           [@tbl_Employee].fld_Email,
+           [@tbl_Employee].fld_PhoneNr,
+           [@tbl_Interview].fld_InterviewID,                 --Interview
            [@tbl_Interview].fld_InterviewName,
            [@tbl_Interview].fld_ProductUnderstanding,
            [@tbl_Interview].fld_ProblemUnderstanding,
@@ -58,7 +79,7 @@ BEGIN
            [@tbl_EducationWish].fld_WishPriority,
            [@tbl_FinishedEducation].fld_FinishedEducationID, --finished education
            [@tbl_FinishedEducation].fld_FinishedDate,
-           [edu1].fld_AmuNR,                       --Education
+           [edu1].fld_AmuNR,                                 --Education
            [edu1].fld_EducationName,
            [edu1].fld_Description,
            [edu1].fld_NoOfDays,
@@ -67,7 +88,8 @@ BEGIN
            [@tbl_Provider].fld_ProviderName
 
 
-    FROM @tbl_Interview
+    FROM @tbl_Employee
+             INNER JOIN @tbl_Interview ON [@tbl_Employee].fld_EmployeeID = [@tbl_Interview].fld_Employee_ID
              INNER JOIN @tbl_EducationWish ON [@tbl_Interview].fld_InterviewID = [@tbl_EducationWish].fld_InterviewID
              INNER JOIN @tbl_FinishedEducation
                         ON [@tbl_Interview].fld_InterviewID = [@tbl_FinishedEducation].fld_InterviewID
