@@ -291,6 +291,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         for (Integer newEducationID : newEducationIDs) {
             database.addStoredProcedureToBatch(Sp.INSERT_COMPANY_EDUCATION_BRIDGE, newCompanyID, newEducationID);
         }
+        database.executeBatch();
 
         // 6 return value
         return newCompanyID;

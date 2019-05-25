@@ -38,14 +38,14 @@ public class TestDataCreator {
     //Properties
     private final int NO_OF_PROVIDERS_GENERATED = 3;
     private final int NO_OF_EDUCATIONS_GENERATED = 5;
-    private final int NO_OF_COMPANIES_GENERATED = 5;
+    private final int NO_OF_COMPANIES_GENERATED = 20;
     private final int MAX_DATES_EACH_EDUCATION = 3;
     private final int MAX_EDUCATION_WISHES_PER_INTERVIEW = 3;
     private final int MAX_FINISHED_EDUCATION_PER_INTERVIEW = 3;
     private final int MAX_INTERVIEWS_PER_EMPLOYEE = 3;
     private final int MAX_EMPLOYEE_PER_CONSULTATION = 3;
     private final int MAX_CONSULTATION_PER_COMPANY = 3;
-    private final int MAX_EDUCATIONS_PER_COMANY= 3;
+    private final int MAX_EDUCATIONS_PER_COMANY= 5;
 
     //Variables
     private ArrayList<Provider> providerArrayList = new ArrayList<>();
