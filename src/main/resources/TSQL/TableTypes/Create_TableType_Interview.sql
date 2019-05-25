@@ -7,5 +7,5 @@ CREATE TYPE TableType_Interview AS TABLE
     fld_ProblemUnderstanding INT,
     fld_Flexibility          INT,
     fld_QualityAwareness     INT,
-    fld_Cooperation          INT,
-)
+    fld_Cooperation          INT
+);

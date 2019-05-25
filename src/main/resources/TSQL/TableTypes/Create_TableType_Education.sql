@@ -5,4 +5,4 @@ CREATE TYPE TableType_Education AS TABLE
     fld_EducationName VARCHAR(30) NOT NULL,
     fld_Description   NVARCHAR(MAX),
     fld_NoOfDays      INT         NOT NULL
-)
+);
