@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Education {
-    private final SimpleIntegerProperty amuNr;
+    private final SimpleIntegerProperty amuNr; //TODO MAKE FINAL INT
     private SimpleStringProperty educationName;
     private SimpleStringProperty description;
     private SimpleIntegerProperty noOfDays;
@@ -57,7 +57,10 @@ public class Education {
         this.amuNr = new SimpleIntegerProperty(rs.getInt("fld_AmuNR"));
         this.educationName = new SimpleStringProperty(rs.getString("fld_EducationName"));
         this.description = new SimpleStringProperty(rs.getString("fld_Description"));
-        this.noOfDays = new SimpleIntegerProperty(rs.getInt("fld_NoOfFays"));
+        this.noOfDays = new SimpleIntegerProperty(rs.getInt("fld_NoOfDays"));
+        LocalDate localDate = rs.getDate("fld_Date").toLocalDate();
+        this.dates = new ArrayList<>();
+        this.dates.add(localDate);
     }
 
     public Integer getAmuNr() {

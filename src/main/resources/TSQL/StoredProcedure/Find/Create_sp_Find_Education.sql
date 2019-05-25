@@ -21,12 +21,11 @@ BEGIN
     SELECT fld_ProviderID, fld_ProviderName
     FROM udf_Filter_Provider(@ProviderID, @ProviderName)
 
-    SELECT [@tbl_Education].fld_AmuNR,     --Education
+    SELECT [@tbl_Education].fld_AmuNR as nigga,     --Education
            [@tbl_Education].fld_EducationName,
            [@tbl_Education].fld_Description,
            [@tbl_Education].fld_NoOfDays,
-           [@tbl_Date].fld_DateID,                   -- Date
-           [@tbl_Date].fld_Date,
+           [@tbl_Date].fld_Date,           -- Date of educations
            [@tbl_Provider].fld_ProviderID, -- Provider
            [@tbl_Provider].fld_ProviderName
 

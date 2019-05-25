@@ -9,6 +9,7 @@ public enum SpWithRs implements Procedure {
 
     //FIND
     FIND_PROVIDER("sp_Find_Provider"),
+    FIND_EDUCATION("sp_Find_Education"),
 
     //PlACE
 

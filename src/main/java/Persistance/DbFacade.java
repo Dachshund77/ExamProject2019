@@ -6,12 +6,11 @@ import Foundation.Sp;
 import Foundation.SpGetKey;
 import Foundation.SpWithRs;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.ObservableList;
-import org.apache.ibatis.jdbc.Null;
+import javafx.beans.property.SimpleStringProperty;
 
+import java.security.DomainCombiner;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -22,12 +21,13 @@ import java.util.HashMap;
  */
 public class DbFacade { //TODO This whole god forsaken shit class need to have an overhaul on documentation.
 
-   /*
-    * INSERTION
-    */
+    /*
+     * INSERTION
+     */
 
     /**
      * Method that will write the a provider object to the database.
+     *
      * @param provider The Container for the values that will be inserted.
      * @return True if successful added to batch.
      * @throws SQLException         Exception thrown when encountered a fatal error.
@@ -48,6 +48,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
     /**
      * Method that will write the a provider object to the database.
      * Will also make sure that its children objects are written correctly to the database.
+     *
      * @param education The Container for the values that will be inserted.
      * @return True if successful added to batch.
      * @throws SQLException         Exception thrown when encountered a fatal error.
@@ -171,7 +172,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        int newEmployeeID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EMPLOYEE,oldEmployeeID,employeeFirstName,employeeLastName,CPRnr,eMail,phoneNr);
+        int newEmployeeID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EMPLOYEE, oldEmployeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
 
         // 2 Purge interview table
         database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, oldEmployeeID);
@@ -180,7 +181,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         // 3 Insert interview by calling method and passing
         ArrayList<Interview> employees = employee.getInterviews();
         for (Interview interview : employees) {
-            insertInterview(interview,newEmployeeID);
+            insertInterview(interview, newEmployeeID);
         }
 
         // 4 return employee id
@@ -267,16 +268,16 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         String cvrNr = company.getCvrNr();
         String companyName = company.getCompanyName();
 
-        int newCompanyID = database.executeStoredProcedureGetID(SpGetKey.PLACE_COMPANY,oldCompanyID,cvrNr,companyName);
+        int newCompanyID = database.executeStoredProcedureGetID(SpGetKey.PLACE_COMPANY, oldCompanyID, cvrNr, companyName);
 
         // 2 cleanse Consultation table by company id
-        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID,oldCompanyID);
+        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID, oldCompanyID);
         database.executeBatch();
 
         // 3 Insert Consultation should be done by other method
         ArrayList<Consultation> consultations = company.getConsultations();
         for (Consultation consultation : consultations) {
-            insertConsultation(consultation,newCompanyID);
+            insertConsultation(consultation, newCompanyID);
         }
 
         // 4 Insert education via method that returns the inserted ID
@@ -288,7 +289,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
 
         // 5 With the returnValue we can make the bridge table, purge old one
         for (Integer newEducationID : newEducationIDs) {
-            database.addStoredProcedureToBatch(Sp.INSERT_COMPANY_EDUCATION_BRIDGE,newCompanyID,newEducationID);
+            database.addStoredProcedureToBatch(Sp.INSERT_COMPANY_EDUCATION_BRIDGE, newCompanyID, newEducationID);
         }
 
         // 6 return value
@@ -318,7 +319,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         LocalDate startDate = consultation.getStartDate();
         LocalDate endDate = consultation.getEndDate();
 
-        int newConsultationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_CONSULTATION,oldConsultationID,consultationName,startDate,endDate,companyID);
+        int newConsultationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_CONSULTATION, oldConsultationID, consultationName, startDate, endDate, companyID);
 
         if (oldConsultationID != null) {
             // 2 purge bridge table
@@ -335,7 +336,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
 
         // 4 with the return value of insert employee we can reinsert bridge table
         for (Integer newEmployeeID : newEmployeeIDs) {
-            database.addStoredProcedureToBatch(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE,newConsultationID,newEmployeeID);
+            database.addStoredProcedureToBatch(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE, newConsultationID, newEmployeeID);
         }
         database.executeBatch();
 
@@ -349,7 +350,8 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
     /**
      * Method that will search the Database for Provider objects.
      * Values may be null and be used as wildCard.
-     * @param providerID Integer ID of the provider, may be null as wildcard
+     *
+     * @param providerID   Integer ID of the provider, may be null as wildcard
      * @param ProviderName String name of the provider, may be null as wildcard
      * @return HashMap of all the found provider. Key values equals the unique ProviderID
      * @throws SQLException Exception when encountered a fatal error
@@ -362,39 +364,283 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         //Getting data
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, providerID, ProviderName);
 
-        while (rs.next()){
+        while (rs.next()) {
             Provider tempProvider = new Provider(rs);
-            returnMap.put(tempProvider.getProviderID(),tempProvider);
+            returnMap.put(tempProvider.getProviderID(), tempProvider);
         }
         return returnMap;
     }
 
     /*
-     * GETTING ALL VALUES
+     * DELETE BY ID
+     */
+
+
+
+    /*
+     * GET BY PRIMARY KEY
+     */
+
+    public static Provider findProvider(int ID) throws SQLException { //TODO MAKE JAVA DOC
+        //init needed values
+        Provider returnProvider = null;
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, ID, null);
+
+        while (rs.next()) {
+            returnProvider = new Provider(rs);
+        }
+        return returnProvider;
+    }
+
+    public static Education findEducation(int ID) throws SQLException {
+        Education returnEducation = null;
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>(); //Integer is provider id
+        HashMap<Integer, Education> educations = new HashMap<>(); //Integer is education id
+
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, ID, null, null, null, null, null, null, null);
+
+        //get row by row
+        while (rs.next()) {
+            buildProvider(rs,providers);
+            buildEducation(rs,educations,providers);
+        }
+
+        for (Education education : educations.values()) {
+            returnEducation = education;
+        }
+        return returnEducation;
+    }
+
+    /*
+     *GETTING ALL VALUES
      */
 
     /**
      * Method that will search the Database for ALL Provider objects.
      * Values may be null and be used as wildCard.
+     *
      * @return HashMap of all the found provider. Key values equals the unique ProviderID
      * @throws SQLException Exception when encountered a fatal error
      * @see Provider
      */
-    public static HashMap<Integer, Provider> findAllProviders() throws SQLException {
+    public static ArrayList<Provider> findAllProviders() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> returnMap = new HashMap<>();
 
         //Getting data
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, null, null);
 
-        while (rs.next()){
+        while (rs.next()) {
             Provider tempProvider = new Provider(rs);
-            returnMap.put(tempProvider.getProviderID(),tempProvider);
+            returnMap.put(tempProvider.getProviderID(), tempProvider);
         }
-        return returnMap;
+        return new ArrayList<>(returnMap.values());
     }
 
-    public static HashMap<Integer, Company> FindAllCompanies() throws SQLException{
+
+    /*
+     * HELPER METHODS FOR FINDING
+     */
+
+    private static void buildProvider(ResultSet rs, HashMap<Integer, Provider> providerHashMap) throws SQLException {
+        //Fetch values from rs
+        int id = rs.getInt("fld_ProviderID");
+        String providerName = rs.getString("fld_ProviderName");
+
+        // Make new Provider
+        Provider provider = new Provider(id, providerName);
+
+        //Put provider in HashMap
+        providerHashMap.putIfAbsent(id, provider);
+    }
+
+    //Should be done AFTER call to buildProvider
+    private static void buildEducation(ResultSet rs,
+                                       HashMap<Integer, Education> educationHashMap,
+                                       HashMap<Integer, Provider> providerHashMap) throws SQLException {
+        //Fetch values from rs
+        int id = rs.getInt("fld_AmuNR");
+        String name = rs.getString("fld_EducationName");
+        String description = rs.getString("fld_Description");
+        int noOfDays = rs.getInt("fld_NoOfDays");
+        LocalDate localDate = rs.getDate("fld_Date").toLocalDate();
+
+        //fetch the provider from the hashMap
+        int providerId = rs.getInt("fld_ProviderID");
+        Provider provider = providerHashMap.get(providerId);
+
+        //Make new Education
+        Education education = new Education(id, name, description, noOfDays, new ArrayList<>(), provider);
+
+        // Put education in hashMap and add date to the right reference
+        education = educationHashMap.putIfAbsent(id, education);
+        if (education != null) {
+            education.getDates().add(localDate);
+        }
+    }
+
+    //should be called after education since we need the updated HashMap
+    private static void buildFinishedEducation(ResultSet rs,
+                                               HashMap<Integer, FinishedEducation> finishedEducationHashMap,
+                                               HashMap<Integer, Education> educationHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("fld_FinishedEducationID");
+        LocalDate localDate = rs.getDate("fld_FinishedDate").toLocalDate();
+
+        // Fetch values from updated hashMap
+        int educationId = rs.getInt("fld_AmuNR");
+        Education education = educationHashMap.get(educationId);
+
+        // make new object
+        FinishedEducation finishedEducation = new FinishedEducation(id, education, localDate);
+
+        //Put Object in hashMap and add references
+        finishedEducationHashMap.putIfAbsent(id, finishedEducation);
+    }
+
+    //should be called after  education we need the updated HashMap
+    private static void buildEducationWish(ResultSet rs,
+                                           HashMap<Integer, EducationWish> educationWishHashMap,
+                                           HashMap<Integer, Education> educationHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("fld_EducationWishID");
+        int priority = rs.getInt("fld_WishPriority");
+
+        // Fetch values from updated hashMap
+        int educationId = rs.getInt("fld_AmuNR");
+        Education education = educationHashMap.get(educationId);
+
+        // make new object
+        EducationWish educationWish = new EducationWish(id, education, priority);
+
+        //Put Object in hashMap and add references
+        educationWishHashMap.putIfAbsent(id, educationWish);
+    }
+
+    //should be called after both finished education and education wish
+    private static void buildInterview(ResultSet rs,
+                                       HashMap<Integer, EducationWish> educationWishHashMap,
+                                       HashMap<Integer, FinishedEducation> finishedEducationHashMap,
+                                       HashMap<Integer, Interview> interviewHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("fld_InterviewID");
+        String name = rs.getString("fld_InterviewName");
+        int productUnderstanding = rs.getInt("fld_ProductUnderstanding");
+        int problemUnderstanding = rs.getInt("fld_ProblemUnderstanding");
+        int flexibility = rs.getInt("fld_Flexibility");
+        int qualityAwareness = rs.getInt("fld_QualityAwareness");
+        int cooperation = rs.getInt("fld_Cooperation");
+
+        // Fetch values from updated hashMap
+        int eduWishID = rs.getInt("fld_EducationWishID");
+        EducationWish educationWish = educationWishHashMap.get(eduWishID);
+
+        int finEduID = rs.getInt("fld_FinishedEducationID");
+        FinishedEducation finishedEducation = finishedEducationHashMap.get(finEduID);
+
+        // make new object
+        Interview interview = new Interview(id,name,productUnderstanding,problemUnderstanding,flexibility,qualityAwareness,cooperation,new ArrayList<>(),new ArrayList<>());
+
+        //Put Object in hashMap and add references
+        interview = interviewHashMap.putIfAbsent(id,interview);
+        if (interview != null){
+            interview.getEducationWishes().add(educationWish);
+            interview.getFinishedEducations().add(finishedEducation);
+        }
+    }
+
+    //should be called after interview
+    private static void buildEmployee(ResultSet rs,
+                                      HashMap<Integer,Interview> interviewHashMap,
+                                      HashMap<Integer, Employee> employeeHashMap) throws SQLException{
+        // Fetch values from rs
+        int id = rs.getInt("fld_EmployeeID");
+        String firstName = rs.getString("fld_EmployeeFirstName");
+        String lastName = rs.getString("fld_EmployeeLastName");
+        String cpr =rs.getString("fld_CprNr");
+        String eMail = rs.getString("fld_EMail");
+        String phoneNr = rs.getString("fld_PhoneNr");
+
+        // Fetch values from updated hashMap
+        int interviewId = rs.getInt("fld_InterviewID");
+        Interview interview = interviewHashMap.get(interviewId);
+
+        // make new object
+        Employee employee = new Employee(id,firstName,lastName,cpr,eMail,phoneNr,new ArrayList<>());
+
+        //Put Object in hashMap and add references
+        employee = employeeHashMap.putIfAbsent(id,employee);
+        if (employee != null){
+            employee.getInterviews().add(interview);
+        }
+    }
+
+    //should be called after consultation
+    private static void buildConsultation(ResultSet rs,
+                                          HashMap<Integer, Employee> employeeHashMap,
+                                          HashMap<Integer, Consultation> consultationHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("fld_ConsultationID");
+        String name = rs.getString("fld_ConsultationName");
+        LocalDate startDate = rs.getDate("fld_StartDate").toLocalDate();
+        LocalDate endDate = rs.getDate("fld_EndDate").toLocalDate();
+
+        // Fetch values from updated hashMap
+        int employeeId = rs.getInt("fld_EmployeeID");
+        Employee employee = employeeHashMap.get(employeeId);
+
+        // make new object
+        Consultation consultation = new Consultation(id,name,startDate,endDate,new ArrayList<>());
+
+        //Put Object in hashMap and add references
+        consultation = consultationHashMap.putIfAbsent(id,consultation);
+        if (consultation != null){
+            consultation.getEmployees().add(employee);
+        }
+    }
+
+    //should be called after education and consultation
+    private static void buildCompany(ResultSet rs,
+                                     HashMap<Integer, Consultation> consultationHashMap,
+                                     HashMap<Integer,Education> educationHashMap,
+                                     HashMap<Integer,Company> companyHashMap) throws SQLException  {
+        // Fetch values from rs
+        int id = rs.getInt("fld_CompanyID");
+        String cvr = rs.getString("fld_CvrNr");
+        String name = rs.getString("fld_CompanyName");
+
+        // Fetch values from updated hashMap
+        int consultationId = rs.getInt("fld_ConsultationID");
+        Consultation consultation = consultationHashMap.get(consultationId);
+
+        int educatiionId = rs.getInt("fld_EducationID");
+        Education education = educationHashMap.get(educatiionId);
+
+        // make new object
+        Company company = new Company(id,cvr,name,new ArrayList<>(),new ArrayList<>());
+
+        //Put Object in hashMap and add references
+        company = companyHashMap.putIfAbsent(id,company);
+        if (company != null){
+            company.getConsultations().add(consultation);
+            company.getEducationList().add(education);
+        }
+    }
+
+
+    /***
+     * Is bugged
+     * @return bug
+     * @throws SQLException 100 percent of thetime
+     * @deprecated is bugged, see DbFace.
+     */
+    @Deprecated
+    public static HashMap<Integer, Company> FindAllCompanies() throws SQLException {
 
         //init needed values
         HashMap<Integer, Company> returnCompNames = new HashMap<>();
@@ -402,11 +648,12 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         //Getting data
         ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindCompanyNames");
 
-        while (rs.next()){
+        while (rs.next()) {
             Company tempCompanyNames = new Company(rs);
-            returnCompNames.put(tempCompanyNames.getCompanyID(),tempCompanyNames);
+            returnCompNames.put(tempCompanyNames.getCompanyID(), tempCompanyNames);
         }
         return returnCompNames;
 
     }
+
 }
