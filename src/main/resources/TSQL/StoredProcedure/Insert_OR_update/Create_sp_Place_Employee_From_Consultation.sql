@@ -19,13 +19,13 @@ BEGIN
                 fld_PhoneNr           = @NewPhoneNr
             WHERE fld_CprNr = @NewCprNr
             SET @insertedEmployeeID = SCOPE_IDENTITY()
-            EXECUTE sp_InsertConsultation_Employee_Bridge @ConsultationID, @insertedEmployeeID
+            EXECUTE sp_Insert_Consultation_Employee_Bridge @ConsultationID, @insertedEmployeeID
         END
     ELSE
         BEGIN
             INSERT INTO tbl_Employee
             VALUES (@NewEmployeeFirstName, @NewEmployeeLastName, @NewCprNr, @NewEmail, @NewPhoneNr)
             SET @insertedEmployeeID = SCOPE_IDENTITY()
-            EXECUTE sp_InsertConsultation_Employee_Bridge @ConsultationID, @insertedEmployeeID
+            EXECUTE sp_Insert_Consultation_Employee_Bridge @ConsultationID, @insertedEmployeeID
         END
 END;

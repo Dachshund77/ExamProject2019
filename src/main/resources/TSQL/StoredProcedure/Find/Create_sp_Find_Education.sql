@@ -21,13 +21,11 @@ BEGIN
     SELECT fld_ProviderID, fld_ProviderName
     FROM udf_Filter_Provider(@ProviderID, @ProviderName)
 
-    SELECT [@tbl_Education].fld_AmuNR as nigga,     --Education
-           [@tbl_Education].fld_EducationName,
-           [@tbl_Education].fld_Description,
-           [@tbl_Education].fld_NoOfDays,
-           [@tbl_Date].fld_Date,           -- Date of educations
-           [@tbl_Provider].fld_ProviderID, -- Provider
-           [@tbl_Provider].fld_ProviderName
+    SELECT [@tbl_Date].fld_DateID           AS tbl_Date_PK_fld_DateID,         -- Date of educations
+           [@tbl_Date].fld_Date             AS tbl_Date_fld_Date,
+           [@tbl_Date].fld_AmuNr            AS tbl_Date_FK_fld_AmuNr,
+           [@tbl_Provider].fld_ProviderID   AS tbl_Provider_PK_fld_ProviderID, -- Provider
+           [@tbl_Provider].fld_ProviderName AS tbl_Provider_fld_ProviderName
 
     FROM @tbl_Education
              INNER JOIN @tbl_Date ON [@tbl_Education].fld_AmuNR = [@tbl_Date].fld_AmuNr

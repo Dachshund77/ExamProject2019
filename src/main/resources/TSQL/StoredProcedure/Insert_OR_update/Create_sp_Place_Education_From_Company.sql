@@ -17,12 +17,12 @@ BEGIN
                 fld_NoOfDays      = @newNoOfDays
             WHERE fld_AmuNR = @AmuNr
             Set @insertedAmuNr = SCOPE_IDENTITY()
-            EXECUTE sp_insertCompany_Education_Bridge @CompanyID,@insertedAmuNr
+            EXECUTE sp_insert_Company_Education_Bridge @CompanyID,@insertedAmuNr
         END
     ELSE
         BEGIN
             INSERT INTO tbl_Education VALUES (@NewProviderID,@NewEducationName, @newDescription,@newNoOfDays)
             Set @insertedAmuNr = SCOPE_IDENTITY()
-            EXECUTE sp_insertCompany_Education_Bridge @CompanyID,@insertedAmuNr
+            EXECUTE sp_insert_Company_Education_Bridge @CompanyID,@insertedAmuNr
         END
 END;
