@@ -5,6 +5,7 @@ import Foundation.DB;
 import Foundation.Sp;
 import Foundation.SpGetKey;
 import Foundation.SpWithRs;
+import org.apache.ibatis.jdbc.SQL;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -52,8 +53,7 @@ public class DbFacade {
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-
-    public static int insertEducation(Education education) throws SQLException, NullPointerException { //todo old amu stuff
+    public static int insertEducation(Education education) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 insert provider via other method that return its ID
@@ -68,7 +68,8 @@ public class DbFacade {
         amuNr = database.executeStoredProcedureGetID(SpGetKey.PLACE_EDUCATION, amuNr, providerID, educationName, educationDescription, noOfDays);
 
         // 3 Purge dates table
-        database.addStoredProcedureToBatch(Sp.DELETE_DATE_BY_AMU_NR, amuNr);
+        //TODO replaced with cascading. Needs testing.
+        //database.addStoredProcedureToBatch(Sp.DELETE_DATE_BY_AMU_NR, amuNr);
 
         // 4 Insert dates with amurNr
         ArrayList<LocalDate> dates = education.getDates();
@@ -171,8 +172,9 @@ public class DbFacade {
         int newEmployeeID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EMPLOYEE, oldEmployeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
 
         // 2 Purge interview table
-        database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, oldEmployeeID);
-        database.executeBatch();
+        //database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, oldEmployeeID);
+        //TODO Replaced by cascading should be tested
+        //database.executeBatch();
 
         // 3 Insert interview by calling method and passing
         ArrayList<Interview> employees = employee.getInterviews();
@@ -221,8 +223,9 @@ public class DbFacade {
                 cooperation);
 
         // 2 Purge EducationWish table
-        database.addStoredProcedureToBatch(Sp.DELETE_EDUCATION_WISH_BY_INTERVIEW_ID, oldInterViewID);
-        database.executeBatch();
+        //TODO Replaced by Cascading should be tested
+        //database.addStoredProcedureToBatch(Sp.DELETE_EDUCATION_WISH_BY_INTERVIEW_ID, oldInterViewID);
+        //database.executeBatch();
 
         // 3 Reinster by calling method
         ArrayList<EducationWish> educationWishes = interview.getEducationWishes();
@@ -231,8 +234,9 @@ public class DbFacade {
         }
 
         // 4 Purge Finished Education
-        database.addStoredProcedureToBatch(Sp.DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID, oldInterViewID);
-        database.executeBatch();
+        //TODO replaced by cascading should be tested
+        //database.addStoredProcedureToBatch(Sp.DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID, oldInterViewID);
+        //database.executeBatch();
 
         // 5 reinsert by calling method
         ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
@@ -267,8 +271,9 @@ public class DbFacade {
         int newCompanyID = database.executeStoredProcedureGetID(SpGetKey.PLACE_COMPANY, oldCompanyID, cvrNr, companyName);
 
         // 2 cleanse Consultation table by company id
-        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID, oldCompanyID);
-        database.executeBatch();
+        //TODO replaced by cascading should be tested
+        //database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID, oldCompanyID);
+        //database.executeBatch();
 
         // 3 Insert Consultation should be done by other method
         ArrayList<Consultation> consultations = company.getConsultations();
@@ -345,7 +350,7 @@ public class DbFacade {
      */
 
     public static ArrayList<Provider> findProviders(Integer providerID,
-                                                                String providerName) throws SQLException {
+                                                    String providerName) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
 
@@ -361,12 +366,12 @@ public class DbFacade {
     }
 
     public static ArrayList<Education> findEducations(Integer AmuNr,
-                                                                  String educationName,
-                                                                  Integer educationNoOfDays,
-                                                                  LocalDate educationMinDate,
-                                                                  LocalDate educationMaxDate,
-                                                                  Integer providerID,
-                                                                  String providerName) throws SQLException {
+                                                      String educationName,
+                                                      Integer educationNoOfDays,
+                                                      LocalDate educationMinDate,
+                                                      LocalDate educationMaxDate,
+                                                      Integer providerID,
+                                                      String providerName) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -389,14 +394,14 @@ public class DbFacade {
     }
 
     public static ArrayList<Interview> findInterviews(Integer interviewID,
-                                                                  String interviewName,
-                                                                  Integer AmuNr,
-                                                                  String educationName,
-                                                                  Integer educationNoOfDays,
-                                                                  LocalDate educationMinDate,
-                                                                  LocalDate educationMaxDate,
-                                                                  Integer providerID,
-                                                                  String providerName) throws SQLException {
+                                                      String interviewName,
+                                                      Integer AmuNr,
+                                                      String educationName,
+                                                      Integer educationNoOfDays,
+                                                      LocalDate educationMinDate,
+                                                      LocalDate educationMaxDate,
+                                                      Integer providerID,
+                                                      String providerName) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -427,20 +432,20 @@ public class DbFacade {
     }
 
     public static ArrayList<Employee> findEmployees(Integer employeeID,
-                                                                String employeeFirstName,
-                                                                String employeeLastName,
-                                                                String cprNr,
-                                                                String email,
-                                                                String phoneNr,
-                                                                Integer interviewID,
-                                                                String interviewName,
-                                                                Integer AmuNr,
-                                                                String educationName,
-                                                                Integer educationNoOfDays,
-                                                                LocalDate educationMinDate,
-                                                                LocalDate educationMaxDate,
-                                                                Integer providerID,
-                                                                String providerName) throws SQLException {
+                                                    String employeeFirstName,
+                                                    String employeeLastName,
+                                                    String cprNr,
+                                                    String email,
+                                                    String phoneNr,
+                                                    Integer interviewID,
+                                                    String interviewName,
+                                                    Integer AmuNr,
+                                                    String educationName,
+                                                    Integer educationNoOfDays,
+                                                    LocalDate educationMinDate,
+                                                    LocalDate educationMaxDate,
+                                                    Integer providerID,
+                                                    String providerName) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -479,24 +484,24 @@ public class DbFacade {
     }
 
     public static ArrayList<Consultation> findConsultations(Integer consultationID,
-                                                                        String consultationName,
-                                                                        LocalDate consultationMinDate,
-                                                                        LocalDate consultationMaxDate,
-                                                                        Integer employeeID,
-                                                                        String employeeFirstName,
-                                                                        String employeeLastName,
-                                                                        String cprNr,
-                                                                        String email,
-                                                                        String phoneNr,
-                                                                        Integer interviewID,
-                                                                        String interviewName,
-                                                                        Integer AmuNr,
-                                                                        String educationName,
-                                                                        Integer educationNoOfDays,
-                                                                        LocalDate educationMinDate,
-                                                                        LocalDate educationMaxDate,
-                                                                        Integer providerID,
-                                                                        String providerName) throws SQLException {
+                                                            String consultationName,
+                                                            LocalDate consultationMinDate,
+                                                            LocalDate consultationMaxDate,
+                                                            Integer employeeID,
+                                                            String employeeFirstName,
+                                                            String employeeLastName,
+                                                            String cprNr,
+                                                            String email,
+                                                            String phoneNr,
+                                                            Integer interviewID,
+                                                            String interviewName,
+                                                            Integer AmuNr,
+                                                            String educationName,
+                                                            Integer educationNoOfDays,
+                                                            LocalDate educationMinDate,
+                                                            LocalDate educationMaxDate,
+                                                            Integer providerID,
+                                                            String providerName) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -541,27 +546,27 @@ public class DbFacade {
     }
 
     public static ArrayList<Company> findCompanies(Integer companyID,
-                                                               String cvrNr,
-                                                               String companyName,
-                                                               Integer consultationID,
-                                                               String consultationName,
-                                                               LocalDate consultationMinDate,
-                                                               LocalDate consultationMaxDate,
-                                                               Integer employeeID,
-                                                               String employeeFirstName,
-                                                               String employeeLastName,
-                                                               String cprNr,
-                                                               String email,
-                                                               String phoneNr,
-                                                               Integer interviewID,
-                                                               String interviewName,
-                                                               Integer AmuNr,
-                                                               String educationName,
-                                                               Integer educationNoOfDays,
-                                                               LocalDate educationMinDate,
-                                                               LocalDate educationMaxDate,
-                                                               Integer providerID,
-                                                               String providerName) throws SQLException {
+                                                   String cvrNr,
+                                                   String companyName,
+                                                   Integer consultationID,
+                                                   String consultationName,
+                                                   LocalDate consultationMinDate,
+                                                   LocalDate consultationMaxDate,
+                                                   Integer employeeID,
+                                                   String employeeFirstName,
+                                                   String employeeLastName,
+                                                   String cprNr,
+                                                   String email,
+                                                   String phoneNr,
+                                                   Integer interviewID,
+                                                   String interviewName,
+                                                   Integer AmuNr,
+                                                   String educationName,
+                                                   Integer educationNoOfDays,
+                                                   LocalDate educationMinDate,
+                                                   LocalDate educationMaxDate,
+                                                   Integer providerID,
+                                                   String providerName) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -615,28 +620,58 @@ public class DbFacade {
      * DELETE BY ID
      */
 
+    public static boolean deleteProvider(int providerID) throws SQLException {
+        DB database = DB.getInstance();
+        return database.executeStoredProcedure(Sp.DELETE_PROVIDER_BY_PK, providerID);
+    }
+
+    public static boolean deleteEducation(int educationID) throws SQLException {
+        DB database = DB.getInstance();
+        return database.executeStoredProcedure(Sp.DELETE_EDUCATION_BY_PK, educationID);
+    }
+
+    public static boolean deleteInterview(int interviewID) throws SQLException {
+        DB database = DB.getInstance();
+        return database.executeStoredProcedure(Sp.DELETE_INTERVIEW_BY_PK);
+    }
+
+    public static boolean deleteEmployee(int employeeID) throws SQLException {
+        DB database = DB.getInstance();
+        return database.executeStoredProcedure(Sp.DELETE_EMPLOYEE_BY_PK, employeeID);
+    }
+
+    public static boolean deleteConsultation(int consultationID) throws SQLException {
+        DB database = DB.getInstance();
+        return database.executeStoredProcedure(Sp.DELETE_CONSULTATION_BY_PK, consultationID);
+    }
+
+    public static boolean deleteCompany(int companyID) throws SQLException {
+        DB database = DB.getInstance();
+        return database.executeStoredProcedure(Sp.DELETE_COMPANY_BY_PK, companyID);
+    }
+
 
     /*
      * GET BY PRIMARY KEY
      */
 
-    public static Provider findProvider(int ID) throws SQLException {
+    public static Provider findProvider(int ProviderID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, ID, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, ProviderID, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
         }
-        if(providers.isEmpty()){ //test if nothing was found
+        if (providers.isEmpty()) { //test if nothing was found
             return null;
         }
         return new ArrayList<>(providers.values()).get(0);
     }
 
-    public static Education findEducation(int ID) throws SQLException {
+    public static Education findEducation(int EducationID) throws SQLException {
         Education returnEducation = null;
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -644,20 +679,20 @@ public class DbFacade {
 
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, ID, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, EducationID, null, null, null, null, null, null);
 
         //get row by row
         while (rs.next()) {
             buildProvider(rs, providers);
             buildEducation(rs, educations, providers);
         }
-        if(educations.isEmpty()){ //test if nothing was found
+        if (educations.isEmpty()) { //test if nothing was found
             return null;
         }
         return new ArrayList<>(educations.values()).get(0);
     }
 
-    public static Interview findInterview(int ID) throws SQLException {
+    public static Interview findInterview(int InterviewID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -666,7 +701,7 @@ public class DbFacade {
         HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW, ID, null, null, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW, InterviewID, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -675,13 +710,13 @@ public class DbFacade {
             buildFinishedEducation(rs, finishedEducations, educations);
             buildInterview(rs, educationWishes, finishedEducations, interviews);
         }
-        if(interviews.isEmpty()){ //test if nothing was found
+        if (interviews.isEmpty()) { //test if nothing was found
             return null;
         }
         return new ArrayList<>(interviews.values()).get(0);
     }
 
-    public static Employee findEmployee(int ID) throws SQLException {
+    public static Employee findEmployee(int EmployeeID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -691,7 +726,7 @@ public class DbFacade {
         HashMap<Integer, Employee> employees = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE, ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE, EmployeeID, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -701,13 +736,13 @@ public class DbFacade {
             buildInterview(rs, educationWishes, finishedEducations, interviews);
             buildEmployee(rs, interviews, employees);
         }
-        if(employees.isEmpty()){ //test if nothing was found
+        if (employees.isEmpty()) { //test if nothing was found
             return null;
         }
         return new ArrayList<>(employees.values()).get(0);
     }
 
-    public static Consultation findConsultation(int ID) throws SQLException {
+    public static Consultation findConsultation(int Consultation) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -718,7 +753,7 @@ public class DbFacade {
         HashMap<Integer, Consultation> consultations = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, Consultation, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -729,13 +764,13 @@ public class DbFacade {
             buildEmployee(rs, interviews, employees);
             buildConsultation(rs, employees, consultations);
         }
-        if(consultations.isEmpty()){ //test if nothing was found
+        if (consultations.isEmpty()) { //test if nothing was found
             return null;
         }
         return new ArrayList<>(consultations.values()).get(0);
     }
 
-    public static Company findCompany(int ID) throws SQLException {
+    public static Company findCompany(int Company) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -747,7 +782,7 @@ public class DbFacade {
         HashMap<Integer, Company> companies = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY, ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY, Company, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -759,7 +794,7 @@ public class DbFacade {
             buildConsultation(rs, employees, consultations);
             buildCompany(rs, consultations, educations, companies);
         }
-        if(companies.isEmpty()){ //test if nothing was found
+        if (companies.isEmpty()) { //test if nothing was found
             return null;
         }
         return new ArrayList<>(companies.values()).get(0);
@@ -777,7 +812,7 @@ public class DbFacade {
      * @throws SQLException Exception when encountered a fatal error
      * @see Provider
      */
-    public static ArrayList<Provider> findProviders() throws SQLException {
+    public static ArrayList<Provider> findAllProviders() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
 
@@ -790,7 +825,7 @@ public class DbFacade {
         return new ArrayList<>(providers.values());
     }
 
-    public static ArrayList<Education> findEducations() throws SQLException {
+    public static ArrayList<Education> findAllEducations() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -805,7 +840,7 @@ public class DbFacade {
         return new ArrayList<>(educations.values());
     }
 
-    public static ArrayList<Interview> findInterviews() throws SQLException {
+    public static ArrayList<Interview> findAllInterviews() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -826,7 +861,7 @@ public class DbFacade {
         return new ArrayList<>(interviews.values());
     }
 
-    public static ArrayList<Employee> findEmployees() throws SQLException {
+    public static ArrayList<Employee> findAllEmployees() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -849,7 +884,7 @@ public class DbFacade {
         return new ArrayList<>(employees.values());
     }
 
-    public static ArrayList<Consultation> findConsultations() throws SQLException {
+    public static ArrayList<Consultation> findAllConsultations() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -860,7 +895,7 @@ public class DbFacade {
         HashMap<Integer, Consultation> consultations = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -874,7 +909,7 @@ public class DbFacade {
         return new ArrayList<>(consultations.values());
     }
 
-    public static ArrayList<Company> findCompanies() throws SQLException {
+    public static ArrayList<Company> findAllCompanies() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();

@@ -88,7 +88,7 @@ public class NewEducationController {
 
     private void populateProviderMenuButton() throws SQLException {
         //Get values
-        ArrayList<Provider> providers = DbFacade.findProviders();
+        ArrayList<Provider> providers = DbFacade.findAllProviders();
         //We want to sort its easier with array
         // FIXME: 22/05/2019 need to implement comperator to make this work
         // Adding menuItem
