@@ -14,12 +14,12 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * Access point for Database interaction. This class wil be facaded by {@link DbFacade} to get usable objects from the resultSet.
+ * Access point for Database interaction. This class will be used by {@link DbFacade} to get usable objects from the resultSet.
  */
 public class DB {
     private static DB ourInstance = new DB();
 
-    public static DB getInstance() { //TODO metadata should be loaded at creation of this Class
+    public static DB getInstance() { //TODO metadata should be loaded at creation of this Class, also own illeaglarugmentexception malformed procedure call
         return ourInstance;
     }
 
@@ -52,11 +52,14 @@ public class DB {
 
 
     /**
-     * Method that will execute a stored procedure and return the resultSet reference.
+     * Method that will execute a {@link SpWithRs Stored procedure with ResultSet} and returns the resultSet reference.
      * Note that it is the callers responsibility to provide the correct amount of parameters.
+     * <br/><br/>
+     * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+     * {@link #connect()} and {@link #disconnect()}.
      *
      * @param sp    Enum Type {@link SpWithRs}.
-     * @param param Variable parameter for the Procedure
+     * @param param Object array with correct amount of Parameters
      * @return ResultSet of SP.
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
@@ -65,7 +68,7 @@ public class DB {
     public ResultSet executeStoredProcedure(SpWithRs sp, Object... param) throws SQLException {
         System.out.println("DB.executeStoredProcedure");
         System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "] ");
-        System.out.println("param length was "+param.length);
+        System.out.println("param length was " + param.length);
 
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
@@ -81,11 +84,24 @@ public class DB {
         return rs;
     }
 
+
+    /**
+     * Method that will execute a {@link SpGetKey Stored procedure returning a Single int} that represent the just inserted or updated Primary Key.
+     * Note that it is the callers responsibility to provide the correct amount of parameters.
+     * <br/><br/>
+     * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+     * {@link #connect()} and {@link #disconnect()}.
+     *
+     * @param sp    Enum Type {@link SpGetKey}.
+     * @param param Object array with correct amount of Parameters
+     * @return int with the just inserted or updated Primary Key.
+     * @throws SQLException Exception when SQL encounter a fatal problem
+     */
     @SuppressWarnings("Duplicates")
-    public int executeStoredProcedureGetID(SpGetKey sp, Object... param) throws SQLException { //TODO the method should be done better
-        System.out.println("DB.executeStoredProcedureGetID");
+    public int executeStoredProcedure(SpGetKey sp, Object... param) throws SQLException { //TODO the method should be done better
+        System.out.println("DB.executeStoredProcedure"); //TODO Remove uneeded system.out before deployment
         System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "]");
-        System.out.println("param length was "+param.length);
+        System.out.println("param length was " + param.length);
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
@@ -95,26 +111,33 @@ public class DB {
             setCallParameter(i + 1, metaDataMap.get(i + 1), param[i]);
         }
         //Getting results
-        cstmt.registerOutParameter(1,Types.INTEGER);
+        cstmt.registerOutParameter(1, Types.INTEGER);
         cstmt.execute();
         return cstmt.getInt(1);
 
     }
 
     /**
-     * Add a stored procedure to a batch. To execute the batch call {@link #executeBatch()}.
+     * Method that will add a {@link Sp Stored procedure} to a batch.
+     * Note that it is the callers responsibility to provide the correct amount of parameters
+     * and also to execute the batch with {@link #executeBatch()}.
+     * If only as single Stored procedure must be executed {@link #executeStoredProcedure(Sp, Object...)}
+     * can be used instead.
+     * <br/><br/>
+     * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+     * {@link #connect()} and {@link #disconnect()}.
      *
      * @param sp    Enum Type {@link Sp}.
-     * @param param Variable parameter for the Procedure
+     * @param param Object array with correct amount of Parameters
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
     @SuppressWarnings("Duplicates")
     public void addStoredProcedureToBatch(Sp sp, Object... param) throws SQLException {
-        System.out.println("DB.addStoredProcedureToBatch");
+        System.out.println("DB.addStoredProcedureToBatch"); //TODO Remove uneeded system out before deployment
         System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "]");
-        System.out.println("param length was "+param.length);
+        System.out.println("param length was " + param.length);
 
-        conn.setAutoCommit(false); //TODO can we rollback if exception
+        conn.setAutoCommit(false);
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
@@ -129,7 +152,7 @@ public class DB {
 
     /**
      * Execute the batch. To add to the Batch call {@link #addStoredProcedureToBatch(Sp, Object...)}.
-     * Note that the batch files will be execute as first in fir out order.
+     * Note that the batch files will be execute as first in first out order.
      *
      * @return True if successful added to database
      * @throws SQLException Exception when SQL encounter a fatal problem. Will Rollback this transaction.
@@ -138,7 +161,7 @@ public class DB {
         boolean returnBoolean = cstmt.execute();
         try {
             conn.commit();
-        }catch (SQLException e){
+        } catch (SQLException e) {
             conn.rollback(); //Rollback
             throw e; //Propagate exception upwards.
         }
@@ -146,12 +169,16 @@ public class DB {
     }
 
     /**
-     * Method that will execute a stored procedure and return no resultSet
-     * Note that it is the callers responsibility to provide the correct amount of parameters.
+     * Method that will add execute {@link Sp Stored procedure}.
+     * Note that it is the callers responsibility to provide the correct amount of parameters
+     * and also to execute the batch with {@link #executeBatch()}.
+     * If multiple stored procedure must be executed after each other use {@link #addStoredProcedureToBatch(Sp, Object...)} instead.
+     * <br/><br/>
+     * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+     * {@link #connect()} and {@link #disconnect()}.
      *
-     * @param sp    Enum type {@link Sp}.
-     * @param param Variable parameter for the Procedure
-     * @return True of successful executed.
+     * @param sp    Enum Type {@link Sp}.
+     * @param param Object array with correct amount of Parameters
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
     @SuppressWarnings("Duplicates")
@@ -240,7 +267,7 @@ public class DB {
                 if (dataValue == null) {
                     cstmt.setNull(index, Types.DATE);
                 } else {
-                    cstmt.setDate(index, java.sql.Date.valueOf((LocalDate)dataValue));
+                    cstmt.setDate(index, java.sql.Date.valueOf((LocalDate) dataValue));
                 }
                 break;
             case "null":
@@ -255,6 +282,7 @@ public class DB {
     /**
      * Method to establish a connection to the Database.
      * Note that this must be called before running any other methods from this class.
+     * After finished Database interaction {@link #disconnect()} must be called.
      *
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
@@ -282,7 +310,7 @@ public class DB {
 
     /**
      * Hardcoded execution of the sp_GetSPMetaData.
-     * This method is used to determine what the parameter should be cast to.
+     * This method is used to determine what the parameter should be cast to with {@link #setCallParameter(int, String, Object)}.
      *
      * @param procedure Enum type that implements {@link Procedure}.
      * @return Map of ProcedureMetaData
@@ -292,7 +320,7 @@ public class DB {
     private Map<Integer, String> getSPMetaData(Procedure procedure) throws SQLException {
         Map<Integer, String> returnMap = new HashMap<>();
         //Establishing call
-        cstmt = conn.prepareCall("{call "+SpWithRs.GET_PROCEDURE_META_DATA.get()+"(?)}");
+        cstmt = conn.prepareCall("{call " + SpWithRs.GET_PROCEDURE_META_DATA.get() + "(?)}");
         cstmt.setString(1, procedure.get());
         rs = cstmt.executeQuery();
         // Getting the Metadata
@@ -309,6 +337,12 @@ public class DB {
         return returnMap;
     }
 
+    /**
+     * Method that takes a sql file an executes it.
+     * Note that this should only used when necessarily and the desired functionality
+     * can not be achieved with stored procedures.
+     * @param file Sql file that will be run.
+     */
     public void executeScript(File file) {
         try {
             ScriptRunner runner = new ScriptRunner(conn);
