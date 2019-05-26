@@ -5,7 +5,6 @@ import Foundation.DB;
 import Foundation.Sp;
 import Foundation.SpGetKey;
 import Foundation.SpWithRs;
-import org.apache.ibatis.jdbc.SQL;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,7 +14,11 @@ import java.util.HashMap;
 
 /**
  * Facade class that helps convert SQL data to objects.
- * Note that this class will not establish a Db connection on its own.
+ * <br/><br/>
+ * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+ * {@link DB#connect()} and {@link DB#disconnect()}.
+ *
+ * @see DB
  */
 @SuppressWarnings("Duplicates") //Dont judge me, copy past code is the way to go here. -Sven
 public class DbFacade {
@@ -25,35 +28,43 @@ public class DbFacade {
      */
 
     /**
-     * Method that will write the a provider object to the database.
+     * Method that will write the a {@link Provider} object to the database.
+     * Note that this method expects that the Object structure is referencing each other correctly.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      *
      * @param provider The Container for the values that will be inserted.
-     * @return True if successful added to batch.
-     * @throws SQLException         Exception thrown when encountered a fatal error.
-     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     * @return int Primary Key of the inserted or update Provider.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    public static int insertProvider(Provider provider) throws SQLException, NullPointerException { // FIXME: 24/05/2019 Javadoc
+    public static int insertProvider(Provider provider) throws SQLException {
         DB database = DB.getInstance();
 
         Integer providerID = provider.getProviderID();
         String providerName = provider.getProviderName();
         // 1 Insert this provider
-        providerID = database.executeStoredProcedureGetID(SpGetKey.PLACE_PROVIDER, providerID, providerName);
+        providerID = database.executeStoredProcedure(SpGetKey.PLACE_PROVIDER, providerID, providerName);
 
         // 2 return inserted ID
         return providerID;
     }
 
     /**
-     * Method that will write the a provider object to the database.
+     * Method that will write the a {@link Education} object to the database.
      * Will also make sure that its children objects are written correctly to the database.
+     * Note that this method expects that the Object structure is referencing each other correctly.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      *
      * @param education The Container for the values that will be inserted.
-     * @return True if successful added to batch.
-     * @throws SQLException         Exception thrown when encountered a fatal error.
-     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     * @return int Primary Key of the inserted or update Education.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    public static int insertEducation(Education education) throws SQLException, NullPointerException {
+    public static int insertEducation(Education education) throws SQLException {
         DB database = DB.getInstance();
 
         // 1 insert provider via other method that return its ID
@@ -65,38 +76,34 @@ public class DbFacade {
         String educationDescription = education.getDescription();
         int noOfDays = education.getNoOfDays();
 
-        amuNr = database.executeStoredProcedureGetID(SpGetKey.PLACE_EDUCATION, amuNr, providerID, educationName, educationDescription, noOfDays);
+        amuNr = database.executeStoredProcedure(SpGetKey.PLACE_EDUCATION, amuNr, providerID, educationName, educationDescription, noOfDays);
 
-        // 3 Purge dates table
-        //TODO replaced with cascading. Needs testing.
-        //database.addStoredProcedureToBatch(Sp.DELETE_DATE_BY_AMU_NR, amuNr);
-
-        // 4 Insert dates with amurNr
+        // 3 Insert dates with amurNr
         ArrayList<LocalDate> dates = education.getDates();
         for (LocalDate date : dates) {
             database.addStoredProcedureToBatch(Sp.PLACE_DATE, null, amuNr, date);
         }
         database.executeBatch();
 
-        // 5 return amu nr
+        // 4 return amu nr
         return amuNr;
     }
 
     /**
-     * Method that will write a EducationWish object to the database.
+     * Method that will write a {@link EducationWish} object to the database.
      * Will also make sure that its children objects are written correctly to the database.
-     * <br>
-     * <br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
-     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     * Note that this method expects that the Object structure is referencing each other correctly.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      *
      * @param educationWish The Container for the values that will be inserted.
      * @param interViewID   ID of interview the tbl_EducationWish record will point to.
-     * @return True if successful added to batch.
-     * @throws SQLException         Exception thrown when encountered a fatal error.
-     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     * @return int Primary Key of the inserted or update EducationWish.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    public static int insertEducationWish(EducationWish educationWish, int interViewID) throws SQLException, NullPointerException {
+    public static int insertEducationWish(EducationWish educationWish, int interViewID) throws SQLException {
         DB database = DB.getInstance();
 
         // 1 Write education to db and get returnvalue
@@ -107,27 +114,27 @@ public class DbFacade {
         Integer educationWishID = educationWish.getEducationWishID();
         Integer priority = educationWish.getPriority();
 
-        educationWishID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EDUCATION_WISH, educationWishID, amuNr, interViewID, priority);
+        educationWishID = database.executeStoredProcedure(SpGetKey.PLACE_EDUCATION_WISH, educationWishID, amuNr, interViewID, priority);
 
         // 3 return value
         return educationWishID;
     }
 
     /**
-     * Method that will write a EducationWish object to the database.
+     * Method that will write a {@link FinishedEducation} object to the database.
      * Will also make sure that its children objects are written correctly to the database.
-     * <br>
-     * <br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
-     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     * Note that this method expects that the Object structure is referencing each other correctly.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      *
      * @param finishedEducation The Container for the values that will be inserted.
      * @param interViewID       ID of the interview the tbl_FinishedEduction record wil point to
-     * @return True if successful added to batch.
-     * @throws SQLException         Exception thrown when encountered a fatal error.
-     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     * @return int Primary Key of the inserted or update FinishedEducation.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    public static int insertFinishedEducation(FinishedEducation finishedEducation, int interViewID) throws SQLException, NullPointerException {
+    public static int insertFinishedEducation(FinishedEducation finishedEducation, int interViewID) throws SQLException {
         DB database = DB.getInstance();
 
         // 1 Write education to db and get return value
@@ -138,7 +145,7 @@ public class DbFacade {
         Integer finishedEducationID = finishedEducation.getFinishedEducationID();
         LocalDate dateFinished = finishedEducation.getDateFinished();
 
-        finishedEducationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_FINISHED_EDUCATION, finishedEducationID, amuNr, interViewID, dateFinished);
+        finishedEducationID = database.executeStoredProcedure(SpGetKey.PLACE_FINISHED_EDUCATION, finishedEducationID, amuNr, interViewID, dateFinished);
 
         // 3 return value
         return finishedEducationID;
@@ -146,17 +153,17 @@ public class DbFacade {
     }
 
     /**
-     * Method that will write a Employee object to the database.
+     * Method that will write a {@link Employee} object to the database.
      * Will also make sure that its children objects are written correctly to the database.
-     * Note that his method will not create a relationship between an employee and consultation.
-     * Use {@link #insertConsultation(Consultation, int)} for that.
-     * <br>
-     * <br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
-     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     * Note that this method expects that the Object structure is referencing each other correctly.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      *
      * @param employee The Container for the values that will be inserted.
+     * @return int Primary Key of the inserted or update Employee.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
     public static int insertEmployee(Employee employee) throws SQLException {
         DB database = DB.getInstance();
@@ -169,12 +176,7 @@ public class DbFacade {
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        int newEmployeeID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EMPLOYEE, oldEmployeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
-
-        // 2 Purge interview table
-        //database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, oldEmployeeID);
-        //TODO Replaced by cascading should be tested
-        //database.executeBatch();
+        int newEmployeeID = database.executeStoredProcedure(SpGetKey.PLACE_EMPLOYEE, oldEmployeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
 
         // 3 Insert interview by calling method and passing
         ArrayList<Interview> employees = employee.getInterviews();
@@ -187,20 +189,21 @@ public class DbFacade {
     }
 
     /**
-     * Method that will write a Interview object to the database.
+     * Method that will write a {@link Interview} object to the database.
      * Will also make sure that its children objects are written correctly to the database.
-     * <br>
-     * <br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
+     * Note that this method expects that the Object structure is referencing each other correctly.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      * To execute this batch call {@link DB#executeBatch()} before disconnecting.
      *
      * @param interview  The Container for the values that will be inserted.
      * @param employeeID The employee Id tbl_interview Record will point too.
-     * @return True if successful added to batch.
-     * @throws SQLException         Exception thrown when encountered a fatal error.
-     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     * @return int Primary Key of the inserted or update Interview.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    public static int insertInterview(Interview interview, int employeeID) throws SQLException, NullPointerException {
+    public static int insertInterview(Interview interview, int employeeID) throws SQLException {
         DB database = DB.getInstance();
 
         // 1 We write this interview to the db and get ID
@@ -212,7 +215,7 @@ public class DbFacade {
         Integer qualityAwareness = interview.getQualityAwareness();
         Integer cooperation = interview.getCooperation();
 
-        int newInterViewID = database.executeStoredProcedureGetID(SpGetKey.PLACE_INTERVIEW,
+        int newInterViewID = database.executeStoredProcedure(SpGetKey.PLACE_INTERVIEW,
                 oldInterViewID,
                 interViewName,
                 employeeID,
@@ -222,23 +225,13 @@ public class DbFacade {
                 qualityAwareness,
                 cooperation);
 
-        // 2 Purge EducationWish table
-        //TODO Replaced by Cascading should be tested
-        //database.addStoredProcedureToBatch(Sp.DELETE_EDUCATION_WISH_BY_INTERVIEW_ID, oldInterViewID);
-        //database.executeBatch();
-
-        // 3 Reinster by calling method
+        // 2 Reinster by calling method
         ArrayList<EducationWish> educationWishes = interview.getEducationWishes();
         for (EducationWish educationWish : educationWishes) {
             insertEducationWish(educationWish, newInterViewID);
         }
 
-        // 4 Purge Finished Education
-        //TODO replaced by cascading should be tested
-        //database.addStoredProcedureToBatch(Sp.DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID, oldInterViewID);
-        //database.executeBatch();
-
-        // 5 reinsert by calling method
+        // 4 reinsert by calling method
         ArrayList<FinishedEducation> finishedEducations = interview.getFinishedEducations();
         for (FinishedEducation finishedEducation : finishedEducations) {
             insertFinishedEducation(finishedEducation, newInterViewID);
@@ -248,19 +241,20 @@ public class DbFacade {
     }
 
     /**
-     * Method that will write a Company object to the database.
+     * Method that will write a {@link Company} object to the database.
      * Will also make sure that its children objects are written correctly to the database.
-     * <br>
-     * <br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
-     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     * Note that this method expects that the Object structure is referencing each other correctly.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      *
      * @param company The Container for the values that will be inserted.
-     * @return True if successful added to batch.
+     * @return int Primary Key of the inserted or update Company.
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     * @see DB
      */
-    public static int insertCompany(Company company) throws SQLException, NullPointerException {
+    public static int insertCompany(Company company) throws SQLException {
         DB database = DB.getInstance();
 
         // 1 Insert this Company into db and get company id
@@ -268,51 +262,46 @@ public class DbFacade {
         String cvrNr = company.getCvrNr();
         String companyName = company.getCompanyName();
 
-        int newCompanyID = database.executeStoredProcedureGetID(SpGetKey.PLACE_COMPANY, oldCompanyID, cvrNr, companyName);
+        int newCompanyID = database.executeStoredProcedure(SpGetKey.PLACE_COMPANY, oldCompanyID, cvrNr, companyName);
 
-        // 2 cleanse Consultation table by company id
-        //TODO replaced by cascading should be tested
-        //database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID, oldCompanyID);
-        //database.executeBatch();
-
-        // 3 Insert Consultation should be done by other method
+        // 2 Insert Consultation should be done by other method
         ArrayList<Consultation> consultations = company.getConsultations();
         for (Consultation consultation : consultations) {
             insertConsultation(consultation, newCompanyID);
         }
 
-        // 4 Insert education via method that returns the inserted ID
+        // 3 Insert education via method that returns the inserted ID
         ArrayList<Education> educations = company.getEducationList();
         ArrayList<Integer> newEducationIDs = new ArrayList<>();
         for (Education education : educations) {
             newEducationIDs.add(insertEducation(education));
         }
 
-        // 5 With the returnValue we can make the bridge table, purge old one
+        // 4 With the returnValue we can make the bridge table, purge old one
         for (Integer newEducationID : newEducationIDs) {
             database.addStoredProcedureToBatch(Sp.INSERT_COMPANY_EDUCATION_BRIDGE, newCompanyID, newEducationID);
         }
         database.executeBatch();
 
-        // 6 return value
+        // 5 return value
         return newCompanyID;
     }
 
     /**
-     * Method that will write a Consultation object to the database.
+     * Method that will write a {@link Consultation} object to the database.
      * Will also make sure that its children objects are written correctly to the database.
-     * <br>
-     * <br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() discoonect}.
-     * To execute this batch call {@link DB#executeBatch()} before disconnecting.
+     * Note that this method expects that the Object structure is referencing each other correctly.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
      *
      * @param consultation The Container for the values that will be inserted.
      * @param companyID    The companyID that the tbl_Consultation will point to.
-     * @return True if successful added to batch.
-     * @throws SQLException         Exception thrown when encountered a fatal error.
-     * @throws NullPointerException Thrown if the Domain structure contain missing parts.
+     * @return int Primary Key of the inserted or update Consultation
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    public static int insertConsultation(Consultation consultation, int companyID) throws SQLException, NullPointerException {
+    public static int insertConsultation(Consultation consultation, int companyID) throws SQLException {
         DB database = DB.getInstance();
 
         // 1 Insert Consultations
@@ -321,13 +310,7 @@ public class DbFacade {
         LocalDate startDate = consultation.getStartDate();
         LocalDate endDate = consultation.getEndDate();
 
-        int newConsultationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_CONSULTATION, oldConsultationID, consultationName, startDate, endDate, companyID);
-
-        if (oldConsultationID != null) {
-            // 2 purge bridge table
-            database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_EMPLOYEE_BRIDGE_BY_CONSULTATION_ID, oldConsultationID); //TODO make asearch
-        }
-        database.executeBatch();
+        int newConsultationID = database.executeStoredProcedure(SpGetKey.PLACE_CONSULTATION, oldConsultationID, consultationName, startDate, endDate, companyID);
 
         // 3 Insert Employees via method
         ArrayList<Employee> employees = consultation.getEmployees();
@@ -349,6 +332,34 @@ public class DbFacade {
      * SEARCHING BY VALUES(DYNAMIC)
      */
 
+    /**
+     * Finds {@link Provider} Objects from the DataBase by specified search criteria.
+     * The search will be done by:
+     * <ul>
+     * <li>
+     * Strings will filter out any objects that does not match the Parameter in any place.
+     * </li>
+     * <li>
+     * Integer will filter out any objects that do not have exactly that value.
+     * </li>
+     * <li>
+     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
+     * </li>
+     * <li>
+     * Null Values are allowed as wild card, filtering out nothing.
+     * </li>
+     * </ul>
+     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
+     *
+     * @param providerID   Unique Primary key of a {@link Provider}.
+     * @param providerName {@link Provider} name as String.
+     * @return ArrayList of {@link Provider} Object.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Provider> findProviders(Integer providerID,
                                                     String providerName) throws SQLException {
         //init needed values
@@ -365,6 +376,39 @@ public class DbFacade {
         return new ArrayList<>(providers.values());
     }
 
+    /**
+     * Finds {@link Education} Objects from the DataBase by specified search criteria.
+     * The search will be done by:
+     * <ul>
+     * <li>
+     * Strings will filter out any objects that does not match the Parameter in any place.
+     * </li>
+     * <li>
+     * Integer will filter out any objects that do not have exactly that value.
+     * </li>
+     * <li>
+     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
+     * </li>
+     * <li>
+     * Null Values are allowed as wild card, filtering out nothing.
+     * </li>
+     * </ul>
+     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
+     *
+     * @param AmuNr             Unique Primary key of a {@link Education}.
+     * @param educationName     {@link Education} name as String.
+     * @param educationNoOfDays Number of Days this {@link Education} takes.
+     * @param educationMinDate  Minimum date a {@link Education} needs to have to be found.
+     * @param educationMaxDate  Maximum date a {@link Education} need to have to be found
+     * @param providerID        Unique Primary key of a {@link Provider}.
+     * @param providerName      {@link Provider} name as String.
+     * @return ArrayList of {@link Education} Object.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Education> findEducations(Integer AmuNr,
                                                       String educationName,
                                                       Integer educationNoOfDays,
@@ -393,6 +437,41 @@ public class DbFacade {
         return new ArrayList<>(educations.values());
     }
 
+    /**
+     * Finds {@link Interview} Objects from the DataBase by specified search criteria.
+     * The search will be done by:
+     * <ul>
+     * <li>
+     * Strings will filter out any objects that does not match the Parameter in any place.
+     * </li>
+     * <li>
+     * Integer will filter out any objects that do not have exactly that value.
+     * </li>
+     * <li>
+     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
+     * </li>
+     * <li>
+     * Null Values are allowed as wild card, filtering out nothing.
+     * </li>
+     * </ul>
+     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
+     *
+     * @param interviewID       Unique Primary key of a {@link Interview}.
+     * @param interviewName     {@link Interview} name as String.
+     * @param AmuNr             Unique Primary key of a {@link Education}.
+     * @param educationName     {@link Education} name as String.
+     * @param educationNoOfDays Number of Days this {@link Education} takes.
+     * @param educationMinDate  Minimum date a {@link Education} needs to have to be found.
+     * @param educationMaxDate  Maximum date a {@link Education} need to have to be found
+     * @param providerID        Unique Primary key of a {@link Provider}.
+     * @param providerName      {@link Provider} name as String.
+     * @return ArrayList of {@link Interview} Object.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Interview> findInterviews(Integer interviewID,
                                                       String interviewName,
                                                       Integer AmuNr,
@@ -431,6 +510,47 @@ public class DbFacade {
         return new ArrayList<>(interviews.values());
     }
 
+    /**
+     * Finds {@link Employee} Objects from the DataBase by specified search criteria.
+     * The search will be done by:
+     * <ul>
+     * <li>
+     * Strings will filter out any objects that does not match the Parameter in any place.
+     * </li>
+     * <li>
+     * Integer will filter out any objects that do not have exactly that value.
+     * </li>
+     * <li>
+     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
+     * </li>
+     * <li>
+     * Null Values are allowed as wild card, filtering out nothing.
+     * </li>
+     * </ul>
+     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
+     *
+     * @param employeeID        Unique Primary key of a {@link Employee}.
+     * @param employeeFirstName {@link Employee} First name as String.
+     * @param employeeLastName  {@link Employee} Last name as String.
+     * @param cprNr             {@link Employee} CprNr as String.
+     * @param email             {@link Employee} Email Address as String.
+     * @param phoneNr           {@link Employee} PhoneNr as String.
+     * @param interviewID       Unique Primary key of a {@link Interview}.
+     * @param interviewName     {@link Interview} name as String.
+     * @param AmuNr             Unique Primary key of a {@link Education}.
+     * @param educationName     {@link Education} name as String.
+     * @param educationNoOfDays Number of Days this {@link Education} takes.
+     * @param educationMinDate  Minimum date a {@link Education} needs to have to be found.
+     * @param educationMaxDate  Maximum date a {@link Education} need to have to be found
+     * @param providerID        Unique Primary key of a {@link Provider}.
+     * @param providerName      {@link Provider} name as String.
+     * @return ArrayList of {@link Employee} Object.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Employee> findEmployees(Integer employeeID,
                                                     String employeeFirstName,
                                                     String employeeLastName,
@@ -483,6 +603,51 @@ public class DbFacade {
         return new ArrayList<>(employees.values());
     }
 
+    /**
+     * Finds {@link Consultation} Objects from the DataBase by specified search criteria.
+     * The search will be done by:
+     * <ul>
+     * <li>
+     * Strings will filter out any objects that does not match the Parameter in any place.
+     * </li>
+     * <li>
+     * Integer will filter out any objects that do not have exactly that value.
+     * </li>
+     * <li>
+     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
+     * </li>
+     * <li>
+     * Null Values are allowed as wild card, filtering out nothing.
+     * </li>
+     * </ul>
+     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
+     *
+     * @param consultationID      Unique Primary key of a {@link Consultation}.
+     * @param consultationName    {@link Consultation} name as String.
+     * @param consultationMinDate Minimum date a {@link Consultation} need to have to be found.
+     * @param consultationMaxDate Maximum date a {@link Consultation} need to have to be found.
+     * @param employeeID          Unique Primary key of a {@link Employee}.
+     * @param employeeFirstName   {@link Employee} First name as String.
+     * @param employeeLastName    {@link Employee} Last name as String.
+     * @param cprNr               {@link Employee} CprNr as String.
+     * @param email               {@link Employee} Email Address as String.
+     * @param phoneNr             {@link Employee} PhoneNr as String.
+     * @param interviewID         Unique Primary key of a {@link Interview}.
+     * @param interviewName       {@link Interview} name as String.
+     * @param AmuNr               Unique Primary key of a {@link Education}.
+     * @param educationName       {@link Education} name as String.
+     * @param educationNoOfDays   Number of Days this {@link Education} takes.
+     * @param educationMinDate    Minimum date a {@link Education} needs to have to be found.
+     * @param educationMaxDate    Maximum date a {@link Education} need to have to be found
+     * @param providerID          Unique Primary key of a {@link Provider}.
+     * @param providerName        {@link Provider} name as String.
+     * @return ArrayList of {@link Consultation} Object.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Consultation> findConsultations(Integer consultationID,
                                                             String consultationName,
                                                             LocalDate consultationMinDate,
@@ -545,6 +710,54 @@ public class DbFacade {
         return new ArrayList<>(consultations.values());
     }
 
+    /**
+     * Finds {@link Company} Objects from the DataBase by specified search criteria.
+     * The search will be done by:
+     * <ul>
+     * <li>
+     * Strings will filter out any objects that does not match the Parameter in any place.
+     * </li>
+     * <li>
+     * Integer will filter out any objects that do not have exactly that value.
+     * </li>
+     * <li>
+     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
+     * </li>
+     * <li>
+     * Null Values are allowed as wild card, filtering out nothing.
+     * </li>
+     * </ul>
+     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
+     *
+     * @param companyID           Unique Primary key of a {@link Company}.
+     * @param cvrNr               {@link Company} cvrNr as String.
+     * @param companyName         {@link Company} name as String.
+     * @param consultationID      Unique Primary key of a {@link Consultation}.
+     * @param consultationName    {@link Consultation} name as String.
+     * @param consultationMinDate Minimum date a {@link Consultation} need to have to be found.
+     * @param consultationMaxDate Maximum date a {@link Consultation} need to have to be found.
+     * @param employeeID          Unique Primary key of a {@link Employee}.
+     * @param employeeFirstName   {@link Employee} First name as String.
+     * @param employeeLastName    {@link Employee} Last name as String.
+     * @param cprNr               {@link Employee} CprNr as String.
+     * @param email               {@link Employee} Email Address as String.
+     * @param phoneNr             {@link Employee} PhoneNr as String.
+     * @param interviewID         Unique Primary key of a {@link Interview}.
+     * @param interviewName       {@link Interview} name as String.
+     * @param AmuNr               Unique Primary key of a {@link Education}.
+     * @param educationName       {@link Education} name as String.
+     * @param educationNoOfDays   Number of Days this {@link Education} takes.
+     * @param educationMinDate    Minimum date a {@link Education} needs to have to be found.
+     * @param educationMaxDate    Maximum date a {@link Education} need to have to be found
+     * @param providerID          Unique Primary key of a {@link Provider}.
+     * @param providerName        {@link Provider} name as String.
+     * @return ArrayList of {@link Company} Object.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Company> findCompanies(Integer companyID,
                                                    String cvrNr,
                                                    String companyName,
@@ -620,31 +833,96 @@ public class DbFacade {
      * DELETE BY ID
      */
 
+    /**
+     * Deletes a {@link Provider} from the DataBase by PrimaryKey.
+     * Be aware that this method also deletes all records of {@link Education Educations} that reference the deleted Provider.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param providerID Primary Key of the element that should be deleted.
+     * @return True if deleted successfully.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static boolean deleteProvider(int providerID) throws SQLException {
         DB database = DB.getInstance();
         return database.executeStoredProcedure(Sp.DELETE_PROVIDER_BY_PK, providerID);
     }
 
+    /**
+     * Deletes a {@link Education} from the DataBase by PrimaryKey.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param educationID Primary Key of the element that should be deleted.
+     * @return True if deleted successfully.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static boolean deleteEducation(int educationID) throws SQLException {
         DB database = DB.getInstance();
         return database.executeStoredProcedure(Sp.DELETE_EDUCATION_BY_PK, educationID);
     }
 
+    /**
+     * Deletes a {@link Interview} from the DataBase by PrimaryKey.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param interviewID Primary Key of the element that should be deleted.
+     * @return True if deleted successfully.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static boolean deleteInterview(int interviewID) throws SQLException {
         DB database = DB.getInstance();
         return database.executeStoredProcedure(Sp.DELETE_INTERVIEW_BY_PK);
     }
 
+
+    /**
+     * Deletes a {@link Employee} from the DataBase by PrimaryKey.
+     * Be aware that this method also deletes all records of {@link Interview Interviews} that reference the deleted Employee.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param employeeID Primary Key of the element that should be deleted.
+     * @return True if deleted successfully.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static boolean deleteEmployee(int employeeID) throws SQLException {
         DB database = DB.getInstance();
         return database.executeStoredProcedure(Sp.DELETE_EMPLOYEE_BY_PK, employeeID);
     }
 
+    /**
+     * Deletes a {@link Consultation} from the DataBase by PrimaryKey.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param consultationID Primary Key of the element that should be deleted.
+     * @return True if deleted successfully.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static boolean deleteConsultation(int consultationID) throws SQLException {
         DB database = DB.getInstance();
         return database.executeStoredProcedure(Sp.DELETE_CONSULTATION_BY_PK, consultationID);
     }
 
+    /**
+     * Deletes a {@link Company} from the DataBase by PrimaryKey.
+     * Be aware that this method also deletes all records of {@link Consultation Consultations} that reference the deleted Company.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param companyID Primary Key of the element that should be deleted.
+     * @return True if deleted successfully.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static boolean deleteCompany(int companyID) throws SQLException {
         DB database = DB.getInstance();
         return database.executeStoredProcedure(Sp.DELETE_COMPANY_BY_PK, companyID);
@@ -655,12 +933,24 @@ public class DbFacade {
      * GET BY PRIMARY KEY
      */
 
-    public static Provider findProvider(int ProviderID) throws SQLException {
+    /**
+     * Finds a {@link Provider} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param providerID Primary Key of the element that should be returned.
+     * @return {@link Provider} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Provider findProvider(int providerID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, ProviderID, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, providerID, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -671,7 +961,19 @@ public class DbFacade {
         return new ArrayList<>(providers.values()).get(0);
     }
 
-    public static Education findEducation(int EducationID) throws SQLException {
+    /**
+     * Finds a {@link Education} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param educationID Primary Key of the element that should be returned.
+     * @return {@link Education} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Education findEducation(int educationID) throws SQLException {
         Education returnEducation = null;
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -679,7 +981,7 @@ public class DbFacade {
 
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, EducationID, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, educationID, null, null, null, null, null, null);
 
         //get row by row
         while (rs.next()) {
@@ -692,7 +994,19 @@ public class DbFacade {
         return new ArrayList<>(educations.values()).get(0);
     }
 
-    public static Interview findInterview(int InterviewID) throws SQLException {
+    /**
+     * Finds a {@link Interview} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param interviewID Primary Key of the element that should be returned.
+     * @return {@link Interview} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Interview findInterview(int interviewID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -701,7 +1015,7 @@ public class DbFacade {
         HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW, InterviewID, null, null, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW, interviewID, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -716,7 +1030,19 @@ public class DbFacade {
         return new ArrayList<>(interviews.values()).get(0);
     }
 
-    public static Employee findEmployee(int EmployeeID) throws SQLException {
+    /**
+     * Finds a {@link Employee} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param employeeID Primary Key of the element that should be returned.
+     * @return {@link Employee} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Employee findEmployee(int employeeID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -726,7 +1052,7 @@ public class DbFacade {
         HashMap<Integer, Employee> employees = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE, EmployeeID, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE, employeeID, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -742,7 +1068,19 @@ public class DbFacade {
         return new ArrayList<>(employees.values()).get(0);
     }
 
-    public static Consultation findConsultation(int Consultation) throws SQLException {
+    /**
+     * Finds a {@link Consultation} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param consultationID Primary Key of the element that should be returned.
+     * @return {@link Consultation} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Consultation findConsultation(int consultationID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -753,7 +1091,7 @@ public class DbFacade {
         HashMap<Integer, Consultation> consultations = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, Consultation, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, consultationID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -770,7 +1108,19 @@ public class DbFacade {
         return new ArrayList<>(consultations.values()).get(0);
     }
 
-    public static Company findCompany(int Company) throws SQLException {
+    /**
+     * Finds a {@link Company} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param companyID Primary Key of the element that should be returned.
+     * @return {@link Company} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Company findCompany(int companyID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -782,7 +1132,7 @@ public class DbFacade {
         HashMap<Integer, Company> companies = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY, Company, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY, companyID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
         while (rs.next()) {
             buildProvider(rs, providers);
@@ -805,12 +1155,15 @@ public class DbFacade {
      */
 
     /**
-     * Method that will search the Database for ALL Provider objects.
-     * Values may be null and be used as wildCard.
+     * Finds all {@link Provider Providers} from the DataBase.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
      *
-     * @return HashMap of all the found provider. Key values equals the unique ProviderID
-     * @throws SQLException Exception when encountered a fatal error
-     * @see Provider
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link Provider Provider} Objects with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
     public static ArrayList<Provider> findAllProviders() throws SQLException {
         //init needed values
@@ -825,6 +1178,17 @@ public class DbFacade {
         return new ArrayList<>(providers.values());
     }
 
+    /**
+     * Finds all {@link Education Educations} from the DataBase.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link Education} Objects with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Education> findAllEducations() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -840,6 +1204,17 @@ public class DbFacade {
         return new ArrayList<>(educations.values());
     }
 
+    /**
+     * Finds all {@link Interview Interviews} from the DataBase.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link Interview} Objects with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Interview> findAllInterviews() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -861,6 +1236,17 @@ public class DbFacade {
         return new ArrayList<>(interviews.values());
     }
 
+    /**
+     * Finds all {@link Employee Employees} from the DataBase.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link Employee} Objects with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Employee> findAllEmployees() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -884,6 +1270,17 @@ public class DbFacade {
         return new ArrayList<>(employees.values());
     }
 
+    /**
+     * Finds all {@link Consultation Consultations} from the DataBase.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link Consultation} Objects with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Consultation> findAllConsultations() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -909,6 +1306,17 @@ public class DbFacade {
         return new ArrayList<>(consultations.values());
     }
 
+    /**
+     * Finds all {@link Company Companies} from the DataBase.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link Company} Objects with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
     public static ArrayList<Company> findAllCompanies() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -940,6 +1348,13 @@ public class DbFacade {
      * HELPER METHODS FOR FINDING
      */
 
+    /**
+     * Helper Method that builds a {@link Provider}.
+     *
+     * @param rs              ResultSet of Data
+     * @param providerHashMap HashMap of Primary ID as key, {@link Provider} as value.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void buildProvider(ResultSet rs, HashMap<Integer, Provider> providerHashMap) throws SQLException {
         //Fetch values from rs and test if the rs contain the object
         int id = rs.getInt("tbl_Provider_PK_fld_ProviderID");
@@ -954,7 +1369,16 @@ public class DbFacade {
         }
     }
 
-    //Should be done AFTER call to buildProvider
+    /**
+     * Helper Method that builds a {@link Education}.
+     * Note that this method must be called after {@link #buildProvider}
+     * for any given ResultSet row.
+     *
+     * @param rs               ResultSet of Data
+     * @param educationHashMap HashMap of Primary ID as key, {@link Education} as value.
+     * @param providerHashMap  HashMap of Primary ID as key, {@link Provider} as value.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void buildEducation(ResultSet rs,
                                        HashMap<Integer, Education> educationHashMap,
                                        HashMap<Integer, Provider> providerHashMap) throws SQLException {
@@ -984,7 +1408,16 @@ public class DbFacade {
         }
     }
 
-    //should be called after education since we need the updated HashMap
+    /**
+     * Helper Method that builds a {@link FinishedEducation}.
+     * Note that this method must be called after {@link #buildEducation}
+     * for any given ResultSet row.
+     *
+     * @param rs                       ResultSet of Data
+     * @param finishedEducationHashMap HashMap of Primary ID as key, {@link FinishedEducation} as value.
+     * @param educationHashMap         HashMap of Primary ID as key, {@link Education} as value.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void buildFinishedEducation(ResultSet rs,
                                                HashMap<Integer, FinishedEducation> finishedEducationHashMap,
                                                HashMap<Integer, Education> educationHashMap) throws SQLException {
@@ -1008,7 +1441,16 @@ public class DbFacade {
         }
     }
 
-    //should be called after  education we need the updated HashMap
+    /**
+     * Helper Method that builds a {@link EducationWish}.
+     * Note that this method must be called after {@link #buildEducation}
+     * for any given ResultSet row.
+     *
+     * @param rs                   ResultSet of Data
+     * @param educationWishHashMap HashMap of Primary ID as key, {@link EducationWish} as value.
+     * @param educationHashMap     HashMap of Primary ID as key, {@link Education} as value.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void buildEducationWish(ResultSet rs,
                                            HashMap<Integer, EducationWish> educationWishHashMap,
                                            HashMap<Integer, Education> educationHashMap) throws SQLException {
@@ -1032,7 +1474,17 @@ public class DbFacade {
         }
     }
 
-    //should be called after both finished education and education wish
+    /**
+     * Helper Method that builds a {@link Interview}.
+     * Note that this method must be called after {@link #buildFinishedEducation} and {@link #buildEducationWish}
+     * for any given ResultSet row.
+     *
+     * @param rs                       ResultSet of Data
+     * @param educationWishHashMap     HashMap of Primary ID as key, {@link EducationWish} as value.
+     * @param finishedEducationHashMap HashMap of Primary ID as key, {@link FinishedEducation} as value.
+     * @param interviewHashMap         HashMap of Primary ID as key, {@link Interview} as value.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void buildInterview(ResultSet rs,
                                        HashMap<Integer, EducationWish> educationWishHashMap,
                                        HashMap<Integer, FinishedEducation> finishedEducationHashMap,
@@ -1087,7 +1539,16 @@ public class DbFacade {
         }
     }
 
-    //should be called after interview
+    /**
+     * Helper Method that builds a {@link Employee}.
+     * Note that this method must be called after  {@link #buildInterview}
+     * for any given ResultSet row.
+     *
+     * @param rs               ResultSet of Data
+     * @param interviewHashMap HashMap of Primary ID as key, {@link Interview} as value.
+     * @param employeeHashMap  HashMap of Primary ID as key, {@link Employee} as value.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void buildEmployee(ResultSet rs,
                                       HashMap<Integer, Interview> interviewHashMap,
                                       HashMap<Integer, Employee> employeeHashMap) throws SQLException {
@@ -1117,7 +1578,16 @@ public class DbFacade {
         }
     }
 
-    //should be called after consultation
+    /**
+     * Helper Method that builds a {@link Consultation}.
+     * Note that this method must be called after  {@link #buildEmployee}
+     * for any given ResultSet row.
+     *
+     * @param rs                  ResultSet of Data
+     * @param employeeHashMap     HashMap of Primary ID as key, {@link Employee} as value.
+     * @param consultationHashMap HashMap of Primary ID as key, {@link Consultation} as value.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void buildConsultation(ResultSet rs,
                                           HashMap<Integer, Employee> employeeHashMap,
                                           HashMap<Integer, Consultation> consultationHashMap) throws SQLException {
@@ -1146,7 +1616,16 @@ public class DbFacade {
         }
     }
 
-    //should be called after education and consultation
+    /**
+     * Helper Method that builds a {@link Company}.
+     * Note that this method must be called after  {@link #buildEmployee} and {@link #buildEducation}
+     * for any given ResultSet row.
+     *
+     * @param rs                  ResultSet of Data
+     * @param consultationHashMap HashMap of Primary ID as key, {@link Interview} as value.
+     * @param companyHashMap      HashMap of Primary ID as key, {@link Company} as value.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     */
     private static void buildCompany(ResultSet rs,
                                      HashMap<Integer, Consultation> consultationHashMap,
                                      HashMap<Integer, Education> educationHashMap,

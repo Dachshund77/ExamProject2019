@@ -15,6 +15,9 @@ import java.util.Properties;
 
 /**
  * Access point for Database interaction. This class will be used by {@link DbFacade} to get usable objects from the resultSet.
+ * <br/><br/>
+ * <Font Color = red>Important</Font Color> Connection must be managed by caller with
+ * {@link DB#connect()} and {@link DB#disconnect()}.
  */
 public class DB {
     private static DB ourInstance = new DB();
@@ -55,7 +58,7 @@ public class DB {
      * Method that will execute a {@link SpWithRs Stored procedure with ResultSet} and returns the resultSet reference.
      * Note that it is the callers responsibility to provide the correct amount of parameters.
      * <br/><br/>
-     * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+     * <Font Color = red>Important</Font Color> Connection must be managed by caller with
      * {@link #connect()} and {@link #disconnect()}.
      *
      * @param sp    Enum Type {@link SpWithRs}.
@@ -89,7 +92,7 @@ public class DB {
      * Method that will execute a {@link SpGetKey Stored procedure returning a Single int} that represent the just inserted or updated Primary Key.
      * Note that it is the callers responsibility to provide the correct amount of parameters.
      * <br/><br/>
-     * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+     * <Font Color = red>Important</Font Color> Connection must be managed by caller with
      * {@link #connect()} and {@link #disconnect()}.
      *
      * @param sp    Enum Type {@link SpGetKey}.
@@ -124,7 +127,7 @@ public class DB {
      * If only as single Stored procedure must be executed {@link #executeStoredProcedure(Sp, Object...)}
      * can be used instead.
      * <br/><br/>
-     * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+     * <Font Color = red>Important</Font Color> Connection must be managed by caller with
      * {@link #connect()} and {@link #disconnect()}.
      *
      * @param sp    Enum Type {@link Sp}.
@@ -174,7 +177,7 @@ public class DB {
      * and also to execute the batch with {@link #executeBatch()}.
      * If multiple stored procedure must be executed after each other use {@link #addStoredProcedureToBatch(Sp, Object...)} instead.
      * <br/><br/>
-     * <Font Color = red>Important</Font Color> Connection must be managed by callee with
+     * <Font Color = red>Important</Font Color> Connection must be managed by caller with
      * {@link #connect()} and {@link #disconnect()}.
      *
      * @param sp    Enum Type {@link Sp}.
@@ -341,6 +344,7 @@ public class DB {
      * Method that takes a sql file an executes it.
      * Note that this should only used when necessarily and the desired functionality
      * can not be achieved with stored procedures.
+     *
      * @param file Sql file that will be run.
      */
     public void executeScript(File file) {
