@@ -5,13 +5,9 @@ import Foundation.DB;
 import Foundation.Sp;
 import Foundation.SpGetKey;
 import Foundation.SpWithRs;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.collections.ObservableList;
-import org.apache.ibatis.jdbc.Null;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -20,14 +16,16 @@ import java.util.HashMap;
  * Facade class that helps convert SQL data to objects.
  * Note that this class will not establish a Db connection on its own.
  */
-public class DbFacade { //TODO This whole god forsaken shit class need to have an overhaul on documentation.
+@SuppressWarnings("Duplicates") //Dont judge me, copy past code is the way to go here. -Sven
+public class DbFacade {
 
-   /*
-    * INSERTION
-    */
+    /*
+     * INSERTION
+     */
 
     /**
      * Method that will write the a provider object to the database.
+     *
      * @param provider The Container for the values that will be inserted.
      * @return True if successful added to batch.
      * @throws SQLException         Exception thrown when encountered a fatal error.
@@ -48,12 +46,13 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
     /**
      * Method that will write the a provider object to the database.
      * Will also make sure that its children objects are written correctly to the database.
+     *
      * @param education The Container for the values that will be inserted.
      * @return True if successful added to batch.
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    @SuppressWarnings("Duplicates")
+
     public static int insertEducation(Education education) throws SQLException, NullPointerException { //todo old amu stuff
         DB database = DB.getInstance();
 
@@ -96,7 +95,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static int insertEducationWish(EducationWish educationWish, int interViewID) throws SQLException, NullPointerException {
+    public static int insertEducationWish(EducationWish educationWish, int interViewID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 Write education to db and get returnvalue
@@ -127,7 +126,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static int insertFinishedEducation(FinishedEducation finishedEducation, int interViewID) throws SQLException, NullPointerException {
+    public static int insertFinishedEducation(FinishedEducation finishedEducation, int interViewID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 Write education to db and get return value
@@ -158,8 +157,6 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @param employee The Container for the values that will be inserted.
      * @throws SQLException Exception thrown when encountered a fatal error.
      */
-    @SuppressWarnings("Duplicates")
-
     public static int insertEmployee(Employee employee) throws SQLException {
         DB database = DB.getInstance();
 
@@ -171,7 +168,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         String eMail = employee.geteMail();
         String phoneNr = employee.getPhoneNr();
 
-        int newEmployeeID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EMPLOYEE,oldEmployeeID,employeeFirstName,employeeLastName,CPRnr,eMail,phoneNr);
+        int newEmployeeID = database.executeStoredProcedureGetID(SpGetKey.PLACE_EMPLOYEE, oldEmployeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);
 
         // 2 Purge interview table
         database.addStoredProcedureToBatch(Sp.DELETE_INTERVIEW_BY_EMPLOYEE_ID, oldEmployeeID);
@@ -180,7 +177,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         // 3 Insert interview by calling method and passing
         ArrayList<Interview> employees = employee.getInterviews();
         for (Interview interview : employees) {
-            insertInterview(interview,newEmployeeID);
+            insertInterview(interview, newEmployeeID);
         }
 
         // 4 return employee id
@@ -201,7 +198,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static int insertInterview(Interview interview, int employeeID) throws SQLException, NullPointerException {
+    public static int insertInterview(Interview interview, int employeeID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 We write this interview to the db and get ID
@@ -267,16 +264,16 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         String cvrNr = company.getCvrNr();
         String companyName = company.getCompanyName();
 
-        int newCompanyID = database.executeStoredProcedureGetID(SpGetKey.PLACE_COMPANY,oldCompanyID,cvrNr,companyName);
+        int newCompanyID = database.executeStoredProcedureGetID(SpGetKey.PLACE_COMPANY, oldCompanyID, cvrNr, companyName);
 
         // 2 cleanse Consultation table by company id
-        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID,oldCompanyID);
+        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_BY_COMPANY_ID, oldCompanyID);
         database.executeBatch();
 
         // 3 Insert Consultation should be done by other method
         ArrayList<Consultation> consultations = company.getConsultations();
         for (Consultation consultation : consultations) {
-            insertConsultation(consultation,newCompanyID);
+            insertConsultation(consultation, newCompanyID);
         }
 
         // 4 Insert education via method that returns the inserted ID
@@ -288,8 +285,9 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
 
         // 5 With the returnValue we can make the bridge table, purge old one
         for (Integer newEducationID : newEducationIDs) {
-            database.addStoredProcedureToBatch(Sp.INSERT_COMPANY_EDUCATION_BRIDGE,newCompanyID,newEducationID);
+            database.addStoredProcedureToBatch(Sp.INSERT_COMPANY_EDUCATION_BRIDGE, newCompanyID, newEducationID);
         }
+        database.executeBatch();
 
         // 6 return value
         return newCompanyID;
@@ -309,7 +307,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
      * @throws SQLException         Exception thrown when encountered a fatal error.
      * @throws NullPointerException Thrown if the Domain structure contain missing parts.
      */
-    private static int insertConsultation(Consultation consultation, int companyID) throws SQLException, NullPointerException {
+    public static int insertConsultation(Consultation consultation, int companyID) throws SQLException, NullPointerException {
         DB database = DB.getInstance();
 
         // 1 Insert Consultations
@@ -318,10 +316,12 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
         LocalDate startDate = consultation.getStartDate();
         LocalDate endDate = consultation.getEndDate();
 
-        int newConsultationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_CONSULTATION,oldConsultationID,consultationName,startDate,endDate,companyID);
+        int newConsultationID = database.executeStoredProcedureGetID(SpGetKey.PLACE_CONSULTATION, oldConsultationID, consultationName, startDate, endDate, companyID);
 
-        // 2 purge bridge table
-        database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_EMPLOYEE_BRIDGE_BY_CONSULTATION_ID,oldConsultationID); //TODO make asearch
+        if (oldConsultationID != null) {
+            // 2 purge bridge table
+            database.addStoredProcedureToBatch(Sp.DELETE_CONSULTATION_EMPLOYEE_BRIDGE_BY_CONSULTATION_ID, oldConsultationID); //TODO make asearch
+        }
         database.executeBatch();
 
         // 3 Insert Employees via method
@@ -333,7 +333,7 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
 
         // 4 with the return value of insert employee we can reinsert bridge table
         for (Integer newEmployeeID : newEmployeeIDs) {
-            database.addStoredProcedureToBatch(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE,newConsultationID,newEmployeeIDs);
+            database.addStoredProcedureToBatch(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE, newConsultationID, newEmployeeID);
         }
         database.executeBatch();
 
@@ -341,70 +341,810 @@ public class DbFacade { //TODO This whole god forsaken shit class need to have a
     }
 
     /*
-     * SEARCHING FOR VALUES
+     * SEARCHING BY VALUES(DYNAMIC)
      */
 
-    /**
-     * Method that will search the Database for Provider objects.
-     * Values may be null and be used as wildCard.
-     * @param providerID Integer ID of the provider, may be null as wildcard
-     * @param ProviderName String name of the provider, may be null as wildcard
-     * @return HashMap of all the found provider. Key values equals the unique ProviderID
-     * @throws SQLException Exception when encountered a fatal error
-     * @see Provider
-     */
-    public static HashMap<Integer, Provider> findProviders(Integer providerID, String ProviderName) throws SQLException {
+    public static ArrayList<Provider> findProviders(Integer providerID,
+                                                                String providerName) throws SQLException {
         //init needed values
-        HashMap<Integer, Provider> returnMap = new HashMap<>();
+        HashMap<Integer, Provider> providers = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, providerID, ProviderName);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER,
+                providerID,
+                providerName);
 
-        while (rs.next()){
-            Provider tempProvider = new Provider(rs);
-            returnMap.put(tempProvider.getProviderID(),tempProvider);
+        while (rs.next()) {
+            buildProvider(rs, providers);
         }
-        return returnMap;
+        return new ArrayList<>(providers.values());
+    }
+
+    public static ArrayList<Education> findEducations(Integer AmuNr,
+                                                                  String educationName,
+                                                                  Integer educationNoOfDays,
+                                                                  LocalDate educationMinDate,
+                                                                  LocalDate educationMaxDate,
+                                                                  Integer providerID,
+                                                                  String providerName) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION,
+                AmuNr,
+                educationName,
+                educationNoOfDays,
+                educationMinDate,
+                educationMaxDate,
+                providerID,
+                providerName);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+        }
+        return new ArrayList<>(educations.values());
+    }
+
+    public static ArrayList<Interview> findInterviews(Integer interviewID,
+                                                                  String interviewName,
+                                                                  Integer AmuNr,
+                                                                  String educationName,
+                                                                  Integer educationNoOfDays,
+                                                                  LocalDate educationMinDate,
+                                                                  LocalDate educationMaxDate,
+                                                                  Integer providerID,
+                                                                  String providerName) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW,
+                interviewID,
+                interviewName,
+                AmuNr,
+                educationName,
+                educationNoOfDays,
+                educationMinDate,
+                educationMaxDate,
+                providerID,
+                providerName);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+        }
+        return new ArrayList<>(interviews.values());
+    }
+
+    public static ArrayList<Employee> findEmployees(Integer employeeID,
+                                                                String employeeFirstName,
+                                                                String employeeLastName,
+                                                                String cprNr,
+                                                                String email,
+                                                                String phoneNr,
+                                                                Integer interviewID,
+                                                                String interviewName,
+                                                                Integer AmuNr,
+                                                                String educationName,
+                                                                Integer educationNoOfDays,
+                                                                LocalDate educationMinDate,
+                                                                LocalDate educationMaxDate,
+                                                                Integer providerID,
+                                                                String providerName) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE,
+                employeeID,
+                employeeFirstName,
+                employeeLastName,
+                cprNr,
+                email,
+                phoneNr,
+                interviewID,
+                interviewName,
+                AmuNr,
+                educationName,
+                educationNoOfDays,
+                educationMinDate,
+                educationMaxDate,
+                providerID,
+                providerName);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+        }
+        return new ArrayList<>(employees.values());
+    }
+
+    public static ArrayList<Consultation> findConsultations(Integer consultationID,
+                                                                        String consultationName,
+                                                                        LocalDate consultationMinDate,
+                                                                        LocalDate consultationMaxDate,
+                                                                        Integer employeeID,
+                                                                        String employeeFirstName,
+                                                                        String employeeLastName,
+                                                                        String cprNr,
+                                                                        String email,
+                                                                        String phoneNr,
+                                                                        Integer interviewID,
+                                                                        String interviewName,
+                                                                        Integer AmuNr,
+                                                                        String educationName,
+                                                                        Integer educationNoOfDays,
+                                                                        LocalDate educationMinDate,
+                                                                        LocalDate educationMaxDate,
+                                                                        Integer providerID,
+                                                                        String providerName) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+        HashMap<Integer, Consultation> consultations = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION,
+                consultationID,
+                consultationName,
+                consultationMinDate,
+                consultationMaxDate,
+                employeeID,
+                employeeFirstName,
+                employeeLastName,
+                cprNr,
+                email,
+                phoneNr,
+                interviewID,
+                interviewName,
+                AmuNr,
+                educationName,
+                educationNoOfDays,
+                educationMinDate,
+                educationMaxDate,
+                providerID,
+                providerName);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+            buildConsultation(rs, employees, consultations);
+        }
+        return new ArrayList<>(consultations.values());
+    }
+
+    public static ArrayList<Company> findCompanies(Integer companyID,
+                                                               String cvrNr,
+                                                               String companyName,
+                                                               Integer consultationID,
+                                                               String consultationName,
+                                                               LocalDate consultationMinDate,
+                                                               LocalDate consultationMaxDate,
+                                                               Integer employeeID,
+                                                               String employeeFirstName,
+                                                               String employeeLastName,
+                                                               String cprNr,
+                                                               String email,
+                                                               String phoneNr,
+                                                               Integer interviewID,
+                                                               String interviewName,
+                                                               Integer AmuNr,
+                                                               String educationName,
+                                                               Integer educationNoOfDays,
+                                                               LocalDate educationMinDate,
+                                                               LocalDate educationMaxDate,
+                                                               Integer providerID,
+                                                               String providerName) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+        HashMap<Integer, Consultation> consultations = new HashMap<>();
+        HashMap<Integer, Company> companies = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY,
+                companyID,
+                cvrNr,
+                companyName,
+                consultationID,
+                consultationName,
+                consultationMinDate,
+                consultationMaxDate,
+                employeeID,
+                employeeFirstName,
+                employeeLastName,
+                cprNr,
+                email,
+                phoneNr,
+                interviewID,
+                interviewName,
+                AmuNr,
+                educationName,
+                educationNoOfDays,
+                educationMinDate,
+                educationMaxDate,
+                providerID,
+                providerName);
+
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+            buildConsultation(rs, employees, consultations);
+            buildCompany(rs, consultations, educations, companies);
+        }
+        return new ArrayList<>(companies.values());
     }
 
     /*
-     * GETTING ALL VALUES
+     * DELETE BY ID
+     */
+
+
+    /*
+     * GET BY PRIMARY KEY
+     */
+
+    public static Provider findProvider(int ID) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, ID, null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+        }
+        if(providers.isEmpty()){ //test if nothing was found
+            return null;
+        }
+        return new ArrayList<>(providers.values()).get(0);
+    }
+
+    public static Education findEducation(int ID) throws SQLException {
+        Education returnEducation = null;
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, ID, null, null, null, null, null, null);
+
+        //get row by row
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+        }
+        if(educations.isEmpty()){ //test if nothing was found
+            return null;
+        }
+        return new ArrayList<>(educations.values()).get(0);
+    }
+
+    public static Interview findInterview(int ID) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW, ID, null, null, null, null, null, null, null, null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+        }
+        if(interviews.isEmpty()){ //test if nothing was found
+            return null;
+        }
+        return new ArrayList<>(interviews.values()).get(0);
+    }
+
+    public static Employee findEmployee(int ID) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE, ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+        }
+        if(employees.isEmpty()){ //test if nothing was found
+            return null;
+        }
+        return new ArrayList<>(employees.values()).get(0);
+    }
+
+    public static Consultation findConsultation(int ID) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+        HashMap<Integer, Consultation> consultations = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+            buildConsultation(rs, employees, consultations);
+        }
+        if(consultations.isEmpty()){ //test if nothing was found
+            return null;
+        }
+        return new ArrayList<>(consultations.values()).get(0);
+    }
+
+    public static Company findCompany(int ID) throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+        HashMap<Integer, Consultation> consultations = new HashMap<>();
+        HashMap<Integer, Company> companies = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY, ID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+            buildConsultation(rs, employees, consultations);
+            buildCompany(rs, consultations, educations, companies);
+        }
+        if(companies.isEmpty()){ //test if nothing was found
+            return null;
+        }
+        return new ArrayList<>(companies.values()).get(0);
+    }
+
+    /*
+     *GETTING ALL VALUES
      */
 
     /**
      * Method that will search the Database for ALL Provider objects.
      * Values may be null and be used as wildCard.
+     *
      * @return HashMap of all the found provider. Key values equals the unique ProviderID
      * @throws SQLException Exception when encountered a fatal error
      * @see Provider
      */
-    public static HashMap<Integer, Provider> findAllProviders() throws SQLException {
+    public static ArrayList<Provider> findProviders() throws SQLException {
         //init needed values
-        HashMap<Integer, Provider> returnMap = new HashMap<>();
+        HashMap<Integer, Provider> providers = new HashMap<>();
 
         //Getting data
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, null, null);
 
-        while (rs.next()){
-            Provider tempProvider = new Provider(rs);
-            returnMap.put(tempProvider.getProviderID(),tempProvider);
+        while (rs.next()) {
+            buildProvider(rs, providers);
         }
-        return returnMap;
+        return new ArrayList<>(providers.values());
     }
 
-    public static HashMap<Integer, Company> FindAllCompanies() throws SQLException{
-
+    public static ArrayList<Education> findEducations() throws SQLException {
         //init needed values
-        HashMap<Integer, Company> returnCompNames = new HashMap<>();
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
 
         //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure("sp_FindCompanyNames");
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, null, null, null, null, null, null, null);
 
-        while (rs.next()){
-            Company tempCompanyNames = new Company(rs);
-            returnCompNames.put(tempCompanyNames.getCompanyID(),tempCompanyNames);
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
         }
-        return returnCompNames;
-
+        return new ArrayList<>(educations.values());
     }
+
+    public static ArrayList<Interview> findInterviews() throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW, null, null, null, null, null, null, null, null, null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+        }
+        return new ArrayList<>(interviews.values());
+    }
+
+    public static ArrayList<Employee> findEmployees() throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+        }
+        return new ArrayList<>(employees.values());
+    }
+
+    public static ArrayList<Consultation> findConsultations() throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+        HashMap<Integer, Consultation> consultations = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+            buildConsultation(rs, employees, consultations);
+        }
+        return new ArrayList<>(consultations.values());
+    }
+
+    public static ArrayList<Company> findCompanies() throws SQLException {
+        //init needed values
+        HashMap<Integer, Provider> providers = new HashMap<>();
+        HashMap<Integer, Education> educations = new HashMap<>();
+        HashMap<Integer, Interview> interviews = new HashMap<>();
+        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
+        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+        HashMap<Integer, Employee> employees = new HashMap<>();
+        HashMap<Integer, Consultation> consultations = new HashMap<>();
+        HashMap<Integer, Company> companies = new HashMap<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+        while (rs.next()) {
+            buildProvider(rs, providers);
+            buildEducation(rs, educations, providers);
+            buildEducationWish(rs, educationWishes, educations);
+            buildFinishedEducation(rs, finishedEducations, educations);
+            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            buildEmployee(rs, interviews, employees);
+            buildConsultation(rs, employees, consultations);
+            buildCompany(rs, consultations, educations, companies);
+        }
+        return new ArrayList<>(companies.values());
+    }
+
+    /*
+     * HELPER METHODS FOR FINDING
+     */
+
+    private static void buildProvider(ResultSet rs, HashMap<Integer, Provider> providerHashMap) throws SQLException {
+        //Fetch values from rs and test if the rs contain the object
+        int id = rs.getInt("tbl_Provider_PK_fld_ProviderID");
+        if (!rs.wasNull()) { //Test for existences
+            String providerName = rs.getString("tbl_Provider_fld_ProviderName");
+
+            // Make new Provider
+            Provider provider = new Provider(id, providerName);
+
+            //Put provider in HashMap
+            providerHashMap.putIfAbsent(id, provider);
+        }
+    }
+
+    //Should be done AFTER call to buildProvider
+    private static void buildEducation(ResultSet rs,
+                                       HashMap<Integer, Education> educationHashMap,
+                                       HashMap<Integer, Provider> providerHashMap) throws SQLException {
+        //Fetch values from rs and test if the rs contain the object
+        int id = rs.getInt("tbl_Education_PK_fld_AmuNr");
+        if (!rs.wasNull()) { //Test for existences
+            String name = rs.getString("tbl_Education_fld_EducationName");
+            String description = rs.getString("tbl_Education_fld_Description");
+            int noOfDays = rs.getInt("tbl_Education_fld_NoOfDays"); //Can not be null in db
+            LocalDate localDate = rs.getDate("tbl_Date_fld_Date").toLocalDate();
+
+            //fetch the provider from the hashMap
+            Provider provider = null;
+            int providerId = rs.getInt("tbl_Education_FK_fld_ProviderID");
+            if (!rs.wasNull()) {
+                provider = providerHashMap.get(providerId);
+            }
+
+            //Make new Education
+            Education education = new Education(id, name, description, noOfDays, new ArrayList<>(), provider);
+
+            // Put education in hashMap and add date to the right reference
+            education = educationHashMap.putIfAbsent(id, education);
+            if (education != null) {
+                education.getDates().add(localDate);
+            }
+        }
+    }
+
+    //should be called after education since we need the updated HashMap
+    private static void buildFinishedEducation(ResultSet rs,
+                                               HashMap<Integer, FinishedEducation> finishedEducationHashMap,
+                                               HashMap<Integer, Education> educationHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("tbl_FinishedEducation_PK_fld_FinishedEducationID");
+        if (!rs.wasNull()) { //Test for existences
+            LocalDate localDate = rs.getDate("tbl_FinishedEducation_fld_FinishedDate").toLocalDate();
+
+            // Fetch values from updated hashMap
+            int educationId = rs.getInt("tbl_FinishedEducation_FK_fld_AmuNr");
+            Education education = null;
+            if (!rs.wasNull()) {
+                education = educationHashMap.get(educationId);
+            }
+
+            // make new object
+            FinishedEducation finishedEducation = new FinishedEducation(id, education, localDate);
+
+            //Put Object in hashMap and add references
+            finishedEducationHashMap.putIfAbsent(id, finishedEducation);
+        }
+    }
+
+    //should be called after  education we need the updated HashMap
+    private static void buildEducationWish(ResultSet rs,
+                                           HashMap<Integer, EducationWish> educationWishHashMap,
+                                           HashMap<Integer, Education> educationHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("tbl_EducationWish_PK_fld_EducationWishID");
+        if (!rs.wasNull()) { //Test for existences
+            int priority = rs.getInt("tbl_EducationWish_fld_WishPriority");
+
+            // Fetch values from updated hashMap
+            int educationId = rs.getInt("tbl_EducationWish_FK_fld_AmuNr");
+            Education education = null;
+            if (!rs.wasNull()) {
+                education = educationHashMap.get(educationId);
+            }
+
+            // make new object
+            EducationWish educationWish = new EducationWish(id, education, priority);
+
+            //Put Object in hashMap and add references
+            educationWishHashMap.putIfAbsent(id, educationWish);
+        }
+    }
+
+    //should be called after both finished education and education wish
+    private static void buildInterview(ResultSet rs,
+                                       HashMap<Integer, EducationWish> educationWishHashMap,
+                                       HashMap<Integer, FinishedEducation> finishedEducationHashMap,
+                                       HashMap<Integer, Interview> interviewHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("tbl_Interview_PK_fld_InterviewID");
+        if (!rs.wasNull()) { //Test for existence
+            String name = rs.getString("tbl_Interview_fld_InterviewName");
+            Integer productUnderstanding = rs.getInt("tbl_Interview_fld_ProductUnderstanding"); //Can be null, rs set it to 0
+            if (rs.wasNull()) {
+                productUnderstanding = null;
+            }
+            Integer problemUnderstanding = rs.getInt("tbl_Interview_fld_ProblemUnderstanding");
+            if (rs.wasNull()) {
+                problemUnderstanding = null;
+            }
+            Integer flexibility = rs.getInt("tbl_Interview_fld_Flexibility");
+            if (rs.wasNull()) {
+                flexibility = null;
+            }
+            Integer qualityAwareness = rs.getInt("tbl_Interview_fld_QualityAwarness");
+            if (rs.wasNull()) {
+                qualityAwareness = null;
+            }
+            Integer cooperation = rs.getInt("tbl_Interview_fld_Cooperation");
+            if (rs.wasNull()) {
+                cooperation = null;
+            }
+
+            // Fetch values from updated hashMap
+            int eduWishID = rs.getInt("tbl_EducationWish_PK_fld_EducationWishID");
+            EducationWish educationWish = null;
+            if (!rs.wasNull()) {
+                educationWish = educationWishHashMap.get(eduWishID);
+            }
+
+            int finEduID = rs.getInt("tbl_FinishedEducation_PK_fld_FinishedEducationID");
+            FinishedEducation finishedEducation = null;
+            if (!rs.wasNull()) {
+                finishedEducation = finishedEducationHashMap.get(finEduID);
+            }
+
+            // make new object
+            Interview interview = new Interview(id, name, productUnderstanding, problemUnderstanding, flexibility, qualityAwareness, cooperation, new ArrayList<>(), new ArrayList<>());
+
+            //Put Object in hashMap and add references
+            interview = interviewHashMap.putIfAbsent(id, interview);
+            if (interview != null) {
+                interview.getEducationWishes().add(educationWish);
+                interview.getFinishedEducations().add(finishedEducation);
+            }
+        }
+    }
+
+    //should be called after interview
+    private static void buildEmployee(ResultSet rs,
+                                      HashMap<Integer, Interview> interviewHashMap,
+                                      HashMap<Integer, Employee> employeeHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("tbl_Employee_PK_fld_EmployeeID");
+        if (!rs.wasNull()) {
+            String firstName = rs.getString("tbl_Employee_fld_EmployeeFirstName");
+            String lastName = rs.getString("tbl_Employee_fld_EmployeeLastName");
+            String cpr = rs.getString("tbl_Employee_fld_CprNr");
+            String eMail = rs.getString("tbl_Employee_fld_Email");
+            String phoneNr = rs.getString("tbl_Employee_fld_PhoneNr");
+
+            // Fetch values from updated hashMap
+            int interviewId = rs.getInt("tbl_Interview_PK_fld_InterviewID");
+            Interview interview = null;
+            if (!rs.wasNull()) {
+                interview = interviewHashMap.get(interviewId);
+            }
+            // make new object
+            Employee employee = new Employee(id, firstName, lastName, cpr, eMail, phoneNr, new ArrayList<>());
+
+            //Put Object in hashMap and add references
+            employee = employeeHashMap.putIfAbsent(id, employee);
+            if (employee != null) {
+                employee.getInterviews().add(interview);
+            }
+        }
+    }
+
+    //should be called after consultation
+    private static void buildConsultation(ResultSet rs,
+                                          HashMap<Integer, Employee> employeeHashMap,
+                                          HashMap<Integer, Consultation> consultationHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("tbl_Consultation_PK_fld_ConsultationID");
+        if (!rs.wasNull()) {
+            String name = rs.getString("tbl_Consultation_fld_ConsultationName");
+            LocalDate startDate = rs.getDate("tbl_Consultation_fld_StartDate").toLocalDate();
+            LocalDate endDate = rs.getDate("tbl_Consultation_fld_EndDate").toLocalDate();
+
+            // Fetch values from updated hashMap
+            int employeeId = rs.getInt("tbl_Consultation_Employee_Bridge_FK_fld_EmployeeID");
+            Employee employee = null;
+            if (!rs.wasNull()) {
+                employee = employeeHashMap.get(employeeId);
+            }
+
+            // make new object
+            Consultation consultation = new Consultation(id, name, startDate, endDate, new ArrayList<>());
+
+            //Put Object in hashMap and add references
+            consultation = consultationHashMap.putIfAbsent(id, consultation);
+            if (consultation != null) {
+                consultation.getEmployees().add(employee);
+            }
+        }
+    }
+
+    //should be called after education and consultation
+    private static void buildCompany(ResultSet rs,
+                                     HashMap<Integer, Consultation> consultationHashMap,
+                                     HashMap<Integer, Education> educationHashMap,
+                                     HashMap<Integer, Company> companyHashMap) throws SQLException {
+        // Fetch values from rs
+        int id = rs.getInt("tbl_Company_PK_fld_CompanyID");
+        if (!rs.wasNull()) {
+            String cvr = rs.getString("tbl_Company_fld_CvrNr");
+            String name = rs.getString("tbl_Company_fld_CompanyName");
+
+            // Fetch values from updated hashMap
+            int consultationId = rs.getInt("tbl_Consultation_PK_fld_ConsultationID");
+            Consultation consultation = null;
+            if (!rs.wasNull()) {
+                consultation = consultationHashMap.get(consultationId);
+            }
+
+            int educatiionId = rs.getInt("tbl_Company_Education_Bridge_FK_fld_AmurNr");
+            Education education = null;
+            if (!rs.wasNull()) {
+                education = educationHashMap.get(educatiionId);
+            }
+
+            // make new object
+            Company company = new Company(id, cvr, name, new ArrayList<>(), new ArrayList<>());
+
+            //Put Object in hashMap and add references
+            company = companyHashMap.putIfAbsent(id, company);
+            if (company != null) {
+                company.getConsultations().add(consultation);
+                company.getEducationList().add(education);
+            }
+        }
+    }
+
 }

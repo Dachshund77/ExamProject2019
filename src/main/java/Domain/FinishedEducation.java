@@ -22,17 +22,6 @@ public class FinishedEducation {
         this.dateFinished = dateFinished;
     }
 
-    /**
-     * Constructor that builds an object from ResultSet.
-     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
-     * @param rs ResultSet that will be used to build the object.
-     * @throws SQLException Thrown when encoutered a fatal error.
-     */
-    public FinishedEducation(ResultSet rs) throws SQLException {
-        this.finishedEducationID = new SimpleIntegerProperty(rs.getInt("fld_FinishedEducationID"));
-        this.dateFinished = rs.getDate("fld_FinishedDate").toLocalDate();
-    }
-
     public Integer getFinishedEducationID() {
         if (finishedEducationID == null){
             return null;

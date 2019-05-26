@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Education {
-    private final SimpleIntegerProperty amuNr;
+    private final SimpleIntegerProperty amuNr; //TODO MAKE FINAL INT
     private SimpleStringProperty educationName;
     private SimpleStringProperty description;
     private SimpleIntegerProperty noOfDays;
@@ -44,20 +44,6 @@ public class Education {
         // init provider
         this.provider = new SimpleObjectProperty<>(provider);
 
-    }
-
-    /**
-     * Constructor that builds an object from ResultSet.
-     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
-     *
-     * @param rs ResultSet that will be used to build the object.
-     * @throws SQLException Thrown when encoutered a fatal error.
-     */
-    public Education(ResultSet rs) throws SQLException {
-        this.amuNr = new SimpleIntegerProperty(rs.getInt("fld_AmuNR"));
-        this.educationName = new SimpleStringProperty(rs.getString("fld_EducationName"));
-        this.description = new SimpleStringProperty(rs.getString("fld_Description"));
-        this.noOfDays = new SimpleIntegerProperty(rs.getInt("fld_NoOfFays"));
     }
 
     public Integer getAmuNr() {

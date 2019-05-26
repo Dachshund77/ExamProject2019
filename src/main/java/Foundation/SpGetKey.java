@@ -2,7 +2,7 @@ package Foundation;
 
 
 /**
- * Enum class that hold the actual name of the stored procedure that return with a RS.
+ * Enum class that hold the actual name of the stored procedure that return a single ID.
  * Prevents spelling mistakes and makes migration of names easier.
  */
 public enum SpGetKey implements Procedure {

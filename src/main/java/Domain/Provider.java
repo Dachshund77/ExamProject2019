@@ -19,17 +19,6 @@ public class Provider {
         this.providerName = new SimpleStringProperty(providerName);
     }
 
-    /**
-     * Constructor that builds an object from ResultSet.
-     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
-     * @param rs ResultSet that will be used to build the object.
-     * @throws SQLException Thrown when encoutered a fatal error.
-     */
-    public Provider(ResultSet rs) throws SQLException {
-        this.providerID = new SimpleIntegerProperty(rs.getInt("fld_ProviderID"));
-        this.providerName = new SimpleStringProperty(rs.getString("fld_ProviderName"));
-    }
-
     public Integer getProviderID() {
         if (providerID == null){
             return null;

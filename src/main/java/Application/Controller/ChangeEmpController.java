@@ -68,7 +68,9 @@ public class ChangeEmpController {
 
     //stuck trying to fill the first choice box with company names
     //TODO tried a lot of things but, console says that fld_CompanyID is INVALID -MC
+    //Sorry hat to comment that out -Sven
     private void populateCompany() throws SQLException {
+        /*
         HashMap<Integer, Company> companyNames = DbFacade.FindAllCompanies();
         Collection<Company> names = companyNames.values();
         ArrayList<Company> namesArraylist = new ArrayList<>(names);
@@ -76,6 +78,7 @@ public class ChangeEmpController {
         for (Company companies: namesArraylist) {
             compDrop.getItems().addAll(companyNames);
         }
+        */
     }
 
 

@@ -34,22 +34,6 @@ public class Employee {
         this.interviews = Objects.requireNonNullElseGet(interviews,ArrayList::new);
     }
 
-    /**
-     * Constructor that builds an object from ResultSet.
-     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
-     *
-     * @param rs ResultSet that will be used to build the object.
-     * @throws SQLException Thrown when encoutered a fatal error.
-     */
-    public Employee(ResultSet rs) throws SQLException {
-        this.employeeID = new SimpleIntegerProperty(rs.getInt("fld_EmployeeID"));
-        this.employeeFirstName = new SimpleStringProperty(rs.getString("fld_EmployeeFirstName"));
-        this.employeeLastName = new SimpleStringProperty(rs.getString("fld_EmployeeLastName"));
-        this.cprNr = new SimpleStringProperty(rs.getString("fld_CprNr"));
-        this.eMail = new SimpleStringProperty(rs.getString("fld_EMail"));
-        this.phoneNr = new SimpleStringProperty(rs.getString("fld_PhoneNr"));
-    }
-
     public Integer getEmployeeId() {
         if (employeeID == null)
             return null;

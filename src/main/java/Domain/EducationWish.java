@@ -25,17 +25,6 @@ public class EducationWish {
         }
     }
 
-    /**
-     * Constructor that builds an object from ResultSet.
-     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
-     * @param rs ResultSet that will be used to build the object.
-     * @throws SQLException Thrown when encoutered a fatal error.
-     */
-    public EducationWish(ResultSet rs) throws SQLException {
-        this.educationWishID = new SimpleIntegerProperty(rs.getInt("fld_EducationWishID"));
-        this.priority = new SimpleIntegerProperty(rs.getInt("fld_WishPriority"));
-    }
-
     public Integer getEducationWishID() {
         if (educationWishID == null){
             return null;
