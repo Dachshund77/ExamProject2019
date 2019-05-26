@@ -26,8 +26,10 @@ public enum ViewController {
     CHANGE_EDUCATION_CONTROLLER("/FXML/ChangeEducation.fxml"),
     CHANGE_INTERVIEW_CONTROLLER("/FXML/ChangeInterview.fxml"),
     CHANGE_COMPANY_CONTROLLER("/FXML/ChangeCompany.fxml"),
-    DEL_COMP_CONTROLLER("/FXML/DelCompView.FXML"),
-    DEL_COUN_VIEW("/FXML/DelCounView.fxml"),
+    DEL_COMP_CONTROLLER("/FXML/DelCompView.fxml"),
+    DEL_COUN_CONTROLLER("/FXML/DelCounView.fxml"),
+    DEL_INTERVIEW_CONTROLLER("/FXML/DelInterview.fxml"),
+    DEL_EMPLOYEE_CONTROLLER("/FXML/DelEmpView.fxml"),
     SA_CUST_VIEW("/FXML/SACustView.fxml");
 
 

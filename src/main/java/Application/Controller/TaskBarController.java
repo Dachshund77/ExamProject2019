@@ -82,7 +82,7 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleDeleteConsultation(ActionEvent event) {
-        ViewController.DEL_COUN_VIEW.reLoad(taskBar.getScene());
+        ViewController.DEL_COUN_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleDeleteCompany(ActionEvent event) {
