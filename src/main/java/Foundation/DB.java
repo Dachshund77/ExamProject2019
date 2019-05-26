@@ -75,6 +75,11 @@ public class DB {
 
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
+        //Test if method was called correctly
+        if (metaDataMap.size() != param.length) {
+            throw new IllegalArgumentException("Supplied number of Parameters did not match the Procedure " + sp.get() + ". " +
+                    "Expected: " + metaDataMap.size() + " Called with: " + param.length);
+        }
         //Setting callable statement
         cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
         //Build parameters
@@ -107,6 +112,11 @@ public class DB {
         System.out.println("param length was " + param.length);
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
+        //Test if method was called correctly
+        if (metaDataMap.size() != param.length) {
+            throw new IllegalArgumentException("Supplied number of Parameters did not match the Procedure " + sp.get() + ". " +
+                    "Expected: " + metaDataMap.size() + " Called with: " + param.length);
+        }
         //Setting callable statement
         cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
         //Build parameters
@@ -143,6 +153,11 @@ public class DB {
         conn.setAutoCommit(false);
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
+        //Test if method was called correctly
+        if (metaDataMap.size() != param.length) {
+            throw new IllegalArgumentException("Supplied number of Parameters did not match the Procedure " + sp.get() + ". " +
+                    "Expected: " + metaDataMap.size() + " Called with: " + param.length);
+        }
         //Setting callable statement
         cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
 
@@ -190,6 +205,11 @@ public class DB {
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
         cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size()));
+        //Test if method was called correctly
+        if (metaDataMap.size() != param.length) {
+            throw new IllegalArgumentException("Supplied number of Parameters did not match the Procedure " + sp.get() + ". " +
+                    "Expected: " + metaDataMap.size() + " Called with: " + param.length);
+        }
         //Build parameters
         for (int i = 0; i < metaDataMap.size(); i++) {
             setCallParameter(i + 1, metaDataMap.get(i + 1), param[i]);
