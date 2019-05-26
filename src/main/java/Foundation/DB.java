@@ -298,7 +298,7 @@ public class DB {
 
                 break;
             default:
-                System.out.println("ERROR: Could not define Procedure type");
+                throw new IllegalArgumentException(dataValue+" at Index "+index+" could not be converted to "+dataType);
         }
     }
 
