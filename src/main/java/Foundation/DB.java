@@ -1,7 +1,6 @@
 package Foundation;
 
 import Persistance.DbFacade;
-import com.microsoft.sqlserver.jdbc.SQLServerCallableStatement;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.*;
@@ -13,7 +12,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.sql.Date;
 
 /**
  * Access point for Database interaction. This class wil be facaded by {@link DbFacade} to get usable objects from the resultSet.
@@ -21,7 +19,7 @@ import java.sql.Date;
 public class DB {
     private static DB ourInstance = new DB();
 
-    public static DB getInstance() {
+    public static DB getInstance() { //TODO metadata should be loaded at creation of this Class
         return ourInstance;
     }
 
@@ -52,34 +50,6 @@ public class DB {
         }
     }
 
-
-    /**
-     * Method that will execute a stored procedure and return the resultSet reference.
-     * Note that it is the callers responsibility to provide the correct amount of parameters.
-     *
-     * @param sp    String with the name of the Stored Procedure
-     * @param param Variable parameter for the Procedure
-     * @return ResultSet of SP.
-     * @throws SQLException Exception when SQL encounter a fatal problem
-     * @deprecated Since 23/05/19. Replace with {@link #executeStoredProcedure(SpWithRs, Object...)}
-     */
-    @Deprecated
-    @SuppressWarnings("Duplicates")
-    public ResultSet executeStoredProcedure(String sp, Object... param) throws SQLException {
-
-        // Preparing metaData
-        Map<Integer, String> metaDataMap = getSPMetaData(sp);
-        //Setting callable statement
-        cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
-        //Build parameters
-        for (int i = 0; i < metaDataMap.size(); i++) {
-            setCallParameter(i + 1, metaDataMap.get(i + 1), param[i]);
-        }
-        //Getting results
-        rs = cstmt.executeQuery();
-
-        return rs;
-    }
 
     /**
      * Method that will execute a stored procedure and return the resultSet reference.
@@ -134,29 +104,6 @@ public class DB {
     /**
      * Add a stored procedure to a batch. To execute the batch call {@link #executeBatch()}.
      *
-     * @param sp    String with the name of the Stored Procedure
-     * @param param Variable parameter for the Procedure
-     * @throws SQLException Exception when SQL encounter a fatal problem
-     * @deprecated Since 23/05/19. Replaced with {@link #addStoredProcedureToBatch(Sp, Object...)}.
-     */
-    @Deprecated
-    @SuppressWarnings("Duplicates")
-    public void addStoredProcedureToBatch(String sp, Object... param) throws SQLException {
-        conn.setAutoCommit(false); //TODO can we rollback if exception
-        // Preparing metaData
-        Map<Integer, String> metaDataMap = getSPMetaData(sp);
-        //Setting callable statement
-        cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size())); //Build the string
-        //Build parameters
-        for (int i = 0; i < metaDataMap.size(); i++) {
-            setCallParameter(i + 1, metaDataMap.get(i + 1), param[i]);
-        }
-        cstmt.addBatch();
-    }
-
-    /**
-     * Add a stored procedure to a batch. To execute the batch call {@link #executeBatch()}.
-     *
      * @param sp    Enum Type {@link Sp}.
      * @param param Variable parameter for the Procedure
      * @throws SQLException Exception when SQL encounter a fatal problem
@@ -199,31 +146,6 @@ public class DB {
     }
 
     /**
-     * Method that will execute a stored procedure and return the no resultSet
-     * Note that it is the callers responsibility to provide the correct amount of parameters.
-     *
-     * @param sp    String with the name of the Stored Procedure
-     * @param param Variable parameter for the Procedure
-     * @return True of successful executed.
-     * @throws SQLException Exception when SQL encounter a fatal problem
-     * @deprecated Since 23/05/19. Replaced with {@link #executeStoredProcedureNoRS(Sp, Object...)}
-     */
-
-    @Deprecated
-    @SuppressWarnings("Duplicates")
-    public Boolean executeStoredProcedureNoRS(String sp, Object... param) throws SQLException {
-        // Preparing metaData
-        Map<Integer, String> metaDataMap = getSPMetaData(sp);
-        //Setting callable statement
-        cstmt = conn.prepareCall(buildProcedureCall(sp, metaDataMap.size()));
-        //Build parameters
-        for (int i = 0; i < metaDataMap.size(); i++) {
-            setCallParameter(i + 1, metaDataMap.get(i + 1), param[i]);
-        }
-        return cstmt.execute();
-    }
-
-    /**
      * Method that will execute a stored procedure and return no resultSet
      * Note that it is the callers responsibility to provide the correct amount of parameters.
      *
@@ -233,7 +155,7 @@ public class DB {
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
     @SuppressWarnings("Duplicates")
-    public Boolean executeStoredProcedureNoRS(Sp sp, Object... param) throws SQLException {
+    public boolean executeStoredProcedure(Sp sp, Object... param) throws SQLException {
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
@@ -243,35 +165,6 @@ public class DB {
             setCallParameter(i + 1, metaDataMap.get(i + 1), param[i]);
         }
         return cstmt.execute();
-    }
-
-    /**
-     * Helper method that will construct the String for a callable statement.
-     *
-     * @param sp         The name of the Stored procedure
-     * @param parameters Number of Parameters for the Stored procedure
-     * @return String with the Callable statement
-     * @deprecated Since 23/05/19. Replaced with {@link #buildProcedureCall(Procedure, int)}.
-     */
-
-    @Deprecated
-    @SuppressWarnings("Duplicates")
-    private String buildProcedureCall(String sp, int parameters) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("{call ");
-        builder.append(sp);
-        if (parameters > 0) {
-            builder.append(" (");
-            for (int questionMarks = parameters; questionMarks != 0; questionMarks--) {
-                builder.append("?");
-                if (questionMarks > 1) {
-                    builder.append(",");
-                }
-            }
-            builder.append(")");
-        }
-        builder.append("}");
-        return builder.toString();
     }
 
     /**
@@ -385,37 +278,6 @@ public class DB {
         if (rs != null) {
             rs.close();
         }
-    }
-
-    /**
-     * Hardcoded execution of the sp_GetSPMetaData.
-     * This method is used to determine what the parameter should be cast to.
-     *
-     * @param sp The Stored procedure we want to get Meta Data for
-     * @return Map of ProcedureMetaData
-     * @throws SQLException Exception when SQL encounter a fatal problem
-     * @deprecated Since 23/05/19. Replaced with {@link #getSPMetaData(Procedure)}
-     */
-    @Deprecated
-    @SuppressWarnings("Duplicates")
-    private Map<Integer, String> getSPMetaData(String sp) throws SQLException {
-        Map<Integer, String> returnMap = new HashMap<>();
-        //Establishing call
-        cstmt = conn.prepareCall("{call "+SpWithRs.GET_PROCEDURE_META_DATA.get()+"(?)}");
-        cstmt.setString(1, sp);
-        rs = cstmt.executeQuery();
-        // Getting the Metadata
-        while (rs.next()) {
-            // Building a ProcedureMetaData object
-            int position = (int) rs.getObject("ORDINAL_POSITION");
-            String type = (String) rs.getObject("DATA_TYPE");
-            returnMap.put(position, type);
-        }
-        // Cleaning up
-        cstmt.close();
-        rs.close();
-        //Returning values
-        return returnMap;
     }
 
     /**
