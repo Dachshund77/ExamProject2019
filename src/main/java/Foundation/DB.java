@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -92,13 +93,10 @@ public class DB {
 
     @SuppressWarnings("Duplicates")
     public ResultSet executeStoredProcedure(SpWithRs sp, Object... param) throws SQLException {
-        for (Object o : param) {
-            if (o!=null) {
-                System.out.println("o.toString() = " + o.toString());
-            }else {
-                System.out.println("o is null");
-            }
-        }
+        System.out.println("DB.executeStoredProcedure");
+        System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "] ");
+        System.out.println("param length was "+param.length);
+
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
@@ -115,13 +113,9 @@ public class DB {
 
     @SuppressWarnings("Duplicates")
     public int executeStoredProcedureGetID(SpGetKey sp, Object... param) throws SQLException {
-        for (Object o : param) {
-            if (o!=null) {
-                System.out.println("o.toString() = " + o.toString());
-            }else {
-                System.out.println("o is null");
-            }
-        }
+        System.out.println("DB.executeStoredProcedureGetID");
+        System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "]");
+        System.out.println("param length was "+param.length);
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
@@ -169,13 +163,10 @@ public class DB {
      */
     @SuppressWarnings("Duplicates")
     public void addStoredProcedureToBatch(Sp sp, Object... param) throws SQLException {
-        for (Object o : param) {
-            if (o!=null) {
-                System.out.println("o.toString() = " + o.toString());
-            }else {
-                System.out.println("o is null");
-            }
-        }
+        System.out.println("DB.addStoredProcedureToBatch");
+        System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "]");
+        System.out.println("param length was "+param.length);
+
         conn.setAutoCommit(false); //TODO can we rollback if exception
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
@@ -321,9 +312,8 @@ public class DB {
      */
 
     private void setCallParameter(int index, String dataType, Object dataValue) throws SQLException {
-        System.out.println("index = " + index);
-        System.out.println("dataType = " + dataType);
-        System.out.println("dataValue = " + dataValue);
+        System.out.println("DB.setCallParameter");
+        System.out.println("index = [" + index + "], dataType = [" + dataType + "], dataValue = [" + dataValue + "]");
         switch (dataType) {
             case "int":
                 if (dataValue == null) {
@@ -365,7 +355,7 @@ public class DB {
 
                 break;
             default:
-                System.out.println("ERROR: Could not define Procedue type");
+                System.out.println("ERROR: Could not define Procedure type");
         }
     }
 

@@ -15,4 +15,4 @@ CREATE OR ALTER FUNCTION udf_Filter_tbl_Consultation(@ConsultationID INT, @Consu
                        ((@MinDate IS NOT NULL AND @MaxDate IS NOT NULL) AND
                         ((fld_StartDate BETWEEN @MinDate AND @MaxDate) OR
                          (fld_EndDate BETWEEN @MinDate AND @MaxDate)))
-                   )
+                   );

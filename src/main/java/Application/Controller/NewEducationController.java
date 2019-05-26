@@ -14,11 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 
 public class NewEducationController {
 
@@ -92,7 +88,7 @@ public class NewEducationController {
 
     private void populateProviderMenuButton() throws SQLException {
         //Get values
-        ArrayList<Provider> providers = DbFacade.findAllProviders();
+        ArrayList<Provider> providers = DbFacade.findProviders();
         //We want to sort its easier with array
         // FIXME: 22/05/2019 need to implement comperator to make this work
         // Adding menuItem

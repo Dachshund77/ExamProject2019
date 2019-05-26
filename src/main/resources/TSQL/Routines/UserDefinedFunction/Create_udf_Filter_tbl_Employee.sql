@@ -10,4 +10,4 @@ CREATE OR ALTER FUNCTION udf_Filter_tbl_Employee(@fld_EmployeeID INT, @fld_Emplo
           AND (@fld_EmployeeLastName IS NULL OR fld_EmployeeLastName LIKE '%' + @fld_EmployeeLastName + '%')
           AND (@fld_CprNr IS NULL OR fld_CprNr LIKE '%' + @fld_CprNr + '%')
           AND (@fld_Email IS NULL OR fld_Email LIKE '%' + @fld_Email + '%')
-          AND (@fld_PhoneNr IS NULL OR fld_PhoneNr LIKE '%' + @fld_PhoneNr + '%')
+          AND (@fld_PhoneNr IS NULL OR fld_PhoneNr LIKE '%' + @fld_PhoneNr + '%');
