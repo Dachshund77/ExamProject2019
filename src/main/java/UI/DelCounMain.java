@@ -12,7 +12,7 @@ public class DelCounMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = ViewController.DEL_COUN_VIEW.loadParent();
-        primaryStage.setTitle("Template");
+        primaryStage.setTitle("Delete consultation");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         primaryStage.setResizable(true);

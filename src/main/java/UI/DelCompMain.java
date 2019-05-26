@@ -12,7 +12,7 @@ public class DelCompMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = ViewController.DEL_COMP_CONTROLLER.loadParent();
-        primaryStage.setTitle("Template");
+        primaryStage.setTitle("Delete company");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         primaryStage.setResizable(true);

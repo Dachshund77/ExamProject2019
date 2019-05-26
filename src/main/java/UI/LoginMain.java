@@ -11,7 +11,7 @@ public class LoginMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = ViewController.LOGIN_CONTROLLER.loadParent();
-        primaryStage.setTitle("Template");
+        primaryStage.setTitle("Login");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         primaryStage.setResizable(true);
