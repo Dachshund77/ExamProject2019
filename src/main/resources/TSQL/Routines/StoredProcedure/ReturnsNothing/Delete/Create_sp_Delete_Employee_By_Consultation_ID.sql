@@ -1,4 +1,4 @@
-CREATE PROCEDURE sp_Delete_Employee_By_Consultation_ID(@ConsultationID INT)
+CREATE OR ALTER PROCEDURE sp_Delete_Employee_By_Consultation_ID(@ConsultationID INT)
 AS
 BEGIN
     DELETE

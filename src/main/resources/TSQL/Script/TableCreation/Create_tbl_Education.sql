@@ -6,5 +6,5 @@ CREATE TABLE tbl_Education
     fld_EducationName VARCHAR(30) NOT NULL,
     fld_Description  NVARCHAR(MAX),
     fld_NoOfDays     INT         NOT NULL,
-    FOREIGN KEY (fld_ProviderID) REFERENCES tbl_Provider (fld_ProviderID)
+    FOREIGN KEY (fld_ProviderID) REFERENCES tbl_Provider (fld_ProviderID) ON DELETE CASCADE
 );
