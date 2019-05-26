@@ -30,6 +30,9 @@ public class DelInterviewController {
 
     }
 
+    /**
+     * Initializing columns to have the correct column names to the corresponding data
+     */
     /*
     TableColumn<Integer, Interview> interviewIDColumn = new TableColumn<>("ID");
     interviewIDColumn.setCellValueFactory(new propertyValueFactory<>("ID"));
@@ -38,6 +41,11 @@ public class DelInterviewController {
     TableColumn<String, Interview> interviewName = new TableColumn<>("Name");
     interviewName.setCellValueFactory(New propertyValueFactory<>("Name"));
     interviewName.getItems().add();
+
+    TableColumn<Integer, Interview> interviewEmpID = new TableColumns<>("EMPID");
+    interviewEmoID.setCellValueFactory(new propertyValueFactory<>("Employee ID"));
+    interivewEmpID.getItems().add();
+
     */
 
     /**

@@ -76,9 +76,11 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleDeleteInterview(ActionEvent event) {
+        ViewController.DEL_INTERVIEW_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleDeleteEmployee(ActionEvent event) {
+        ViewController.DEL_EMPLOYEE_CONTROLLER.reLoad(taskBar.getScene());
     }
 
     public void handleDeleteConsultation(ActionEvent event) {
