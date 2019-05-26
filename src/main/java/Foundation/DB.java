@@ -82,7 +82,7 @@ public class DB {
     }
 
     @SuppressWarnings("Duplicates")
-    public int executeStoredProcedureGetID(SpGetKey sp, Object... param) throws SQLException {
+    public int executeStoredProcedureGetID(SpGetKey sp, Object... param) throws SQLException { //TODO the method should be done better
         System.out.println("DB.executeStoredProcedureGetID");
         System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "]");
         System.out.println("param length was "+param.length);
