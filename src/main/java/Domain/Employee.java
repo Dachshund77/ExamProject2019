@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Employee {
     private SimpleIntegerProperty employeeID;
@@ -18,48 +19,31 @@ public class Employee {
     private ArrayList<Interview> interviews;
 
     public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, String phoneNr, ArrayList<Interview> interviews) {
-        if(employeeID != null)
-        this.employeeID = new SimpleIntegerProperty(employeeID);
+        //employee ID
+        if (employeeID != null) {
+            this.employeeID = new SimpleIntegerProperty(employeeID);
+        } else {
+            this.employeeID = null;
+        }
+
         this.employeeFirstName = new SimpleStringProperty(employeeFirstName);
         this.employeeLastName = new SimpleStringProperty(employeeLastName);
         this.cprNr = new SimpleStringProperty(cprNr);
         this.eMail = new SimpleStringProperty(eMail);
         this.phoneNr = new SimpleStringProperty(phoneNr);
-        this.interviews = interviews;
+        this.interviews = Objects.requireNonNullElseGet(interviews,ArrayList::new);
     }
 
-    /**
-     * Constructor that builds an object from ResultSet.
-     * Note that no relation or Arrays for this object will created, this will be handled by {@link Persistance.DbFacade}.
-     * @param rs ResultSet that will be used to build the object.
-     * @throws SQLException Thrown when encoutered a fatal error.
-     */
-    public Employee(ResultSet rs) throws SQLException {
-        this.employeeID = new SimpleIntegerProperty(rs.getInt("fld_EmployeeID"));
-        this.employeeFirstName = new SimpleStringProperty(rs.getString("fld_EmployeeFirstName"));
-        this.employeeLastName = new SimpleStringProperty(rs.getString("fld_EmployeeLastName"));
-        this.cprNr = new SimpleStringProperty(rs.getString("fld_CprNr"));
-        this.eMail = new SimpleStringProperty(rs.getString("fld_EMail"));
-        this.phoneNr = new SimpleStringProperty(rs.getString("fld_PhoneNr"));
-    }
-
-    public Integer getEmployeeId()
-    {
-        if(employeeID == null)
-        return null;
-
+    public Integer getEmployeeId() {
+        if (employeeID == null)
+            return null;
         return employeeID.get();
-    }
-
-    public int getEmployeeID() {
-        return employeeID.get();
-    }
-
-    public SimpleIntegerProperty employeeIDProperty() {
-        return employeeID;
     }
 
     public String getEmployeeFirstName() {
+        if (employeeFirstName.get().equals("")){
+            return null;
+        }
         return employeeFirstName.get();
     }
 
@@ -68,6 +52,9 @@ public class Employee {
     }
 
     public String getEmployeeLastName() {
+        if(employeeLastName.get().equals("")){
+            return null;
+        }
         return employeeLastName.get();
     }
 
@@ -76,6 +63,9 @@ public class Employee {
     }
 
     public String getCprNr() {
+        if (cprNr.get().equals("")){
+            return null;
+        }
         return cprNr.get();
     }
 
@@ -84,6 +74,9 @@ public class Employee {
     }
 
     public String geteMail() {
+        if (eMail.get().equals("")){
+            return null;
+        }
         return eMail.get();
     }
 
@@ -92,6 +85,9 @@ public class Employee {
     }
 
     public String getPhoneNr() {
+        if (phoneNr.get().equals("")){
+            return null;
+        }
         return phoneNr.get();
     }
 

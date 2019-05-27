@@ -7,15 +7,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="266.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.DelCounController">
-   <children>
-      <ComboBox fx:id="companyName" layoutX="100.0" layoutY="22.0" onAction="#getText" prefWidth="150.0" />
-      <ComboBox fx:id="consultationName" layoutX="366.0" layoutY="22.0" onAction="#getText" prefWidth="150.0" />
-      <Label layoutX="39.0" layoutY="26.0" text="Company" />
-      <Label layoutX="39.0" layoutY="75.0" text="Consultation name" />
-      <Label layoutX="39.0" layoutY="122.0" text="Period" />
-      <Label layoutX="286.0" layoutY="26.0" text="Consultation" />
-      <DatePicker fx:id="date" layoutX="93.0" layoutY="118.0" onAction="#getText" promptText="select date" />
-      <Button fx:id="deletebtn" layoutX="260.0" layoutY="217.0" mnemonicParsing="false" onAction="#getText" text="Delete" />
-   </children>
-</AnchorPane>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane prefHeight="266.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.DelCounController">
+   <top>
+      <fx:include source="TaskBarView.fxml"/>
+   </top>
+   <center>
+      <AnchorPane>
+         <ComboBox fx:id="companyName" layoutX="100.0" layoutY="22.0" onAction="#getText" prefWidth="150.0" />
+         <ComboBox fx:id="consultationName" layoutX="366.0" layoutY="22.0" onAction="#getText" prefWidth="150.0" />
+         <Label layoutX="39.0" layoutY="26.0" text="Company" />
+         <Label layoutX="39.0" layoutY="75.0" text="Consultation name" />
+         <Label layoutX="39.0" layoutY="122.0" text="Period" />
+         <Label layoutX="286.0" layoutY="26.0" text="Consultation" />
+         <DatePicker fx:id="date" layoutX="93.0" layoutY="118.0" onAction="#getText" promptText="select date" />
+         <Button fx:id="deletebtn" layoutX="260.0" layoutY="217.0" mnemonicParsing="false" onAction="#getText" text="Delete" />
+      </AnchorPane>
+   </center>
+</BorderPane>

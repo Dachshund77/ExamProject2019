@@ -18,24 +18,27 @@ public class ScriptRunner {
         ArrayList<File> executionOrder = new ArrayList<>();
 
         // Create DB
-        executionOrder.add(new File(getClass().getResource("/TSQL/DbCreation/Create_db_SmartAcademy.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/DbCreation/Create_db_SmartAcademy.sql").getFile()));
 
         //Table creation
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Provider.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Education.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Date.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Company.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Company_Education_Bridge.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Consultation.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Employee.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Consultation_Employee_Bridge.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_Interview.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_EducationWish.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/TableCreation/Create_tbl_FinishedEducation.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Provider.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Education.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Date.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Company.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Company_Education_Bridge.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Consultation.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Employee.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Consultation_Employee_Bridge.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Interview.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_EducationWish.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_FinishedEducation.sql").getFile()));
 
-        //It should not matter what order stored procedure get added to the db
+        // Add table types
+        executionOrder.addAll(getFilesFromResourceDir(new File(getClass().getResource("/TSQL/Script/TableTypes").getFile())));
 
-        executionOrder.addAll(getFilesFromResourceDir(new File(getClass().getResource("/TSQL/StoredProcedure").getFile())));
+        //It should not matter what order routines get added to the db
+
+        executionOrder.addAll(getFilesFromResourceDir(new File(getClass().getResource("/TSQL/Routines").getFile())));
 
         // run the scripts
         try {
@@ -55,6 +58,11 @@ public class ScriptRunner {
         }
     }
 
+    /**
+     * Find all files given a start node.
+     * @param folder Start folder
+     * @return ArrayList of all files.
+     */
     private ArrayList<File> getFilesFromResourceDir(File folder) {
         ArrayList<File> returnArrayList = new ArrayList<>();
 

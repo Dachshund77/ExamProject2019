@@ -11,7 +11,7 @@ public class MainStartPage extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = ViewController.START_PAGE_CONTROLLER.loadParent();
-        primaryStage.setTitle("Template");
+        primaryStage.setTitle("Main page");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         primaryStage.setResizable(true);

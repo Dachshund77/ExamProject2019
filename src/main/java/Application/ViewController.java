@@ -17,10 +17,21 @@ public enum ViewController {
     START_PAGE_CONTROLLER("/FXML/MainStartPageView.fxml"),
     NEW_PROVIDER_CONTROLLER("/FXML/NewProviderView.fxml"),
     NEW_EMPLOYEE_CONTROLLER("/FXML/NewEmployeeView.fxml"),
-    NEW_EDUCATION_CONTROLLER("/FXML/NewEducationController.fxml"),
-    NEW_INTERVIEW_CONTROLLER("/FXML/NewInterviewController.fxml"),
+    NEW_EDUCATION_CONTROLLER("/FXML/NewEducationView.fxml"),
+    NEW_INTERVIEW_CONTROLLER("/FXML/NewInterview.fxml"),
+    NEW_COONSULTATION_CONTROLLER("/FXML/NewConsultView.fxml"),
     NEW_COMPANY_CONTROLLER("/FXML/NewCompView.fxml"),
-    CHANGE_COMPANY_CONTROLLER("/FXML/ChangeCompView.fxml");
+    CHANGE_EMP_CONTROLLER("/FXML/ChangeEmpView.fxml"),
+    CHANGE_CONSULTATION_CONTROLLER("/FXML/ChangeConsultation.fxml"),
+    CHANGE_EDUCATION_CONTROLLER("/FXML/ChangeEducation.fxml"),
+    CHANGE_INTERVIEW_CONTROLLER("/FXML/ChangeInterview.fxml"),
+    CHANGE_COMPANY_CONTROLLER("/FXML/ChangeCompany.fxml"),
+    DEL_COMP_CONTROLLER("/FXML/DelCompView.fxml"),
+    DEL_COUN_CONTROLLER("/FXML/DelCounView.fxml"),
+    DEL_INTERVIEW_CONTROLLER("/FXML/DelInterview.fxml"),
+    DEL_EMPLOYEE_CONTROLLER("/FXML/DelEmpView.fxml"),
+    SA_CUST_VIEW("/FXML/SACustView.fxml");
+
 
 
     private final String URL;

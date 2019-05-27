@@ -6,12 +6,24 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="271.0" prefWidth="464.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.LoginController">
-   <children>
-      <Button fx:id="loginButton" layoutX="209.0" layoutY="213.0" mnemonicParsing="false" onAction="#getLogin" text="Login" />
-      <TextField fx:id="username" layoutX="158.0" layoutY="108.0" onAction="#getLogin" promptText="Username" />
-      <PasswordField fx:id="password" layoutX="158.0" layoutY="161.0" onAction="#getLogin" promptText="Password" />
-      <Label layoutX="84.0" layoutY="112.0" text="Username" />
-      <Label layoutX="86.0" layoutY="165.0" text="Password" />
-   </children>
-</AnchorPane>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane prefHeight="271.0" prefWidth="464.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.LoginController">
+    <top>
+        <fx:include source="TaskBarView.fxml"/>
+    </top>
+    <center>
+        <AnchorPane>
+            <children>
+                <Button fx:id="loginButton" layoutX="209.0" layoutY="213.0" mnemonicParsing="false" onAction="#getLogin"
+                        text="Login"/>
+                <TextField fx:id="username" layoutX="158.0" layoutY="108.0" onAction="#getLogin" promptText="Username"/>
+                <PasswordField fx:id="password" layoutX="158.0" layoutY="161.0" onAction="#getLogin"
+                               promptText="Password"/>
+                <Label layoutX="84.0" layoutY="112.0" text="Username"/>
+                <Label layoutX="86.0" layoutY="165.0" text="Password"/>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>
+

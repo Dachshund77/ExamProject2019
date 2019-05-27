@@ -6,12 +6,15 @@ import Persistance.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 
 
 public class NewInterviewController {
+
+
 
     @FXML
     TextField getName;
