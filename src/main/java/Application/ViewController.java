@@ -90,8 +90,8 @@ public enum ViewController {
             If another parameter needs to passed follow thees steps:
             1) Create a initValues( - your parameters -) in the Application.Controller interface
             2) Create the same initValues in the Abstract class Application.AbstractController, and please keep the style of error messages
-            3) Copy paste this method in here and change the parameter
-            4) Make sure you call the correct initValues in this method
+            3) Copy paste this method in here and change the parameter and newController.initValues( - your parameters -)
+            4) Override the created method in the controller you want it to be used.
             */
     public void reLoad(Scene scene, String string) {
         reLoad(scene);
