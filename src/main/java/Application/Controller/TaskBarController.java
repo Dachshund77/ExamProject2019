@@ -104,5 +104,6 @@ public class TaskBarController extends AbstractController {
     }
 
     public void handleFindCompany(ActionEvent event) {
+        ViewController.FIND_COMPANY_CONTROLLER.reLoad(taskBar.getScene());
     }
 }

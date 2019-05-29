@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Can be used to change and load the scenes easily.
@@ -30,6 +29,7 @@ public enum ViewController {
     DEL_COUN_CONTROLLER("/FXML/DelCounView.fxml"),
     DEL_INTERVIEW_CONTROLLER("/FXML/DelInterview.fxml"),
     DEL_EMPLOYEE_CONTROLLER("/FXML/DelEmpView.fxml"),
+    FIND_COMPANY_CONTROLLER("/FXML/FindComp.fxml"),
     SA_CUST_VIEW("/FXML/SACustView.fxml");
 
 
