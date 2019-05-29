@@ -1,5 +1,7 @@
 package Foundation;
 
+import java.util.EnumSet;
+
 /**
  * Enum class that hold the actual name of the stored procedure that return no RS.
  * Prevents spelling mistakes and makes migration of names easier.
@@ -45,5 +47,9 @@ public enum Sp implements Procedure {
     @Override
     public String get() {
         return NAME;
+    }
+
+    static void test(){
+        EnumSet<Sp> all = EnumSet.allOf(Sp.class); //TODO remove but very usefull
     }
 }
