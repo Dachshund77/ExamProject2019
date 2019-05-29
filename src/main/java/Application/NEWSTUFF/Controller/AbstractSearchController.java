@@ -1,6 +1,4 @@
-package Application.NEWSTUFF;
-
-import Application.AbstractController;
+package Application.NEWSTUFF.Controller;
 
 public abstract class AbstractSearchController extends AbstractController {
 }

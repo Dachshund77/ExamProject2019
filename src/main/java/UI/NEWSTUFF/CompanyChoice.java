@@ -1,9 +1,7 @@
 package UI.NEWSTUFF;
 
-import Application.NEWSTUFF.CompanyReturnableController;
-import Application.NEWSTUFF.ConsultationReturnableController;
+import Application.NEWSTUFF.Controller.CompanyReturnableController;
 import Domain.Company;
-import Domain.Consultation;
 import javafx.stage.Stage;
 
 public class CompanyChoice extends Stage {

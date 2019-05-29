@@ -1,6 +1,5 @@
-package Application.NEWSTUFF;
+package Application.NEWSTUFF.Controller;
 
-import Application.Controllers;
 import Domain.Company;
 
 public interface CompanyReturnableController extends Controllers {

@@ -1,5 +1,6 @@
-package Application;
+package Application.NEWSTUFF.Controller;
 
+import Application.SearchContainer;
 import Domain.*;
 
 public abstract class AbstractController implements Controllers {

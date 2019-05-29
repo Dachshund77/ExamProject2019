@@ -1,5 +1,6 @@
-package Application;
+package Application.NEWSTUFF.Controller;
 
+import Application.SearchContainer;
 import Domain.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Can be used to change and load the scenes easily.
@@ -42,9 +42,9 @@ public enum ViewController {
     }
 
     /**
-     * Returns the root node for the Application.AbstractController.
+     * Returns the root node for the Application.NEWSTUFF.Controller.AbstractController.
      * This method should be used when no previous scene is loaded.
-     * @return Parent of Application.AbstractController
+     * @return Parent of Application.NEWSTUFF.Controller.AbstractController
      */
     public Parent loadParent(){
         Parent root = null;
@@ -207,7 +207,7 @@ public enum ViewController {
      * <font color="red">
      * IMPORTANT:
      * </font>
-     * In order to pass a value the new controller needs to extends the 'Application.AbstractController' abstract class and override its methods.
+     * In order to pass a value the new controller needs to extends the 'Application.NEWSTUFF.Controller.AbstractController' abstract class and override its methods.
      * </p>
      *
      * @param scene  The scene that will be replaced on reLoad
@@ -216,7 +216,7 @@ public enum ViewController {
             /*
             If another parameter needs to passed follow thees steps:
             1) Create a initValues( - your parameters -) in the Application.Controller interface
-            2) Create the same initValues in the Abstract class Application.AbstractController, and please keep the style of error messages
+            2) Create the same initValues in the Abstract class Application.NEWSTUFF.Controller.AbstractController, and please keep the style of error messages
             3) Copy paste this method in here and change the parameter and newController.initValues( - your parameters -)
             4) Override the created method in the controller you want it to be used.
             */

@@ -1,6 +1,6 @@
 package UI.NEWSTUFF;
 
-import Application.NEWSTUFF.ProviderReturnableController;
+import Application.NEWSTUFF.Controller.ProviderReturnableController;
 import Domain.Provider;
 import javafx.stage.Stage;
 

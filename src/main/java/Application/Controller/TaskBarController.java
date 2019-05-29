@@ -1,12 +1,10 @@
 package Application.Controller;
 
-import Application.AbstractController;
-import Application.ViewController;
+import Application.NEWSTUFF.Controller.AbstractController;
+import Application.NEWSTUFF.Controller.ViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
-
-import javax.swing.text.View;
 
 /**
  * TaskBar Controller that can be used as a subController across the whole application.

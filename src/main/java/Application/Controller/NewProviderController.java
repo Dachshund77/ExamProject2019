@@ -1,7 +1,7 @@
 package Application.Controller;
 
-import Application.AbstractController;
-import Application.ViewController;
+import Application.NEWSTUFF.Controller.AbstractController;
+import Application.NEWSTUFF.Controller.ViewController;
 import Domain.Provider;
 import Foundation.DB;
 import Persistance.DbFacade;

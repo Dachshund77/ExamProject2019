@@ -1,9 +1,7 @@
 package UI.NEWSTUFF;
 
-import Application.NEWSTUFF.EducationReturnableController;
-import Application.NEWSTUFF.ProviderReturnableController;
+import Application.NEWSTUFF.Controller.EducationReturnableController;
 import Domain.Education;
-import Domain.Provider;
 import javafx.stage.Stage;
 
 public class EducationChoice extends Stage {

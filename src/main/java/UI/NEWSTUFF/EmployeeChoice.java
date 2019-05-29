@@ -1,8 +1,6 @@
 package UI.NEWSTUFF;
 
-import Application.NEWSTUFF.EducationReturnableController;
-import Application.NEWSTUFF.EmployeeReturnableController;
-import Domain.Education;
+import Application.NEWSTUFF.Controller.EmployeeReturnableController;
 import Domain.Employee;
 import javafx.stage.Stage;
 

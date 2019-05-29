@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import Application.ViewController;
+import Application.NEWSTUFF.Controller.ViewController;
 
 public class LoginMain extends Application {
 

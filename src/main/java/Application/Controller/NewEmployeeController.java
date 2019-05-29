@@ -1,14 +1,12 @@
 package Application.Controller;
 
-import Application.AbstractController;
+import Application.NEWSTUFF.Controller.AbstractController;
 import Domain.Employee;
-import Domain.Provider;
 import Foundation.DB;
 import Persistance.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import java.sql.SQLException;
 
