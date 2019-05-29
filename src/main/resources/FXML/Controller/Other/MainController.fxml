@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.Other.MainController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="New">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#handleNewCompany" text="Company" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleNewConsultation" text="Consultation" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleNewEmployee" text="Employee" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleNewInterview" text="Interview" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleNewEducation" text="Education" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleNewProvider" text="Provider" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Change">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleChangeCompany" text="Company" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleChangeConsultation" text="Consultation" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleChangeEmployee" text="Employee" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleChangeInterview" text="Interview" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleChangeEducation" text="Education" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleChangeProvider" text="Provider" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Find">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleFindCompany" text="Company" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleFindConsultation" text="Consultation" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleFindEmployee" text="Employee" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleFindInterview" text="Interview" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleFindEducation" text="Education" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleFindProvider" text="Provider" />
+               </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Delete">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteCompany" text="Company" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteConsultation" text="Consultation" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteEmployee" text="Employee" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteInterview" text="Interview" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteEducation" text="Education" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteProvider" text="Provider" />
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+</BorderPane>
