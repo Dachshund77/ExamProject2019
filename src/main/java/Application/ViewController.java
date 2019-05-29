@@ -1,5 +1,6 @@
 package Application;
 
+import Domain.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -55,6 +56,132 @@ public enum ViewController {
         return root;
     }
 
+    public void loadParent(String string) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(string);
+    }
+
+    public void loadParent(Provider provider) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(provider);
+    }
+
+    public void loadParent(Education education) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(education);
+    }
+
+    public void loadParent(Employee employee) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(employee);
+    }
+
+    public void loadParent(Interview interview) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(interview);
+    }
+
+    public void loadParent(Consultation consultation) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(consultation);
+    }
+
+    public void loadParent(Company company) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(company);
+    }
+
+    public void loadParent(SearchContainer searchContainer) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer);
+    }
+
+    public void loadParent(SearchContainer searchContainer, Provider provider) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, provider);
+    }
+
+    public void loadParent(SearchContainer searchContainer, Education education) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, education);
+    }
+
+    public void loadParent(SearchContainer searchContainer, Employee employee) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, employee);
+    }
+
+    public void loadParent(SearchContainer searchContainer, Interview interview) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, interview);
+    }
+
+    public void loadParent(SearchContainer searchContainer, Consultation consultation) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, consultation);
+    }
+
+    public void loadParent(SearchContainer searchContainer, Company company) {
+        loadParent();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, company);
+    }
+
     /**
      * Loads a new scene.
      * The scene URL is defined in the Enum constructor.
@@ -100,5 +227,122 @@ public enum ViewController {
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(string);
+    }
+
+    public void reLoad(Scene scene, Provider provider) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(provider);
+    }
+
+    public void reLoad(Scene scene, Education education) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(education);
+    }
+
+    public void reLoad(Scene scene, Employee employee) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(employee);
+    }
+
+    public void reLoad(Scene scene, Interview interview) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(interview);
+    }
+
+    public void reLoad(Scene scene, Consultation consultation) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(consultation);
+    }
+
+    public void reLoad(Scene scene, Company company) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(company);
+    }
+
+    public void reLoad(Scene scene, SearchContainer searchContainer) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer);
+    }
+
+    public void reLoad(Scene scene, SearchContainer searchContainer, Provider provider) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, provider);
+    }
+
+    public void reLoad(Scene scene, SearchContainer searchContainer, Education education) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, education);
+    }
+
+    public void reLoad(Scene scene, SearchContainer searchContainer, Employee employee) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, employee);
+    }
+
+    public void reLoad(Scene scene, SearchContainer searchContainer, Interview interview) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, interview);
+    }
+
+    public void reLoad(Scene scene, SearchContainer searchContainer, Consultation consultation) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, consultation);
+    }
+
+    public void reLoad(Scene scene, SearchContainer searchContainer, Company company) {
+        reLoad(scene);
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(URL));
+        Controllers newController = loader.getController();
+        newController.initValues(searchContainer, company);
     }
 }
