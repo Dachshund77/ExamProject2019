@@ -3,8 +3,10 @@ package Application.Controller.SubControllers.Domain;
 import Application.Controller.AbstractController;
 import Domain.Employee;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -44,33 +46,27 @@ public class ConsultationSub extends AbstractController {
         //setup bindings
     }
 
-    @FXML
-    public void handleConsultationnameInput(){
+    public void handleConsultationnameInput(KeyEvent keyEvent){
 
     }
 
-    @FXML
-    public void handleStartDateInput(){
+    public void handleStartDateInput(KeyEvent keyEvent){
 
     }
 
-    @FXML
-    public void handleEndDateInput(){
+    public void handleEndDateInput(ActionEvent event){
 
     }
 
-    @FXML
-    public void handleRemoveEmployee(){
+    public void handleRemoveEmployee(ActionEvent event){
 
     }
 
-    @FXML
-    public void handleAddEmployee(){
+    public void handleAddEmployee(ActionEvent event){
 
     }
 
-    @FXML
-    public void handleNewEmployee(){
+    public void handleNewEmployee(ActionEvent event){
 
     }
 

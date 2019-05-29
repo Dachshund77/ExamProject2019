@@ -57,39 +57,32 @@ public class EmployeeSub {
         // setup bindings
     }
 
-    @FXML
     public void handleFirstNameInput(KeyEvent keyevent){
         // whenever input in textfield is detected, react on it
         // should update its tooltip
         // should also update is valid
     }
 
-    @FXML
     public void handleLastNameInput(KeyEvent keyEvent){
 
     }
 
-    @FXML
     public void handleCprNrInput(KeyEvent keyEvent){
 
     }
 
-    @FXML
     public void handlePhoneNrInput(KeyEvent keyEvent){
 
     }
 
-    @FXML
     public void handleRemoveInterview(ActionEvent event){
 
     }
 
-    @FXML
     public void handleAddInterview(ActionEvent event){
         //open popup and stuff
     }
 
-    @FXML
     public void handleSeeInterview(ActionEvent event){
 
     }

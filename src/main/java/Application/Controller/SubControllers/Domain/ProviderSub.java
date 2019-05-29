@@ -26,7 +26,6 @@ public class ProviderSub extends AbstractController {
         //hookup bindings
     }
 
-    @FXML
     public void handleProviderNameInput(KeyEvent keyEvent){
         // whenever the user input something that textfield
     }

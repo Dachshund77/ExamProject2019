@@ -51,33 +51,27 @@ public class EducationSub extends AbstractController {
         //setup bindings
     }
 
-    @FXML
     public void handleEducationNameInput(KeyEvent keyEvent){
         // whenever input in education textfield
         // should also update is valid
     }
 
-    @FXML
     public void handleDescriptionInput(KeyEvent keyEvent){
 
     }
 
-    @FXML
     public void handleNoOFDaysInput(KeyEvent keyEvent){
 
     }
 
-    @FXML
     public void handleAddDate(ActionEvent event){
 
     }
 
-    @FXML
     public void handleRemoveDate(ActionEvent event){
 
     }
 
-    @FXML
     public void handlePickProvider(ActionEvent event){
 
     }

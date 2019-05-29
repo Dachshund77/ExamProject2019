@@ -4,8 +4,10 @@ import Application.Controller.AbstractController;
 import Domain.EducationWish;
 import Domain.FinishedEducation;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 import java.time.LocalDate;
@@ -66,28 +68,23 @@ public class InterviewSub extends AbstractController {
         //setup bindings
     }
 
-    @FXML
-    public void handleinterviewNameInput(){
+    public void handleinterviewNameInput(KeyEvent keyEvent){
 
     }
 
-    @FXML
-    public void handleAddEducationWish(){
+    public void handleAddEducationWish(ActionEvent event){
 
     }
 
-    @FXML
-    public void handleAddFinishedEducation(){
+    public void handleAddFinishedEducation(ActionEvent event){
 
     }
 
-    @FXML
-    public void handleRemoveEducationWish(){
+    public void handleRemoveEducationWish(ActionEvent event){
 
     }
 
-    @FXML
-    public void handleRemoveFinishedEducation(){
+    public void handleRemoveFinishedEducation(ActionEvent event){
 
     }
 
