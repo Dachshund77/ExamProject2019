@@ -48,7 +48,7 @@ public class EmployeeSub {
 
     private ArrayList<Interview> interviews;
 
-    public SimpleBooleanProperty isEditiable; //Hook to make the form unchangeable
+
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
 
     public void initialize(){
@@ -96,5 +96,9 @@ public class EmployeeSub {
 
     private void updateIsValid(){
         // Manages the isValid property aka when all values are valid = true
+    }
+
+    private void setEditable(boolean bool){
+
     }
 }

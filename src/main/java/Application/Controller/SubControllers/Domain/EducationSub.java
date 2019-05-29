@@ -43,7 +43,6 @@ public class EducationSub extends AbstractController {
     private ArrayList<LocalDate> dates;
     private Provider selectedProvider;
 
-    public SimpleBooleanProperty isEditiable; //Hook to make the form unchangeable
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
 
     public void initialize(){
@@ -85,6 +84,10 @@ public class EducationSub extends AbstractController {
 
     private void updateIsValid(){
         // Manages the isValid property aka when all values are valid = true
+    }
+
+    private void setEditable(boolean bool){
+
     }
 
 }

@@ -58,7 +58,6 @@ public class InterviewSub extends AbstractController {
     private ArrayList<EducationWish> educationWishArrayList;
     private ArrayList<FinishedEducation> finishedEducationArrayList;
 
-    public SimpleBooleanProperty isEditiable; //Hook to make the form unchangeable
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
 
     public void initialize(){
@@ -94,5 +93,9 @@ public class InterviewSub extends AbstractController {
 
     private void updateIsValid(){
         // Manages the isValid property aka when all values are valid = true
+    }
+
+    private void setEditable(boolean bool){
+
     }
 }

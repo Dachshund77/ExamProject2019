@@ -48,7 +48,6 @@ public class CompanySub extends AbstractController {
     private ArrayList<Consultation> consultationArrayList;
     private ArrayList<Education> educationArrayList;
 
-    public SimpleBooleanProperty isEditiable; //Hook to make the form unchangeable
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
 
     @FXML
@@ -80,5 +79,9 @@ public class CompanySub extends AbstractController {
 
     private void updateIsValid(){
         // Manages the isValid property aka when all values are valid = true
+    }
+
+    private void setEditable(boolean bool){
+
     }
 }
