@@ -10,100 +10,30 @@ import java.util.Objects;
 
 public class Company {
 
-    private SimpleIntegerProperty companyID;
-    private SimpleStringProperty cvrNr;
-    private SimpleStringProperty companyName;
+    private final Integer companyID;
+    private String cvrNr;
+    private String companyName;
     private ArrayList<Consultation> consultations;
     private ArrayList<Education> educationList;
 
 
     public Company(Integer companyID, String cvrNr, String companyName, ArrayList<Consultation> consultations, ArrayList<Education> educationList) {
-        if (companyID != null) {
-            this.companyID = new SimpleIntegerProperty(companyID);
-        } else {
-            this.companyID = null;
-        }
-
-        this.cvrNr = new SimpleStringProperty(cvrNr);
-        this.companyName = new SimpleStringProperty(companyName);
-
+        this.companyID = companyID;
+        this.cvrNr = cvrNr;
+        this.companyName = companyName;
         this.consultations = Objects.requireNonNullElseGet(consultations, ArrayList::new);
         this.educationList = Objects.requireNonNullElseGet(educationList, ArrayList::new);
     }
 
     public Integer getCompanyID() {
-        if (companyID == null) {
-            return null;
-        }
-        return companyID.get();
+        return companyID;
     }
 
     public String getCvrNr() {
-        if (cvrNr.get().equals("")) {
-            return null;
-        }
-        return cvrNr.get();
-    }
-
-    public SimpleStringProperty cvrNrProperty() {
         return cvrNr;
     }
 
     public String getCompanyName() {
-        if (companyName.get().equals("")){
-            return null;
-        }
-        return companyName.get();
-    }
-
-    public boolean getValidCompanyID() {
-        if (companyID.get() > 0){
-            return true;
-        }
-        return false;
-    }
-
-    public String companyIDInvalidCause(){
-
-        if (!getValidCompanyID()){
-            String cause = "Company ID is not over 0";
-            return cause;
-        }
-        return companyIDInvalidCause();
-    }
-
-    public boolean getValidCvrNr() {
-        if (cvrNr.get().equals("") || cvrNr.get().length() > 80){
-            return false;
-        }
-        return true;
-    }
-
-    public String cvrNrInvalidCause(){
-        if (!getValidCvrNr()){
-            String causeCVR = "check if cvr is entered and if it is less than 80";
-            return causeCVR;
-        }
-        return cvrNrInvalidCause();
-    }
-
-    public boolean getValidCompanyName() {
-
-        if (companyName.get().equals("") || companyName.get().length() > 50){
-            return false;
-        }
-        return true;
-    }
-
-    public String companyNameInvalidClause(){
-        if (!getValidCompanyName()){
-            String invalidCause = "Check if name is entered and if it is less than 50 chars";
-            return invalidCause;
-        }
-        return companyNameInvalidClause();
-    }
-
-    public SimpleStringProperty companyNameProperty() {
         return companyName;
     }
 
@@ -115,6 +45,81 @@ public class Company {
         return educationList;
     }
 
+    /**
+     * A valid ID may not be negative.
+     * @param companyID ID to be tested
+     * @return True if valid
+     */
+    public static boolean isValidCompanyID(Integer companyID) {
+        if (companyID != null) {
+            return companyID > 0;
+        }
+        return true;
+    }
 
+    /**
+     * Return the first reason why the Integer is not valid ID.
+     * A valid ID may not be negative.
+     * @param companyID ID that is invalid
+     * @return String with reason, null if none are detected.
+     */
+    public static String companyIDInvalidCause(Integer companyID){
+        if (companyID < 0){
+            return  "Company ID may not be negative!";
+        }
+        return null;
+    }
+
+    /**
+     * A valid cvrNr may not be null, empty String and must be 8 Char long.
+     * @param cvrNr cvr To be tested
+     * @return True if cvr is valid
+     */
+    public static boolean isValidCvrNr(String cvrNr) {
+        return cvrNr != null && !cvrNr.equals("") && cvrNr.length() == 8;
+    }
+
+    /**
+     * Return the first reason why a cvr is not valid.
+     * A valid cvrNr may not be null, empty String and must be 8 Char long.
+     * @param cvrNr cvr to be tested
+     * @return String with first reason, null if non was detected.
+     */
+    public static String cvrNrInvalidCause(String cvrNr){
+        if (cvrNr == null){
+            return "CvrNr may not be Null!";
+        } else if (cvrNr.equals("")){
+            return "CvrNr may not be empty!";
+        } else if(cvrNr.length() != 8){
+            return "CvrNr must be 8 characters long!";
+        }
+        return null;
+    }
+
+    /**
+     * A valid Company name may not be null, empty String or Longer than 50 Chars.
+     * @param name company name to be tested.
+     * @return True if name is valid.
+     */
+    public static boolean isValidCompanyName(String name) {
+        return name != null && !name.equals("") && name.length() < 50;
+    }
+
+    /**
+     * Return the first reason why a String is a invalid company Name.
+     * A valid Company name may not be null, empty String or Longer than 50 Chars.
+     * @param name String that should be the Company name
+     * @return String with first reason, null if non was detected.
+     */
+    public static String companyNameInvalidClause(String name){
+        if(name == null){
+            return "Company Name may not be Null!";
+        } else if(name.equals("")){
+            return "Company Name may not be empty!";
+        } else if(name.length() >= 50){
+            return "Company Name must be less then 50 Characters long!";
+        }
+        return null;
+    }
 
 }
