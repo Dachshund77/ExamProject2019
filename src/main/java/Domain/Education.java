@@ -97,68 +97,98 @@ public class Education {
         return provider;
     }
 
-    public boolean isValidEducationName(String educationName)
+
+    /**
+     * checks if educationName is valid
+     * @param educationName
+     * @return
+     */
+    public static boolean isValidEducationName(String educationName)
     {
-        if(!educationName.equals("") && educationName.length() <= 30)
-        {
-            return true;
-        }
-        return false;
+      return educationName != null && !educationName.equals("") && educationName.length() < 30;
     }
-    public String educationNameInvalidCause (String educationName)
+
+    /**
+     * throws an error if
+     * educationName = NULL
+     * educationName = Empty string
+     * educationName = Bigger than 30 chars
+     * @param educationName
+     * @return
+     */
+    public static String educationNameInvalidCause (String educationName)
     {
-        if(!isValidEducationName(educationName))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+        if (educationName == null){
+            return "Education cant be null";
         }
-        return null;
-    }
-    public boolean isValidDescription(String description)
-    {
-        if(description.length() < 20000) // TODO : What is max value
-        {
-            return true;
+        else if (educationName.equals("")){
+            return "Education must have a name";
         }
-        return false;
-    }
-    public String descriptionInvalidCause (String description)
-    {
-        if(!isValidDescription(description))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+        else if (educationName.length() > 30){
+            return "Education must consist of a name less than 30 characters";
         }
         return null;
     }
-    public boolean IsValidNoOfDays(Integer NoOfDays)
+
+    /**
+     * checks if description contains information about a course
+     * @param description
+     * @return
+     */
+    public static boolean isValidDescription(String description)
     {
-        if(NoOfDays <= 15 && NoOfDays > 0)
-        {
-            return true;
-        }
-        return false;
+        return description != null && !description.equals("");
     }
+
+    /**
+     * throws an error if:
+     * description = NULL
+     * description = Empty string
+     * @param description
+     * @return
+     */
+    public static String descriptionInvalidCause (String description)
+    {
+        if (description == null){
+            return "Description must not be null";
+        }
+        else if (description.equals("")){
+            return "Description must contain some information";
+        }
+        return null;
+    }
+
+
+    /**
+     * checks if NoOfDays arent null and within limit
+     * @param NoOfDays
+     * @return
+     */
+    public static boolean IsValidNoOfDays(Integer NoOfDays)
+    {
+        return NoOfDays != null && NoOfDays > 0 && NoOfDays <=15;
+    }
+
+    /**
+     * Throws an error if:
+     * NoOfDays = NULL
+     * NoOfDays = Negative number
+     * NoOfDays = Bigger than 15
+     * @param NoOfDays
+     * @return
+     */
     public String noOfDaysInvalidCause(Integer NoOfDays)
     {
-        if(!IsValidNoOfDays(NoOfDays))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
-        }
+       if (NoOfDays == null){
+           return "Number of days cant be null";
+       }
+       else if (NoOfDays > 15){
+           return "Number of days cant be more than 15";
+       }
+       else if (NoOfDays < 0){
+           return "Number of days cant be negative";
+       }
         return null;
     }
-    public boolean isValidDates(ArrayList <LocalDate> dates) //TODO : Check dates, but how
-    {
-        return false;
-    }
-    public String datesInvalidCause(ArrayList <LocalDate> dates)
-    {
-        if(isValidDates(dates))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
-        }
-        return null;
-    }
+    
 }
