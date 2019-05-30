@@ -131,6 +131,136 @@ public class Interview {
         return cooperation.get();
     }
 
+    public boolean isValidInterviewID(){
+        if (interviewID.get() < 0){
+            return false;
+        }
+
+        return true;
+    }
+
+    public String interviewIDInvalidCause(){
+        if (!isValidInterviewID()){
+            String cause = "interview ID is not entered";
+            return cause;
+        }
+        return interviewIDInvalidCause();
+    }
+
+    public boolean isValidInterviewName(){
+        if (interviewName.get().equals("") || interviewName.get().length() >30){
+            return false;
+        }
+        return true;
+    }
+
+    public String interviewNameInvalidCause(){
+        if (!isValidInterviewName()){
+            String cause = "Name is not entered or name is over 30 characters";
+        }
+        return interviewIDInvalidCause();
+    }
+
+    public boolean isValidProductUnderstanding(){
+        if (productUnderstanding.get() < 0 || productUnderstanding.get() > 5){
+            return false;
+        }
+        else if (productUnderstanding == null) {
+            return true;
+        }
+        return true;
+    }
+
+    public String productUnderstandingInvalidCause(){
+        if (!isValidProductUnderstanding()){
+            String cause = "Product number is not between 1 and 5";
+            return cause;
+        }
+        return
+                productUnderstandingInvalidCause();
+    }
+
+
+    public boolean isValidProblemUnderstanding(){
+        if (problemUnderstanding.get() < 0 || problemUnderstanding.get() > 5){
+            return false;
+        }
+        else if (problemUnderstanding == null) {
+            return true;
+        }
+        return true;
+    }
+
+    public String problemUnderstandingInvalidCause(){
+        if (!isValidProblemUnderstanding()){
+            String cause = "Problem number is not between 1 and 5";
+            return cause;
+        }
+        return
+                problemUnderstandingInvalidCause();
+    }
+
+
+    public boolean isValidFlexibility(){
+        if (flexibility.get() < 0 || flexibility.get() > 5){
+            return false;
+        }
+        else if (flexibility == null) {
+            return true;
+        }
+        return true;
+    }
+
+    public String flexibilityInvalidCause(){
+        if (!isValidFlexibility()){
+            String cause = "Flexibility number is not between 1 and 5";
+            return cause;
+        }
+        return
+                flexibilityInvalidCause();
+    }
+
+
+    public boolean isValidQualityAwareness(){
+        if (qualityAwareness.get() < 0 || qualityAwareness.get() > 5){
+            return false;
+        }
+        else if (qualityAwareness == null) {
+            return true;
+        }
+
+        return true;
+    }
+
+    public String qualityAwarenessInvalidCause(){
+        if (!isValidQualityAwareness()){
+            String cause = "Quality awareness number is not between 1 and 5";
+            return cause;
+        }
+        return
+                qualityAwarenessInvalidCause();
+    }
+
+
+    public boolean isValidCooperation(){
+        if (cooperation.get() < 0 || cooperation.get() > 5){
+            return false;
+        }
+        else if (cooperation == null) {
+            return true;
+        }
+        return true;
+    }
+
+    public String cooperationInvalidCause(){
+        if (!isValidCooperation()){
+            String cause = "Cooperation number is not between 1 and 5";
+            return cause;
+        }
+        return
+                cooperationInvalidCause();
+    }
+
     public SimpleIntegerProperty cooperationProperty() {
         return cooperation;
     }

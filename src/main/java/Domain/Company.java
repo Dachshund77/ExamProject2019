@@ -16,6 +16,7 @@ public class Company {
     private ArrayList<Consultation> consultations;
     private ArrayList<Education> educationList;
 
+
     public Company(Integer companyID, String cvrNr, String companyName, ArrayList<Consultation> consultations, ArrayList<Education> educationList) {
         if (companyID != null) {
             this.companyID = new SimpleIntegerProperty(companyID);
@@ -55,6 +56,53 @@ public class Company {
         return companyName.get();
     }
 
+    public boolean getValidCompanyID() {
+        if (companyID.get() > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public String companyIDInvalidCause(){
+
+        if (!getValidCompanyID()){
+            String cause = "Company ID is not over 0";
+            return cause;
+        }
+        return companyIDInvalidCause();
+    }
+
+    public boolean getValidCvrNr() {
+        if (cvrNr.get().equals("") || cvrNr.get().length() > 80){
+            return false;
+        }
+        return true;
+    }
+
+    public String cvrNrInvalidCause(){
+        if (!getValidCvrNr()){
+            String causeCVR = "check if cvr is entered and if it is less than 80";
+            return causeCVR;
+        }
+        return cvrNrInvalidCause();
+    }
+
+    public boolean getValidCompanyName() {
+
+        if (companyName.get().equals("") || companyName.get().length() > 50){
+            return false;
+        }
+        return true;
+    }
+
+    public String companyNameInvalidClause(){
+        if (!getValidCompanyName()){
+            String invalidCause = "Check if name is entered and if it is less than 50 chars";
+            return invalidCause;
+        }
+        return companyNameInvalidClause();
+    }
+
     public SimpleStringProperty companyNameProperty() {
         return companyName;
     }
@@ -66,4 +114,7 @@ public class Company {
     public ArrayList<Education> getEducationList() {
         return educationList;
     }
+
+
+
 }
