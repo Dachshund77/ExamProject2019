@@ -45,6 +45,50 @@ public class Consultation {
         return consultationName.get();
     }
 
+    public boolean isValidConsultationID(){
+        if (consultationID.get() < 0){
+            return false;
+        }
+        return true;
+    }
+
+    public String consultationIDInvalidCause(){
+        if (!isValidConsultationID()){
+            String cause = "ID is not entered or its less than 0";
+            return cause;
+        }
+        return consultationIDInvalidCause();
+    }
+
+    public boolean isValidConsultationName(){
+        if (consultationName.get().equals("") || consultationName.get().length() > 50 ){
+            return false;
+        }
+        return true;
+    }
+
+    public String consultationNameInvalidCause(){
+        if (!isValidConsultationName()){
+            String cause = "name is not entered or is over 50 characters";
+        }
+        return consultationNameInvalidCause();
+    }
+
+
+    //TODO dont know what to chech when comparing dates -MC
+    /*
+    public boolean isValidDate(){
+        if ()
+        return true;
+    }
+
+    public String datesInvalidCasue(){
+        if(!isValidDate){
+        }
+        return datesInvalidCause;
+    }
+     */
+
     public SimpleStringProperty consultationNameProperty() {
         return consultationName;
     }
