@@ -116,8 +116,8 @@ public class Company {
             return "Company Name may not be Null!";
         } else if(name.equals("")){
             return "Company Name may not be empty!";
-        } else if(name.length() >= 50){
-            return "Company Name must be less then 50 Characters long!";
+        } else if(name.length() > 50){
+            return "Company Name must be 50 letters or less!";
         }
         return null;
     }

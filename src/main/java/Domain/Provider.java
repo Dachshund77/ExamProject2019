@@ -1,62 +1,74 @@
 package Domain;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class Provider {
-    private SimpleIntegerProperty providerID;
-    private SimpleStringProperty providerName;
+    private final Integer providerID;
+    private String providerName;
 
     public Provider(Integer providerID, String providerName) {
-        if (providerID != null) {
-            this.providerID = new SimpleIntegerProperty(providerID);
-        } else {
-            this.providerID = null;
-        }
-        this.providerName = new SimpleStringProperty(providerName);
+        this.providerID = providerID;
+        this.providerName = providerName;
     }
 
     public Integer getProviderID() {
-        if (providerID == null){
-            return null;
-        }
-        return providerID.get();
+        return providerID;
     }
 
-
-
-    /**
-     * Helper method that will return null if the value is an empty String
-     * @return String value of providerName
-     */
     public String getProviderName() {
-        if (providerName.get().equals("")){
-            return null;
-        }
-        return providerName.get();
-    }
-
-    public SimpleStringProperty providerNameProperty() {
         return providerName;
     }
 
-    public boolean isValidProviderName (String providerName)
-    {
-        if(!providerName.equals("") && providerName.length() <= 30)
-        {
-            return true;
+    /**
+     * A valid Id my not be negative.
+     *
+     * @param id Integer to be tested.
+     * @return True if Integer is valid id.
+     */
+    public static boolean isValidProviderID(Integer id) {
+        if (id != null) {
+            return id > 0;
         }
-        return false;
+        return true;
     }
-    public String providerNameInvalidCause (String providerName)
-    {
-        if(!isValidProviderName(providerName))
-        {
-            String invalidCause = "";
-            return invalidCause;
+
+    /**
+     * Returns the first reason why an Integer is not a valid Provider ID.
+     * A valid Id my not be negative.
+     *
+     * @param id Integer to be tested.
+     * @return String with first reason or null if valid.
+     */
+    public static String invalidProviderIDCause(Integer id) {
+        if (id < 0) {
+            return "Provider ID may not be negative";
+        }
+        return null;
+    }
+
+    /**
+     * A valid Provider name may not be null, must not be empty and must be 30 or less characters.
+     *
+     * @param providerName String to be tested as Provider Name.
+     * @return True if valid Provider Name
+     */
+    public static boolean isValidProviderName(String providerName) {
+        return providerName != null && !providerName.equals("") && providerName.length() <= 30;
+    }
+
+    /**
+     * Return the first reason why an String is not a valid Provider Name.
+     *
+     * @param providerName String to be tested.
+     * @return String with first reason or null if valid.
+     */
+    public static String providerNameInvalidCause(String providerName) {
+        if (providerName == null) {
+            return "Provider Name may not be Null!";
+        } else if (providerName.equals("")) {
+            return "ProviderName may not be empty!";
+        } else if (providerName.length() > 30) {
+            return "Provider Name must be 30 letters or less";
         }
         return null;
     }
