@@ -43,7 +43,6 @@ public class InterviewSub extends AbstractController {
 
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
     public Interview selectedInterview;
-
     public void initialize(){
         //setup listview
         //Setup isValid

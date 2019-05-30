@@ -1,5 +1,6 @@
-package UI.OLDUI;
+/*package UI.OLDUI;
 
+import Application.Controller.ViewController;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,4 +22,4 @@ public class NewInterviewMain extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-}
+}*/

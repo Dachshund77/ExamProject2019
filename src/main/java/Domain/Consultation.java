@@ -45,49 +45,91 @@ public class Consultation {
         return consultationName.get();
     }
 
-    public boolean isValidConsultationID(){
-        if (consultationID.get() < 0){
-            return false;
-        }
-        return true;
-    }
-
-    public String consultationIDInvalidCause(){
-        if (!isValidConsultationID()){
-            String cause = "ID is not entered or its less than 0";
-            return cause;
-        }
-        return consultationIDInvalidCause();
-    }
-
-    public boolean isValidConsultationName(){
-        if (consultationName.get().equals("") || consultationName.get().length() > 50 ){
-            return false;
-        }
-        return true;
-    }
-
-    public String consultationNameInvalidCause(){
-        if (!isValidConsultationName()){
-            String cause = "name is not entered or is over 50 characters";
-        }
-        return consultationNameInvalidCause();
-    }
-
-
-    //TODO dont know what to chech when comparing dates -MC
-    /*
-    public boolean isValidDate(){
-        if ()
-        return true;
-    }
-
-    public String datesInvalidCasue(){
-        if(!isValidDate){
-        }
-        return datesInvalidCause;
-    }
+    /**
+     * check if consultation ID is not null
+     * consultationID should also be positive
+     * @param consultationID
+     * @return
      */
+    public static boolean isValidConsultationID(Integer consultationID){
+        if (consultationID != null){
+            return consultationID > 0;
+        }
+        return true;
+    }
+
+    /**
+     * returns the first reason for an error
+     * if conditions arent met
+     * Error = negative number
+     * @param consultationID
+     * @return
+     */
+    public static String consultationIDInvalidCause(Integer consultationID){
+       if (consultationID < 0){
+           return "Company is may not be negative";
+       }
+       return null;
+    }
+
+    /**
+     * If consultationName is null, an empty string and over 50 chars
+     * it results in an error
+     * @param consultationName
+     * @return
+     */
+    public static boolean isValidConsultationName(String consultationName){
+        return consultationName != null && !consultationName.equals("") && consultationName.length() > 50;
+    }
+
+    /**
+     * this method will return all errors relating to consultation name
+     * errors are:
+     * consultationName = NULL
+     * consultationName = Empty string
+     * consultationName = More than 50 chars
+     * @param consultationName
+     * @return
+     */
+    public static String consultationNameInvalidCause(String consultationName){
+        if (consultationName == null){
+            return "Consultation name may not be null";
+        }
+        else if (consultationName.equals("")){
+            return "A consultation name is required";
+        }
+        else if (consultationName.length() > 50){
+            return "Consultation name have to be less than 50 characters";
+        }
+        return null;
+    }
+
+    /**
+     * checks if startDate is before endDate
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static boolean isValidDate(LocalDate startDate, LocalDate endDate){
+         return (endDate.isBefore(startDate));
+    }
+
+    /**
+     * Throws an error if dates are NULL
+     * also throws an error if end date is before start date
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public static String dateInvalidCasue(LocalDate startDate, LocalDate endDate){
+        if (isValidDate(null, null)){
+            return "Dates must not be null";
+        }
+        else if(isValidDate(startDate, endDate)){
+            return "start date must be before end date";
+        }
+        return null;
+    }
 
     public SimpleStringProperty consultationNameProperty() {
         return consultationName;

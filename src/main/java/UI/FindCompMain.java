@@ -1,4 +1,4 @@
-package UI;
+/*package UI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,4 +20,4 @@ public class FindCompMain extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-}
+}*/
