@@ -1,6 +1,7 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Domain.Company;
 import Domain.Consultation;
 import Domain.Education;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,33 +16,19 @@ import java.util.ArrayList;
 
 public class CompanySub extends AbstractController {
 
-    @FXML
     public Text companyIDText;
-    @FXML
     public TextField cvrNrTextField;
-    @FXML
     public Tooltip cvrnrTooltip;
-    @FXML
     public TextField companyNameTextField;
-    @FXML
     public Tooltip companyNameTooltip;
-    @FXML
     public TableView<Consultation> consultationTableView;
-    @FXML
     public TableColumn<Consultation, String> consultationNameColumn;
-    @FXML
     public TableColumn<Consultation, LocalDate> consultationStartdateColumn;
-    @FXML
     public TableColumn<Consultation, LocalDate> consultationEndDateColumn;
-    @FXML
     public TableView<Education> educationTableView;
-    @FXML
     public TableColumn<Education, String> educationNameColumn;
-    @FXML
     public Button addConsultationButton;
-    @FXML
     public Button removeConsultationButton;
-    @FXML
     public Button newConsultationButton;
 
     // FIXME: 29/05/2019 there should probably bee a add education stuff here, but there some object reference issues with that
@@ -50,6 +37,18 @@ public class CompanySub extends AbstractController {
     public ArrayList<Education> educationArrayList;
 
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
+    public Company selectedCompany;
+
+    public void initialize(){
+        //setup listview
+        //Setup isValid
+        //setup bindings
+    }
+
+    @Override
+    public void initValues(Company company) {
+        //hook up Company
+    }
 
     public void handleCvrNrInput(KeyEvent keyEvent){
         // whenever input in education textfield
@@ -78,5 +77,9 @@ public class CompanySub extends AbstractController {
 
     public void setEditable(boolean bool){
 
+    }
+
+    public void resetForm(){
+        //Reset fields, set field if it has a selected Domain object
     }
 }

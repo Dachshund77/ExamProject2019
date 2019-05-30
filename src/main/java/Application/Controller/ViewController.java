@@ -14,7 +14,40 @@ import java.io.IOException;
  * The enum class will store the relative path to the fxml so that we don't need to type it multiple times.
  */
 public enum ViewController {
-    MAIN_CONTROLLER("/FXML/Controller/Other/MainController.fxml");
+    // Other
+    MAIN_CONTROLLER("/FXML/Controller/Other/MainController.fxml"),
+
+    //Alter
+    ALTER_COMPANY("/FXML/Controller/Alter/AlterCompany.fxml"),
+    ALTER_CONSULTATION("/FXML/Controller/Alter/AlterConsultation.fxml"),
+    ALTER_EDUCATION("/FXML/Controller/Alter/AlterEducation.fxml"),
+    ALTER_EMPLOYEE("/FXML/Controller/Alter/AlterEmployee.fxml"),
+    ALTER_INTERVIEW("/FXML/Controller/Alter/AlterInterview.fxml"),
+    ALTER_PROVIDER("/FXML/Controller/Alter/AlterProvider.fxml"),
+
+    //Find to Change
+    FIND_COMPANY_TO_CHANGE("/FXML/Controller/Find/FindToChange/FindCompanyToChange.fxml"),
+    FIND_CONSULTATION_TO_CHANGE("/FXML/Controller/Find/FindToChange/FindConsultationToChange.fxml"),
+    FIND_EDUCATION_TO_CHANGE("/FXML/Controller/Find/FindToChange/FindEducationToChange.fxml"),
+    FIND_EMPLOYEE_TO_CHANGE("/FXML/Controller/Find/FindToChange/FindEmployeeToChange.fxml"),
+    FIND_INTERVIEW_TO_CHANGE("/FXML/Controller/Find/FindToChange/FindInterviewToChange.fxml"),
+    FIND_PROVIDER_TO_CHANGE("/FXML/Controller/Find/FindToChange/FindProviderToChange.fxml"),
+
+    //Find to delete
+    FIND_COMPANY_TO_DELETE("/FXML/Controller/Find/FindToDelete/FindCompanyToDelete.fxml"),
+    FIND_CONSULTATION_TO_DELETE("/FXML/Controller/Find/FindToDelete/FindConsultationToDelete.fxml"),
+    FIND_EDUCATION_TO_DELETE("/FXML/Controller/Find/FindToDelete/FindEducationToDelete.fxml"),
+    FIND_EMPLOYEE_TO_DELETE("/FXML/Controller/Find/FindToDelete/FindEmployeeToDelete.fxml"),
+    FIND_INTERVIEW_TO_DELETE("/FXML/Controller/Find/FindToDelete/FindInterviewToDelete.fxml"),
+    FIND_PROVIDER_TO_DELETE("/FXML/Controller/Find/FindToDelete/FindProviderToDelete.fxml"),
+
+    //Find to Record
+    FIND_COMPANY_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindCompanyToRecord.fxml"),
+    FIND_CONSULTATION_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindConsultationToRecord.fxml"),
+    FIND_EDUCATION_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindEducationToRecord.fxml"),
+    FIND_EMPLOYEE_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindEmployeeToRecord.fxml"),
+    FIND_INTERVIEW_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindInterviewToRecord.fxml"),
+    FIND_PROVIDER_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindProviderToRecord.fxml");
 
 
 

@@ -1,14 +1,434 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Application.Controller.SubControllers.Find.FindSub"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Find.FindSub">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <VBox>
+         <children>
+            <Accordion>
+              <panes>
+                <TitledPane fx:id="companyPane" animated="false" maxHeight="-Infinity" text="Company">
+                     <content>
+                        <GridPane maxHeight="-Infinity">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+                          </rowConstraints>
+                           <children>
+                              <TextField fx:id="companyIDTextField" onKeyPressed="#handleCompanyIDInput" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="companyIDTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <Label text="Company ID" GridPane.halignment="RIGHT">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="cvrNrTextField" onKeyPressed="#handleCvrNrInput" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="cvrNrTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="companyNameTextField" onKeyPressed="#handleCompanyNameInput" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="companyNameTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <Label text="Cvr Nr" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Company Name" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                           </children>
+                        </GridPane>
+                     </content>
+                </TitledPane>
+                <TitledPane fx:id="consultationPane" animated="false" maxHeight="-Infinity" text="Consultation">
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Consultation ID" GridPane.halignment="RIGHT">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Consultation Name" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Earliest Date" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Latest Date" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <DatePicker fx:id="consultationMaxDatePicker" onAction="#handleConsulationDatePicked" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="consultationMaxDateTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </DatePicker>
+                              <DatePicker fx:id="consultationMinDatePicker" onAction="#handleConsulationDatePicked" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="consultationMinDateTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </DatePicker>
+                              <TextField fx:id="consultationNameTextField" onKeyPressed="#handleConsultationNameInput" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="consultationNameTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="consultationIDTextField" onKeyPressed="#handleConsultationIDInput" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="consultationIDTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                           </children>
+                        </GridPane>
+                     </content>
+                </TitledPane>
+                <TitledPane fx:id="employeePane" animated="false" maxHeight="-Infinity" text="Employee">
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Employee ID" GridPane.halignment="RIGHT">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="First Name" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Last Name" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Cpr Nr" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Email" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Phone Number" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="employeeIDTextField" onKeyPressed="#handleEmployeeIDInput" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="employeeIDTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="empFirstNameTextField" onKeyPressed="#handleEmpFirstNameInput" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="empFirstNameTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="empLastNameTextField" onKeyPressed="#handleEmpLastNameInput" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="empLastNameTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="cprNrTextField" onKeyPressed="#handleCprNrInput" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="cprNrTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="eMailTextField" onKeyPressed="#handleEmailInput" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="eMailTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="phoneNrTextField" onKeyPressed="#handlePhoneNrInput" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="phoneNrTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                           </children>
+                        </GridPane>
+                     </content>
+                </TitledPane>
+                  <TitledPane fx:id="interviewPane" animated="false" maxHeight="-Infinity" text="Interview">
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Interview ID" GridPane.halignment="RIGHT">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Interview Name" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="interviewIDTextField" onKeyPressed="#handleInterviewIDInput" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="interviewIDTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="interviewsNameTextField" onKeyPressed="#handleInterviewNameInput" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="interviewNameTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                           </children>
+                        </GridPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane fx:id="educationPane" animated="false" maxHeight="-Infinity" text="Education">
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Amu Nr" GridPane.halignment="RIGHT">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Education Name" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Education Number of Days" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Earliest Date" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Latest Date" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="amuNrTextField" onKeyPressed="#handleAmuNrInput" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="amuNrTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="educationNameTextField" onKeyPressed="#handleEducationNameInput" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="educationNameTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="educationNoOfDaysTextField" onKeyPressed="#handleEducationNoOfDaysInput" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="educationNoOfDaysTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <DatePicker fx:id="educationMinDatePicker" onAction="#handleEducationDatePicked" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="educationMinDateTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </DatePicker>
+                              <DatePicker fx:id="educationMaxDatePicker" onAction="#handleEducationDatePicked" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="educationMaxDateTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </DatePicker>
+                           </children>
+                        </GridPane>
+                     </content>
+                  </TitledPane>
+                  <TitledPane fx:id="providerPane" animated="false" maxHeight="-Infinity" text="Provider">
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Provider ID" GridPane.halignment="RIGHT">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Provider Name" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="providerIDTextField" onKeyPressed="#handleProviderIDInput" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="providerIDTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                              <TextField fx:id="providerNameTextField" onKeyPressed="#handleProviderNameInput" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <tooltip>
+                                    <Tooltip fx:id="providerNameTooltip" text="Empty Tooltip" />
+                                 </tooltip>
+                              </TextField>
+                           </children>
+                        </GridPane>
+                     </content>
+                  </TitledPane>
+              </panes>
+            </Accordion>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearch" text="Search">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="resetButton" mnemonicParsing="false" onAction="#handleReset" text="Reset">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</GridPane>

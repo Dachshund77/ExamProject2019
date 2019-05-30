@@ -1,6 +1,7 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Domain.Education;
 import Domain.Provider;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -15,40 +16,34 @@ import java.util.ArrayList;
 
 public class EducationSub extends AbstractController {
 
-    @FXML
     public Text AmuNrText;
-    @FXML
     public TextField educationNameTextField;
-    @FXML
     public Tooltip educationNameTooltip;
-    @FXML
     public TextArea descriptionTextArea;
-    @FXML
     public Tooltip descriptionTooltip;
-    @FXML
     public TextField noOfDaysTextField; // may be converted to a drop down if you want
-    @FXML
     public Tooltip noOfDaysTooltip;
-    @FXML
     public ListView<LocalDate> dateListView;
-    @FXML
     public DatePicker datePicker;
-    @FXML
     public Button addDateButton;
-    @FXML
     public Button removeDateButton;
-    @FXML
     public Button pickProviderButton;
 
-    private ArrayList<LocalDate> dates;
-    private Provider selectedProvider;
+    public ArrayList<LocalDate> dates;
+    public Provider selectedProvider;
 
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
+    public Education selectedEducation;
 
     public void initialize(){
         //setup listview
         //Setup isValid
         //setup bindings
+    }
+
+    @Override
+    public void initValues(Education education) {
+        //jook up education
     }
 
     public void handleEducationNameInput(KeyEvent keyEvent){
@@ -76,12 +71,14 @@ public class EducationSub extends AbstractController {
 
     }
 
-    private void updateIsValid(){
+    public void updateIsValid(){
         // Manages the isValid property aka when all values are valid = true
     }
 
-    private void setEditable(boolean bool){
+    public void setEditable(boolean bool){
 
     }
-
+    public void resetForm(){
+        //Reset fields, set field if it has a selected Domain object
+    }
 }

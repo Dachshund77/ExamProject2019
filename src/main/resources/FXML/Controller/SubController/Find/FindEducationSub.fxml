@@ -6,9 +6,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Application.Controller.SubControllers.Find.FindEducationSub"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<SplitPane dividerPositions="0.5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="Application.Controller.SubControllers.Find.FindEducationSub">
+    <items>
+        <fx:include fx:id="FindSub" source="FindSub.fxml"/>
+        <TableView fx:id="educationTableView" prefHeight="200.0" prefWidth="200.0">
+            <columns>
+                <TableColumn fx:id="educationIDColumn" prefWidth="75.0" text="AmuNr"/>
+                <TableColumn fx:id="educationCprColumn" prefWidth="75.0" text="Name"/>
+                <TableColumn fx:id="educationFirstNameColumn" prefWidth="75.0" text="Days"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+    </items>
+</SplitPane>

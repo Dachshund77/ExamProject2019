@@ -1,6 +1,7 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Domain.Consultation;
 import Domain.Employee;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -13,37 +14,32 @@ import java.util.ArrayList;
 
 public class ConsultationSub extends AbstractController {
 
-    @FXML
     public Text consultationIDText;
-    @FXML
     public TextField consultationNameTextField;
-    @FXML
     public Tooltip consultationNameTooltip;
-    @FXML
     public DatePicker startDate;
-    @FXML
     public DatePicker endDate;
-    @FXML
     public TableView<Employee> employeeTableView;
-    @FXML
     public TableColumn<Employee, String> employeeFirstNameColumn;
-    @FXML
     public TableColumn<Employee, String> employeeLastnameColumn;
-    @FXML
     public Button removeEmployeeButton;
-    @FXML
     public Button addEmployeeButton;
-    @FXML
     public Button newEmployeeButtonl;
 
     private ArrayList<Employee> employeeArrayList;
 
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
+    public Consultation selectedConsultation;
 
     public void initialize(){
         //setup listview
         //Setup isValid
         //setup bindings
+    }
+
+    @Override
+    public void initValues(Consultation consultation) {
+        //hook up consultation
     }
 
     public void handleConsultationnameInput(KeyEvent keyEvent){
@@ -70,12 +66,14 @@ public class ConsultationSub extends AbstractController {
 
     }
 
-    private void updateIsValid(){
+    public void updateIsValid(){
         // Manages the isValid property aka when all values are valid = true
     }
 
-    private void setEditable(boolean bool){
+    public void setEditable(boolean bool){
 
     }
-
+    public void resetForm(){
+        //Reset fields, set field if it has a selected Domain object
+    }
 }

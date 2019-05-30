@@ -2,6 +2,8 @@ package Application.Controller.Alter;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.CompanySub;
+import Application.SearchContainer;
+import Domain.Company;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,17 +11,38 @@ import javafx.scene.control.Button;
 public class AlterCompany extends AbstractController {
 
     @FXML
-    public Button confirmationButton;
-
-    @FXML
     private CompanySub companySub;
 
-    public void handleCancel(ActionEvent event) {
+    @FXML
+    private Button confirmationButton; //Button needs to be disable when form is not correct
+
+    private SearchContainer searchContainer;
+
+    @FXML
+    private void initialize(){
+        // hook up the  button with subcontroller form correctness
     }
 
-    public void handleConfirmation(ActionEvent event) {
+    @Override
+    public void initValues(SearchContainer searchContainer, Company company) {
+        //Save search container for returning
+        //propergate Consultation to setup form
     }
 
-    public void handleReset(ActionEvent event) {
+    @FXML
+    private void handleCancel(ActionEvent event) {
+        //Return to main screen or search
+        //if coming from search return to search with initValues
     }
+
+    @FXML
+    private void handleConfirmation(ActionEvent event) {
+        //Write to db
+    }
+
+    @FXML
+    private void handleReset(ActionEvent event) {
+        // call subcontroller reset
+    }
+
 }

@@ -1,101 +1,132 @@
 package Application.Controller.Other;
 
 import Application.Controller.AbstractController;
+import Application.Controller.ViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.BorderPane;
 
 public class MainController extends AbstractController {
-    public void handleNewCompany(ActionEvent event) {
-    }
+    @FXML
+    private BorderPane mainBorderPane;
 
-    public void handleNewConsultation(ActionEvent event) {
+    @FXML
+    private void handleNewCompany(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.ALTER_COMPANY.loadParent());
     }
 
     @FXML
-    public void handleNewEmployee(ActionEvent event) {
+    private void handleNewConsultation(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.ALTER_CONSULTATION.loadParent());
     }
 
     @FXML
-    public void handleNewInterview(ActionEvent event) {
+    private void handleNewEmployee(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.ALTER_EMPLOYEE.loadParent());
     }
 
     @FXML
-    public void handleNewEducation(ActionEvent event) {
+    private void handleNewInterview(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.ALTER_INTERVIEW.loadParent());
     }
 
     @FXML
-    public void handleNewProvider(ActionEvent event) {
+    private void handleNewEducation(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.ALTER_EDUCATION.loadParent());
     }
 
     @FXML
-    public void handleChangeCompany(ActionEvent event) {
+    private void handleNewProvider(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.ALTER_PROVIDER.loadParent());
     }
 
     @FXML
-    public void handleChangeConsultation(ActionEvent event) {
+    private void handleChangeCompany(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_COMPANY_TO_CHANGE.loadParent());
     }
 
     @FXML
-    public void handleChangeEmployee(ActionEvent event) {
+    private void handleChangeConsultation(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_CONSULTATION_TO_CHANGE.loadParent());
     }
 
     @FXML
-    public void handleChangeInterview(ActionEvent event) {
+    private void handleChangeEmployee(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_EMPLOYEE_TO_CHANGE.loadParent());
     }
 
     @FXML
-    public void handleChangeEducation(ActionEvent event) {
+    private void handleChangeInterview(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_INTERVIEW_TO_CHANGE.loadParent());
     }
 
     @FXML
-    public void handleChangeProvider(ActionEvent event) {
+    private void handleChangeEducation(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_EDUCATION_TO_CHANGE.loadParent());
     }
 
     @FXML
-    public void handleFindCompany(ActionEvent event) {
+    private void handleChangeProvider(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_PROVIDER_TO_CHANGE.loadParent());
     }
 
     @FXML
-    public void handleFindConsultation(ActionEvent event) {
+    private void handleFindCompany(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_COMPANY_TO_RECORD.loadParent());
     }
 
     @FXML
-    public void handleFindEmployee(ActionEvent event) {
+    private void handleFindConsultation(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_CONSULTATION_TO_RECORD.loadParent());
     }
 
     @FXML
-    public void handleFindInterview(ActionEvent event) {
+    private void handleFindEmployee(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_EMPLOYEE_TO_RECORD.loadParent());
     }
 
     @FXML
-    public void handleFindEducation(ActionEvent event) {
+    private void handleFindInterview(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_INTERVIEW_TO_RECORD.loadParent());
     }
 
     @FXML
-    public void handleFindProvider(ActionEvent event) {
+    private void handleFindEducation(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_EDUCATION_TO_RECORD.loadParent());
     }
 
     @FXML
-    public void handleDeleteCompany(ActionEvent event) {
+    private void handleFindProvider(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_PROVIDER_TO_RECORD.loadParent());
     }
 
     @FXML
-    public void handleDeleteConsultation(ActionEvent event) {
+    private void handleDeleteCompany(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_COMPANY_TO_DELETE.loadParent());
     }
 
     @FXML
-    public void handleDeleteEmployee(ActionEvent event) {
+    private void handleDeleteConsultation(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_CONSULTATION_TO_DELETE.loadParent());
     }
 
     @FXML
-    public void handleDeleteInterview(ActionEvent event) {
+    private void handleDeleteEmployee(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_EMPLOYEE_TO_DELETE.loadParent());
     }
 
     @FXML
-    public void handleDeleteEducation(ActionEvent event) {
+    private void handleDeleteInterview(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_INTERVIEW_TO_DELETE.loadParent());
     }
 
     @FXML
-    public void handleDeleteProvider(ActionEvent event) {
+    private void handleDeleteEducation(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_EDUCATION_TO_DELETE.loadParent());
+    }
+
+    @FXML
+    private void handleDeleteProvider(ActionEvent event) {
+        mainBorderPane.setCenter(ViewController.FIND_PROVIDER_TO_DELETE.loadParent());
     }
 }

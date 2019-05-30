@@ -10,7 +10,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Application.Controller.Find.FindToRecord.FindEducationToRecord">
+            fx:controller="Application.Controller.Find.FindToDelete.FindEducationToDelete">
     <bottom>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
@@ -33,3 +33,4 @@
         <fx:include fx:id="FindEducationSub" source="../../SubController/Find/FindEducationSub.fxml"/>
     </center>
 </BorderPane>
+
