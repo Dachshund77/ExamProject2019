@@ -46,4 +46,54 @@ public class EducationWish {
     public SimpleIntegerProperty priorityProperty() {
         return priority;
     }
+
+    public boolean isValidEducationWishID (Integer educationWishID)
+    {
+        if (educationWishID >= 1)
+        {
+            return true;
+        }
+        return false;
+    }
+    public String educationWishIDInvalidCause (Integer educationWishID)
+    {
+        if(!isValidEducationWishID(educationWishID))
+        {
+            String InvalidCause = "";
+            return InvalidCause;
+        }
+        return null;
+    }
+
+    public boolean isValidEducation (Education education) /// TODO : How to setup education for IsValid
+    {
+        return false;
+    }
+    public String invalidEducationCause (Education education)
+    {
+        if(isValidEducation(education))
+        {
+            String InvalidCause = "";
+            return InvalidCause;
+        }
+        return null;
+    }
+
+    public boolean isValidPriority(Integer priority)
+    {
+        if(priority > 0 && priority <= 3)
+        {
+            return true;
+        }
+        return false;
+    }
+    public String priorityInvalidCause (Integer priority)
+    {
+        if(isValidPriority(priority))
+        {
+            String InvalidCause = "";
+            return InvalidCause;
+        }
+        return null;
+    }
 }
