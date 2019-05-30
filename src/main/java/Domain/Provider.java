@@ -40,7 +40,7 @@ public class Provider {
      * @return String with first reason or null if valid.
      */
     public static String invalidProviderIDCause(Integer id) {
-        if (id < 0) {
+        if (id != null && id < 0) {
             return "Provider ID may not be negative";
         }
         return null;
