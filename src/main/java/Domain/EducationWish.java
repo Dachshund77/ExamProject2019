@@ -47,52 +47,91 @@ public class EducationWish {
         return priority;
     }
 
-    public boolean isValidEducationWishID (Integer educationWishID)
+    /**
+     * checks if educationID isnt NULL and negative
+     * @param educationWishID
+     * @return
+     */
+    public static boolean isValidEducationWishID (Integer educationWishID)
     {
-        if (educationWishID >= 1)
-        {
-            return true;
-        }
-        return false;
+       return educationWishID != null && educationWishID > 0;
     }
-    public String educationWishIDInvalidCause (Integer educationWishID)
+
+    /**
+     * Throws an error if:
+     * educationWishID = NULL
+     * educationWishID = Negative
+     * @param educationWishID
+     * @return
+     */
+    public static String educationWishIDInvalidCause (Integer educationWishID)
     {
-        if(!isValidEducationWishID(educationWishID))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+        if (educationWishID == null){
+            return "EducationWishID cant be null";
+        }
+        if (educationWishID < 0){
+            return "EducationWishID cant be negative";
         }
         return null;
     }
 
-    public boolean isValidEducation (Education education) /// TODO : How to setup education for IsValid
+    /**
+     * checks if the AMU No. is valid
+     * @param education
+     * @return
+     */
+
+    public static boolean isValidEducation (Education education) //TODO guessing its AMU No. else fix
     {
-        return false;
+        return education.getAmuNr() != null && education.getAmuNr() > 0;
     }
-    public String invalidEducationCause (Education education)
+
+    /**
+     * Throws an error if:
+     * AMU No. = NULL
+     * AMU No. = negative
+     * @param education
+     * @return
+     */
+    public static String invalidEducationCause (Education education)
     {
-        if(isValidEducation(education))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+        if (education.getAmuNr() == null){
+            return "AMU No. cant be null";
+        }
+        if (education.getAmuNr() < 0){
+            return "AMU No. cant be negative";
         }
         return null;
     }
 
-    public boolean isValidPriority(Integer priority)
+
+    /**
+     * checks if priority is within range and not null
+     * @param priority
+     * @return
+     */
+    public static boolean isValidPriority(Integer priority)
     {
-        if(priority > 0 && priority <= 3)
-        {
-            return true;
-        }
-        return false;
+       return priority != null && priority > 0 && priority < 3;
     }
-    public String priorityInvalidCause (Integer priority)
+
+    /**
+     * Throws an error if:
+     * priority = NULL
+     * priority = not within range (0-3)
+     * @param priority
+     * @return
+     */
+    public static String priorityInvalidCause (Integer priority)
     {
-        if(isValidPriority(priority))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+        if (priority == null){
+            return "Priority cant be null";
+        }
+        if (priority < 0 ){
+            return "Priority cant be negative";
+        }
+        if (priority > 3){
+            return "Priority cant be bigger than 3";
         }
         return null;
     }
