@@ -129,7 +129,7 @@ public class Interview {
      * @param integer Product understanding to be tested.
      * @return True if Integer is valid
      */
-    public static boolean isValidProductUnderstanding(Integer integer) {
+    public static boolean isValidProductUnderstanding(Integer integer) { // FIXME: 30/05/2019 may actually be null but we would need to use exception ahndeling, minor thing but takes time
         return integer != null && integer >= 0 && integer <= 5;
     }
 

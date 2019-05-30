@@ -10,88 +10,46 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Employee {
-    private SimpleIntegerProperty employeeID;
-    private SimpleStringProperty employeeFirstName;
-    private SimpleStringProperty employeeLastName;
-    private SimpleStringProperty cprNr;
-    private SimpleStringProperty eMail;
-    private SimpleStringProperty phoneNr;
+    private final Integer employeeID;
+    private String employeeFirstName;
+    private String employeeLastName;
+    private String cprNr;
+    private String eMail;
+    private String phoneNr;
     private ArrayList<Interview> interviews;
 
     public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, String phoneNr, ArrayList<Interview> interviews) {
         //employee ID
-        if (employeeID != null) {
-            this.employeeID = new SimpleIntegerProperty(employeeID);
-        } else {
-            this.employeeID = null;
-        }
-
-        this.employeeFirstName = new SimpleStringProperty(employeeFirstName);
-        this.employeeLastName = new SimpleStringProperty(employeeLastName);
-        this.cprNr = new SimpleStringProperty(cprNr);
-        this.eMail = new SimpleStringProperty(eMail);
-        this.phoneNr = new SimpleStringProperty(phoneNr);
-        this.interviews = Objects.requireNonNullElseGet(interviews,ArrayList::new);
+        this.employeeID = employeeID;
+        this.employeeFirstName = employeeFirstName;
+        this.employeeLastName = employeeLastName;
+        this.cprNr = cprNr;
+        this.eMail = eMail;
+        this.phoneNr = phoneNr;
+        this.interviews = Objects.requireNonNullElseGet(interviews, ArrayList::new);
     }
 
     public Integer getEmployeeId() {
-        if (employeeID == null)
-            return null;
-        return employeeID.get();
+        return employeeID;
     }
 
     public String getEmployeeFirstName() {
-        if (employeeFirstName.get().equals("")){
-            return null;
-        }
-        return employeeFirstName.get();
-    }
-
-    public SimpleStringProperty employeeFirstNameProperty() {
         return employeeFirstName;
     }
 
     public String getEmployeeLastName() {
-        if(employeeLastName.get().equals("")){
-            return null;
-        }
-        return employeeLastName.get();
-    }
-
-    public SimpleStringProperty employeeLastNameProperty() {
         return employeeLastName;
     }
 
     public String getCprNr() {
-        if (cprNr.get().equals("")){
-            return null;
-        }
-        return cprNr.get();
-    }
-
-    public SimpleStringProperty cprNrProperty() {
         return cprNr;
     }
 
     public String geteMail() {
-        if (eMail.get().equals("")){
-            return null;
-        }
-        return eMail.get();
-    }
-
-    public SimpleStringProperty eMailProperty() {
         return eMail;
     }
 
     public String getPhoneNr() {
-        if (phoneNr.get().equals("")){
-            return null;
-        }
-        return phoneNr.get();
-    }
-
-    public SimpleStringProperty phoneNrProperty() {
         return phoneNr;
     }
 
@@ -99,104 +57,86 @@ public class Employee {
         return interviews;
     }
 
-    public boolean isValidEmployeeID(Integer employeeID)
-    {
-        if(employeeID >= 1) {
-            return true;
-        }
-        return false;
+    public static boolean isValidEmployeeID(Integer employeeID) {
+        return employeeID == null || employeeID >= 1;
     }
-    public String employeeIDInvalidCause(Integer employeeID)
-    {
-        if(!isValidEmployeeID(employeeID))
+
+
+    public static String employeeIDInvalidCause(Integer employeeID) {
+        if ( employeeID != null && employeeID < 0)
         {
-            String InvalidCause = "";
-            return InvalidCause;
+            return "Employee ID may no be negative!";
         }
         return null;
     }
-    public boolean isValidEmployeeFirstName(String employeeFirstName)
-    {
-        if(employeeFirstName == null || employeeFirstName.length() <= 30 && employeeFirstName.length() > 0)
-        {
-            return true;
-        }
-        return false;
+
+    public static boolean isValidEmployeeFirstName(String employeeFirstName) {
+        return employeeFirstName == null || employeeFirstName.length() <= 30 && employeeFirstName.length() > 0;
     }
-    public String employeeFirstNameInvalidCause (String employeeFirstName)
-    {
-        if(!isValidEmployeeFirstName(employeeFirstName))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
-        }
-            return null;
-    }
-    public boolean isValidEmployeeLastName(String employeeLastName)
-    {
-        if(employeeLastName == null || employeeLastName.length() <= 30 && employeeLastName.length() > 0)
-        {
-            return true;
-        }
-        return false;
-    }
-    public String employeeLastNameInvalidCause (String employeeLastName)
-    {
-        if(!isValidEmployeeLastName(employeeLastName))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+
+    public static String employeeFirstNameInvalidCause(String employeeFirstName) {
+        if (employeeFirstName != null) {
+            if (employeeFirstName.length() > 30) {
+                return "First Name must be 30 or less letters!";
+            }
         }
         return null;
     }
-    public boolean isValidCprNr(String CprNr)
-    {
-        if(CprNr.matches("[0-9]+") && CprNr.length() == 10)
-        {
-            return true;
-        }
-        return false;
+
+    public static boolean isValidEmployeeLastName(String employeeLastName) {
+        return employeeLastName == null || employeeLastName.length() <= 30 && employeeLastName.length() > 0;
     }
-    public String cprNrInvalidCause(String CprNr)
-    {
-        if(!isValidCprNr(CprNr))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+
+    public static String employeeLastNameInvalidCause(String employeeLastName) {
+        if (employeeLastName != null) {
+            if (employeeLastName.length() > 30){
+                return "Last Name must be 30 or less letters!";
+            }
         }
         return null;
     }
-    public boolean isValidEmail(String email)
-    {
-        if(email == null || email.contains("@") && email.length() <= 30 && email.length() > 0)
-        {
-            return true;
-        }
-        return false;
+
+    public static boolean isValidCprNr(String CprNr) {
+        return CprNr.matches("[0-9]+") && CprNr.length() == 10;
     }
-    public String eMailInvalidCause (String email)
-    {
-        if(!isValidEmail(email))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+
+    public static String cprNrInvalidCause(String CprNr) {
+        if (CprNr != null) {
+            if (CprNr.length() != 10){
+                return "CprNr must be 10 letters long";
+            } if (!CprNr.matches("[0-9]+")){
+                return "CprNr may not contain letters!";
+            }
         }
         return null;
     }
-    public boolean isValidPhoneNr (String phoneNr)
-    {
-        if(phoneNr == null || phoneNr.matches("[0-9+]+") && phoneNr.length() <= 20)
-        {
-            return true;
-        }
-        return false;
+
+    public static boolean isValidEmail(String email) {
+        return email == null || (email.contains("@") && email.length() <= 30 && email.length() > 0);
     }
-    public String PhoneNumberInvalidCause (String phoneNr)
-    {
-        if(!isValidPhoneNr(phoneNr))
-        {
-            String InvalidCause = "";
-            return InvalidCause;
+
+    public static String eMailInvalidCause(String email) {
+        if (email != null) {
+            if (!email.contains("@")){
+                return "Email must contain an @";
+            } if (email.length() > 30){
+                return "Email must be 30 or less letters!";
+            }
+        }
+        return null;
+    }
+
+    public static boolean isValidPhoneNr(String phoneNr) {
+        return phoneNr == null || phoneNr.matches("[0-9+]+") && phoneNr.length() <= 20;
+    }
+
+    public static String PhoneNumberInvalidCause(String phoneNr) {
+        if (phoneNr != null) {
+            if (!phoneNr.matches("[0-9]+")){
+                return "Phone Number may not Contain letters!";
+            } if (phoneNr.length() > 20){
+                return "Phone Number must be 20 or less letters!";
+            }
         }
         return null;
     }

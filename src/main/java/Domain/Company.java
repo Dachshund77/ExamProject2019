@@ -76,7 +76,7 @@ public class Company {
      * @return True if cvr is valid
      */
     public static boolean isValidCvrNr(String cvrNr) {
-        return cvrNr != null && !cvrNr.equals("") && cvrNr.length() == 8;
+        return cvrNr != null && cvrNr.matches("[0-9]+") && !cvrNr.equals("") && cvrNr.length() == 8;
     }
 
     /**
@@ -86,8 +86,10 @@ public class Company {
      * @return String with first reason, null if non was detected.
      */
     public static String cvrNrInvalidCause(String cvrNr){
-        if (cvrNr == null){
+        if (cvrNr == null) {
             return "CvrNr may not be Null!";
+        }else if(!cvrNr.matches("[0-9]+")){
+            return "CvrNr may not contain letters!";
         } else if (cvrNr.equals("")){
             return "CvrNr may not be empty!";
         } else if(cvrNr.length() != 8){
