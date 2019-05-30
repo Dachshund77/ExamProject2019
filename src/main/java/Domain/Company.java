@@ -56,7 +56,7 @@ public class Company {
         return companyName.get();
     }
 
-    public boolean getValidCompanyID() {
+    public static boolean getValidCompanyID(SimpleIntegerProperty companyID) {
         if (companyID.get() > 0){
             return true;
         }
@@ -65,14 +65,14 @@ public class Company {
 
     public String companyIDInvalidCause(){
 
-        if (!getValidCompanyID()){
+        if (!getValidCompanyID(companyID)){
             String cause = "Company ID is not over 0";
             return cause;
         }
         return companyIDInvalidCause();
     }
 
-    public boolean getValidCvrNr() {
+    public static boolean getValidCvrNr(SimpleStringProperty cvrNr) {
         if (cvrNr.get().equals("") || cvrNr.get().length() > 80){
             return false;
         }
@@ -80,14 +80,14 @@ public class Company {
     }
 
     public String cvrNrInvalidCause(){
-        if (!getValidCvrNr()){
+        if (!getValidCvrNr(cvrNr)){
             String causeCVR = "check if cvr is entered and if it is less than 80";
             return causeCVR;
         }
         return cvrNrInvalidCause();
     }
 
-    public boolean getValidCompanyName() {
+    public static boolean getValidCompanyName(SimpleStringProperty companyName) {
 
         if (companyName.get().equals("") || companyName.get().length() > 50){
             return false;
@@ -96,7 +96,7 @@ public class Company {
     }
 
     public String companyNameInvalidClause(){
-        if (!getValidCompanyName()){
+        if (!getValidCompanyName(companyName)){
             String invalidCause = "Check if name is entered and if it is less than 50 chars";
             return invalidCause;
         }

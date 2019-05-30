@@ -1,6 +1,7 @@
 package Application.Controller;
 
-import Application.ViewController;
+//import Application.ViewController;
+import Application.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -36,6 +37,6 @@ public class FindCompController {
 
 
     public void handleOk(ActionEvent actionEvent) {
-        ViewController.START_PAGE_CONTROLLER.loadParent();
+   //     ViewController.START_PAGE_CONTROLLER.loadParent();
     }
 }

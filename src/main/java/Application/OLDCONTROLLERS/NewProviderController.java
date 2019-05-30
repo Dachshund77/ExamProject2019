@@ -1,7 +1,9 @@
 package Application.OLDCONTROLLERS;
 
-import Application.NEWSTUFF.Controller.AbstractController;
-import Application.NEWSTUFF.Controller.ViewController;
+import Application.Controller.AbstractController;
+import Application.Controller.ViewController;
+//import Application.NEWSTUFF.Controller.AbstractController;
+//import Application.NEWSTUFF.Controller.ViewController;
 import Domain.Provider;
 import Foundation.DB;
 import Persistance.DbFacade;
@@ -48,7 +50,7 @@ public class NewProviderController extends AbstractController {
             try {
                 database.disconnect();
                 //Change to mainView
-                ViewController.START_PAGE_CONTROLLER.reLoad(newProviderTextField.getScene());
+              //  ViewController.START_PAGE_CONTROLLER.reLoad(newProviderTextField.getScene());
             } catch (SQLException e) {
                 e.printStackTrace();
             }

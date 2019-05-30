@@ -45,7 +45,7 @@ public class Consultation {
         return consultationName.get();
     }
 
-    public boolean isValidConsultationID(){
+    public static boolean isValidConsultationID(SimpleIntegerProperty consultationID){
         if (consultationID.get() < 0){
             return false;
         }
@@ -53,14 +53,14 @@ public class Consultation {
     }
 
     public String consultationIDInvalidCause(){
-        if (!isValidConsultationID()){
+        if (!isValidConsultationID(consultationID)){
             String cause = "ID is not entered or its less than 0";
             return cause;
         }
         return consultationIDInvalidCause();
     }
 
-    public boolean isValidConsultationName(){
+    public static boolean isValidConsultationName(SimpleStringProperty consultationName){
         if (consultationName.get().equals("") || consultationName.get().length() > 50 ){
             return false;
         }
@@ -68,7 +68,7 @@ public class Consultation {
     }
 
     public String consultationNameInvalidCause(){
-        if (!isValidConsultationName()){
+        if (!isValidConsultationName(consultationName)){
             String cause = "name is not entered or is over 50 characters";
         }
         return consultationNameInvalidCause();
