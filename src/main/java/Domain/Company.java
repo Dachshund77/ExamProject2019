@@ -64,7 +64,7 @@ public class Company {
      * @return String with reason, null if none are detected.
      */
     public static String companyIDInvalidCause(Integer companyID){
-        if (companyID < 0){
+        if (companyID != null && companyID < 0){
             return  "Company ID may not be negative!";
         }
         return null;
