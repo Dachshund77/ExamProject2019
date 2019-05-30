@@ -42,4 +42,22 @@ public class Provider {
     public SimpleStringProperty providerNameProperty() {
         return providerName;
     }
+
+    public boolean isValidProviderName (String providerName)
+    {
+        if(!providerName.equals("") && providerName.length() <= 30)
+        {
+            return true;
+        }
+        return false;
+    }
+    public String providerNameInvalidCause (String providerName)
+    {
+        if(!isValidProviderName(providerName))
+        {
+            String invalidCause = "";
+            return invalidCause;
+        }
+        return null;
+    }
 }

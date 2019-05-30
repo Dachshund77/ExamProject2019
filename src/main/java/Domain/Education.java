@@ -43,7 +43,6 @@ public class Education {
         this.dates = Objects.requireNonNullElseGet(dates, ArrayList::new);
         // init provider
         this.provider = new SimpleObjectProperty<>(provider);
-
     }
 
     public Integer getAmuNr() {
@@ -96,5 +95,70 @@ public class Education {
 
     public SimpleObjectProperty<Provider> providerProperty() {
         return provider;
+    }
+
+    public boolean isValidEducationName(String educationName)
+    {
+        if(!educationName.equals("") && educationName.length() <= 30)
+        {
+            return true;
+        }
+        return false;
+    }
+    public String educationNameInvalidCause (String educationName)
+    {
+        if(!isValidEducationName(educationName))
+        {
+            String InvalidCause = "";
+            return InvalidCause;
+        }
+        return null;
+    }
+    public boolean isValidDescription(String description)
+    {
+        if(description.length() < 20000) // TODO : What is max value
+        {
+            return true;
+        }
+        return false;
+    }
+    public String descriptionInvalidCause (String description)
+    {
+        if(!isValidDescription(description))
+        {
+            String InvalidCause = "";
+            return InvalidCause;
+        }
+        return null;
+    }
+    public boolean IsValidNoOfDays(Integer NoOfDays)
+    {
+        if(NoOfDays <= 15 && NoOfDays > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    public String noOfDaysInvalidCause(Integer NoOfDays)
+    {
+        if(!IsValidNoOfDays(NoOfDays))
+        {
+            String InvalidCause = "";
+            return InvalidCause;
+        }
+        return null;
+    }
+    public boolean isValidDates(ArrayList <LocalDate> dates) //TODO : Check dates, but how
+    {
+        return false;
+    }
+    public String datesInvalidCause(ArrayList <LocalDate> dates)
+    {
+        if(isValidDates(dates))
+        {
+            String InvalidCause = "";
+            return InvalidCause;
+        }
+        return null;
     }
 }
