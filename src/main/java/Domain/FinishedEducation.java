@@ -23,45 +23,64 @@ public class FinishedEducation {
     }
 
     public Integer getFinishedEducationID() {
-        if (finishedEducationID == null){
+        if (finishedEducationID == null) {
             return null;
         }
         return finishedEducationID.get();
     }
 
 
-    public boolean isValidFinishedEducationID(){
-        if (finishedEducationID.get() < 0 ){
-            return false;
-        }
-        return true;
+    /**
+     * checks if finishedEducationID arent NULL and negative
+     *
+     * @param finishedEducationID
+     * @return
+     */
+    public static boolean isValidFinishedEducationID(Integer finishedEducationID) {
+        return finishedEducationID != null && finishedEducationID > 0;
     }
 
-    public String finishedEducationIDInvalidCause(){
-        if (!isValidFinishedEducationID()){
-            String cause = "ID is less than 0";
-            return cause;
+    /**
+     * Throws an error if:
+     * finishedEducationID = NULL
+     * finshedEducationID = Negative
+     *
+     * @return
+     */
+    public static String finishedEducationIDInvalidCause(Integer finishedEducationID) {
+        if (finishedEducationID == null) {
+            return "FinishedEducationID cant be null";
+        } else if (finishedEducationID < 0) {
+            return "FinieshedEducationID cant be negative";
         }
-        return
-                finishedEducationIDInvalidCause();
+        return null;
     }
 
-    public boolean isValidEducation(){
-        if (education.getAmuNr() < 0 ){
-            return false;
-        }
-        return true;
+    /**
+     * checks if the AMU Nr is valid
+     *
+     * @return
+     */
+    public static boolean isValidEducation(Integer AmuNr) {
+        return AmuNr != null && AmuNr > 0;
     }
 
-    public String invalidEducationCause(){
-        if (!isValidEducation()){
-            String cause = "AMU number is less than 0";
-            return cause;
+    /**
+     * Throws an error if:
+     * AMU Nr = NULL
+     * AMU Nr = Negative
+     *
+     * @param AmuNr
+     * @return
+     */
+    public String invalidEducationCause(Integer AmuNr) {
+        if (AmuNr == null) {
+            return "AMU Nr cant be null";
+        } else if (AmuNr < 0) {
+            return "AMU Nr cant be negative";
         }
-        return
-                invalidEducationCause();
+        return null;
     }
-    
 
 
     public Education getEducation() {
