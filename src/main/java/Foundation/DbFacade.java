@@ -1,4 +1,4 @@
-package Persistance;
+package Foundation;
 
 import Domain.*;
 import Foundation.DB;
@@ -359,7 +359,9 @@ public class DbFacade {
      * @return ArrayList of {@link Provider} Object.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We want never just the provider. Use Find Company
      */
+    @Deprecated
     public static ArrayList<Provider> findProviders(Integer providerID,
                                                     String providerName) throws SQLException {
         //init needed values
@@ -471,7 +473,9 @@ public class DbFacade {
      * @return ArrayList of {@link Interview} Object.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the Interview, use find Companies
      */
+    @Deprecated
     public static ArrayList<Interview> findInterviews(Integer interviewID,
                                                       String interviewName,
                                                       Integer AmuNr,
@@ -550,7 +554,9 @@ public class DbFacade {
      * @return ArrayList of {@link Employee} Object.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the Interview, use find Companies
      */
+    @Deprecated
     public static ArrayList<Employee> findEmployees(Integer employeeID,
                                                     String employeeFirstName,
                                                     String employeeLastName,
@@ -647,7 +653,9 @@ public class DbFacade {
      * @return ArrayList of {@link Consultation} Object.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the Interview, use find Companies
      */
+    @Deprecated
     public static ArrayList<Consultation> findConsultations(Integer consultationID,
                                                             String consultationName,
                                                             LocalDate consultationMinDate,
@@ -944,7 +952,9 @@ public class DbFacade {
      * @return {@link Provider} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the one object, use find Companies
      */
+    @Deprecated
     public static Provider findProvider(int providerID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -972,7 +982,9 @@ public class DbFacade {
      * @return {@link Education} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the one object, use find Companies
      */
+    @Deprecated
     public static Education findEducation(int educationID) throws SQLException {
         Education returnEducation = null;
         //init needed values
@@ -1005,7 +1017,9 @@ public class DbFacade {
      * @return {@link Interview} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the one object, use find Companies
      */
+    @Deprecated
     public static Interview findInterview(int interviewID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1041,7 +1055,9 @@ public class DbFacade {
      * @return {@link Employee} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the one object, use find Companies
      */
+    @Deprecated
     public static Employee findEmployee(int employeeID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1079,7 +1095,9 @@ public class DbFacade {
      * @return {@link Consultation} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the one object, use find Companies
      */
+    @Deprecated
     public static Consultation findConsultation(int consultationID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1119,7 +1137,9 @@ public class DbFacade {
      * @return {@link Company} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just the one object, use find Companies
      */
+    @Deprecated
     public static Company findCompany(int companyID) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1164,7 +1184,9 @@ public class DbFacade {
      * @return ArrayList of {@link Provider Provider} Objects with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just this method, use find Companies
      */
+    @Deprecated
     public static ArrayList<Provider> findAllProviders() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1188,7 +1210,9 @@ public class DbFacade {
      * @return ArrayList of {@link Education} Objects with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just this method, use find Companies
      */
+    @Deprecated
     public static ArrayList<Education> findAllEducations() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1214,7 +1238,9 @@ public class DbFacade {
      * @return ArrayList of {@link Interview} Objects with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just this method, use find Companies
      */
+    @Deprecated
     public static ArrayList<Interview> findAllInterviews() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1246,7 +1272,9 @@ public class DbFacade {
      * @return ArrayList of {@link Employee} Objects with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just this method, use find Companies
      */
+    @Deprecated
     public static ArrayList<Employee> findAllEmployees() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1280,7 +1308,9 @@ public class DbFacade {
      * @return ArrayList of {@link Consultation} Objects with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just this method, use find Companies
      */
+    @Deprecated
     public static ArrayList<Consultation> findAllConsultations() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1316,7 +1346,9 @@ public class DbFacade {
      * @return ArrayList of {@link Company} Objects with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
+     * @deprecated We never want just this method, use find Companies
      */
+    @Deprecated
     public static ArrayList<Company> findAllCompanies() throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
@@ -1660,5 +1692,30 @@ public class DbFacade {
             }
         }
     }
+
+
+    /**
+     * Method to establish a connection to the Database.
+     * Note that this must be called before running any other methods from this class.
+     * After finished Database interaction {@link #disconnect()} must be called.
+     *
+     * @throws SQLException Exception when SQL encounter a fatal problem
+     * @see DB
+     */
+    public static void connect() throws SQLException{
+        DB.getInstance().connect();
+    }
+
+    /**
+     * Method to close connection to the Database.
+     *
+     * @throws SQLException Exception when SQL encounter a fatal problem
+     * @see DB
+     */
+    public static void disconnect() throws SQLException{
+        DB.getInstance().disconnect();
+    }
+
+
 
 }

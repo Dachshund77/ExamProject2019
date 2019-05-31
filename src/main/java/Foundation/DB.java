@@ -1,6 +1,5 @@
 package Foundation;
 
-import Persistance.DbFacade;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import java.io.*;
@@ -68,7 +67,7 @@ public class DB {
      */
 
     @SuppressWarnings("Duplicates")
-    public ResultSet executeStoredProcedure(SpWithRs sp, Object... param) throws SQLException {
+    ResultSet executeStoredProcedure(SpWithRs sp, Object... param) throws SQLException {
         System.out.println("DB.executeStoredProcedure");
         System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "] ");
         System.out.println("param length was " + param.length);
@@ -106,7 +105,7 @@ public class DB {
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
     @SuppressWarnings("Duplicates")
-    public int executeStoredProcedure(SpGetKey sp, Object... param) throws SQLException { //TODO the method should be done better
+    int executeStoredProcedure(SpGetKey sp, Object... param) throws SQLException { //TODO the method should be done better
         System.out.println("DB.executeStoredProcedure"); //TODO Remove uneeded system.out before deployment
         System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "]");
         System.out.println("param length was " + param.length);
@@ -145,7 +144,7 @@ public class DB {
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
     @SuppressWarnings("Duplicates")
-    public void addStoredProcedureToBatch(Sp sp, Object... param) throws SQLException {
+    void addStoredProcedureToBatch(Sp sp, Object... param) throws SQLException {
         System.out.println("DB.addStoredProcedureToBatch"); //TODO Remove uneeded system out before deployment
         System.out.println("sp = [" + sp + "], param = [" + Arrays.toString(param) + "]");
         System.out.println("param length was " + param.length);
@@ -175,7 +174,7 @@ public class DB {
      * @return True if successful added to database
      * @throws SQLException Exception when SQL encounter a fatal problem. Will Rollback this transaction.
      */
-    public boolean executeBatch() throws SQLException {
+    boolean executeBatch() throws SQLException {
         boolean returnBoolean = cstmt.execute();
         try {
             conn.commit();
@@ -200,7 +199,7 @@ public class DB {
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
     @SuppressWarnings("Duplicates")
-    public boolean executeStoredProcedure(Sp sp, Object... param) throws SQLException {
+    boolean executeStoredProcedure(Sp sp, Object... param) throws SQLException {
         // Preparing metaData
         Map<Integer, String> metaDataMap = getSPMetaData(sp);
         //Setting callable statement
@@ -309,7 +308,7 @@ public class DB {
      *
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
-    public void connect() throws SQLException { //TODO make thread save
+    void connect() throws SQLException { //TODO make thread save
         conn = DriverManager.getConnection("jdbc:sqlserver://localhost:" + port + ";databaseName=" + databaseName, userName, password);
     }
 
@@ -319,7 +318,7 @@ public class DB {
      *
      * @throws SQLException Exception when SQL encounter a fatal problem
      */
-    public void disconnect() throws SQLException {
+     void disconnect() throws SQLException {
         if (cstmt != null) {
             cstmt.close();
         }

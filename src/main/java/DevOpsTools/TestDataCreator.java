@@ -2,7 +2,7 @@ package DevOpsTools;
 
 import Domain.*;
 import Foundation.DB;
-import Persistance.DbFacade;
+import Foundation.DbFacade;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -72,10 +72,10 @@ public class TestDataCreator {
         DB database = DB.getInstance();
         for (Education education : educationArrayList) {
             try {
-                database.connect();
+                DbFacade.connect();
                 DbFacade.insertEducation(education);
-                database.executeBatch();
-                database.disconnect();
+                //database.executeBatch();
+                DbFacade.disconnect();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -91,10 +91,10 @@ public class TestDataCreator {
         DB database = DB.getInstance();
         for (Company company : companyArayList) {
             try {
-                database.connect();
+                DbFacade.connect();
 
                 DbFacade.insertCompany(company);
-                database.disconnect();
+                DbFacade.disconnect();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

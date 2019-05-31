@@ -4,7 +4,7 @@ import Application.Controller.AbstractController;
 //import Application.NEWSTUFF.Controller.AbstractController;
 import Domain.Employee;
 import Foundation.DB;
-import Persistance.DbFacade;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -62,13 +62,13 @@ public class NewEmployeeController extends AbstractController {
             if (CPRIsCorrect) {
                 DB database = DB.getInstance();
                 try {
-                    database.connect();
+                    DbFacade.connect();
                     DbFacade.insertEmployee(new Employee(null, employeeFirstName, employeeLastName, cprNr, eMail, phoneNr,null));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } finally {
                     try {
-                        database.disconnect();
+                        DbFacade.disconnect();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }

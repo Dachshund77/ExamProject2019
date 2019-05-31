@@ -3,7 +3,7 @@ package Application.OLDCONTROLLERS;
 import Domain.Education;
 import Domain.Provider;
 import Foundation.DB;
-import Persistance.DbFacade;
+import Foundation.DbFacade;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -43,13 +43,13 @@ public class NewEducationController {
         //Populate providers
         DB database = DB.getInstance();
         try {
-            database.connect();
+            DbFacade.connect();
             populateProviderMenuButton();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                database.disconnect();
+                DbFacade.disconnect();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

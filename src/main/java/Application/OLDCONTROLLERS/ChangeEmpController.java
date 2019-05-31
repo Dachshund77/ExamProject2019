@@ -2,6 +2,7 @@ package Application.OLDCONTROLLERS;
 
 import Domain.Company;
 import Foundation.DB;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -47,13 +48,13 @@ public class ChangeEmpController {
         //Populate company choice box
         DB database = DB.getInstance();
         try {
-            database.connect();
+            DbFacade.connect();
             populateCompany();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
-                database.disconnect();
+                DbFacade.disconnect();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

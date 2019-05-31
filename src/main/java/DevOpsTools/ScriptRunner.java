@@ -1,6 +1,7 @@
 package DevOpsTools;
 
 import Foundation.DB;
+import Foundation.DbFacade;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -42,7 +43,7 @@ public class ScriptRunner {
 
         // run the scripts
         try {
-            DB.getInstance().connect();
+            DbFacade.connect();
             for (File file : executionOrder) {
                 DB.getInstance().executeScript(file);
             }
@@ -51,7 +52,7 @@ public class ScriptRunner {
             e.printStackTrace();
         } finally {
             try {
-                DB.getInstance().disconnect();
+                DbFacade.disconnect();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

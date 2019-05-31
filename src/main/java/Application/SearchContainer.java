@@ -1,11 +1,14 @@
 package Application;
 
+import Foundation.DB;
+import Foundation.DbFacade;
+
 import java.time.LocalDate;
 
 /**
  * Helper class that is used to pass search queries to the Database.
  *
- * @see Persistance.DbFacade
+ * @see DbFacade
  */
 public class SearchContainer { //TODO those getters should return null when it is empty
     //Company related
