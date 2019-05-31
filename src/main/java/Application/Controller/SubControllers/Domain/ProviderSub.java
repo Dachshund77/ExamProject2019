@@ -11,8 +11,11 @@ import javafx.scene.text.Text;
 
 public class ProviderSub extends AbstractController {
 
+    @FXML
     public Text providerIDText;
+    @FXML
     public TextField providerNameTextField;
+    @FXML
     public Tooltip providerNameTooltip;
 
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
@@ -30,10 +33,29 @@ public class ProviderSub extends AbstractController {
 
     public void handleProviderNameInput(KeyEvent keyEvent){
         // whenever the user input something that textfield
+        providerNameTooltip.getProperties();
+        providerNameTooltip.setText("tester1231231");
+
+        providerNameTextField.setTooltip(providerNameTooltip);
+
+
+        providerNameTextField.setOnKeyPressed(event ->
+
+                updateIsValid());
+
     }
 
     public void updateIsValid(){
         // Manages the isValid property aka when all values are valid = true
+        String test = providerNameTextField.getText();
+        if (Provider.isValidProviderName(test)){
+            providerNameTextField.getStyle();
+            providerNameTextField.setStyle("-fx-border-color: green");
+
+        }
+        else
+            providerNameTextField.setStyle("-fx-background-color: red");
+
     }
 
     public void setEditable(boolean bool){
