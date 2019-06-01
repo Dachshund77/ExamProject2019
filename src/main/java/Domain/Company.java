@@ -25,6 +25,7 @@ public class Company {
         this.educationList = Objects.requireNonNullElseGet(educationList, ArrayList::new);
     }
 
+
     public Integer getCompanyID() {
         return companyID;
     }
@@ -56,6 +57,14 @@ public class Company {
         }
         return true;
     }
+
+    public static boolean isValidCompanyID(String companyID) {
+        if (companyID != null) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Return the first reason why the Integer is not valid ID.

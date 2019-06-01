@@ -32,6 +32,13 @@ public class Provider {
         return true;
     }
 
+    public static boolean isValidProviderID(String id){
+        if (id != null){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Returns the first reason why an Integer is not a valid Provider ID.
      * A valid Id my not be negative.

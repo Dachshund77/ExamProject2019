@@ -1,3 +1,6 @@
 .buttonError{
     -fx-border-color: #ff0000;
 }
+.providerNameError {
+    -fx-border-color: #ff0000;
+}

@@ -7,21 +7,21 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-
-import java.awt.event.KeyEvent;
+import javafx.event.Event;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 public class EducationSub extends AbstractController {
 
-    public Text AmuNrText;
+    public Label AmuNrText;
     public TextField educationNameTextField;
     public Tooltip educationNameTooltip;
     public TextArea descriptionTextArea;
     public Tooltip descriptionTooltip;
-    public TextField noOfDaysTextField; // may be converted to a drop down if you want
+    public ChoiceBox noOfDaysChoiceBox; // may be converted to a drop down if you want
     public Tooltip noOfDaysTooltip;
     public ListView<LocalDate> dateListView;
     public DatePicker datePicker;
@@ -50,6 +50,7 @@ public class EducationSub extends AbstractController {
         // whenever input in education textfield
         // should also update is valid
     }
+
 
     public void handleDescriptionInput(KeyEvent keyEvent){
 
@@ -81,4 +82,5 @@ public class EducationSub extends AbstractController {
     public void resetForm(){
         //Reset fields, set field if it has a selected Domain object
     }
+
 }

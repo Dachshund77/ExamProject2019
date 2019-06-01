@@ -45,11 +45,19 @@ public class Education {
         this.provider = new SimpleObjectProperty<>(provider);
     }
 
+
     public Integer getAmuNr() {
         if (amuNr == null) {
             return null;
         }
         return amuNr.get();
+    }
+
+    public String getAmuNr(String amuNr){
+        if (amuNr == null){
+            return null;
+        }
+        return amuNr;
     }
 
     public String getEducationName() {

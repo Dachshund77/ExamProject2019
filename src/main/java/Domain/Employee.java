@@ -29,6 +29,7 @@ public class Employee {
         this.interviews = Objects.requireNonNullElseGet(interviews, ArrayList::new);
     }
 
+
     public Integer getEmployeeId() {
         return employeeID;
     }
@@ -61,11 +62,20 @@ public class Employee {
         return employeeID == null || employeeID >= 1;
     }
 
+    public static boolean isValidEmployeeID(String employeeID){ return employeeID == null || employeeID.equals("");}
 
     public static String employeeIDInvalidCause(Integer employeeID) {
         if ( employeeID != null && employeeID < 0)
         {
             return "Employee ID may no be negative!";
+        }
+        return null;
+    }
+
+    public static String employeeIDInvalidCause(String employeeID){
+        if ( employeeID != null && employeeID.equals(""))
+        {
+            return "Employee ID may no be empty!";
         }
         return null;
     }

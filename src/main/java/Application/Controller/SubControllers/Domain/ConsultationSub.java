@@ -14,17 +14,17 @@ import java.util.ArrayList;
 
 public class ConsultationSub extends AbstractController {
 
-    public Text consultationIDText;
+    public Label consultationIDText;
     public TextField consultationNameTextField;
     public Tooltip consultationNameTooltip;
     public DatePicker startDate;
     public DatePicker endDate;
     public TableView<Employee> employeeTableView;
     public TableColumn<Employee, String> employeeFirstNameColumn;
-    public TableColumn<Employee, String> employeeLastnameColumn;
+    public TableColumn<Employee, String> employeeLastNameColumn;
     public Button removeEmployeeButton;
     public Button addEmployeeButton;
-    public Button newEmployeeButtonl;
+    public Button newEmployeeButton;
 
     private ArrayList<Employee> employeeArrayList;
 
@@ -42,7 +42,7 @@ public class ConsultationSub extends AbstractController {
         //hook up consultation
     }
 
-    public void handleConsultationnameInput(KeyEvent keyEvent){
+    public void handleConsultationNameInput(KeyEvent keyEvent){
 
     }
 

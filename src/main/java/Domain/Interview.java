@@ -1,10 +1,5 @@
 package Domain;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -31,6 +26,7 @@ public class Interview {
         this.finishedEducations = Objects.requireNonNullElseGet(finishedEducations, ArrayList::new);
         this.educationWishes = Objects.requireNonNullElseGet(educationWishes, ArrayList::new);
     }
+
 
     public Integer getInterviewID() {
         return interviewID;
@@ -77,6 +73,13 @@ public class Interview {
     public static boolean isValidInterviewID(Integer interviewID) {
         if (interviewID != null) {
             return interviewID > 0;
+        }
+        return true;
+    }
+
+    public static boolean isValidInterviewID(String interviewID) {
+        if (interviewID != null) {
+            return false;
         }
         return true;
     }

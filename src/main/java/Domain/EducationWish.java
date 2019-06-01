@@ -32,6 +32,13 @@ public class EducationWish {
         return educationWishID.get();
     }
 
+    public String getEducationWishID(String educationWishID){
+        if (educationWishID == null){
+            return null;
+        }
+        return educationWishID;
+    }
+
     public Education getEducation() {
         return education;
     }
