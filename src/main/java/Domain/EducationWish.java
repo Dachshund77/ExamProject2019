@@ -6,34 +6,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EducationWish {
-    private SimpleIntegerProperty educationWishID;
+    private final Integer educationWishID;
     private Education education;
-    private SimpleIntegerProperty priority;
+    private Integer priority;
 
     public EducationWish(Integer educationWishID, Education education, Integer priority) {
-        if (educationWishID != null) {
-            this.educationWishID = new SimpleIntegerProperty(educationWishID);
-        } else {
-            this.educationWishID = null;
-        }
+        this.educationWishID = educationWishID;
         this.education = education;
-
-        if (priority != null) {
-            this.priority = new SimpleIntegerProperty(priority);
-        } else {
-            this.priority = new SimpleIntegerProperty(-1);
-        }
+        this.priority = priority;
     }
 
     public Integer getEducationWishID() {
-        if (educationWishID == null){
-            return null;
-        }
-        return educationWishID.get();
-    }
-
-    public String getEducationWishID(String educationWishID){
-        return educationWishID;
+      return educationWishID;
     }
 
     public Education getEducation() {
@@ -41,14 +25,18 @@ public class EducationWish {
     }
 
     public Integer getPriority() {
-        if (priority == null) {
-            return null;
-        }
-        return priority.get();
+      return priority;
     }
 
-    public SimpleIntegerProperty priorityProperty() {
-        return priority;
+
+    /**
+     * checks if educationID isnt negative
+     * @param educationWishID
+     * @return
+     */
+    public static boolean isValidEducationWishID (Integer educationWishID)
+    {
+       return educationWishIDInvalidCause(educationWishID) == null;
     }
 
     /**
@@ -56,58 +44,38 @@ public class EducationWish {
      * @param educationWishID
      * @return
      */
-    public static boolean isValidEducationWishID (Integer educationWishID)
+    public static boolean isValidEducationWishID (String educationWishID)
     {
-       return educationWishID != null && educationWishID > 0;
+        return educationWishIDInvalidCause(educationWishID) == null;
     }
 
     /**
      * Throws an error if:
-     * educationWishID = NULL
      * educationWishID = Negative
      * @param educationWishID
      * @return
      */
     public static String educationWishIDInvalidCause (Integer educationWishID)
     {
-        if (educationWishID == null){
+        if (educationWishID != null && educationWishID < 0){
             return "EducationWishID cant be null";
         }
-        if (educationWishID < 0){
-            return "EducationWishID cant be negative";
-        }
         return null;
-    }
-
-    /**
-     * checks if the AMU No. is valid
-     * @param education
-     * @return
-     */
-
-    public static boolean isValidEducation (Education education) //TODO guessing its AMU No. else fix
-    {
-        return education.getAmuNr() != null && education.getAmuNr() > 0;
     }
 
     /**
      * Throws an error if:
-     * AMU No. = NULL
-     * AMU No. = negative
-     * @param education
+     * educationWishID = Negative
+     * @param educationWishID
      * @return
      */
-    public static String invalidEducationCause (Education education)
-    {
-        if (education.getAmuNr() == null){
-            return "AMU No. cant be null";
+    public static String educationWishIDInvalidCause (String educationWishID) {
+        try{
+            return educationWishIDInvalidCause(Integer.parseInt(educationWishID));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
         }
-        if (education.getAmuNr() < 0){
-            return "AMU No. cant be negative";
-        }
-        return null;
     }
-
 
     /**
      * checks if priority is within range and not null
@@ -116,7 +84,17 @@ public class EducationWish {
      */
     public static boolean isValidPriority(Integer priority)
     {
-       return priority != null && priority > 0 && priority < 3;
+       return priorityInvalidCause(priority)==null;
+    }
+
+    /**
+     * checks if priority is within range and not null
+     * @param priority
+     * @return
+     */
+    public static boolean isValidPriority(String priority)
+    {
+        return priorityInvalidCause(priority)==null;
     }
 
     /**
@@ -138,5 +116,21 @@ public class EducationWish {
             return "Priority cant be bigger than 3";
         }
         return null;
+    }
+
+    /**
+     * Throws an error if:
+     * priority = NULL
+     * priority = not within range (0-3)
+     * @param priority
+     * @return
+     */
+    public static String priorityInvalidCause (String priority)
+    {
+        try{
+            return priorityInvalidCause(Integer.parseInt(priority));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
     }
 }
