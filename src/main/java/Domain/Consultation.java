@@ -31,11 +31,16 @@ public class Consultation {
         this.employees = Objects.requireNonNullElseGet(employees, ArrayList::new);
     }
 
+
     public Integer getConsultationID() {
         if (consultationID == null) {
             return null;
         }
         return consultationID.get();
+    }
+
+    public String getConsultationID(String consultationID){
+        return consultationID;
     }
 
     public String getConsultationName() {

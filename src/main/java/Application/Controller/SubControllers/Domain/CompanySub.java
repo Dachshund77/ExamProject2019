@@ -16,14 +16,14 @@ import java.util.ArrayList;
 
 public class CompanySub extends AbstractController {
 
-    public Text companyIDText;
+    public Label companyIDText;
     public TextField cvrNrTextField;
-    public Tooltip cvrnrTooltip;
+    public Tooltip cvrNrTooltip;
     public TextField companyNameTextField;
     public Tooltip companyNameTooltip;
     public TableView<Consultation> consultationTableView;
     public TableColumn<Consultation, String> consultationNameColumn;
-    public TableColumn<Consultation, LocalDate> consultationStartdateColumn;
+    public TableColumn<Consultation, LocalDate> consultationStartDateColumn;
     public TableColumn<Consultation, LocalDate> consultationEndDateColumn;
     public TableView<Education> educationTableView;
     public TableColumn<Education, String> educationNameColumn;

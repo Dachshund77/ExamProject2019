@@ -6,20 +6,17 @@ import Domain.Interview;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class EmployeeSub extends AbstractController {
 
-    public Text employeeIDText;
+    public Label employeeIDText;
     public TextField employeeFirstNameTextField;
-    public Tooltip employeeFirstnameTooltup;
+    public Tooltip employeeFirstnameTooltip;
     public TextField employeeLastNameTextField;
     public Tooltip employeeLastNameTooltip;
     public TextField cprNrTextField;

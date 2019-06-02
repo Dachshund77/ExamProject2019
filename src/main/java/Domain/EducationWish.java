@@ -32,6 +32,10 @@ public class EducationWish {
         return educationWishID.get();
     }
 
+    public String getEducationWishID(String educationWishID){
+        return educationWishID;
+    }
+
     public Education getEducation() {
         return education;
     }

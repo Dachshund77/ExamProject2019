@@ -13,7 +13,7 @@ public class CompanyChoice extends Stage {
     }
 
     public Company showAndReturn(CompanyReturnableController controller, Company company){
-        //controller.initValues(company);
+       // controller.initValues(company);
         super.showAndWait();
         return controller.getReturn();
     }

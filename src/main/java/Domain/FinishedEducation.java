@@ -29,6 +29,10 @@ public class FinishedEducation {
         return finishedEducationID.get();
     }
 
+    public String getFinishedEducationID(String finishedEducationID){
+        return finishedEducationID;
+    }
+
 
     /**
      * checks if finishedEducationID arent NULL and negative

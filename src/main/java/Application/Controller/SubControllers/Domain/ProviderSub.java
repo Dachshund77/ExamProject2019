@@ -12,11 +12,11 @@ import javafx.scene.text.Text;
 public class ProviderSub extends AbstractController {
 
     public Text providerIDText;
-    public TextField providerNameTextField;
+    public TextField providerNameTextfield;
     public Tooltip providerNameTooltip;
 
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
-    public Provider selectedprovider;
+    public Provider selectedProvider;
 
     public void initialize(){
         //setup isValid

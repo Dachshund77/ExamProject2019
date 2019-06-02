@@ -74,6 +74,10 @@ public class InterviewSub extends AbstractController {
 
     }
 
+    public void handlePickFinishedEducation(ActionEvent actionEvent) {
+
+    }
+
     public void updateIsValid(){
         // Manages the isValid property aka when all values are valid = true
     }
@@ -84,4 +88,6 @@ public class InterviewSub extends AbstractController {
     public void resetForm(){
         //Reset fields, set field if it has a selected Domain object
     }
+
+
 }
