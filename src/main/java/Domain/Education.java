@@ -15,78 +15,35 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Education {
-    private final SimpleIntegerProperty amuNr; //TODO MAKE FINAL INT
-    private SimpleStringProperty educationName;
-    private SimpleStringProperty description;
-    private SimpleIntegerProperty noOfDays;
+    private final Integer amuNr;
+    private String educationName;
+    private String description;
+    private Integer noOfDays;
     private ArrayList<LocalDate> dates;
-    private SimpleObjectProperty<Provider> provider;
+    private Provider provider;
 
     public Education(Integer amuNr, String educationName, String description, Integer noOfDays, ArrayList<LocalDate> dates, Provider provider) {
-        //Init amuNr
-        if (amuNr != null) {
-            this.amuNr = new SimpleIntegerProperty(amuNr);
-        } else {
-            this.amuNr = null;
-        }
-        //init educationName
-        this.educationName = new SimpleStringProperty(educationName);
-        //Init description
-        this.description = new SimpleStringProperty(description);
-        //Init noOfDays
-        if (noOfDays != null) {
-            this.noOfDays = new SimpleIntegerProperty(noOfDays);
-        } else {
-            this.noOfDays = new SimpleIntegerProperty(-1);
-        }
-        //init dates
+        this.amuNr = amuNr;
+        this.educationName = educationName;
+        this.description = description;
+        this.noOfDays = noOfDays;
         this.dates = Objects.requireNonNullElseGet(dates, ArrayList::new);
-        // init provider
-        this.provider = new SimpleObjectProperty<>(provider);
+        this.provider = provider;
     }
-
 
     public Integer getAmuNr() {
-        if (amuNr == null) {
-            return null;
-        }
-        return amuNr.get();
-    }
-
-    public String getAmuNr(String amuNr){
         return amuNr;
     }
 
     public String getEducationName() {
-        if (educationName.get().equals("")){
-            return null;
-        }
-        return educationName.get();
-    }
-
-    public SimpleStringProperty educationNameProperty() {
         return educationName;
     }
 
     public String getDescription() {
-        if (description.get().equals("")){
-            return null;
-        }
-        return description.get();
-    }
-
-    public SimpleStringProperty descriptionProperty() {
         return description;
     }
 
     public Integer getNoOfDays() {
-        if (noOfDays.get() == -1) {
-            return null;
-        }
-        return noOfDays.get();
-    }
-
-    public SimpleIntegerProperty noOfDaysProperty() {
         return noOfDays;
     }
 
@@ -95,22 +52,61 @@ public class Education {
     }
 
     public Provider getProvider() {
-        return provider.get();
-    }
-
-    public SimpleObjectProperty<Provider> providerProperty() {
         return provider;
     }
 
 
     /**
+     * Amu nr may not be negative.
+     * @param amuNr Integer to be tested.
+     * @return True if valid.
+     */
+    public static boolean isValidAmuNr(Integer amuNr){
+        return amuNrInvalidCause(amuNr)== null;
+    }
+
+    /**
+     * Amu nr may not be negative.
+     * @param amuNr String to be tested.
+     * @return True if valid.
+     */
+    public static boolean isValidAmuNr(String amuNr){
+        return amuNrInvalidCause(amuNr) == null;
+    }
+
+    /**
+     * Return the first reason why an amuNr is invalid.
+     * @param amuNr Integer to be tested.
+     * @return String with first problem, null if valid.
+     */
+    public static String amuNrInvalidCause(Integer amuNr){
+        if (amuNr != null && amuNr < 0){
+            return "Amu Nr may not be negative!";
+        }
+        return null;
+    }
+
+    /**
+     * Return the first reason why an amuNr is invalid.
+     * @param amuNr String to be tested.
+     * @return String with first problem, null if valid.
+     */
+    public static String amuNrInvalidCause(String amuNr){
+        try{
+            return amuNrInvalidCause(Integer.parseInt(amuNr));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
+    }
+
+    /**
      * checks if educationName is valid
-     * @param educationName
-     * @return
+     * @param educationName String to be tested.
+     * @return True if valid.
      */
     public static boolean isValidEducationName(String educationName)
     {
-      return educationName != null && !educationName.equals("") && educationName.length() < 30;
+      return educationNameInvalidCause(educationName) == null;
     }
 
     /**
@@ -118,15 +114,15 @@ public class Education {
      * educationName = NULL
      * educationName = Empty string
      * educationName = Bigger than 30 chars
-     * @param educationName
-     * @return
+     * @param educationName String to be tested.
+     * @return String with first problem, null if valid.
      */
     public static String educationNameInvalidCause (String educationName)
     {
         if (educationName == null){
             return "Education cant be null";
         }
-        else if (educationName.equals("")){
+        else if (educationName.trim().isEmpty()){
             return "Education must have a name";
         }
         else if (educationName.length() > 30){
@@ -137,28 +133,28 @@ public class Education {
 
     /**
      * checks if description contains information about a course
-     * @param description
-     * @return
+     * @param description String to be tested.
+     * @return True if valid.
      */
     public static boolean isValidDescription(String description)
     {
-        return description != null && !description.equals("");
+        return descriptionInvalidCause(description) == null;
     }
 
     /**
      * throws an error if:
      * description = NULL
      * description = Empty string
-     * @param description
-     * @return
+     * @param description string to be tested.
+     * @return String with first problem, null if valid.
      */
     public static String descriptionInvalidCause (String description)
     {
         if (description == null){
             return "Description must not be null";
         }
-        else if (description.equals("")){
-            return "Description must contain some information";
+        else if (description.trim().isEmpty()){
+            return "Description must contain some information"; //TODO but dont we allow null values? -Sven
         }
         return null;
     }
@@ -166,12 +162,22 @@ public class Education {
 
     /**
      * checks if NoOfDays arent null and within limit
-     * @param NoOfDays
-     * @return
+     * @param noOfDays Integer to be tested
+     * @return True if valid.
      */
-    public static boolean isValidNoOfDays(Integer NoOfDays)
+    public static boolean isValidNoOfDays(Integer noOfDays)
     {
-        return NoOfDays != null && NoOfDays > 0 && NoOfDays <=15;
+        return noOfDaysInvalidCause(noOfDays) == null;
+    }
+
+    /**
+     * checks if NoOfDays arent null and within limit
+     * @param noOfDays String to be tested.
+     * @return True if valid.
+     */
+    public static boolean isValidNoOfDays(String noOfDays)
+    {
+        return noOfDaysInvalidCause(noOfDays) == null;
     }
 
     /**
@@ -179,10 +185,10 @@ public class Education {
      * NoOfDays = NULL
      * NoOfDays = Negative number
      * NoOfDays = Bigger than 15
-     * @param NoOfDays
-     * @return
+     * @param NoOfDays Integer to be tested.
+     * @return String with first found problem, null if valid.
      */
-    public String noOfDaysInvalidCause(Integer NoOfDays)
+    public static String noOfDaysInvalidCause(Integer NoOfDays)
     {
        if (NoOfDays == null){
            return "Number of days cant be null";
@@ -195,5 +201,20 @@ public class Education {
        }
         return null;
     }
-    
+
+    /**
+     * Throws an error if:
+     * NoOfDays = NULL
+     * NoOfDays = Negative number
+     * NoOfDays = Bigger than 15
+     * @param noOfDays String to be tested.
+     * @return String with first found problem,null if valid.
+     */
+    public static String noOfDaysInvalidCause(String noOfDays) {
+        try{
+            return noOfDaysInvalidCause(Integer.parseInt(noOfDays));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
+    }
 }
