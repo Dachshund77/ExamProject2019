@@ -52,14 +52,16 @@ public class Company {
      * @return True if valid
      */
     public static boolean isValidCompanyID(Integer companyID) {
-        if (companyID != null) {
-            return companyID > 0;
-        }
-        return true;
+        return companyIDInvalidCause(companyID) == null;
     }
 
+    /**
+     * A valid ID may not be negative.
+     * @param companyID ID to be tested
+     * @return True if valid
+     */
     public static boolean isValidCompanyID(String companyID) {
-        return companyID == null;
+        return companyIDInvalidCause(companyID) == null;
     }
 
 
@@ -77,12 +79,26 @@ public class Company {
     }
 
     /**
+     * Return the first reason why the String is not valid ID.
+     * A valid ID may not be negative.
+     * @param companyID ID that is invalid
+     * @return String with reason, null if none are detected.
+     */
+    public static String companyIDInvalidCause(String companyID){
+        try{
+            return companyIDInvalidCause(Integer.parseInt(companyID));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
+    }
+
+    /**
      * A valid cvrNr may not be null, empty String and must be 8 Char long.
      * @param cvrNr cvr To be tested
      * @return True if cvr is valid
      */
     public static boolean isValidCvrNr(String cvrNr) {
-        return cvrNr != null && cvrNr.matches("[0-9]+") && !cvrNr.equals("") && cvrNr.length() == 8;
+        return cvrNrInvalidCause(cvrNr) == null;
     }
 
     /**
@@ -96,7 +112,7 @@ public class Company {
             return "CvrNr may not be Null!";
         }else if(!cvrNr.matches("[0-9]+")){
             return "CvrNr may not contain letters!";
-        } else if (cvrNr.equals("")){
+        } else if (cvrNr.trim().isEmpty()){
             return "CvrNr may not be empty!";
         } else if(cvrNr.length() != 8){
             return "CvrNr must be 8 characters long!";
@@ -110,7 +126,7 @@ public class Company {
      * @return True if name is valid.
      */
     public static boolean isValidCompanyName(String name) {
-        return name != null && !name.equals("") && name.length() < 50;
+        return companyNameInvalidClause(name) == null;
     }
 
     /**
@@ -122,7 +138,7 @@ public class Company {
     public static String companyNameInvalidClause(String name){
         if(name == null){
             return "Company Name may not be Null!";
-        } else if(name.equals("")){
+        } else if(name.trim().isEmpty()){
             return "Company Name may not be empty!";
         } else if(name.length() > 50){
             return "Company Name must be 50 letters or less!";
