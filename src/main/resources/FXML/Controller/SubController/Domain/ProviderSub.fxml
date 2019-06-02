@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Domain.ProviderSub">
    <center>
@@ -25,13 +26,12 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="242.0" text="Provider ID" />
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="117.0" text="Provider Name" GridPane.rowIndex="1" />
-            <TextField GridPane.columnIndex="1" />
             <TextField fx:id="providerNameTextfield" onAction="#handleProviderNameInput" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <tooltip>
                   <Tooltip fx:id="providerNameTooltip" text="Test" />
                </tooltip></TextField>
+            <Text fx:id="providerIDText" strokeType="OUTSIDE" strokeWidth="0.0" text="providerIDText" textAlignment="CENTER" wrappingWidth="215.13671875" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </center>
