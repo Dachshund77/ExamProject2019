@@ -71,14 +71,11 @@ public class Interview {
      * @return True if Integer is a valid Id
      */
     public static boolean isValidInterviewID(Integer interviewID) {
-        if (interviewID != null) {
-            return interviewID > 0;
-        }
-        return true;
+        return interviewIDInvalidCause(interviewID) == null;
     }
 
     public static boolean isValidInterviewID(String interviewID) {
-        return interviewID == null;
+        return interviewIDInvalidCause(interviewID) == null;
     }
 
     /**
@@ -96,13 +93,28 @@ public class Interview {
     }
 
     /**
+     * Return first reason why an integer is not a valid interviewID
+     * A valid interview ID may not be negative.
+     *
+     * @param interviewID Interger to be tested.
+     * @return String with first found reason, null if Integer is valid.
+     */
+    public static String interviewIDInvalidCause(String interviewID) {
+        try{
+            return interviewIDInvalidCause(Integer.parseInt(interviewID));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
+    }
+
+    /**
      * A valid Interview Name may not be null, empty and must be 30 char or less.
      *
      * @param interviewName String to be tested.
      * @return True of String is valid Interview Name.
      */
     public static boolean isValidInterviewName(String interviewName) {
-        return interviewName != null && !interviewName.equals("") && interviewName.length() <= 30;
+        return interviewNameInvalidCause(interviewName) == null;
     }
 
     /**
@@ -115,7 +127,7 @@ public class Interview {
     public static String interviewNameInvalidCause(String interviewName) {
         if (interviewName == null) {
             return "Interview Name may not be null!";
-        } else if (interviewName.equals("")) {
+        } else if (interviewName.trim().isEmpty()) {
             return "Interview Name may not be empty!";
         } else if (interviewName.length() > 30) {
             return "Interview Name must be 30 Characters or less!";
@@ -129,8 +141,18 @@ public class Interview {
      * @param integer Product understanding to be tested.
      * @return True if Integer is valid
      */
-    public static boolean isValidProductUnderstanding(Integer integer) { // FIXME: 30/05/2019 may actually be null but we would need to use exception ahndeling, minor thing but takes time
-        return integer != null && integer >= 0 && integer <= 5;
+    public static boolean isValidProductUnderstanding(Integer integer) {
+        return productUnderstandingInvalidCause(integer) == null;
+    }
+
+    /**
+     * A valid Product understanding may not be null, negative or bigger than 5.
+     *
+     * @param integer Product understanding to be tested.
+     * @return True if Integer is valid
+     */
+    public static boolean isValidProductUnderstanding(String integer) {
+        return productUnderstandingInvalidCause(integer) == null;
     }
 
     /**
@@ -151,6 +173,20 @@ public class Interview {
         return null;
     }
 
+    /**
+     * Return the first reason why an Integer is not a valid product understanding.
+     * A valid Product understanding may not be null, negative or bigger than 5.
+     *
+     * @param integer Integer to be tested.
+     * @return String with the first reason it is not valid, null if valid.
+     */
+    public static String productUnderstandingInvalidCause(String integer) {
+        try{
+            return productUnderstandingInvalidCause(Integer.parseInt(integer));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
+    }
 
     /**
      * A valid Problem understanding may not be null, negative or bigger than 5.
@@ -159,7 +195,17 @@ public class Interview {
      * @return True if Integer is valid
      */
     public static boolean isValidProblemUnderstanding(Integer integer) {
-        return integer != null && integer >= 0 && integer <= 5;
+        return problemUnderstandingInvalidCause(integer) == null;
+    }
+
+    /**
+     * A valid Problem understanding may not be null, negative or bigger than 5.
+     *
+     * @param integer Product understanding to be tested.
+     * @return True if Integer is valid
+     */
+    public static boolean isValidProblemUnderstanding(String integer) {
+        return problemUnderstandingInvalidCause(integer) == null;
     }
 
     /**
@@ -180,6 +226,21 @@ public class Interview {
         return null;
     }
 
+    /**
+     * Return the first reason why an Integer is not a valid Problem understanding.
+     * A valid Problem understanding may not be null, negative or bigger than 5.
+     *
+     * @param integer Integer to be tested.
+     * @return String with the first reason it is not valid, null if valid.
+     */
+    public static String problemUnderstandingInvalidCause(String integer) {
+        try{
+            return problemUnderstandingInvalidCause(Integer.parseInt(integer));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
+    }
+
 
     /**
      * A valid flexibility score may not be null, negative or bigger than 5.
@@ -188,7 +249,17 @@ public class Interview {
      * @return True if Integer is valid
      */
     public static boolean isValidFlexibility(Integer integer) {
-        return integer != null && integer >= 0 && integer <= 5;
+        return flexibilityInvalidCause(integer) == null;
+    }
+
+    /**
+     * A valid flexibility score may not be null, negative or bigger than 5.
+     *
+     * @param integer Product understanding to be tested.
+     * @return True if Integer is valid
+     */
+    public static boolean isValidFlexibility(String integer) {
+        return flexibilityInvalidCause(integer) == null;
     }
 
     /**
@@ -209,6 +280,21 @@ public class Interview {
         return null;
     }
 
+    /**
+     * Return the first reason why an Integer is not a valid flexibility score.
+     * A valid flexibility score may not be null, negative or bigger than 5.
+     *
+     * @param integer Integer to be tested.
+     * @return String with the first reason it is not valid, null if valid.
+     */
+    public static String flexibilityInvalidCause(String integer) {
+        try{
+            return flexibilityInvalidCause(Integer.parseInt(integer));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
+    }
+
 
     /**
      * A valid quality awareness score may not be null, negative or bigger than 5.
@@ -217,7 +303,17 @@ public class Interview {
      * @return True if Integer is valid
      */
     public static boolean isValidQualityAwareness(Integer integer) {
-        return integer != null && integer >= 0 && integer <= 5;
+        return qualityAwarenessInvalidCause(integer) == null;
+    }
+
+    /**
+     * A valid quality awareness score may not be null, negative or bigger than 5.
+     *
+     * @param integer Product understanding to be tested.
+     * @return True if Integer is valid
+     */
+    public static boolean isValidQualityAwareness(String integer) {
+        return qualityAwarenessInvalidCause(integer) == null;
     }
 
     /**
@@ -238,6 +334,21 @@ public class Interview {
         return null;
     }
 
+    /**
+     * Return the first reason why an Integer is not a valid quality awareness score.
+     * A valid quality awareness score may not be null, negative or bigger than 5.
+     *
+     * @param integer Integer to be tested.
+     * @return String with the first reason it is not valid, null if valid.
+     */
+    public static String qualityAwarenessInvalidCause(String integer) {
+        try{
+            return qualityAwarenessInvalidCause(Integer.parseInt(integer));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
+    }
+
 
     /**
      * A valid cooperation score may not be null, negative or bigger than 5.
@@ -246,7 +357,17 @@ public class Interview {
      * @return True if Integer is valid
      */
     public static boolean isValidCooperation(Integer integer) {
-        return integer != null && integer >= 0 && integer <= 5;
+        return cooperationInvalidCause(integer) == null;
+    }
+
+    /**
+     * A valid cooperation score may not be null, negative or bigger than 5.
+     *
+     * @param integer Cooperation score to be tested.
+     * @return True if Integer is valid
+     */
+    public static boolean isValidCooperation(String integer) {
+        return cooperationInvalidCause(integer) == null;
     }
 
     /**
@@ -265,6 +386,21 @@ public class Interview {
             return "Cooperation must be 5 or less!";
         }
         return null;
+    }
+
+    /**
+     * Return the first reason why an Integer is not a valid cooperation score.
+     * A valid cooperation score may not be null, negative or bigger than 5.
+     *
+     * @param integer Integer to be tested.
+     * @return String with the first reason it is not valid, null if valid.
+     */
+    public static String cooperationInvalidCause(String integer) {
+        try{
+            return cooperationInvalidCause(Integer.parseInt(integer));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
+        }
     }
 
 
