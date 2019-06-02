@@ -8,31 +8,27 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class FinishedEducation {
-    private SimpleIntegerProperty finishedEducationID;
+    private final Integer finishedEducationID;
     private Education education;
     private LocalDate dateFinished;
 
     public FinishedEducation(Integer finishedEducationID, Education education, LocalDate dateFinished) {
-        if (finishedEducationID != null) {
-            this.finishedEducationID = new SimpleIntegerProperty(finishedEducationID);
-        } else {
-            this.finishedEducationID = null;
-        }
+        this.finishedEducationID = finishedEducationID;
         this.education = education;
         this.dateFinished = dateFinished;
     }
 
     public Integer getFinishedEducationID() {
-        if (finishedEducationID == null) {
-            return null;
-        }
-        return finishedEducationID.get();
+       return finishedEducationID;
     }
 
-    public String getFinishedEducationID(String finishedEducationID){
-        return finishedEducationID;
+    public Education getEducation() {
+        return education;
     }
 
+    public LocalDate getDateFinished() {
+        return dateFinished;
+    }
 
     /**
      * checks if finishedEducationID arent NULL and negative
@@ -41,7 +37,11 @@ public class FinishedEducation {
      * @return
      */
     public static boolean isValidFinishedEducationID(Integer finishedEducationID) {
-        return finishedEducationID != null && finishedEducationID > 0;
+        return finishedEducationIDInvalidCause(finishedEducationID) == null;
+    }
+
+    public static boolean isValidFinishedEducationID(String finishedEducationID) {
+        return finishedEducationIDInvalidCause(finishedEducationID) == null;
     }
 
     /**
@@ -52,46 +52,29 @@ public class FinishedEducation {
      * @return
      */
     public static String finishedEducationIDInvalidCause(Integer finishedEducationID) {
-        if (finishedEducationID == null) {
-            return "FinishedEducationID cant be null";
-        } else if (finishedEducationID < 0) {
-            return "FinieshedEducationID cant be negative";
+         if (finishedEducationID != null && finishedEducationID < 0) {
+            return "FinishedEducationID cant be negative";
         }
         return null;
-    }
-
-    /**
-     * checks if the AMU Nr is valid
-     *
-     * @return
-     */
-    public static boolean isValidEducation(Integer AmuNr) {
-        return AmuNr != null && AmuNr > 0;
     }
 
     /**
      * Throws an error if:
-     * AMU Nr = NULL
-     * AMU Nr = Negative
+     * finishedEducationID = NULL
+     * finshedEducationID = Negative
      *
-     * @param AmuNr
      * @return
      */
-    public String invalidEducationCause(Integer AmuNr) {
-        if (AmuNr == null) {
-            return "AMU Nr cant be null";
-        } else if (AmuNr < 0) {
-            return "AMU Nr cant be negative";
+    public static String finishedEducationIDInvalidCause(String finishedEducationID) {
+        try{
+            return finishedEducationIDInvalidCause(Integer.parseInt(finishedEducationID));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
         }
-        return null;
     }
 
 
-    public Education getEducation() {
-        return education;
-    }
 
-    public LocalDate getDateFinished() {
-        return dateFinished;
-    }
+
+
 }
