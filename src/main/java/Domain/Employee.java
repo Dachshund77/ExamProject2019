@@ -59,10 +59,10 @@ public class Employee {
     }
 
     public static boolean isValidEmployeeID(Integer employeeID) {
-        return employeeID == null || employeeID >= 1;
+        return employeeIDInvalidCause(employeeID) == null;
     }
 
-    public static boolean isValidEmployeeID(String employeeID){ return employeeID == null || employeeID.equals("");}
+    public static boolean isValidEmployeeID(String employeeID){ return employeeIDInvalidCause(employeeID)==null;}
 
     public static String employeeIDInvalidCause(Integer employeeID) {
         if ( employeeID != null && employeeID < 0)
@@ -73,15 +73,15 @@ public class Employee {
     }
 
     public static String employeeIDInvalidCause(String employeeID){
-        if ( employeeID != null && employeeID.equals(""))
-        {
-            return "Employee ID may no be empty!";
+        try{
+            return employeeIDInvalidCause(Integer.parseInt(employeeID));
+        }catch (NumberFormatException e){
+            return "Must be a number!";
         }
-        return null;
     }
 
     public static boolean isValidEmployeeFirstName(String employeeFirstName) {
-        return employeeFirstName == null || employeeFirstName.length() <= 30 && employeeFirstName.length() > 0;
+        return employeeFirstNameInvalidCause(employeeFirstName)==null;
     }
 
     public static String employeeFirstNameInvalidCause(String employeeFirstName) {
@@ -94,7 +94,7 @@ public class Employee {
     }
 
     public static boolean isValidEmployeeLastName(String employeeLastName) {
-        return employeeLastName == null || employeeLastName.length() <= 30 && employeeLastName.length() > 0;
+        return employeeLastNameInvalidCause(employeeLastName) == null;
     }
 
     public static String employeeLastNameInvalidCause(String employeeLastName) {
@@ -106,15 +106,15 @@ public class Employee {
         return null;
     }
 
-    public static boolean isValidCprNr(String CprNr) {
-        return CprNr.matches("[0-9]+") && CprNr.length() == 10;
+    public static boolean isValidCprNr(String cprNr) {
+        return cprNrInvalidCause(cprNr) ==null;
     }
 
-    public static String cprNrInvalidCause(String CprNr) {
-        if (CprNr != null) {
-            if (CprNr.length() != 10){
+    public static String cprNrInvalidCause(String cprNr) {
+        if (cprNr != null) {
+            if (cprNr.length() != 10){
                 return "CprNr must be 10 letters long";
-            } if (!CprNr.matches("[0-9]+")){
+            } if (!cprNr.matches("[0-9]+")){
                 return "CprNr may not contain letters!";
             }
         }
@@ -122,7 +122,7 @@ public class Employee {
     }
 
     public static boolean isValidEmail(String email) {
-        return email == null || (email.contains("@") && email.length() <= 30 && email.length() > 0);
+        return eMailInvalidCause(email) == null;
     }
 
     public static String eMailInvalidCause(String email) {
@@ -137,10 +137,10 @@ public class Employee {
     }
 
     public static boolean isValidPhoneNr(String phoneNr) {
-        return phoneNr == null || phoneNr.matches("[0-9+]+") && phoneNr.length() <= 20;
+        return phoneNumberInvalidCause(phoneNr) == null;
     }
 
-    public static String PhoneNumberInvalidCause(String phoneNr) {
+    public static String phoneNumberInvalidCause(String phoneNr) {
         if (phoneNr != null) {
             if (!phoneNr.matches("[0-9]+")){
                 return "Phone Number may not Contain letters!";
