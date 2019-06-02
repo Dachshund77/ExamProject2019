@@ -164,7 +164,7 @@ public class Education {
      * @param NoOfDays
      * @return
      */
-    public static boolean IsValidNoOfDays(Integer NoOfDays)
+    public static boolean isValidNoOfDays(Integer NoOfDays)
     {
         return NoOfDays != null && NoOfDays > 0 && NoOfDays <=15;
     }

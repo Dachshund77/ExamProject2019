@@ -1,3 +1,9 @@
-.buttonError{
-    -fx-border-color: #ff0000;
+.TextField-Error{
+    -fx-border-color: black;
+    -fx-background-color: red;
+}
+
+.TextArea-Error .content{
+    -fx-border-color: black;
+    -fx-background-color: red;
 }

@@ -1,5 +1,6 @@
 package Foundation;
 
+import Application.SearchContainer;
 import Domain.*;
 import Foundation.DB;
 import Foundation.Sp;
@@ -740,54 +741,12 @@ public class DbFacade {
      * <br><br>
      * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
      *
-     * @param companyID           Unique Primary key of a {@link Company}.
-     * @param cvrNr               {@link Company} cvrNr as String.
-     * @param companyName         {@link Company} name as String.
-     * @param consultationID      Unique Primary key of a {@link Consultation}.
-     * @param consultationName    {@link Consultation} name as String.
-     * @param consultationMinDate Minimum date a {@link Consultation} need to have to be found.
-     * @param consultationMaxDate Maximum date a {@link Consultation} need to have to be found.
-     * @param employeeID          Unique Primary key of a {@link Employee}.
-     * @param employeeFirstName   {@link Employee} First name as String.
-     * @param employeeLastName    {@link Employee} Last name as String.
-     * @param cprNr               {@link Employee} CprNr as String.
-     * @param email               {@link Employee} Email Address as String.
-     * @param phoneNr             {@link Employee} PhoneNr as String.
-     * @param interviewID         Unique Primary key of a {@link Interview}.
-     * @param interviewName       {@link Interview} name as String.
-     * @param AmuNr               Unique Primary key of a {@link Education}.
-     * @param educationName       {@link Education} name as String.
-     * @param educationNoOfDays   Number of Days this {@link Education} takes.
-     * @param educationMinDate    Minimum date a {@link Education} needs to have to be found.
-     * @param educationMaxDate    Maximum date a {@link Education} need to have to be found
-     * @param providerID          Unique Primary key of a {@link Provider}.
-     * @param providerName        {@link Provider} name as String.
+     * @param searchContainer The Contain for the search parameters
      * @return ArrayList of {@link Company} Object.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
      */
-    public static ArrayList<Company> findCompanies(Integer companyID,
-                                                   String cvrNr,
-                                                   String companyName,
-                                                   Integer consultationID,
-                                                   String consultationName,
-                                                   LocalDate consultationMinDate,
-                                                   LocalDate consultationMaxDate,
-                                                   Integer employeeID,
-                                                   String employeeFirstName,
-                                                   String employeeLastName,
-                                                   String cprNr,
-                                                   String email,
-                                                   String phoneNr,
-                                                   Integer interviewID,
-                                                   String interviewName,
-                                                   Integer AmuNr,
-                                                   String educationName,
-                                                   Integer educationNoOfDays,
-                                                   LocalDate educationMinDate,
-                                                   LocalDate educationMaxDate,
-                                                   Integer providerID,
-                                                   String providerName) throws SQLException {
+    public static ArrayList<Company> findCompanies(SearchContainer searchContainer) throws SQLException {
         //init needed values
         HashMap<Integer, Provider> providers = new HashMap<>();
         HashMap<Integer, Education> educations = new HashMap<>();
@@ -800,28 +759,28 @@ public class DbFacade {
 
         //Getting data
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY,
-                companyID,
-                cvrNr,
-                companyName,
-                consultationID,
-                consultationName,
-                consultationMinDate,
-                consultationMaxDate,
-                employeeID,
-                employeeFirstName,
-                employeeLastName,
-                cprNr,
-                email,
-                phoneNr,
-                interviewID,
-                interviewName,
-                AmuNr,
-                educationName,
-                educationNoOfDays,
-                educationMinDate,
-                educationMaxDate,
-                providerID,
-                providerName);
+                searchContainer.getCompanyID(),
+                searchContainer.getCvrNr(),
+                searchContainer.getCompanyName(),
+                searchContainer.getConsultationID(),
+                searchContainer.getConsultationName(),
+                searchContainer.getConsultationMinDate(),
+                searchContainer.getConsultationMaxDate(),
+                searchContainer.getEmployeeID(),
+                searchContainer.getEmployeeFirstName(),
+                searchContainer.getEmployeeLastName(),
+                searchContainer.getCprNr(),
+                searchContainer.getEmail(),
+                searchContainer.getPhoneNr(),
+                searchContainer.getInterviewID(),
+                searchContainer.getInterviewName(),
+                searchContainer.getAmuNr(),
+                searchContainer.getEducationName(),
+                searchContainer.getEducationNoOfDays(),
+                searchContainer.getEducationMinDate(),
+                searchContainer.getEducationMaxDate(),
+                searchContainer.getProviderID(),
+                searchContainer.getProviderName());
 
 
         while (rs.next()) {

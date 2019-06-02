@@ -4,11 +4,14 @@ import Application.Controller.AbstractController;
 import Application.SearchContainer;
 import Domain.Company;
 import Domain.Consultation;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some point this class neec to be claned up, we realy dont validate input we do that at the SearchContainer
@@ -45,13 +48,35 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
     public Button searchButton;
     public Button resetButton;
 
+    BooleanBinding allTrue;
+
     private ArrayList<Company> searchResult;
     private SearchContainer previousSearchContainer = null;
 
+    private SimpleBooleanProperty isValid = new SimpleBooleanProperty();
+
+    private SimpleBooleanProperty isValidCompanyID = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty isValidConsultationID = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty isValidEmpID = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty isValidInterviewID = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty isValidAmuNr = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty isValidProviderID = new SimpleBooleanProperty(true);
 
     public void initialize() {
-        //Load previous search? //TODO consider this functionality
-        resetToEmpty();
+
+        companyIDTextField.textProperty().addListener((observable, oldValue, newValue) ->{
+            //Validation method call.
+            //React on outcome, set UI, tooltip
+
+        });
+
+
+
+
+
+
+
+
     }
 
     @Override
@@ -60,8 +85,38 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
         resetToPreviousSearch();
     }
 
-    public void handleSearch(ActionEvent event) {
-        //TODO need to fix DbFacde first
+    public void handleSearch(ActionEvent event) { //TODO need to overload
+        SearchContainer container = new SearchContainer();
+
+        //We asume that the search button is not clicked before the integer is valid
+
+        //container.setCompanyID(companyIDTextField.getText());
+        container.setCvrNr(cvrNrTextField.getText());
+        container.setCompanyName(companyNameTextField.getText());
+        //Consultation
+        container.setConsultationMaxDate(consultationMaxDatePicker.getValue());
+        container.setConsultationMinDate(consultationMinDatePicker.getValue());
+        container.setConsultationName(consultationNameTextField.getText());
+        //container.setConsultationID(consultationIDTextField.getText());
+        //Employee
+        //container.setEmployeeID(employeeIDTextField.getText());
+        container.setEmployeeFirstName(empFirstNameTextField.getText());
+        container.setEmployeeLastName(empLastNameTextField.getText());
+        container.setCprNr(cprNrTextField.getText());
+        container.setEmail(eMailTextField.getText());
+        container.setPhoneNr(phoneNrTextField.getText());
+        //Interview
+        //container.setInterviewID(interviewIDTextField.getText());
+        //container.setInterviewName(interviewsNameTextField.getText());
+        //Education
+        //container.setAmuNr(amuNrTextField.getText());
+        container.setEducationName(educationNameTextField.getText());
+        //container.setEducationNoOfDays(educationNoOfDaysTextField.getText());
+        container.setEducationMinDate(educationMinDatePicker.getValue());
+        container.setEducationMaxDate(educationMaxDatePicker.getValue());
+        //provider
+        //container.setProviderID(providerIDTextField.getText());
+        container.setProviderName(providerNameTextField.getText());
     }
 
     /**

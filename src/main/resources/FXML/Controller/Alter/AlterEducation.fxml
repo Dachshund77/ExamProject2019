@@ -11,7 +11,7 @@
             prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Application.Controller.Alter.AlterEducation">
     <top>
-        <fx:include fx:id="EducationSub" source="../SubController/Domain/EducationSub.fxml"/>
+        <fx:include fx:id="educationSub" source="../SubController/Domain/EducationSub.fxml"/>
     </top>
     <bottom>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">
