@@ -28,7 +28,6 @@ public class EducationWish {
       return priority;
     }
 
-
     /**
      * checks if educationID isnt negative
      * @param educationWishID

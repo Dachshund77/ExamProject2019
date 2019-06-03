@@ -21,11 +21,11 @@ public class Employee {
     public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, String phoneNr, ArrayList<Interview> interviews) {
         //employee ID
         this.employeeID = employeeID;
-        this.employeeFirstName = employeeFirstName;
-        this.employeeLastName = employeeLastName;
-        this.cprNr = cprNr;
-        this.eMail = eMail;
-        this.phoneNr = phoneNr;
+        setEmployeeFirstName(employeeFirstName);
+        setEmployeeLastName(employeeLastName);
+        setCprNr(cprNr);
+        seteMail(eMail);
+        setPhoneNr(phoneNr);
         this.interviews = Objects.requireNonNullElseGet(interviews, ArrayList::new);
     }
 
@@ -56,6 +56,66 @@ public class Employee {
 
     public ArrayList<Interview> getInterviews() {
         return interviews;
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param employeeFirstName new employee first name.
+     */
+    public void setEmployeeFirstName(String employeeFirstName) {
+        if (employeeFirstName.trim().isEmpty()){
+            this.employeeFirstName = null;
+        }else {
+            this.employeeFirstName = employeeFirstName;
+        }
+    }
+
+    /**
+     * converts empty String to null.
+     * @param employeeLastName new employee last name.
+     */
+    public void setEmployeeLastName(String employeeLastName) {
+        if (employeeLastName.trim().isEmpty()){
+            this.employeeLastName = null;
+        }else {
+            this.employeeLastName = employeeLastName;
+        }
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param cprNr new cprNr
+     */
+    public void setCprNr(String cprNr) {
+        if (cprNr.trim().isEmpty()){
+            this.cprNr = null;
+        } else {
+            this.cprNr = cprNr;
+        }
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param eMail new email.
+     */
+    public void seteMail(String eMail) {
+        if (eMail.trim().isEmpty()){
+            this.eMail = null;
+        } else {
+            this.eMail = eMail;
+        }
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param phoneNr new Phone nr.
+     */
+    public void setPhoneNr(String phoneNr) {
+        if (phoneNr.trim().isEmpty()){
+            this.phoneNr = null;
+        } else {
+            this.phoneNr = phoneNr;
+        }
     }
 
     public static boolean isValidEmployeeID(Integer employeeID) {
