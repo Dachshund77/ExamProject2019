@@ -88,6 +88,7 @@ public class Company {
         try{
             return companyIDInvalidCause(Integer.parseInt(companyID));
         }catch (NumberFormatException e){
+            System.out.println("number");
             return "Must be a number!";
         }
     }
@@ -109,14 +110,19 @@ public class Company {
      */
     public static String cvrNrInvalidCause(String cvrNr){
         if (cvrNr == null) {
+            System.out.println("may not null");
             return "CvrNr may not be Null!";
         }else if(!cvrNr.matches("[0-9]+")){
+            System.out.println("cvr not contain letters");
             return "CvrNr may not contain letters!";
         } else if (cvrNr.trim().isEmpty()){
+            System.out.println("is empty");
             return "CvrNr may not be empty!";
         } else if(cvrNr.length() != 8){
+            System.out.println("not 8 chars");
             return "CvrNr must be 8 characters long!";
         }
+        System.out.println("returning null");
         return null;
     }
 

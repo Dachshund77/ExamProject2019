@@ -4,15 +4,20 @@ import Application.Controller.AbstractController;
 import Domain.Company;
 import Domain.Consultation;
 import Domain.Education;
+import Foundation.DbFacade;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.text.Text;
+import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class CompanySub extends AbstractController {
 
@@ -27,59 +32,165 @@ public class CompanySub extends AbstractController {
     public TableColumn<Consultation, LocalDate> consultationEndDateColumn;
     public TableView<Education> educationTableView;
     public TableColumn<Education, String> educationNameColumn;
-    public Button addConsultationButton;
-    public Button removeConsultationButton;
+    public Button addCompany;
     public Button newConsultationButton;
 
     // FIXME: 29/05/2019 there should probably bee a add education stuff here, but there some object reference issues with that
 
-    public ArrayList<Consultation> consultationArrayList;
+    public ArrayList<Consultation> consultationArrayList = new ArrayList<>();
     public ArrayList<Education> educationArrayList;
 
-    public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
+    //public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
     public Company selectedCompany;
 
+    public BooleanBinding isValid;
+    private SimpleBooleanProperty companyNameIsValid = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty cvrNrIsValid = new SimpleBooleanProperty(true);
+
     public void initialize(){
-        //setup listview
-        //Setup isValid
-        //setup bindings
+
+        /**
+         * Setting up consultation TableView
+         *
+         */
+        consultationNameColumn.setCellValueFactory(new PropertyValueFactory<>("consultationName"));
+        consultationStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        consultationEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+
+        consultationTableView.getColumns().setAll(consultationNameColumn, consultationStartDateColumn, consultationEndDateColumn);
+       //FXCollections.observableArrayList(consultationArrayList);
+
+        LocalDate date1 = LocalDate.of(2001,11,21);
+        LocalDate date2 = LocalDate.of(2021,11,21);
+        Consultation newCons = new Consultation(2, "something",date1, date2, null  );
+
+        ObservableList<Consultation> list = FXCollections.observableArrayList();
+
+        consultationTableView.setItems(list);
+
+        list.add(newCons);
+        //TODO Delete later plz
+
+        /**
+         *Setting up EducationTableView
+         */
+        educationNameColumn.setCellValueFactory(new PropertyValueFactory<>("educationName"));
+        educationTableView.getColumns().setAll(educationNameColumn);
+        ObservableList<Education> educationList = FXCollections.observableArrayList();
+        educationTableView.setItems(educationList);
+
+        /**
+         * Hides the tableviews when the user selects "New Company"
+         */
+        if (selectedCompany == null){
+            educationTableView.setVisible(false);
+            consultationTableView.setVisible(false);
+        }
+
+        /**
+         * adds a listener to the handlers of
+         * cvrTextField and companyNameTextfield
+         */
+        cvrNrTextField.textProperty().addListener(((observable) -> handleCvrNrInput()));
+        companyNameTextField.textProperty().addListener(((observable) -> handleCompanyNameInput()));
+
+        isValid =new BooleanBinding() {
+            @Override
+                    protected boolean computeValue(){
+                bind(companyNameIsValid);
+                bind(cvrNrIsValid);
+                if (companyNameIsValid.get() && cvrNrIsValid.get()){
+                    System.out.println("True");
+                    return true;
+                } else {
+                    System.out.println("False");
+                    return false;
+                }
+            }
+        };
+        resetForm();
     }
 
+    /**
+     * initializes the company domain
+     * and primes the resetform
+     * @param company
+     */
     @Override
     public void initValues(Company company) {
-        //hook up Company
+        selectedCompany = company;
+        resetForm();
     }
 
-    public void handleCvrNrInput(KeyEvent keyEvent){
-        // whenever input in education textfield
-        // should also update is valid
-    }
+    /**
+     * On every keypress the cvrInputTextField
+     * is updated to check if the content is valid
+     * if not, the TextField will be red and a
+     * tooltip with the error cause will show
+     */
+    public void handleCvrNrInput(){
+        System.out.println(cvrNrTextField.getText());
+        System.out.println(Company.isValidCvrNr(cvrNrTextField.getText()));
+        System.out.println(Arrays.toString(cvrNrTextField.getStyleClass().toArray()));
+        if (Company.isValidCvrNr(cvrNrTextField.getText())){
+            cvrNrTextField.setTooltip(null);
+            cvrNrIsValid.set(true);
+            cvrNrTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = Company.companyNameInvalidClause(cvrNrTextField.getText());
+            cvrNrTextField.setTooltip(new Tooltip(invalidCause));
+            cvrNrIsValid.set(false);
+            if ( !cvrNrTextField.getStyleClass().contains("TextField-Error")){
+                cvrNrTextField.getStyleClass().add("TextField-Error");
+            }
 
-    public void handleCompanyNameInput(KeyEvent keyEvent){
-
-    }
-
-    public void handleAddConsultation(ActionEvent event){
-
-    }
-
-    public void handleRemoveConsultation(ActionEvent event){
-
-    }
-
-    public void handleNewConsultation(ActionEvent event){
-
-    }
-
-    public void updateIsValid(){
-        // Manages the isValid property aka when all values are valid = true
-    }
-
-    public void setEditable(boolean bool){
+        }
 
     }
 
+    /**
+     * On every keypress the companyNameTextField
+     * is updated to check if the content is valid
+     * if not, the TextField will be red, and show
+     * a tooltip with the cause for errors
+     */
+    public void handleCompanyNameInput(){
+        if (Company.isValidCompanyName(companyNameTextField.getText())){
+            companyNameTextField.setTooltip(null);
+            companyNameIsValid.set(true);
+            companyNameTextField.getStyleClass().remove("TextField-Error");
+        } else {
+            String invalidCause = Company.companyNameInvalidClause(companyNameTextField.getText());
+            companyNameTextField.setTooltip(new Tooltip(invalidCause));
+            companyNameIsValid.set(false);
+            companyNameTextField.getStyleClass().add("TextField-Error");
+        }
+
+    }
+
+    /**
+     * checks if both TextFields have valid content
+     * @param bool
+     */
+    public void setDisabled(boolean bool){
+        companyNameTextField.setDisable(bool);
+        cvrNrTextField.setDisable(bool);
+    }
+
+    /**
+     * when the user clicks "reset"
+     * all TextFields are cleared
+     */
     public void resetForm(){
         //Reset fields, set field if it has a selected Domain object
+
+        if (selectedCompany != null){
+            companyNameTextField.setText(selectedCompany.getCompanyName());
+            cvrNrTextField.setText(selectedCompany.getCvrNr());
+        } else {
+            companyNameTextField.setText("");
+            cvrNrTextField.setText("");
+        }
+
     }
 }

@@ -4,23 +4,30 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.CompanySub;
 import Application.SearchContainer;
 import Domain.Company;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
+import java.sql.SQLException;
+
 public class AlterCompany extends AbstractController {
 
     @FXML
-    private CompanySub companySub;
+    private CompanySub companySubController;
 
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
     private SearchContainer searchContainer;
 
+    /**
+     * disables the "Confirm" button
+     * until the required TextFields are valid
+     */
     @FXML
     private void initialize(){
-        // hook up the  button with subcontroller form correctness
+        confirmationButton.disableProperty().bind(companySubController.isValid.not());
     }
 
     @Override
@@ -35,14 +42,44 @@ public class AlterCompany extends AbstractController {
         //if coming from search return to search with initValues
     }
 
-    @FXML
+    /**
+     * Updates the database with a new company
+     * @param event on user click, create a new company obj
+     *              with content from the textfields,
+     *              which is then send to the database
+     */
+    @FXML //FIXME sends 2 objects to the company
     private void handleConfirmation(ActionEvent event) {
-        //Write to db
+
+        System.out.println(companySubController.isValid.get());
+        Company createNewCompanyObj = new Company(null, companySubController.cvrNrTextField.getText(),
+                companySubController.companyNameTextField.getText(), null, null);
+
+        try {
+            DbFacade.connect();
+            DbFacade.insertCompany(createNewCompanyObj);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
+    /**
+     * Resets the TextFields
+     * if the user isnt satisfied with
+     * what is entered
+     * @param event on user click,
+     *              resets all TextFields
+     */
     @FXML
     private void handleReset(ActionEvent event) {
-        // call subcontroller reset
+        companySubController.resetForm();
     }
 
 }
