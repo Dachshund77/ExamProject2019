@@ -13,11 +13,11 @@ public class EducationWishTest {
         assertTrue(EducationWish.isValidEducationWishID("12")); // normal number as string
         assertTrue(EducationWish.isValidEducationWishID((String)null)); //May be null
         assertTrue(EducationWish.isValidEducationWishID((Integer) null)); //May be null if new
+        assertTrue(EducationWish.isValidEducationWishID("   ")); //If it may be null it may be empty
 
         //False
         assertFalse(EducationWish.isValidEducationWishID(0));
         assertFalse(EducationWish.isValidEducationWishID("0"));
-        assertFalse(EducationWish.isValidEducationWishID("   ")); //may not be empty string
         assertFalse(EducationWish.isValidEducationWishID(-12));
         assertFalse(EducationWish.isValidEducationWishID("-12"));
         assertFalse(EducationWish.isValidEducationWishID("12ab")); //may not contain numbers

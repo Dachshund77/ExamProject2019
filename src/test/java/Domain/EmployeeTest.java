@@ -13,11 +13,11 @@ public class EmployeeTest {
         assertTrue(Employee.isValidEmployeeID("12")); // normal number as string
         assertTrue(Employee.isValidEmployeeID((String)null)); //May be null
         assertTrue(Employee.isValidEmployeeID((Integer) null)); //May be null if new
+        assertTrue(Employee.isValidEmployeeID("   ")); //If it may be null it may be empty
 
         //False
         assertFalse(Employee.isValidEmployeeID(0));
         assertFalse(Employee.isValidEmployeeID("0"));
-        assertFalse(Employee.isValidEmployeeID("   ")); //may not be empty string
         assertFalse(Employee.isValidEmployeeID(-12));
         assertFalse(Employee.isValidEmployeeID("-12"));
         assertFalse(Employee.isValidEmployeeID("12ab")); //may not contain numbers
@@ -27,8 +27,8 @@ public class EmployeeTest {
     public void isValidEmployeeFirstName() {
         //True
         assertTrue(Employee.isValidEmployeeFirstName("Peter")); //valid name
-        assertFalse(Employee.isValidEmployeeFirstName("   ")); //May be empty
-        assertFalse(Employee.isValidEmployeeFirstName(null)); //may be null
+        assertTrue(Employee.isValidEmployeeFirstName("   ")); //May be empty
+        assertTrue(Employee.isValidEmployeeFirstName(null)); //may be null
 
         //False
         //Way to long
@@ -39,8 +39,8 @@ public class EmployeeTest {
     public void isValidEmployeeLastName() {
         //True
         assertTrue(Employee.isValidEmployeeLastName("Peter")); //valid name
-        assertFalse(Employee.isValidEmployeeLastName("   ")); //May be empty
-        assertFalse(Employee.isValidEmployeeLastName(null)); //may be null
+        assertTrue(Employee.isValidEmployeeLastName("   ")); //May be empty
+        assertTrue(Employee.isValidEmployeeLastName(null)); //may be null
 
         //False
         //Way to long

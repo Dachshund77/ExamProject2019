@@ -13,11 +13,11 @@ public class EducationTest {
         assertTrue(Education.isValidAmuNr("12")); // normal number as string
         assertTrue(Education.isValidAmuNr((String)null)); //May be null
         assertTrue(Education.isValidAmuNr((Integer) null)); //May be null if new
+        assertTrue(Education.isValidAmuNr("   ")); //If it may be null it may be empty
 
         //False
         assertFalse(Education.isValidAmuNr(0));
         assertFalse(Education.isValidAmuNr("0"));
-        assertFalse(Education.isValidAmuNr("   ")); //may not be empty string
         assertFalse(Education.isValidAmuNr(-12));
         assertFalse(Education.isValidAmuNr("-12"));
         assertFalse(Education.isValidAmuNr("12ab")); //may not contain numbers
@@ -48,16 +48,16 @@ public class EducationTest {
         //True
         assertTrue(Education.isValidNoOfDays(12)); //Normal number
         assertTrue(Education.isValidNoOfDays("12")); // normal number as string
-        assertTrue(Education.isValidNoOfDays((String)null)); //May be null
-        assertTrue(Education.isValidNoOfDays((Integer) null)); //May be null if new
 
         //False
         assertFalse(Education.isValidNoOfDays(0));
         assertFalse(Education.isValidNoOfDays("0"));
-        assertFalse(Education.isValidNoOfDays("   ")); //may not be empty string
         assertFalse(Education.isValidNoOfDays(-12));
         assertFalse(Education.isValidNoOfDays("-12"));
         assertFalse(Education.isValidNoOfDays("12ab")); //may not contain numbers
+        assertFalse(Education.isValidNoOfDays((String)null)); //May not be null
+        assertFalse(Education.isValidNoOfDays((Integer) null)); //May not be null if new
+        assertFalse(Education.isValidNoOfDays("   ")); //If it may noy be null it may be empty
     }
 
 }
