@@ -12,11 +12,11 @@ public class FinishedEducationTest {
         assertTrue(FinishedEducation.isValidFinishedEducationID("12")); // normal number as string
         assertTrue(FinishedEducation.isValidFinishedEducationID((String)null)); //May be null
         assertTrue(FinishedEducation.isValidFinishedEducationID((Integer) null)); //May be null if new
+        assertTrue(FinishedEducation.isValidFinishedEducationID("   ")); //If it may be null it may be empty
 
         //False
         assertFalse(FinishedEducation.isValidFinishedEducationID(0));
         assertFalse(FinishedEducation.isValidFinishedEducationID("0"));
-        assertFalse(FinishedEducation.isValidFinishedEducationID("   ")); //may not be empty string
         assertFalse(FinishedEducation.isValidFinishedEducationID(-12));
         assertFalse(FinishedEducation.isValidFinishedEducationID("-12"));
         assertFalse(FinishedEducation.isValidFinishedEducationID("12ab")); //may not contain numbers

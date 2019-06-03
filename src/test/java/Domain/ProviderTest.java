@@ -13,11 +13,11 @@ public class ProviderTest {
         assertTrue(Provider.isValidProviderID("12")); // normal number as string
         assertTrue(Provider.isValidProviderID((String)null)); //May be null
         assertTrue(Provider.isValidProviderID((Integer) null)); //May be null if new
+        assertTrue(Provider.isValidProviderID("   ")); //If it may be null it may be empty
 
         //False
         assertFalse(Provider.isValidProviderID(0));
         assertFalse(Provider.isValidProviderID("0"));
-        assertFalse(Provider.isValidProviderID("   ")); //may not be empty string
         assertFalse(Provider.isValidProviderID(-12));
         assertFalse(Provider.isValidProviderID("-12"));
         assertFalse(Provider.isValidProviderID("12ab")); //may not contain numbers

@@ -13,11 +13,11 @@ public class CompanyTest {
         assertTrue(Company.isValidCompanyID("12")); // normal number as string
         assertTrue(Company.isValidCompanyID((String)null)); //May be null
         assertTrue(Company.isValidCompanyID((Integer) null)); //May be null if new
+        assertTrue(Company.isValidCompanyID("   ")); //If it may be null, it may also be empty
 
         //False
         assertFalse(Company.isValidCompanyID(0));
         assertFalse(Company.isValidCompanyID("0"));
-        assertFalse(Company.isValidCompanyID("   ")); //may not be empty string
         assertFalse(Company.isValidCompanyID(-12));
         assertFalse(Company.isValidCompanyID("-12"));
         assertFalse(Company.isValidCompanyID("12ab")); //may not contain numbers

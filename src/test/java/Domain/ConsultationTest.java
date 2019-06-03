@@ -16,11 +16,11 @@ public class ConsultationTest {
         assertTrue(Consultation.isValidConsultationID("12")); // normal number as string
         assertTrue(Consultation.isValidConsultationID((String)null)); //May be null
         assertTrue(Consultation.isValidConsultationID((Integer) null)); //May be null if new
+        assertTrue(Consultation.isValidConsultationID("   ")); //if it may be null it may be empty
 
         //False
         assertFalse(Consultation.isValidConsultationID(0));
         assertFalse(Consultation.isValidConsultationID("0"));
-        assertFalse(Consultation.isValidConsultationID("   ")); //may not be empty string
         assertFalse(Consultation.isValidConsultationID(-12));
         assertFalse(Consultation.isValidConsultationID("-12"));
         assertFalse(Consultation.isValidConsultationID("12ab")); //may not contain numbers
