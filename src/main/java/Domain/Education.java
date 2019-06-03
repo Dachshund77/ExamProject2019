@@ -24,8 +24,8 @@ public class Education {
 
     public Education(Integer amuNr, String educationName, String description, Integer noOfDays, ArrayList<LocalDate> dates, Provider provider) {
         this.amuNr = amuNr;
-        this.educationName = educationName;
-        this.description = description;
+        setEducationName(educationName);
+        setDescription(description);
         this.noOfDays = noOfDays;
         this.dates = Objects.requireNonNullElseGet(dates, ArrayList::new);
         this.provider = provider;
@@ -55,6 +55,29 @@ public class Education {
         return provider;
     }
 
+    /**
+     * Converts empty String to null.
+     * @param educationName new educationName
+     */
+    public void setEducationName(String educationName) {
+        if (educationName.trim().isEmpty()){
+            this.educationName = null;
+        } else {
+            this.educationName = educationName;
+        }
+    }
+
+    /**
+     * Converts empty String to null
+     * @param description new description.
+     */
+    public void setDescription(String description) {
+        if (description.trim().isEmpty()){
+            this.description = null;
+        }else {
+            this.description = description;
+        }
+    }
 
     /**
      * Amu nr may not be negative.
