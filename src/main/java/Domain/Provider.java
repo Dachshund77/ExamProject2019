@@ -8,7 +8,7 @@ public class Provider {
 
     public Provider(Integer providerID, String providerName) {
         this.providerID = providerID;
-        this.providerName = providerName;
+        setProviderName(providerName);
     }
 
     public Integer getProviderID() {
@@ -17,6 +17,18 @@ public class Provider {
 
     public String getProviderName() {
         return providerName;
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param providerName new provider name.
+     */
+    public void setProviderName(String providerName) {
+        if (providerName.trim().isEmpty()){
+            this.providerName = null;
+        } else {
+            this.providerName = providerName;
+        }
     }
 
     /**
