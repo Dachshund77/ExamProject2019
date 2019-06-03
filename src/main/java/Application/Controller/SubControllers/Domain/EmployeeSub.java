@@ -36,6 +36,7 @@ public class EmployeeSub extends AbstractController {
     public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
     public Employee selectedEmployee;
 
+
     public void initialize(){
         //setup Tableview
         //setup is valid

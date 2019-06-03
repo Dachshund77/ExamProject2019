@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class NewEducationController {
-
+/*
     @FXML
     public TextArea descriptionTextArea;
     @FXML
@@ -134,4 +134,5 @@ public class NewEducationController {
 
 
     }
+    */
 }
