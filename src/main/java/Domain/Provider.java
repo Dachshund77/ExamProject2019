@@ -6,6 +6,8 @@ public class Provider {
     private final Integer providerID;
     private String providerName;
 
+    private static final int PROVIDER_NAME_MAX_LENGTH = 30;
+
     public Provider(Integer providerID, String providerName) {
         this.providerID = providerID;
         setProviderName(providerName);
@@ -101,8 +103,8 @@ public class Provider {
             return "Provider Name may not be Null!";
         } else if (providerName.trim().isEmpty()) {
             return "ProviderName may not be empty!";
-        } else if (providerName.length() > 30) {
-            return "Provider Name must be 30 letters or less";
+        } else if (providerName.length() > PROVIDER_NAME_MAX_LENGTH) {
+            return "Provider Name must be "+PROVIDER_NAME_MAX_LENGTH+" letters or less";
         }
         return null;
     }

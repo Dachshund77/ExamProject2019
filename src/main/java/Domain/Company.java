@@ -16,6 +16,8 @@ public class Company {
     private ArrayList<Consultation> consultations;
     private ArrayList<Education> educationList;
 
+    private static final int CVR_EXACT_LENGTH = 8;
+    private static final int COMPANY_NAME_MAX_LENGTH = 50;
 
     public Company(Integer companyID, String cvrNr, String companyName, ArrayList<Consultation> consultations, ArrayList<Education> educationList) {
         this.companyID = companyID;
@@ -44,6 +46,14 @@ public class Company {
 
     public ArrayList<Education> getEducationList() {
         return educationList;
+    }
+
+    public static int getCvrExactLength() {
+        return CVR_EXACT_LENGTH;
+    }
+
+    public static int getCompanyNameMaxLength() {
+        return COMPANY_NAME_MAX_LENGTH;
     }
 
     /**
@@ -121,13 +131,12 @@ public class Company {
         try {
             return companyIDInvalidCause(Integer.parseInt(companyID));
         } catch (NumberFormatException e) {
-            System.out.println("number");
             return "Must be a number!";
         }
     }
 
     /**
-     * A valid cvrNr may not be null, empty String and must be 8 Char long.
+     * A valid cvrNr may not be null, empty String and must be Char long.
      *
      * @param cvrNr cvr To be tested
      * @return True if cvr is valid
@@ -145,19 +154,14 @@ public class Company {
      */
     public static String cvrNrInvalidCause(String cvrNr) {
         if (cvrNr == null) {
-            System.out.println("may not null");
             return "CvrNr may not be Null!";
         } else if (cvrNr.trim().isEmpty()) {
-            System.out.println("is empty");
             return "CvrNr may not be empty!";
         } else if (!cvrNr.matches("[0-9]+")) {
-            System.out.println("cvr not contain letters");
             return "CvrNr may not contain letters!";
-        } else if (cvrNr.length() != 8) {
-            System.out.println("not 8 chars");
-            return "CvrNr must be 8 characters long!";
+        } else if (cvrNr.length() != CVR_EXACT_LENGTH) {
+            return "CvrNr must be "+CVR_EXACT_LENGTH+" characters long!";
         }
-        System.out.println("returning null");
         return null;
     }
 
@@ -183,8 +187,8 @@ public class Company {
             return "Company Name may not be Null!";
         } else if (name.trim().isEmpty()) {
             return "Company Name may not be empty!";
-        } else if (name.length() > 50) {
-            return "Company Name must be 50 letters or less!";
+        } else if (name.length() > COMPANY_NAME_MAX_LENGTH) {
+            return "Company Name must be "+CVR_EXACT_LENGTH+" letters or less!";
         }
         return null;
     }

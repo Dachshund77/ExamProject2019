@@ -22,6 +22,9 @@ public class Education {
     private ArrayList<LocalDate> dates;
     private Provider provider;
 
+    private static final int EDUCATION_NAME_MAX_LENGTH = 50;
+    private static final int NO_OF_DAYS_MAX_NUMBER = 15;
+
     public Education(Integer amuNr, String educationName, String description, Integer noOfDays, ArrayList<LocalDate> dates, Provider provider) {
         this.amuNr = amuNr;
         setEducationName(educationName);
@@ -53,6 +56,14 @@ public class Education {
 
     public Provider getProvider() {
         return provider;
+    }
+
+    public static int getEducationNameMaxLength() {
+        return EDUCATION_NAME_MAX_LENGTH;
+    }
+
+    public static int getNoOfDaysMaxNumber() {
+        return NO_OF_DAYS_MAX_NUMBER;
     }
 
     /**
@@ -154,8 +165,8 @@ public class Education {
         else if (educationName.trim().isEmpty()){
             return "Education must have a name";
         }
-        else if (educationName.length() > 30){
-            return "Education must consist of a name less than 30 characters";
+        else if (educationName.length() > EDUCATION_NAME_MAX_LENGTH){
+            return "Education must consist of a name less than "+EDUCATION_NAME_MAX_LENGTH+" characters";
         }
         return null;
     }
@@ -185,8 +196,6 @@ public class Education {
         }
         return null;
     }
-
-
 
     /**
      * checks if NoOfDays arent null and within limit
@@ -221,8 +230,8 @@ public class Education {
        if (NoOfDays == null){
            return "Number of days cant be null";
        }
-       else if (NoOfDays > 15){
-           return "Number of days cant be more than 15!";
+       else if (NoOfDays > NO_OF_DAYS_MAX_NUMBER){
+           return "Number of days cant be more than "+NO_OF_DAYS_MAX_NUMBER+"!";
        }
        else if (NoOfDays <= 0){
            return "Number of days must be positive!";

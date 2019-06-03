@@ -13,6 +13,8 @@ public class Consultation {
     private LocalDate endDate;
     private ArrayList<Employee> employees;
 
+    private static final int CONSULTATION_NAME_MAX_LENGTH = 50;
+
     public Consultation(Integer consultationID, String consultationName, LocalDate startDate, LocalDate endDate, ArrayList<Employee> employees) {
         this.consultationID = consultationID;
         setConsultationName(consultationName);
@@ -40,6 +42,10 @@ public class Consultation {
 
     public ArrayList<Employee> getEmployees() {
         return employees;
+    }
+
+    public static int getConsultationNameMaxLength() {
+        return CONSULTATION_NAME_MAX_LENGTH;
     }
 
     /**
@@ -135,8 +141,8 @@ public class Consultation {
         else if (consultationName.trim().isEmpty()){
             return "A consultation name is required";
         }
-        else if (consultationName.length() > 50){
-            return "Consultation name have to be less than 50 characters";
+        else if (consultationName.length() > CONSULTATION_NAME_MAX_LENGTH){
+            return "Consultation name have to be less than "+CONSULTATION_NAME_MAX_LENGTH+" characters";
         }
         return null;
     }

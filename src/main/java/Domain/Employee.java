@@ -18,6 +18,12 @@ public class Employee {
     private String phoneNr;
     private ArrayList<Interview> interviews;
 
+    private static final int EMPLOYEE_FIRST_NAME_MAX_LENGTH = 30;
+    private static final int EMPLOYEE_LAST_NAME_MAX_LENGTH = 30;
+    private static final int CPR_EXACT_LENGTH = 10;
+    private static final int EMAIL_MAX_LENGTH = 30;
+    private static final int PHONE_NR_MAX_LENGTH = 20;
+
     public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, String phoneNr, ArrayList<Interview> interviews) {
         //employee ID
         this.employeeID = employeeID;
@@ -56,6 +62,26 @@ public class Employee {
 
     public ArrayList<Interview> getInterviews() {
         return interviews;
+    }
+
+    public static int getEmployeeFirstNameMaxLength() {
+        return EMPLOYEE_FIRST_NAME_MAX_LENGTH;
+    }
+
+    public static int getEmployeeLastNameMaxLength() {
+        return EMPLOYEE_LAST_NAME_MAX_LENGTH;
+    }
+
+    public static int getCprExactLength() {
+        return CPR_EXACT_LENGTH;
+    }
+
+    public static int getEmailMaxLength() {
+        return EMAIL_MAX_LENGTH;
+    }
+
+    public static int getPhoneNrMaxLength() {
+        return PHONE_NR_MAX_LENGTH;
     }
 
     /**
@@ -158,8 +184,8 @@ public class Employee {
 
     public static String employeeFirstNameInvalidCause(String employeeFirstName) {
         if (employeeFirstName != null) {
-            if (employeeFirstName.length() > 30) {
-                return "First Name must be 30 or less letters!";
+            if (employeeFirstName.length() > EMPLOYEE_FIRST_NAME_MAX_LENGTH) {
+                return "First Name must be "+EMPLOYEE_FIRST_NAME_MAX_LENGTH+" or less letters!";
             }
         }
         return null;
@@ -171,8 +197,8 @@ public class Employee {
 
     public static String employeeLastNameInvalidCause(String employeeLastName) {
         if (employeeLastName != null) {
-            if (employeeLastName.length() > 30) {
-                return "Last Name must be 30 or less letters!";
+            if (employeeLastName.length() > EMPLOYEE_LAST_NAME_MAX_LENGTH) {
+                return "Last Name must be "+EMPLOYEE_LAST_NAME_MAX_LENGTH+" or less letters!";
             }
         }
         return null;
@@ -189,8 +215,8 @@ public class Employee {
         if (cprNr.trim().isEmpty()) {
             return "CprNr may not be empty!";
         }
-        if (cprNr.length() != 10) {
-            return "CprNr must be 10 letters long";
+        if (cprNr.length() != CPR_EXACT_LENGTH) {
+            return "CprNr must be "+CPR_EXACT_LENGTH+" letters long";
         }
         if (!cprNr.matches("[0-9]+")) {
             return "CprNr may not contain letters!";
@@ -210,8 +236,8 @@ public class Employee {
             if (!email.contains("@")) {
                 return "Email must contain an @";
             }
-            if (email.length() > 30) {
-                return "Email must be 30 or less letters!";
+            if (email.length() > EMAIL_MAX_LENGTH) {
+                return "Email must be "+EMAIL_MAX_LENGTH+" or less letters!";
             }
         }
         return null;
@@ -229,8 +255,8 @@ public class Employee {
             if (!phoneNr.matches("[0-9]+")) {
                 return "Phone Number may not Contain letters!";
             }
-            if (phoneNr.length() > 20) {
-                return "Phone Number must be 20 or less letters!";
+            if (phoneNr.length() > PHONE_NR_MAX_LENGTH) {
+                return "Phone Number must be "+PHONE_NR_MAX_LENGTH+" or less letters!";
             }
         }
         return null;

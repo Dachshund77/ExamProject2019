@@ -15,6 +15,9 @@ public class Interview {
     private ArrayList<FinishedEducation> finishedEducations;
     private ArrayList<EducationWish> educationWishes;
 
+    private static final int INTERVIEW_NAME_MAX_LENGTH = 30;
+    private static final int QUALITY_MAX_VALUE = 5;
+
     public Interview(Integer interviewID, String interviewName, Integer productUnderstanding, Integer problemUnderstanding, Integer flexibility, Integer qualityAwareness, Integer cooperation, ArrayList<FinishedEducation> finishedEducations, ArrayList<EducationWish> educationWishes) {
         this.interviewID = interviewID;
         setInterviewName(interviewName);
@@ -62,6 +65,14 @@ public class Interview {
 
     public ArrayList<EducationWish> getEducationWishes() {
         return educationWishes;
+    }
+
+    public static int getInterviewNameMaxLength() {
+        return INTERVIEW_NAME_MAX_LENGTH;
+    }
+
+    public static int getQualityMaxValue() {
+        return QUALITY_MAX_VALUE;
     }
 
     /**
@@ -147,8 +158,8 @@ public class Interview {
             return "Interview Name may not be null!";
         } else if (interviewName.trim().isEmpty()) {
             return "Interview Name may not be empty!";
-        } else if (interviewName.length() > 30) {
-            return "Interview Name must be 30 Characters or less!";
+        } else if (interviewName.length() > INTERVIEW_NAME_MAX_LENGTH) {
+            return "Interview Name must be "+INTERVIEW_NAME_MAX_LENGTH+" Characters or less!";
         }
         return null;
     }
@@ -185,8 +196,8 @@ public class Interview {
             return null;
         } else if (integer < 0) {
             return "Product understanding may not be negative!";
-        } else if (integer > 5) {
-            return "Product understanding must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Product understanding must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -244,8 +255,8 @@ public class Interview {
             return null;
         } else if (integer < 0) {
             return "Problem understanding may not be negative!";
-        } else if (integer > 5) {
-            return "Problem understanding must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Problem understanding must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -304,8 +315,8 @@ public class Interview {
             return null;
         } else if (integer < 0) {
             return "Flexibility may not be negative!";
-        } else if (integer > 5) {
-            return "Flexibility must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Flexibility must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -364,8 +375,8 @@ public class Interview {
             return null;
         } else if (integer < 0) {
             return "Quality Awareness  may not be negative!";
-        } else if (integer > 5) {
-            return "Quality Awareness  must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Quality Awareness  must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -424,8 +435,8 @@ public class Interview {
             return null;
         } else if (integer < 0) {
             return "Cooperation may not be negative!";
-        } else if (integer > 5) {
-            return "Cooperation must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Cooperation must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }

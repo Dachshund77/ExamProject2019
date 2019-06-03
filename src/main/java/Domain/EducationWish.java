@@ -1,14 +1,11 @@
 package Domain;
 
-import javafx.beans.property.SimpleIntegerProperty;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class EducationWish {
     private final Integer educationWishID;
     private Education education;
     private Integer priority;
+
+    private static final int MAX_PRIORITY = 3;
 
     public EducationWish(Integer educationWishID, Education education, Integer priority) {
         this.educationWishID = educationWishID;
@@ -26,6 +23,10 @@ public class EducationWish {
 
     public Integer getPriority() {
       return priority;
+    }
+
+    public static int getMaxPriority() {
+        return MAX_PRIORITY;
     }
 
     /**
@@ -117,8 +118,8 @@ public class EducationWish {
         if (priority <= 0 ){
             return "Priority must be positive!";
         }
-        if (priority > 3){
-            return "Priority cant be bigger than 3!";
+        if (priority > MAX_PRIORITY){
+            return "Priority cant be bigger than "+ MAX_PRIORITY +"!";
         }
         return null;
     }
