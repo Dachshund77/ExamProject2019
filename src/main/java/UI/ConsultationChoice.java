@@ -1,4 +1,4 @@
-package UI.NEWSTUFF;
+package UI;
 
 import Application.Controller.PopUp.ConsultationReturnableController;
 //import Application.NEWSTUFF.Controller.ConsultationReturnableController;
