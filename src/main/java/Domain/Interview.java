@@ -17,7 +17,7 @@ public class Interview {
 
     public Interview(Integer interviewID, String interviewName, Integer productUnderstanding, Integer problemUnderstanding, Integer flexibility, Integer qualityAwareness, Integer cooperation, ArrayList<FinishedEducation> finishedEducations, ArrayList<EducationWish> educationWishes) {
         this.interviewID = interviewID;
-        this.interviewName = interviewName;
+        setInterviewName(interviewName);
         this.productUnderstanding = productUnderstanding;
         this.problemUnderstanding = problemUnderstanding;
         this.flexibility = flexibility;
@@ -62,6 +62,18 @@ public class Interview {
 
     public ArrayList<EducationWish> getEducationWishes() {
         return educationWishes;
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param interviewName new interview Name.
+     */
+    public void setInterviewName(String interviewName) {
+        if (interviewName.trim().isEmpty()){
+            this.interviewName = null;
+        } else {
+            this.interviewName = interviewName;
+        }
     }
 
     /**
