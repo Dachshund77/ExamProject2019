@@ -137,7 +137,7 @@ public class CompanySub extends AbstractController {
             cvrNrIsValid.set(true);
             cvrNrTextField.getStyleClass().removeAll("TextField-Error");
         } else {
-            String invalidCause = Company.companyNameInvalidClause(cvrNrTextField.getText());
+            String invalidCause = Company.cvrNrInvalidCause(cvrNrTextField.getText());
             cvrNrTextField.setTooltip(new Tooltip(invalidCause));
             cvrNrIsValid.set(false);
             if ( !cvrNrTextField.getStyleClass().contains("TextField-Error")){
