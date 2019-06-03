@@ -15,7 +15,7 @@ public class Consultation {
 
     public Consultation(Integer consultationID, String consultationName, LocalDate startDate, LocalDate endDate, ArrayList<Employee> employees) {
         this.consultationID = consultationID;
-        this.consultationName = consultationName;
+        setConsultationName(consultationName);
         this.startDate = startDate;
         this.endDate = endDate;
         this.employees = Objects.requireNonNullElseGet(employees, ArrayList::new);
@@ -40,6 +40,18 @@ public class Consultation {
 
     public ArrayList<Employee> getEmployees() {
         return employees;
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param consultationName new consultationName.
+     */
+    public void setConsultationName(String consultationName) {
+        if (consultationName.trim().isEmpty()){
+            this.consultationName = null;
+        }else {
+            this.consultationName = consultationName;
+        }
     }
 
     /**
