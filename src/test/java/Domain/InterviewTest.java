@@ -45,8 +45,6 @@ public class InterviewTest {
         assertTrue(Interview.isValidProductUnderstanding("   ")); //If it may be null it may be empty
 
         //False
-        assertFalse(Interview.isValidProductUnderstanding(0));
-        assertFalse(Interview.isValidProductUnderstanding("0"));
         assertFalse(Interview.isValidProductUnderstanding(6));
         assertFalse(Interview.isValidProductUnderstanding("6"));
         assertFalse(Interview.isValidProductUnderstanding(-12));
@@ -65,8 +63,6 @@ public class InterviewTest {
         assertTrue(Interview.isValidProblemUnderstanding("   ")); //If it may be null it may be empty
 
         //False
-        assertFalse(Interview.isValidProblemUnderstanding(0));
-        assertFalse(Interview.isValidProblemUnderstanding("0"));
         assertFalse(Interview.isValidProblemUnderstanding(6));
         assertFalse(Interview.isValidProblemUnderstanding("6"));
         assertFalse(Interview.isValidProblemUnderstanding(-12));
@@ -86,8 +82,6 @@ public class InterviewTest {
         assertTrue(Interview.isValidFlexibility("   ")); //If it may be null it may be empty
 
         //False
-        assertFalse(Interview.isValidFlexibility(0));
-        assertFalse(Interview.isValidFlexibility("0"));
         assertFalse(Interview.isValidFlexibility(6));
         assertFalse(Interview.isValidFlexibility("6"));
         assertFalse(Interview.isValidFlexibility(-12));
@@ -106,8 +100,6 @@ public class InterviewTest {
         assertTrue(Interview.isValidQualityAwareness("   ")); //If it may be null it may be empty
 
         //False
-        assertFalse(Interview.isValidQualityAwareness(0));
-        assertFalse(Interview.isValidQualityAwareness("0"));
         assertFalse(Interview.isValidQualityAwareness(6));
         assertFalse(Interview.isValidQualityAwareness("6"));
         assertFalse(Interview.isValidQualityAwareness(-12));
@@ -125,8 +117,6 @@ public class InterviewTest {
         assertTrue(Interview.isValidCooperation("   "));  //If it may be null it may be empty
 
         //False
-        assertFalse(Interview.isValidCooperation(0));
-        assertFalse(Interview.isValidCooperation("0"));
         assertFalse(Interview.isValidCooperation(6));
         assertFalse(Interview.isValidCooperation("6"));
         assertFalse(Interview.isValidCooperation(-12));

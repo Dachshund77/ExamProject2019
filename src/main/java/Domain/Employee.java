@@ -60,34 +60,37 @@ public class Employee {
 
     /**
      * Converts empty String to null.
+     *
      * @param employeeFirstName new employee first name.
      */
     public void setEmployeeFirstName(String employeeFirstName) {
-        if (employeeFirstName.trim().isEmpty()){
+        if (employeeFirstName.trim().isEmpty()) {
             this.employeeFirstName = null;
-        }else {
+        } else {
             this.employeeFirstName = employeeFirstName;
         }
     }
 
     /**
      * converts empty String to null.
+     *
      * @param employeeLastName new employee last name.
      */
     public void setEmployeeLastName(String employeeLastName) {
-        if (employeeLastName.trim().isEmpty()){
+        if (employeeLastName.trim().isEmpty()) {
             this.employeeLastName = null;
-        }else {
+        } else {
             this.employeeLastName = employeeLastName;
         }
     }
 
     /**
      * Converts empty String to null.
+     *
      * @param cprNr new cprNr
      */
     public void setCprNr(String cprNr) {
-        if (cprNr.trim().isEmpty()){
+        if (cprNr.trim().isEmpty()) {
             this.cprNr = null;
         } else {
             this.cprNr = cprNr;
@@ -96,10 +99,11 @@ public class Employee {
 
     /**
      * Converts empty String to null.
+     *
      * @param eMail new email.
      */
     public void seteMail(String eMail) {
-        if (eMail.trim().isEmpty()){
+        if (eMail.trim().isEmpty()) {
             this.eMail = null;
         } else {
             this.eMail = eMail;
@@ -108,10 +112,11 @@ public class Employee {
 
     /**
      * Converts empty String to null.
+     *
      * @param phoneNr new Phone nr.
      */
     public void setPhoneNr(String phoneNr) {
-        if (phoneNr.trim().isEmpty()){
+        if (phoneNr.trim().isEmpty()) {
             this.phoneNr = null;
         } else {
             this.phoneNr = phoneNr;
@@ -122,26 +127,33 @@ public class Employee {
         return employeeIDInvalidCause(employeeID) == null;
     }
 
-    public static boolean isValidEmployeeID(String employeeID){ return employeeIDInvalidCause(employeeID)==null;}
+    public static boolean isValidEmployeeID(String employeeID) {
+        return employeeIDInvalidCause(employeeID) == null;
+    }
 
     public static String employeeIDInvalidCause(Integer employeeID) {
-        if ( employeeID != null && employeeID < 0)
-        {
-            return "Employee ID may no be negative!";
+        if (employeeID != null && employeeID <= 0) {
+            return "Employee ID must be positive!";
         }
         return null;
     }
 
-    public static String employeeIDInvalidCause(String employeeID){
-        try{
+    public static String employeeIDInvalidCause(String employeeID) {
+        if (employeeID == null) {
+            return null;
+        }
+        if (employeeID.trim().isEmpty()) {
+            return null;
+        }
+        try {
             return employeeIDInvalidCause(Integer.parseInt(employeeID));
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return "Must be a number!";
         }
     }
 
     public static boolean isValidEmployeeFirstName(String employeeFirstName) {
-        return employeeFirstNameInvalidCause(employeeFirstName)==null;
+        return employeeFirstNameInvalidCause(employeeFirstName) == null;
     }
 
     public static String employeeFirstNameInvalidCause(String employeeFirstName) {
@@ -159,7 +171,7 @@ public class Employee {
 
     public static String employeeLastNameInvalidCause(String employeeLastName) {
         if (employeeLastName != null) {
-            if (employeeLastName.length() > 30){
+            if (employeeLastName.length() > 30) {
                 return "Last Name must be 30 or less letters!";
             }
         }
@@ -167,16 +179,21 @@ public class Employee {
     }
 
     public static boolean isValidCprNr(String cprNr) {
-        return cprNrInvalidCause(cprNr) ==null;
+        return cprNrInvalidCause(cprNr) == null;
     }
 
     public static String cprNrInvalidCause(String cprNr) {
-        if (cprNr != null) {
-            if (cprNr.length() != 10){
-                return "CprNr must be 10 letters long";
-            } if (!cprNr.matches("[0-9]+")){
-                return "CprNr may not contain letters!";
-            }
+        if (cprNr == null) {
+            return "CprNr may not be null!";
+        }
+        if (cprNr.trim().isEmpty()) {
+            return "CprNr may not be empty!";
+        }
+        if (cprNr.length() != 10) {
+            return "CprNr must be 10 letters long";
+        }
+        if (!cprNr.matches("[0-9]+")) {
+            return "CprNr may not contain letters!";
         }
         return null;
     }
@@ -187,9 +204,13 @@ public class Employee {
 
     public static String eMailInvalidCause(String email) {
         if (email != null) {
-            if (!email.contains("@")){
+            if (email.trim().isEmpty()) {
+                return null;
+            }
+            if (!email.contains("@")) {
                 return "Email must contain an @";
-            } if (email.length() > 30){
+            }
+            if (email.length() > 30) {
                 return "Email must be 30 or less letters!";
             }
         }
@@ -202,9 +223,13 @@ public class Employee {
 
     public static String phoneNumberInvalidCause(String phoneNr) {
         if (phoneNr != null) {
-            if (!phoneNr.matches("[0-9]+")){
+            if (phoneNr.trim().isEmpty()) {
+                return null;
+            }
+            if (!phoneNr.matches("[0-9]+")) {
                 return "Phone Number may not Contain letters!";
-            } if (phoneNr.length() > 20){
+            }
+            if (phoneNr.length() > 20) {
                 return "Phone Number must be 20 or less letters!";
             }
         }

@@ -56,8 +56,8 @@ public class EducationWish {
      */
     public static String educationWishIDInvalidCause (Integer educationWishID)
     {
-        if (educationWishID != null && educationWishID < 0){
-            return "EducationWishID cant be null";
+        if (educationWishID != null && educationWishID <= 0){
+            return "EducationWishID must be positive";
         }
         return null;
     }
@@ -69,6 +69,12 @@ public class EducationWish {
      * @return
      */
     public static String educationWishIDInvalidCause (String educationWishID) {
+        if (educationWishID == null){
+            return null;
+        }
+        if (educationWishID.trim().isEmpty()){
+            return null;
+        }
         try{
             return educationWishIDInvalidCause(Integer.parseInt(educationWishID));
         }catch (NumberFormatException e){
@@ -108,11 +114,11 @@ public class EducationWish {
         if (priority == null){
             return "Priority cant be null";
         }
-        if (priority < 0 ){
-            return "Priority cant be negative";
+        if (priority <= 0 ){
+            return "Priority must be positive!";
         }
         if (priority > 3){
-            return "Priority cant be bigger than 3";
+            return "Priority cant be bigger than 3!";
         }
         return null;
     }

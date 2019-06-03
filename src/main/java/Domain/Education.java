@@ -103,8 +103,8 @@ public class Education {
      * @return String with first problem, null if valid.
      */
     public static String amuNrInvalidCause(Integer amuNr){
-        if (amuNr != null && amuNr < 0){
-            return "Amu Nr may not be negative!";
+        if (amuNr != null && amuNr <= 0){
+            return "Amu Nr must be positive!";
         }
         return null;
     }
@@ -115,6 +115,12 @@ public class Education {
      * @return String with first problem, null if valid.
      */
     public static String amuNrInvalidCause(String amuNr){
+        if (amuNr == null){
+            return null;
+        }
+        if (amuNr.trim().isEmpty()){
+            return null;
+        }
         try{
             return amuNrInvalidCause(Integer.parseInt(amuNr));
         }catch (NumberFormatException e){
@@ -165,22 +171,21 @@ public class Education {
     }
 
     /**
-     * throws an error if:
-     * description = NULL
-     * description = Empty string
+     * yeah this test is kinda pointless since it never not null
      * @param description string to be tested.
      * @return String with first problem, null if valid.
      */
     public static String descriptionInvalidCause (String description)
     {
         if (description == null){
-            return "Description must not be null";
+            return null;
         }
-        else if (description.trim().isEmpty()){
-            return "Description must contain some information"; //TODO but dont we allow null values? -Sven
+        else if (description.trim().isEmpty()) {
+            return null; //TODO this test is never not null..........
         }
         return null;
     }
+
 
 
     /**
@@ -217,10 +222,10 @@ public class Education {
            return "Number of days cant be null";
        }
        else if (NoOfDays > 15){
-           return "Number of days cant be more than 15";
+           return "Number of days cant be more than 15!";
        }
-       else if (NoOfDays < 0){
-           return "Number of days cant be negative";
+       else if (NoOfDays <= 0){
+           return "Number of days must be positive!";
        }
         return null;
     }

@@ -90,7 +90,6 @@ public class Company {
         return companyIDInvalidCause(companyID) == null;
     }
 
-
     /**
      * Return the first reason why the Integer is not valid ID.
      * A valid ID may not be negative.
@@ -99,8 +98,8 @@ public class Company {
      * @return String with reason, null if none are detected.
      */
     public static String companyIDInvalidCause(Integer companyID) {
-        if (companyID != null && companyID < 0) {
-            return "Company ID may not be negative!";
+        if (companyID != null && companyID <= 0) {
+            return "Company ID must be positive!";
         }
         return null;
     }
@@ -113,6 +112,12 @@ public class Company {
      * @return String with reason, null if none are detected.
      */
     public static String companyIDInvalidCause(String companyID) {
+        if (companyID == null){
+            return null;
+        }
+        if (companyID.trim().isEmpty()){
+            return null;
+        }
         try {
             return companyIDInvalidCause(Integer.parseInt(companyID));
         } catch (NumberFormatException e) {

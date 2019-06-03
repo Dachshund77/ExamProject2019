@@ -82,8 +82,8 @@ public class Consultation {
      * @return First invalid reason, null if valid
      */
     public static String consultationIDInvalidCause(Integer consultationID){
-       if (consultationID < 0){
-           return "Company is may not be negative";
+       if (consultationID != null && consultationID <= 0){
+           return "Company is must be positive!";
        }
        return null;
     }
@@ -96,6 +96,12 @@ public class Consultation {
      * @return First invalid reason, null if valid
      */
     public static String consultationIDInvalidCause(String consultationID){
+        if (consultationID == null){
+            return null;
+        }
+        if (consultationID.trim().isEmpty()){
+            return null;
+        }
         try{
             return consultationIDInvalidCause(Integer.parseInt(consultationID));
         }catch (NumberFormatException e){
@@ -153,8 +159,8 @@ public class Consultation {
      * @return String with first invalid reason, null if valid.
      */
     public static String dateInvalidCause(LocalDate startDate, LocalDate endDate){
-        if (isValidDate(null, null)){
-            return "Dates must not be null";
+        if (startDate == null || endDate == null){
+            return "Dates may not be empty";
         }
         else if(endDate.isBefore(startDate)){
             return "start date must be before end date";

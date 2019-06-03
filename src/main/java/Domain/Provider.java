@@ -53,8 +53,8 @@ public class Provider {
      * @return String with first reason or null if valid.
      */
     public static String invalidProviderIDCause(Integer id) {
-        if (id != null && id < 0) {
-            return "Provider ID may not be negative";
+        if (id != null && id <= 0) {
+            return "Provider ID must be positive!";
         }
         return null;
     }
@@ -67,6 +67,12 @@ public class Provider {
      * @return String with first reason or null if valid.
      */
     public static String invalidProviderIDCause(String id) {
+        if (id == null){
+            return null;
+        }
+        if (id.trim().isEmpty()){
+            return null;
+        }
         try{
             return invalidProviderIDCause(Integer.parseInt(id));
         }catch (NumberFormatException e){
