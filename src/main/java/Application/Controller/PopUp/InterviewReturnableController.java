@@ -1,9 +1,10 @@
 package Application.Controller.PopUp;
 
+import Application.Controller.AbstractController;
 import Application.Controller.Controllers;
 import Domain.Interview;
 
-public interface InterviewReturnableController extends Controllers {
+public abstract class InterviewReturnableController extends AbstractController {
 
-    Interview getReturn();
+    public abstract Interview getReturn();
 }

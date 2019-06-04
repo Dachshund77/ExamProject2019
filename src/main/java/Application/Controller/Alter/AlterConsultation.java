@@ -5,9 +5,12 @@ import Application.Controller.SubControllers.Domain.CompanySub;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
 import Application.SearchContainer;
 import Domain.Consultation;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+
+import java.sql.SQLException;
 
 public class AlterConsultation extends AbstractController {
 
@@ -17,16 +20,22 @@ public class AlterConsultation extends AbstractController {
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
-    private SearchContainer searchContainer;
+    private SearchContainer previousSearch;
 
+    /**
+     * initalizes the confirmationButton and disables it
+     * until the required textfields have valid content
+     */
     @FXML
-    private void initialize(){
+    private void initialize() {
         // hook up the  button with subcontroller form correctness
+        confirmationButton.disableProperty().bind(consultationSub.isValid.not());
     }
 
     @Override
     public void initValues(SearchContainer searchContainer, Consultation consultation) {
         //Save search container for returning
+        previousSearch = searchContainer;
         //propergate Consultation to setup form
     }
 
@@ -34,15 +43,37 @@ public class AlterConsultation extends AbstractController {
     private void handleCancel(ActionEvent event) {
         //Return to main screen or search
         //if coming from search return to search with initValues
+        if (previousSearch != null){
+
+        } else {
+
+        }
     }
 
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //Write to db
+        //Creates a new consultation Obj to send to the database
+        Consultation createNewConsultationObj = new Consultation(null, consultationSub.consultationNameTextField.getText(),
+                consultationSub.startDatePicker.getValue(), consultationSub.endDatePicker.getValue(), null);
+        try {
+            DbFacade.connect();
+            //FIXME Need pop-up implementation ↓↓↓
+            //DbFacade.insertConsultation(createNewConsultationObj);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 
     @FXML
     private void handleReset(ActionEvent event) {
         // call subcontroller reset
+        consultationSub.resetForm();
     }
 }

@@ -78,11 +78,7 @@ public class InterviewSub extends AbstractController {
 
     }
 
-    public void updateIsValid(){
-        // Manages the isValid property aka when all values are valid = true
-    }
-
-    public void setEditable(boolean bool){
+    public void setDisabled(boolean bool){
 
     }
     public void resetForm(){

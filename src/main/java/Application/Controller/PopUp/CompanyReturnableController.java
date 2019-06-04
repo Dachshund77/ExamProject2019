@@ -4,7 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.Controllers;
 import Domain.Company;
 
-public interface CompanyReturnableController {
+public abstract class CompanyReturnableController extends AbstractController{
 
-    Company getReturn();
+    public abstract Company getReturn();
 }
