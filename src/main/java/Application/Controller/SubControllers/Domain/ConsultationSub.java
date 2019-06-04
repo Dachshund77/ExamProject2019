@@ -30,6 +30,8 @@ public class ConsultationSub extends AbstractController {
 
     public BooleanBinding isValid; // Hook for parent class to activate confirm button
     private SimpleBooleanProperty consultationNameIsValid = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty startDateIsValid = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty endDateIsValid = new SimpleBooleanProperty(true);
     public Consultation selectedConsultation;
 
 
@@ -43,7 +45,9 @@ public class ConsultationSub extends AbstractController {
         employeeTableView.setItems(employeeObservableList);
 
 
-        //Hides the tableview when the user selects "New Consultation"
+        /*
+        Hides the tableview when the user selects "New Consultation"
+         */
         if (selectedConsultation == null) {
             employeeTableView.setVisible(false);
         }
@@ -54,10 +58,16 @@ public class ConsultationSub extends AbstractController {
 
 
         isValid = new BooleanBinding() {
+            {
+            bind(consultationNameIsValid);
+            bind(startDateIsValid);
+            bind(endDateIsValid);
+            }
+
             @Override
             protected boolean computeValue() {
-                bind(consultationNameIsValid);
-                if (consultationNameIsValid.get()) {
+
+                if (consultationNameIsValid.get() && startDateIsValid.get() && endDateIsValid.get()) {
                     System.out.println("True");
                 } else
                     System.out.println("False");
@@ -89,13 +99,28 @@ public class ConsultationSub extends AbstractController {
 
 
     public void handleDatePickerInput() {
-        //startDate.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         LocalDate localDateStartDate = startDatePicker.getValue();
         LocalDate localDateEndDate = endDatePicker.getValue();
 
         if (localDateEndDate.isBefore(localDateStartDate)){
-        }
+            String errorCause = "The end date is before the start date";
+            startDatePicker.setTooltip(new Tooltip(errorCause));
+            startDateIsValid.set(false);
+            endDatePicker.setTooltip(new Tooltip(errorCause));
+            endDateIsValid.set(false);
+            if (!endDatePicker.getStyleClass().contains("DatePicker-Error") && !startDatePicker.getStyleClass().contains("DatePicker-Error")){
+                startDatePicker.getStyleClass().add("DatePicker-Error");
+                endDatePicker.getStyleClass().add("DatePicker-Error");
+            } else {
+                startDatePicker.setTooltip(null);
+                startDateIsValid.set(true);
+                startDatePicker.getStyleClass().removeAll("DatePicker-Error");
 
+                endDatePicker.setTooltip(null);
+                endDateIsValid.set(true);
+                endDatePicker.getStyleClass().removeAll("DatePicker-Error");
+            }
+        }
     }
 
 

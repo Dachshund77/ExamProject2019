@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -41,11 +42,17 @@
             <DatePicker fx:id="startDatePicker" prefHeight="25.0" prefWidth="203.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets left="5.0" right="5.0" />
-               </GridPane.margin></DatePicker>
+               </GridPane.margin>
+               <tooltip>
+                  <Tooltip fx:id="startDateTooltip" text="Empty Tooltip" />
+               </tooltip></DatePicker>
             <DatePicker fx:id="endDatePicker" prefHeight="25.0" prefWidth="191.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="200.0" left="5.0" right="5.0" />
-               </GridPane.margin></DatePicker>
+               </GridPane.margin>
+               <tooltip>
+                  <Tooltip fx:id="endDateTooltip" text="Empty Tooltip" />
+               </tooltip></DatePicker>
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="223.0" text="Start date" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets top="25.0" />
