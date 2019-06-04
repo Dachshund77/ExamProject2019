@@ -3,8 +3,11 @@ package Application.Controller.PopUp;
 import Application.Controller.AbstractController;
 import Application.Controller.Controllers;
 import Domain.Company;
+import javafx.scene.Parent;
 
-public interface CompanyReturnableController {
+public abstract class CompanyReturnableController extends AbstractController{
 
-    Company getReturn();
+    public abstract Company getReturn();
+
+    public abstract Parent getParent();
 }

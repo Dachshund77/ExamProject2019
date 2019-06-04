@@ -1,10 +1,12 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Application.Controller.PopUp.Find.FindCompanyPopUp;
 import Domain.Company;
 import Domain.Consultation;
 import Domain.Education;
 import Foundation.DbFacade;
+import UI.CompanyChoice;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -47,22 +49,20 @@ public class CompanySub extends AbstractController {
     private SimpleBooleanProperty companyNameIsValid = new SimpleBooleanProperty(true);
     private SimpleBooleanProperty cvrNrIsValid = new SimpleBooleanProperty(true);
 
-    public void initialize(){
+    public void initialize() {
 
-        /**
-         * Setting up consultation TableView
-         *
-         */
+
+        //Setting up consultation TableView
         consultationNameColumn.setCellValueFactory(new PropertyValueFactory<>("consultationName"));
         consultationStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         consultationEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         consultationTableView.getColumns().setAll(consultationNameColumn, consultationStartDateColumn, consultationEndDateColumn);
-       //FXCollections.observableArrayList(consultationArrayList);
+        //FXCollections.observableArrayList(consultationArrayList);
 
-        LocalDate date1 = LocalDate.of(2001,11,21);
-        LocalDate date2 = LocalDate.of(2021,11,21);
-        Consultation newCons = new Consultation(2, "something",date1, date2, null  );
+        LocalDate date1 = LocalDate.of(2001, 11, 21);
+        LocalDate date2 = LocalDate.of(2021, 11, 21);
+        Consultation newCons = new Consultation(2, "something", date1, date2, null);
 
         ObservableList<Consultation> list = FXCollections.observableArrayList();
 
@@ -71,35 +71,35 @@ public class CompanySub extends AbstractController {
         list.add(newCons);
         //TODO Delete later plz
 
-        /**
-         *Setting up EducationTableView
-         */
+         //Setting up EducationTableView
+
         educationNameColumn.setCellValueFactory(new PropertyValueFactory<>("educationName"));
         educationTableView.getColumns().setAll(educationNameColumn);
         ObservableList<Education> educationList = FXCollections.observableArrayList();
         educationTableView.setItems(educationList);
 
-        /**
-         * Hides the tableviews when the user selects "New Company"
-         */
-        if (selectedCompany == null){
+
+        //Hides the tableviews when the user selects "New Company"
+
+        if (selectedCompany == null) {
             educationTableView.setVisible(false);
             consultationTableView.setVisible(false);
         }
 
-        /**
-         * adds a listener to the handlers of
-         * cvrTextField and companyNameTextfield
-         */
+        // adds a listener to the handlers of
+        // cvrTextField and companyNameTextfield
+
         cvrNrTextField.textProperty().addListener(((observable) -> handleCvrNrInput()));
         companyNameTextField.textProperty().addListener(((observable) -> handleCompanyNameInput()));
 
-        isValid =new BooleanBinding() {
-            @Override
-                    protected boolean computeValue(){
+        isValid = new BooleanBinding() {
+            {
                 bind(companyNameIsValid);
                 bind(cvrNrIsValid);
-                if (companyNameIsValid.get() && cvrNrIsValid.get()){
+            }
+            @Override
+            protected boolean computeValue() {
+                if (companyNameIsValid.get() && cvrNrIsValid.get()) {
                     System.out.println("True");
                     return true;
                 } else {
@@ -114,6 +114,7 @@ public class CompanySub extends AbstractController {
     /**
      * initializes the company domain
      * and primes the resetform
+     *
      * @param company
      */
     @Override
@@ -128,11 +129,11 @@ public class CompanySub extends AbstractController {
      * if not, the TextField will be red and a
      * tooltip with the error cause will show
      */
-    public void handleCvrNrInput(){
+    public void handleCvrNrInput() {
         System.out.println(cvrNrTextField.getText());
         System.out.println(Company.isValidCvrNr(cvrNrTextField.getText()));
         System.out.println(Arrays.toString(cvrNrTextField.getStyleClass().toArray()));
-        if (Company.isValidCvrNr(cvrNrTextField.getText())){
+        if (Company.isValidCvrNr(cvrNrTextField.getText())) {
             cvrNrTextField.setTooltip(null);
             cvrNrIsValid.set(true);
             cvrNrTextField.getStyleClass().removeAll("TextField-Error");
@@ -140,7 +141,7 @@ public class CompanySub extends AbstractController {
             String invalidCause = Company.cvrNrInvalidCause(cvrNrTextField.getText());
             cvrNrTextField.setTooltip(new Tooltip(invalidCause));
             cvrNrIsValid.set(false);
-            if ( !cvrNrTextField.getStyleClass().contains("TextField-Error")){
+            if (!cvrNrTextField.getStyleClass().contains("TextField-Error")) {
                 cvrNrTextField.getStyleClass().add("TextField-Error");
             }
 
@@ -154,8 +155,8 @@ public class CompanySub extends AbstractController {
      * if not, the TextField will be red, and show
      * a tooltip with the cause for errors
      */
-    public void handleCompanyNameInput(){
-        if (Company.isValidCompanyName(companyNameTextField.getText())){
+    public void handleCompanyNameInput() {
+        if (Company.isValidCompanyName(companyNameTextField.getText())) {
             companyNameTextField.setTooltip(null);
             companyNameIsValid.set(true);
             companyNameTextField.getStyleClass().remove("TextField-Error");
@@ -165,14 +166,19 @@ public class CompanySub extends AbstractController {
             companyNameIsValid.set(false);
             companyNameTextField.getStyleClass().add("TextField-Error");
         }
+    }
 
+    public void handleCompanyPopUp(ActionEvent event){
+        CompanyChoice c = new CompanyChoice();
+        Company foundC = c.showAndReturn(new FindCompanyPopUp());
     }
 
     /**
      * checks if both TextFields have valid content
+     *
      * @param bool
      */
-    public void setDisabled(boolean bool){
+    public void setDisabled(boolean bool) {
         companyNameTextField.setDisable(bool);
         cvrNrTextField.setDisable(bool);
     }
@@ -181,10 +187,8 @@ public class CompanySub extends AbstractController {
      * when the user clicks "reset"
      * all TextFields are cleared
      */
-    public void resetForm(){
-        //Reset fields, set field if it has a selected Domain object
-
-        if (selectedCompany != null){
+    public void resetForm() {
+        if (selectedCompany != null) {
             companyNameTextField.setText(selectedCompany.getCompanyName());
             cvrNrTextField.setText(selectedCompany.getCvrNr());
         } else {

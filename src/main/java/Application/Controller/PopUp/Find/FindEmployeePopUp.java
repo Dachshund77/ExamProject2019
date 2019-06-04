@@ -1,4 +1,11 @@
 package Application.Controller.PopUp.Find;
 
-public class FindEmployeePopUp {
+import Application.Controller.PopUp.EmployeeReturnableController;
+import Domain.Employee;
+
+public class FindEmployeePopUp extends EmployeeReturnableController {
+    @Override
+    public Employee getReturn() {
+        return null;
+    }
 }

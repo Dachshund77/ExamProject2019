@@ -1,9 +1,10 @@
 package Application.Controller.PopUp;
 
+import Application.Controller.AbstractController;
 import Application.Controller.Controllers;
 import Domain.Consultation;
 
-public interface ConsultationReturnableController extends Controllers {
+public abstract class ConsultationReturnableController extends AbstractController {
 
-    Consultation getReturn();
+    public abstract Consultation getReturn();
 }

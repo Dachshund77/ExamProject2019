@@ -16,9 +16,14 @@ public class AlterEducation extends AbstractController {
 
     private SearchContainer previousSearch; // This will be loaded up when we come from searching so that we can return to the search
 
+
+    /**
+     * initializes the confirmationbutton
+     * it is disabled until the required
+     * Textfields have valid content
+     */
     @FXML
     private void initialize(){
-        //Set up the confirm button
         confirmationButton.disableProperty().bind(educationSubController.isValid.not()); //Note the not, that important to inverse the boolean statment
     }
 
@@ -45,13 +50,11 @@ public class AlterEducation extends AbstractController {
 
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //Write to db
         System.out.println(educationSubController.isValid.get());
     }
 
     @FXML
     private void handleReset(ActionEvent event) {
-        // call subcontroller reset
         educationSubController.resetForm();
     }
 }

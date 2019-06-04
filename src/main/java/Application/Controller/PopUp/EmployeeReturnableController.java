@@ -1,9 +1,10 @@
 package Application.Controller.PopUp;
 
+import Application.Controller.AbstractController;
 import Application.Controller.Controllers;
 import Domain.Employee;
 
-public interface EmployeeReturnableController extends Controllers {
+public abstract class EmployeeReturnableController extends AbstractController {
 
-    Employee getReturn();
+    public abstract Employee getReturn();
 }
