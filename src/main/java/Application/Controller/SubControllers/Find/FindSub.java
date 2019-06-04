@@ -3,18 +3,16 @@ package Application.Controller.SubControllers.Find;
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
 import Domain.Company;
-import Domain.Consultation;
 import Foundation.DbFacade;
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 /**
@@ -94,7 +92,7 @@ public class FindSub extends AbstractController {
     @FXML
     private Button resetButton; //TODO do i need this evt clean up
 
-    public ArrayList<Company> searchResult;
+    private ObservableList<Company> searchResultList = FXCollections.observableArrayList();
     private SearchContainer previousSearchContainer = null;
 
     //BooleanBindings
@@ -622,7 +620,6 @@ public class FindSub extends AbstractController {
         }
     }
 
-
     @SuppressWarnings("Duplicates")
     private boolean handleConsultationSectionInput() {
         if (isValidConsultationID.get() && isValidConsultationName.get() && isValidConsultationDates.get()) {
@@ -635,7 +632,6 @@ public class FindSub extends AbstractController {
             return false;
         }
     }
-
 
     @SuppressWarnings("Duplicates")
     private boolean handleEmployeeSectionInput() {
@@ -661,7 +657,6 @@ public class FindSub extends AbstractController {
             return false;
         }
     }
-
 
     @SuppressWarnings("Duplicates")
     private boolean handleEducationSectionInput() {
@@ -734,7 +729,9 @@ public class FindSub extends AbstractController {
         //Connect to db
         try {
             DbFacade.connect();
-            searchResult = DbFacade.findCompanies(container);
+            searchResultList.clear();
+            searchResultList.addAll(DbFacade.findCompanies(container));
+
             DbFacade.disconnect();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -747,12 +744,15 @@ public class FindSub extends AbstractController {
      * @param event user clicked the reset button.
      */
     @SuppressWarnings("Duplicates")
-    public void handleReset(ActionEvent event) {
+    @FXML
+    private void handleReset(ActionEvent event) {
         if (previousSearchContainer == null) {
             resetToEmpty();
         } else {
             resetToPreviousSearch();
         }
+        //Clear searchResultList
+        searchResultList.clear();
     }
 
     private void resetToEmpty() {
@@ -833,5 +833,9 @@ public class FindSub extends AbstractController {
     @FXML
     private void resetEducationMaxDate(ActionEvent event) {
         educationMaxDatePicker.setValue(null);
+    }
+
+    public ObservableList<Company> getSearchResultList() {
+        return searchResultList;
     }
 }

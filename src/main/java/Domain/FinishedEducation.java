@@ -79,8 +79,24 @@ public class FinishedEducation {
         }
     }
 
-
-
-
-
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!(obj instanceof FinishedEducation)) {
+            return false;
+        }
+        FinishedEducation other = (FinishedEducation) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.finishedEducationID.equals(other.finishedEducationID)){
+            return false;
+        }
+        if (!this.education.equals(other.education)){
+            return false;
+        }
+        return this.dateFinished.equals(other.dateFinished);
+    }
 }

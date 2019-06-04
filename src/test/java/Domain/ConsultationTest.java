@@ -55,4 +55,12 @@ public class ConsultationTest {
         assertFalse(Consultation.isValidDate(null,null));
         assertFalse(Consultation.isValidDate(second,first)); //inverted
     }
+
+    @Test
+    public void equals1() {
+        Consultation consultation1 = new Consultation(null,null,null,null,null);
+        Consultation consultation2 = new Consultation(null,null,null,null,null);
+
+        assertEquals(consultation1,consultation2);
+    }
 }

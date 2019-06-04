@@ -2,6 +2,8 @@ package Domain;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import jdk.jfr.Description;
+import org.apache.ibatis.annotations.Delete;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Company {
+
 
     private final Integer companyID;
     private String cvrNr;
@@ -58,10 +61,11 @@ public class Company {
 
     /**
      * Converts empty strings to null.
+     *
      * @param cvrNr New cvrNr
      */
     public void setCvrNr(String cvrNr) {
-        if (cvrNr.trim().isEmpty()) {
+        if (cvrNr == null || cvrNr.trim().isEmpty()) {
             this.cvrNr = null;
         } else {
             this.cvrNr = cvrNr;
@@ -70,12 +74,13 @@ public class Company {
 
     /**
      * Convert empty String to null.
+     *
      * @param companyName new companyName
      */
     public void setCompanyName(String companyName) {
-        if (companyName.trim().isEmpty()){
+        if (companyName == null || companyName.trim().isEmpty()) {
             this.companyName = null;
-        }else {
+        } else {
             this.companyName = companyName;
         }
     }
@@ -122,10 +127,10 @@ public class Company {
      * @return String with reason, null if none are detected.
      */
     public static String companyIDInvalidCause(String companyID) {
-        if (companyID == null){
+        if (companyID == null) {
             return null;
         }
-        if (companyID.trim().isEmpty()){
+        if (companyID.trim().isEmpty()) {
             return null;
         }
         try {
@@ -160,7 +165,7 @@ public class Company {
         } else if (!cvrNr.matches("[0-9]+")) {
             return "CvrNr may not contain letters!";
         } else if (cvrNr.length() != CVR_EXACT_LENGTH) {
-            return "CvrNr must be "+CVR_EXACT_LENGTH+" characters long!";
+            return "CvrNr must be " + CVR_EXACT_LENGTH + " characters long!";
         }
         return null;
     }
@@ -188,9 +193,39 @@ public class Company {
         } else if (name.trim().isEmpty()) {
             return "Company Name may not be empty!";
         } else if (name.length() > COMPANY_NAME_MAX_LENGTH) {
-            return "Company Name must be "+COMPANY_NAME_MAX_LENGTH+" letters or less!";
+            return "Company Name must be " + COMPANY_NAME_MAX_LENGTH + " letters or less!";
         }
         return null;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!(obj instanceof Company)) {
+            return false;
+        }
+        Company other = (Company) obj;
+        if (this == other) {
+            return true;
+        }
+        //Test all fields
+        if (!Objects.equals(this.companyID, other.companyID)) {
+            return false;
+        }
+
+        if (!this.cvrNr.equals(other.cvrNr)) {
+            return false;
+        }
+
+        if (!this.companyName.equals(other.companyName)) {
+            return false;
+        }
+
+        if (!this.consultations.equals(other.consultations)) {
+            return false;
+        }
+
+        return this.educationList.equals(other.educationList);
+    }
 }

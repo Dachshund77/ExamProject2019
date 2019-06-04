@@ -1078,6 +1078,9 @@ public class SearchContainer {
             return false;
         }
         SearchContainer other = (SearchContainer) obj;
+        if (this == other){
+            return true;
+        }
         //Test all fields
         if (!this.companyID.equals(other.companyID)) {
             return false;

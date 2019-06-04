@@ -30,7 +30,7 @@ public class Provider {
      * @param providerName new provider name.
      */
     public void setProviderName(String providerName) {
-        if (providerName.trim().isEmpty()){
+        if (providerName == null || providerName.trim().isEmpty()){
             this.providerName = null;
         } else {
             this.providerName = providerName;
@@ -111,5 +111,23 @@ public class Provider {
             return "Provider Name must be "+PROVIDER_NAME_MAX_LENGTH+" letters or less";
         }
         return null;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null){
+            return false;
+        } else if (!(obj instanceof Provider)){
+            return false;
+        }
+        Provider other = (Provider) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.providerID.equals(other.providerID)){
+            return false;
+        }
+        return this.providerName.equals(other.providerName);
     }
 }

@@ -10,7 +10,7 @@
 <SplitPane dividerPositions="0.5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="Application.Controller.SubControllers.Find.FindCompanySub">
     <items>
-        <fx:include fx:id="FindSub" source="FindSub.fxml"/>
+        <fx:include fx:id="findSub" source="FindSub.fxml"/>
         <TableView fx:id="companyTableView">
             <columns>
                 <TableColumn fx:id="companyIDColumn" prefWidth="50.0" text="ID"/>

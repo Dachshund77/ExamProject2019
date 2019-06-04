@@ -11,7 +11,7 @@ public class InterviewTest {
         //True
         assertTrue(Interview.isValidInterviewID(12)); //Normal number
         assertTrue(Interview.isValidInterviewID("12")); // normal number as string
-        assertTrue(Interview.isValidInterviewID((String)null)); //May be null
+        assertTrue(Interview.isValidInterviewID((String) null)); //May be null
         assertTrue(Interview.isValidInterviewID((Integer) null)); //May be null if new
         assertTrue(Interview.isValidInterviewID("   ")); //If it may be null it may be empty
 
@@ -40,7 +40,7 @@ public class InterviewTest {
         //True
         assertTrue(Interview.isValidProductUnderstanding(3)); //Normal number
         assertTrue(Interview.isValidProductUnderstanding("3")); // normal number as string
-        assertTrue(Interview.isValidProductUnderstanding((String)null)); //May be null
+        assertTrue(Interview.isValidProductUnderstanding((String) null)); //May be null
         assertTrue(Interview.isValidProductUnderstanding((Integer) null)); //May be null if new
         assertTrue(Interview.isValidProductUnderstanding("   ")); //If it may be null it may be empty
 
@@ -58,7 +58,7 @@ public class InterviewTest {
         //True
         assertTrue(Interview.isValidProblemUnderstanding(3)); //Normal number
         assertTrue(Interview.isValidProblemUnderstanding("3")); // normal number as string
-        assertTrue(Interview.isValidProblemUnderstanding((String)null)); //May be null
+        assertTrue(Interview.isValidProblemUnderstanding((String) null)); //May be null
         assertTrue(Interview.isValidProblemUnderstanding((Integer) null)); //May be null if new
         assertTrue(Interview.isValidProblemUnderstanding("   ")); //If it may be null it may be empty
 
@@ -71,13 +71,12 @@ public class InterviewTest {
     }
 
 
-
     @Test
     public void isValidFlexibility() {
         //True
         assertTrue(Interview.isValidFlexibility(3)); //Normal number
         assertTrue(Interview.isValidFlexibility("3")); // normal number as string
-        assertTrue(Interview.isValidFlexibility((String)null)); //May be null
+        assertTrue(Interview.isValidFlexibility((String) null)); //May be null
         assertTrue(Interview.isValidFlexibility((Integer) null)); //May be null if new
         assertTrue(Interview.isValidFlexibility("   ")); //If it may be null it may be empty
 
@@ -95,7 +94,7 @@ public class InterviewTest {
         //True
         assertTrue(Interview.isValidQualityAwareness(3)); //Normal number
         assertTrue(Interview.isValidQualityAwareness("3")); // normal number as string
-        assertTrue(Interview.isValidQualityAwareness((String)null)); //May be null
+        assertTrue(Interview.isValidQualityAwareness((String) null)); //May be null
         assertTrue(Interview.isValidQualityAwareness((Integer) null)); //May be null if new
         assertTrue(Interview.isValidQualityAwareness("   ")); //If it may be null it may be empty
 
@@ -112,7 +111,7 @@ public class InterviewTest {
         //True
         assertTrue(Interview.isValidCooperation(3)); //Normal number
         assertTrue(Interview.isValidCooperation("3")); // normal number as string
-        assertTrue(Interview.isValidCooperation((String)null)); //May be null
+        assertTrue(Interview.isValidCooperation((String) null)); //May be null
         assertTrue(Interview.isValidCooperation((Integer) null)); //May be null if new
         assertTrue(Interview.isValidCooperation("   "));  //If it may be null it may be empty
 
@@ -125,4 +124,11 @@ public class InterviewTest {
     }
 
 
+    @Test
+    public void equals1() {
+        Interview interview1 = new Interview(null, null, null, null, null, null, null, null, null);
+        Interview interview2 = new Interview(null, null, null, null, null, null, null, null, null);
+
+        assertEquals(interview1,interview2);
+    }
 }

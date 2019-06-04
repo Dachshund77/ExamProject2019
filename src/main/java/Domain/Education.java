@@ -71,7 +71,7 @@ public class Education {
      * @param educationName new educationName
      */
     public void setEducationName(String educationName) {
-        if (educationName.trim().isEmpty()){
+        if (educationName == null || educationName.trim().isEmpty()){
             this.educationName = null;
         } else {
             this.educationName = educationName;
@@ -83,7 +83,7 @@ public class Education {
      * @param description new description.
      */
     public void setDescription(String description) {
-        if (description.trim().isEmpty()){
+        if (description == null || description.trim().isEmpty()){
             this.description = null;
         }else {
             this.description = description;
@@ -258,5 +258,36 @@ public class Education {
         }catch (NumberFormatException e){
             return "Must be a number!";
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!(obj instanceof Education)) {
+            return false;
+        }
+        Education other = (Education) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.amuNr.equals(other.amuNr)){
+            return false;
+        }
+        if (!this.educationName.equals(other.educationName)){
+            return false;
+        }
+        if (!this.description.equals(other.description)){
+            return false;
+        }
+        if (!this.noOfDays.equals(other.noOfDays)){
+            return false;
+        }
+        if (!this.dates.equals(other.dates)){
+            return false;
+        }
+        return this.provider.equals(other.provider);
+
     }
 }
