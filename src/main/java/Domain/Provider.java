@@ -2,6 +2,8 @@ package Domain;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.Objects;
+
 public class Provider {
     private final Integer providerID;
     private String providerName;
@@ -125,9 +127,9 @@ public class Provider {
             return true;
         }
         //Test all fields
-        if (!this.providerID.equals(other.providerID)){
+        if (!Objects.equals(this.providerID,other.providerID)){
             return false;
         }
-        return this.providerName.equals(other.providerName);
+        return Objects.equals(this.providerName,other.providerName);
     }
 }

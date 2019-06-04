@@ -11,9 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 
 /**
  * SubController for the search UI. This subController represents the search values the user can fil out.
@@ -284,13 +283,15 @@ public class FindSub extends AbstractController {
     /**
      * {@inheritDoc}
      * <br/><br/>
-     * This implementation is used to reset the textFields to the previous search query.
+     * This implementation is used to reset the textFields to the previous search query and make
+     * a search.
      * {@link #handleReset(ActionEvent)} will also reset the fields to this searchContainers values, when loaded.
      */
     @Override
     public void initValues(SearchContainer searchContainer) {
         this.previousSearchContainer = searchContainer;
         resetToPreviousSearch();
+        handleSearch(new ActionEvent()); //TODO i have no idea if this works - Sven
     }
 
     private void handleCompanyIdInput() {

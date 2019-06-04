@@ -49,12 +49,21 @@ public class FindCompanySub extends AbstractController {
 
     }
 
+    /**
+     * {@inheritDoc}
+     * <br/><br/>
+     * This implementation propagates the searchContainer to {@link Application.Controller.SubControllers.Find.FindSub#initValues(SearchContainer)}
+     */
     @Override
     public void initValues(SearchContainer searchContainer) {
         //Propagate the call further to the subController
         findSubController.initValues(searchContainer);
     }
 
+    /**
+     * Formats the output from the search query into Company objects that only occur once.
+     * @see Company
+     */
     private void formatDisplayData(){
         //Cleans out previous data
         displayData.clear();

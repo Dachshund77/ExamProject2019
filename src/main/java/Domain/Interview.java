@@ -474,30 +474,30 @@ public class Interview {
             return true;
         }
         //Test all fields
-        if (!this.interviewID.equals(other.interviewID)){
+        if (!Objects.equals(this.interviewID,other.interviewID)){
             return false;
         }
-        if (!this.interviewName.equals(other.interviewName)){
+        if (!Objects.equals(this.interviewName,other.interviewName)){
             return false;
         }
-        if (!this.productUnderstanding.equals(other.productUnderstanding)){
+        if (!Objects.equals(this.productUnderstanding,other.productUnderstanding)){
             return false;
         }
-        if (!this.problemUnderstanding.equals(other.problemUnderstanding)){
+        if (!Objects.equals(this.problemUnderstanding,other.problemUnderstanding)){
             return false;
         }
-        if (!this.flexibility.equals(other.flexibility)){
+        if (!Objects.equals(this.flexibility,other.flexibility)){
             return false;
         }
-        if (!this.qualityAwareness.equals(other.qualityAwareness)){
+        if (!Objects.equals(this.qualityAwareness,other.qualityAwareness)){
             return false;
         }
-        if (!this.cooperation.equals(other.cooperation)){
+        if (!Objects.equals(this.cooperation,other.cooperation)){
             return false;
         }
-        if (!this.finishedEducations.equals(other.finishedEducations)){
+        if (!Objects.equals(this.finishedEducations,other.finishedEducations)){
             return false;
         }
-        return this.educationWishes.equals(other.educationWishes);
+        return Objects.equals(this.educationWishes,other.educationWishes);
     }
 }

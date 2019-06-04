@@ -272,22 +272,22 @@ public class Education {
             return true;
         }
         //Test all fields
-        if (!this.amuNr.equals(other.amuNr)){
+        if (!Objects.equals(this.amuNr,other.amuNr)){
             return false;
         }
-        if (!this.educationName.equals(other.educationName)){
+        if (!Objects.equals(this.educationName,other.educationName)){
             return false;
         }
-        if (!this.description.equals(other.description)){
+        if (!Objects.equals(this.description,other.description)){
             return false;
         }
-        if (!this.noOfDays.equals(other.noOfDays)){
+        if (!Objects.equals(this.noOfDays,other.noOfDays)){
             return false;
         }
-        if (!this.dates.equals(other.dates)){
+        if (!Objects.equals(this.dates,other.dates)){
             return false;
         }
-        return this.provider.equals(other.provider);
+        return Objects.equals(this.provider,other.provider);
 
     }
 }

@@ -1,11 +1,5 @@
 package Domain;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -14,7 +8,7 @@ public class Employee {
     private String employeeFirstName;
     private String employeeLastName;
     private String cprNr;
-    private String eMail;
+    private String email;
     private String phoneNr;
     private ArrayList<Interview> interviews;
 
@@ -24,19 +18,19 @@ public class Employee {
     private static final int EMAIL_MAX_LENGTH = 30;
     private static final int PHONE_NR_MAX_LENGTH = 20;
 
-    public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String eMail, String phoneNr, ArrayList<Interview> interviews) {
+    public Employee(Integer employeeID, String employeeFirstName, String employeeLastName, String cprNr, String email, String phoneNr, ArrayList<Interview> interviews) {
         //employee ID
         this.employeeID = employeeID;
         setEmployeeFirstName(employeeFirstName);
         setEmployeeLastName(employeeLastName);
         setCprNr(cprNr);
-        seteMail(eMail);
+        setEmail(email);
         setPhoneNr(phoneNr);
         this.interviews = Objects.requireNonNullElseGet(interviews, ArrayList::new);
     }
 
 
-    public Integer getEmployeeId() {
+    public Integer getEmployeeID() {
         return employeeID;
     }
 
@@ -52,8 +46,8 @@ public class Employee {
         return cprNr;
     }
 
-    public String geteMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
     public String getPhoneNr() {
@@ -126,13 +120,13 @@ public class Employee {
     /**
      * Converts empty String to null.
      *
-     * @param eMail new email.
+     * @param email new email.
      */
-    public void seteMail(String eMail) {
-        if (eMail == null || eMail.trim().isEmpty()) {
-            this.eMail = null;
+    public void setEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            this.email = null;
         } else {
-            this.eMail = eMail;
+            this.email = email;
         }
     }
 
@@ -274,24 +268,24 @@ public class Employee {
             return true;
         }
         //Test all fields
-        if (!this.employeeID.equals(other.employeeID)){
+        if (!Objects.equals(this.employeeID,other.employeeID)){
             return false;
         }
-        if (!this.employeeFirstName.equals(other.employeeFirstName)){
+        if (!Objects.equals(this.employeeFirstName,other.employeeFirstName)){
             return false;
         }
-        if (!this.employeeLastName.equals(other.employeeLastName)){
+        if (!Objects.equals(this.employeeLastName,other.employeeLastName)){
             return false;
         }
-        if (!this.cprNr.equals(other.cprNr)){
+        if (!Objects.equals(this.cprNr,other.cprNr)){
             return false;
         }
-        if (!this.eMail.equals(other.eMail)){
+        if (!Objects.equals(this.email,other.email)){
             return false;
         }
-        if (!this.phoneNr.equals(other.phoneNr)){
+        if (!Objects.equals(this.phoneNr,other.phoneNr)){
             return false;
         }
-        return this.interviews.equals(other.interviews);
+        return Objects.equals(this.interviews,other.interviews);
     }
 }
