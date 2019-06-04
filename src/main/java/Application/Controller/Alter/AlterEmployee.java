@@ -10,7 +10,7 @@ import javafx.scene.control.Button;
 
 public class AlterEmployee extends AbstractController {
     @FXML
-    private EmployeeSub employeeSub;
+    private EmployeeSub employeeSubController;
 
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct

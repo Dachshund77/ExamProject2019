@@ -1,12 +1,16 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Application.Controller.PopUp.Find.FindCompanyPopUp;
+import Domain.Company;
 import Domain.Consultation;
 import Domain.Employee;
+import UI.CompanyChoice;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
@@ -22,9 +26,7 @@ public class ConsultationSub extends AbstractController {
     public TableView<Employee> employeeTableView;
     public TableColumn<Employee, String> employeeFirstNameColumn;
     public TableColumn<Employee, String> employeeLastNameColumn;
-    public Button removeEmployeeButton;
-    public Button addEmployeeButton;
-    public Button newEmployeeButton;
+    public Button selectCompanyButton;
 
     private ArrayList<Employee> employeeArrayList;
 
@@ -37,7 +39,9 @@ public class ConsultationSub extends AbstractController {
 
     public void initialize() {
 
-        //Setting up the employee tableview
+        /*
+        Setting up the employee tableview
+         */
         employeeFirstNameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeFirstName"));
         employeeLastNameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeLastName"));
         employeeTableView.getColumns().setAll(employeeFirstNameColumn, employeeLastNameColumn);
@@ -137,5 +141,12 @@ public class ConsultationSub extends AbstractController {
         } else {
             consultationNameTextField.setText("");
         }
+    }
+
+    public void handleSelectCompany(ActionEvent actionEvent) {
+        CompanyChoice newSelectCompany = new CompanyChoice();
+        Company foundCompany = newSelectCompany.showAndReturn(new FindCompanyPopUp());
+
+
     }
 }

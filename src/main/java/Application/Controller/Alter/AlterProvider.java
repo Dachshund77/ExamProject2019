@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class AlterProvider extends AbstractController {
 
     @FXML
-    private ProviderSub providerSub;
+    private ProviderSub providerSubController;
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
@@ -26,7 +26,7 @@ public class AlterProvider extends AbstractController {
      */
     @FXML
     private void initialize() {
-        confirmationButton.disableProperty().bind(providerSub.isValid.not());
+        confirmationButton.disableProperty().bind(providerSubController.isValid.not());
     }
 
     @Override
@@ -57,9 +57,8 @@ public class AlterProvider extends AbstractController {
 
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //Write to db
 
-        Provider createProviderObj = new Provider(null, providerSub.providerNameTextfield.getText());
+        Provider createProviderObj = new Provider(null, providerSubController.providerNameTextfield.getText());
         try {
             DbFacade.connect();
             DbFacade.insertProvider(createProviderObj);
@@ -84,6 +83,6 @@ public class AlterProvider extends AbstractController {
      */
     @FXML
     private void handleReset(ActionEvent event) {
-        providerSub.resetForm();
+        providerSubController.resetForm();
     }
 }

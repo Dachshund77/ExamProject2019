@@ -47,7 +47,10 @@ public enum ViewController {
     FIND_EDUCATION_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindEducationToRecord.fxml"),
     FIND_EMPLOYEE_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindEmployeeToRecord.fxml"),
     FIND_INTERVIEW_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindInterviewToRecord.fxml"),
-    FIND_PROVIDER_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindProviderToRecord.fxml");
+    FIND_PROVIDER_TO_RECORD("/FXML/Controller/Find/FindToRecord/FindProviderToRecord.fxml"),
+
+    //Pop up Controllers
+    FIND_COMPANY_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml");
 
 
 

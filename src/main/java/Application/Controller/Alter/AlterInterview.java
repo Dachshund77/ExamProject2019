@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 public class AlterInterview extends AbstractController {
 
     @FXML
-    private InterviewSub interviewSub;
+    private InterviewSub interviewSubController;
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
@@ -19,7 +19,7 @@ public class AlterInterview extends AbstractController {
 
     @FXML
     private void initialize(){
-        confirmationButton.disableProperty().bind(interviewSub.isValid.not());
+        confirmationButton.disableProperty().bind(interviewSubController.isValid.not());
     }
 
     @Override
@@ -47,6 +47,6 @@ public class AlterInterview extends AbstractController {
 
     @FXML
     private void handleReset(ActionEvent event) {
-        interviewSub.resetForm();
+        interviewSubController.resetForm();
     }
 }
