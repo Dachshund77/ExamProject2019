@@ -600,8 +600,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
         }
     }
 
-
-
     private boolean handleInterviewSectionInput() {
         if (isValidInterviewID.get() && isValidInterviewName.get()) {
             interviewPane.getStyleClass().removeAll("TitledPane-Error");
@@ -613,7 +611,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
             return false;
         }
     }
-
 
 
     @SuppressWarnings("Duplicates")

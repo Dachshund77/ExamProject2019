@@ -60,6 +60,10 @@ public class SearchContainer {
      * @param companyID new company ID
      */
     public void setCompanyID(String companyID) {
+        if(companyID == null || companyID.trim().isEmpty()) {
+            this.companyID = null;
+            return;
+        }
         try {
             this.companyID = Integer.parseInt(companyID);
         }catch (NumberFormatException e){
@@ -77,7 +81,7 @@ public class SearchContainer {
      * @param cvrNr new cvr Nr.
      */
     public void setCvrNr(String cvrNr) {
-        if (cvrNr.trim().isEmpty()){
+        if (cvrNr == null || cvrNr.trim().isEmpty()){
             this.cvrNr = null;
         }else {
             this.cvrNr = cvrNr;
@@ -93,7 +97,7 @@ public class SearchContainer {
      * @param companyName new Company name
      */
     public void setCompanyName(String companyName) {
-        if (companyName.trim().isEmpty()){
+        if (companyName == null || companyName.trim().isEmpty()){
             this.companyName = null;
         }else {
             this.companyName = companyName;
@@ -113,6 +117,10 @@ public class SearchContainer {
      * @param consultationID new Consultation ID
      */
     public void setConsultationID(String consultationID) {
+        if (consultationID == null || consultationID.trim().isEmpty()){
+            this.consultationID = null;
+            return;
+        }
         try {
             this.consultationID = Integer.parseInt(consultationID);
         }catch (NumberFormatException e){
@@ -129,7 +137,7 @@ public class SearchContainer {
      * @param consultationName new consultation name.
      */
     public void setConsultationName(String consultationName) {
-        if (consultationName.trim().isEmpty()){
+        if (consultationName == null || consultationName.trim().isEmpty()){
             this.consultationName = null;
         } else {
             this.consultationName = consultationName;
@@ -165,6 +173,10 @@ public class SearchContainer {
      * @param employeeID new employee ID.
      */
     public void setEmployeeID(String employeeID) {
+        if (employeeID == null || employeeID.trim().isEmpty()){
+            this.employeeID = null;
+            return;
+        }
         try {
             this.employeeID = Integer.parseInt(employeeID);
         }catch (NumberFormatException e){
@@ -181,7 +193,7 @@ public class SearchContainer {
      * @param employeeFirstName new employee First name.
      */
     public void setEmployeeFirstName(String employeeFirstName) {
-        if (employeeFirstName.trim().isEmpty()){
+        if (employeeFirstName == null || employeeFirstName.trim().isEmpty()){
             this.employeeFirstName = null;
         } else {
             this.employeeFirstName = employeeFirstName;
@@ -197,7 +209,7 @@ public class SearchContainer {
      * @param employeeLastName new employee last name.
      */
     public void setEmployeeLastName(String employeeLastName) {
-        if (employeeLastName.trim().isEmpty()){
+        if (employeeLastName== null || employeeLastName.trim().isEmpty()){
             this.employeeLastName = null;
         } else {
             this.employeeLastName = employeeLastName;
@@ -213,7 +225,7 @@ public class SearchContainer {
      * @param cprNr new cpr nr.
      */
     public void setCprNr(String cprNr) {
-        if (cprNr.trim().isEmpty()){
+        if (cprNr == null || cprNr.trim().isEmpty()){
             this.cprNr = null;
         }else {
             this.cprNr = cprNr;
@@ -229,7 +241,7 @@ public class SearchContainer {
      * @param email new Email.
      */
     public void setEmail(String email) {
-        if (email.trim().isEmpty()){
+        if (email == null || email.trim().isEmpty()){
             this.email = null;
         }else {
             this.email = email;
@@ -245,7 +257,7 @@ public class SearchContainer {
      * @param phoneNr new phone nr.
      */
     public void setPhoneNr(String phoneNr) {
-        if (phoneNr.trim().isEmpty()){
+        if (phoneNr == null || phoneNr.trim().isEmpty()){
             this.phoneNr = null;
         } else {
             this.phoneNr = phoneNr;
@@ -265,6 +277,10 @@ public class SearchContainer {
      * @param interviewID new interview ID.
      */
     public void setInterviewID(String interviewID) {
+        if (interviewID == null || interviewID.trim().isEmpty()){
+            this.interviewID = null;
+            return;
+        }
         try {
             this.interviewID = Integer.parseInt(interviewID);
         }catch (NumberFormatException e){
@@ -281,7 +297,7 @@ public class SearchContainer {
      * @param interviewName new interview name.
      */
     public void setInterviewName(String interviewName) {
-        if (interviewName.trim().isEmpty()){
+        if (interviewName == null || interviewName.trim().isEmpty()){
             this.interviewName = null;
         } else {
             this.interviewName = interviewName;
@@ -301,6 +317,10 @@ public class SearchContainer {
      * @param amuNr new amu nr.
      */
     public void setAmuNr(String amuNr) {
+        if (amuNr == null || amuNr.trim().isEmpty()){
+            this.AmuNr = null;
+            return;
+        }
         try {
             this.AmuNr = Integer.parseInt(amuNr);
         }catch (NumberFormatException e){
@@ -317,7 +337,7 @@ public class SearchContainer {
      * @param educationName new education name
      */
     public void setEducationName(String educationName) {
-        if (educationName.trim().isEmpty()){
+        if (educationName == null || educationName.trim().isEmpty()){
             this.educationName = null;
         }else {
             this.educationName = educationName;
@@ -337,6 +357,10 @@ public class SearchContainer {
      * @param educationNoOfDays new education number of days value.
      */
     public void setEducationNoOfDays(String educationNoOfDays) {
+        if (educationNoOfDays == null || educationNoOfDays.trim().isEmpty()){
+            this.educationNoOfDays = null;
+            return;
+        }
         try {
             this.educationNoOfDays = Integer.parseInt(educationNoOfDays);
         }catch (NumberFormatException e){
@@ -373,6 +397,10 @@ public class SearchContainer {
      * @param providerID new Provider ID
      */
     public void setProviderID(String providerID) {
+        if (providerID == null || providerID.trim().isEmpty()){
+            this.providerID = null;
+            return;
+        }
         try {
             this.providerID = Integer.parseInt(providerID);
         }catch (NumberFormatException e){
@@ -389,7 +417,7 @@ public class SearchContainer {
      * @param providerName new Provider name.
      */
     public void setProviderName(String providerName) {
-        if (providerName.trim().isEmpty()){
+        if (providerName == null || providerName.trim().isEmpty()){
             this.providerName = null;
         } else {
             this.providerName = providerName;
