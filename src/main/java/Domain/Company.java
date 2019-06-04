@@ -188,7 +188,7 @@ public class Company {
         } else if (name.trim().isEmpty()) {
             return "Company Name may not be empty!";
         } else if (name.length() > COMPANY_NAME_MAX_LENGTH) {
-            return "Company Name must be "+CVR_EXACT_LENGTH+" letters or less!";
+            return "Company Name must be "+COMPANY_NAME_MAX_LENGTH+" letters or less!";
         }
         return null;
     }
