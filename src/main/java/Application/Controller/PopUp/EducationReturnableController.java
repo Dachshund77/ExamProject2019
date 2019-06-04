@@ -1,10 +1,11 @@
 package Application.Controller.PopUp;
 
+import Application.Controller.AbstractController;
 import Application.Controller.Controllers;
 import Domain.Education;
 
-public interface EducationReturnableController extends Controllers {
+public abstract class EducationReturnableController extends AbstractController {
 
-    Education getReturn();
+    public abstract Education getReturn();
 
 }

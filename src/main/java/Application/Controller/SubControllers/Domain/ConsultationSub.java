@@ -3,13 +3,13 @@ package Application.Controller.SubControllers.Domain;
 import Application.Controller.AbstractController;
 import Domain.Consultation;
 import Domain.Employee;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.text.Text;
-
+import javafx.scene.control.cell.PropertyValueFactory;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ConsultationSub extends AbstractController {
@@ -17,8 +17,8 @@ public class ConsultationSub extends AbstractController {
     public Label consultationIDText;
     public TextField consultationNameTextField;
     public Tooltip consultationNameTooltip;
-    public DatePicker startDate;
-    public DatePicker endDate;
+    public DatePicker startDatePicker;
+    public DatePicker endDatePicker;
     public TableView<Employee> employeeTableView;
     public TableColumn<Employee, String> employeeFirstNameColumn;
     public TableColumn<Employee, String> employeeLastNameColumn;
@@ -28,52 +28,86 @@ public class ConsultationSub extends AbstractController {
 
     private ArrayList<Employee> employeeArrayList;
 
-    public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
+    public BooleanBinding isValid; // Hook for parent class to activate confirm button
+    private SimpleBooleanProperty consultationNameIsValid = new SimpleBooleanProperty(true);
     public Consultation selectedConsultation;
 
-    public void initialize(){
-        //setup listview
-        //Setup isValid
-        //setup bindings
+
+    public void initialize() {
+
+        //Setting up the employee tableview
+        employeeFirstNameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeFirstName"));
+        employeeLastNameColumn.setCellValueFactory(new PropertyValueFactory<>("employeeLastName"));
+        employeeTableView.getColumns().setAll(employeeFirstNameColumn, employeeLastNameColumn);
+        ObservableList<Employee> employeeObservableList = FXCollections.observableArrayList();
+        employeeTableView.setItems(employeeObservableList);
+
+
+        //Hides the tableview when the user selects "New Consultation"
+        if (selectedConsultation == null) {
+            employeeTableView.setVisible(false);
+        }
+
+        consultationNameTextField.textProperty().addListener(((observable) -> handleConsultationNameInput()));
+        startDatePicker.valueProperty().addListener((observable -> handleDatePickerInput()));
+        endDatePicker.valueProperty().addListener((observable -> handleDatePickerInput()));
+
+
+        isValid = new BooleanBinding() {
+            @Override
+            protected boolean computeValue() {
+                bind(consultationNameIsValid);
+                if (consultationNameIsValid.get()) {
+                    System.out.println("True");
+                } else
+                    System.out.println("False");
+                return false;
+            }
+        };
     }
 
     @Override
     public void initValues(Consultation consultation) {
-        //hook up consultation
+        selectedConsultation = consultation;
+        resetForm();
     }
 
-    public void handleConsultationNameInput(KeyEvent keyEvent){
+    public void handleConsultationNameInput() {
+        if (Consultation.isValidConsultationName(consultationNameTextField.getText())) {
+            consultationNameTextField.setTooltip(null);
+            consultationNameIsValid.set(true);
+            consultationNameTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = Consultation.consultationIDInvalidCause(consultationNameTextField.getText());
+            consultationNameTextField.setTooltip(new Tooltip(invalidCause));
+            consultationNameIsValid.set(false);
+            if (!consultationNameTextField.getStyleClass().contains("TextField-Error")) {
+                consultationNameTextField.getStyleClass().add("TextField-Error");
+            }
+        }
+    }
+
+
+    public void handleDatePickerInput() {
+        //startDate.getValue().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate localDateStartDate = startDatePicker.getValue();
+        LocalDate localDateEndDate = endDatePicker.getValue();
+
+        if (localDateEndDate.isBefore(localDateStartDate)){
+        }
 
     }
 
-    public void handleStartDateInput(KeyEvent keyEvent){
 
+    public void setDisabled(boolean bool) {
+        consultationNameTextField.setDisable(bool);
     }
 
-    public void handleEndDateInput(ActionEvent event){
-
-    }
-
-    public void handleRemoveEmployee(ActionEvent event){
-
-    }
-
-    public void handleAddEmployee(ActionEvent event){
-
-    }
-
-    public void handleNewEmployee(ActionEvent event){
-
-    }
-
-    public void updateIsValid(){
-        // Manages the isValid property aka when all values are valid = true
-    }
-
-    public void setEditable(boolean bool){
-
-    }
-    public void resetForm(){
-        //Reset fields, set field if it has a selected Domain object
+    public void resetForm() {
+        if (selectedConsultation != null) {
+            consultationNameTextField.setText(selectedConsultation.getConsultationName());
+        } else {
+            consultationNameTextField.setText("");
+        }
     }
 }

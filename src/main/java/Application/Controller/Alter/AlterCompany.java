@@ -19,20 +19,21 @@ public class AlterCompany extends AbstractController {
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
-    private SearchContainer searchContainer;
+    private SearchContainer previousSearch;
 
     /**
      * disables the "Confirm" button
      * until the required TextFields are valid
      */
     @FXML
-    private void initialize(){
+    private void initialize() {
         confirmationButton.disableProperty().bind(companySubController.isValid.not());
     }
 
     @Override
     public void initValues(SearchContainer searchContainer, Company company) {
         //Save search container for returning
+        previousSearch = searchContainer;
         //propergate Consultation to setup form
     }
 
@@ -40,10 +41,16 @@ public class AlterCompany extends AbstractController {
     private void handleCancel(ActionEvent event) {
         //Return to main screen or search
         //if coming from search return to search with initValues
+        if (previousSearch != null){
+
+        } else {
+
+        }
     }
 
     /**
      * Updates the database with a new company
+     *
      * @param event on user click, create a new company obj
      *              with content from the textfields,
      *              which is then send to the database
@@ -60,7 +67,7 @@ public class AlterCompany extends AbstractController {
             DbFacade.insertCompany(createNewCompanyObj);
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 DbFacade.disconnect();
             } catch (SQLException e) {
@@ -74,6 +81,7 @@ public class AlterCompany extends AbstractController {
      * Resets the TextFields
      * if the user isnt satisfied with
      * what is entered
+     *
      * @param event on user click,
      *              resets all TextFields
      */

@@ -1,9 +1,10 @@
 package Application.Controller.PopUp;
 
+import Application.Controller.AbstractController;
 import Application.Controller.Controllers;
 import Domain.Provider;
 
-public interface ProviderReturnableController extends Controllers {
+public abstract class ProviderReturnableController extends AbstractController {
 
-    Provider getReturn();
+   public abstract Provider getReturn();
 }
