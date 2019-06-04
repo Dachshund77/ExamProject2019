@@ -12,72 +12,72 @@ public class SearchContainerTest {
     @Test
     public void isValidCompanyID() {
         //True
-        assertTrue(Company.isValidCompanyID(12)); //Normal number
-        assertTrue(Company.isValidCompanyID("12")); // normal number as string
-        assertTrue(Company.isValidCompanyID((String)null)); //May be null
-        assertTrue(Company.isValidCompanyID((Integer) null)); //May be null if new
-        assertTrue(Company.isValidCompanyID("   ")); //If it may be null, it may also be empty
+        assertTrue(SearchContainer.isValidCompanyID(12)); //Normal number
+        assertTrue(SearchContainer.isValidCompanyID("12")); // normal number as string
+        assertTrue(SearchContainer.isValidCompanyID((String)null)); //May be null
+        assertTrue(SearchContainer.isValidCompanyID((Integer) null)); //May be null if new
+        assertTrue(SearchContainer.isValidCompanyID("   ")); //If it may be null, it may also be empty
 
         //False
-        assertFalse(Company.isValidCompanyID(0));
-        assertFalse(Company.isValidCompanyID("0"));
-        assertFalse(Company.isValidCompanyID(-12));
-        assertFalse(Company.isValidCompanyID("-12"));
-        assertFalse(Company.isValidCompanyID("12ab")); //may not contain numbers
+        assertFalse(SearchContainer.isValidCompanyID(0));
+        assertFalse(SearchContainer.isValidCompanyID("0"));
+        assertFalse(SearchContainer.isValidCompanyID(-12));
+        assertFalse(SearchContainer.isValidCompanyID("-12"));
+        assertFalse(SearchContainer.isValidCompanyID("12ab")); //may not contain numbers
     }
 
     @Test
     public void isValidCvrNr() {
         //True
-        assertTrue(Company.isValidCvrNr("12345678")); //8 numbers
+        assertTrue(SearchContainer.isValidCvrNr("12345678")); //8 numbers
+        assertTrue(SearchContainer.isValidCvrNr("123"));
+        assertTrue(SearchContainer.isValidCvrNr(null));
+        assertTrue(SearchContainer.isValidCvrNr("     "));
 
         //False
-        assertFalse(Company.isValidCvrNr("123")); //to short
-        assertFalse(Company.isValidCvrNr("123a1234")); //contain letters
-        assertFalse(Company.isValidCvrNr("123412345125211")); //To long
-        assertFalse(Company.isValidCvrNr(null));
-        assertFalse(Company.isValidCvrNr("     "));
+        assertFalse(SearchContainer.isValidCvrNr("123a1234")); //contain letters
+        assertFalse(SearchContainer.isValidCvrNr("123412345125211")); //To long
     }
 
     @Test
     public void isValidCompanyName() {
         //True
-        assertTrue(Company.isValidCompanyName("Math Inc")); //valid name
+        assertTrue(SearchContainer.isValidCompanyName("Math Inc")); //valid name
+        assertTrue(SearchContainer.isValidCompanyName("   "));
+        assertTrue(SearchContainer.isValidCompanyName(null));
 
         //False
-        assertFalse(Company.isValidCompanyName("   "));
-        assertFalse(Company.isValidCompanyName(null));
         //Way to long
-        assertFalse(Company.isValidCompanyName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
+        assertFalse(SearchContainer.isValidCompanyName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
 
     @Test
     public void isValidConsultationID() {
         //True
-        assertTrue(Consultation.isValidConsultationID(12)); //Normal number
-        assertTrue(Consultation.isValidConsultationID("12")); // normal number as string
-        assertTrue(Consultation.isValidConsultationID((String)null)); //May be null
-        assertTrue(Consultation.isValidConsultationID((Integer) null)); //May be null if new
-        assertTrue(Consultation.isValidConsultationID("   ")); //if it may be null it may be empty
+        assertTrue(SearchContainer.isValidConsultationID(12)); //Normal number
+        assertTrue(SearchContainer.isValidConsultationID("12")); // normal number as string
+        assertTrue(SearchContainer.isValidConsultationID((String)null)); //May be null
+        assertTrue(SearchContainer.isValidConsultationID((Integer) null)); //May be null if new
+        assertTrue(SearchContainer.isValidConsultationID("   ")); //if it may be null it may be empty
 
         //False
-        assertFalse(Consultation.isValidConsultationID(0));
-        assertFalse(Consultation.isValidConsultationID("0"));
-        assertFalse(Consultation.isValidConsultationID(-12));
-        assertFalse(Consultation.isValidConsultationID("-12"));
-        assertFalse(Consultation.isValidConsultationID("12ab")); //may not contain numbers
+        assertFalse(SearchContainer.isValidConsultationID(0));
+        assertFalse(SearchContainer.isValidConsultationID("0"));
+        assertFalse(SearchContainer.isValidConsultationID(-12));
+        assertFalse(SearchContainer.isValidConsultationID("-12"));
+        assertFalse(SearchContainer.isValidConsultationID("12ab")); //may not contain numbers
     }
 
     @Test
     public void isValidConsultationName() {
         //True
-        assertTrue(Consultation.isValidConsultationName("aafsaa")); //Normal name
+        assertTrue(SearchContainer.isValidConsultationName("aafsaa")); //Normal name
+        assertTrue(SearchContainer.isValidConsultationName(null));
+        assertTrue(SearchContainer.isValidConsultationName("     "));
 
         //False
         //To long
-        assertFalse(Consultation.isValidConsultationName("1234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as1")); //To long
-        assertFalse(Consultation.isValidConsultationName(null));
-        assertFalse(Consultation.isValidConsultationName("     "));
+        assertFalse(SearchContainer.isValidConsultationName("1234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as11234fsasfaf1234512521as1")); //To long
     }
 
     @Test
@@ -87,194 +87,195 @@ public class SearchContainerTest {
         LocalDate second = LocalDate.of(2010,10,10);
 
         //True
-        assertTrue(Consultation.isValidDate(first,second));
-        assertTrue(Consultation.isValidDate(first,same));
+        assertTrue(SearchContainer.isValidDate(first,second));
+        assertTrue(SearchContainer.isValidDate(first,same));
+        assertTrue(SearchContainer.isValidDate(null,second));
+        assertTrue(SearchContainer.isValidDate(first,null));
+        assertTrue(SearchContainer.isValidDate(null,null));
 
         //False
-        assertFalse(Consultation.isValidDate(null,second));
-        assertFalse(Consultation.isValidDate(first,null));
-        assertFalse(Consultation.isValidDate(null,null));
-        assertFalse(Consultation.isValidDate(second,first)); //inverted
+        assertFalse(SearchContainer.isValidDate(second,first)); //inverted
     }
 
     @Test
     public void isValidAmuNr() {
         //True
-        assertTrue(Education.isValidAmuNr(12)); //Normal number
-        assertTrue(Education.isValidAmuNr("12")); // normal number as string
-        assertTrue(Education.isValidAmuNr((String)null)); //May be null
-        assertTrue(Education.isValidAmuNr((Integer) null)); //May be null if new
-        assertTrue(Education.isValidAmuNr("   ")); //If it may be null it may be empty
+        assertTrue(SearchContainer.isValidAmuNr(12)); //Normal number
+        assertTrue(SearchContainer.isValidAmuNr("12")); // normal number as string
+        assertTrue(SearchContainer.isValidAmuNr((String)null)); //May be null
+        assertTrue(SearchContainer.isValidAmuNr((Integer) null)); //May be null if new
+        assertTrue(SearchContainer.isValidAmuNr("   ")); //If it may be null it may be empty
 
         //False
-        assertFalse(Education.isValidAmuNr(0));
-        assertFalse(Education.isValidAmuNr("0"));
-        assertFalse(Education.isValidAmuNr(-12));
-        assertFalse(Education.isValidAmuNr("-12"));
-        assertFalse(Education.isValidAmuNr("12ab")); //may not contain numbers
+        assertFalse(SearchContainer.isValidAmuNr(0));
+        assertFalse(SearchContainer.isValidAmuNr("0"));
+        assertFalse(SearchContainer.isValidAmuNr(-12));
+        assertFalse(SearchContainer.isValidAmuNr("-12"));
+        assertFalse(SearchContainer.isValidAmuNr("12ab")); //may not contain numbers
     }
 
     @Test
     public void isValidEducationName() {
         //True
-        assertTrue(Education.isValidEducationName("Math Inc")); //valid name
+        assertTrue(SearchContainer.isValidEducationName("Math Inc")); //valid name
+        assertTrue(SearchContainer.isValidEducationName("   "));
+        assertTrue(SearchContainer.isValidEducationName(null));
 
         //False
-        assertFalse(Education.isValidEducationName("   "));
-        assertFalse(Education.isValidEducationName(null));
         //Way to long
-        assertFalse(Education.isValidEducationName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
+        assertFalse(SearchContainer.isValidEducationName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
 
     @Test
     public void isValidNoOfDays() {
         //True
-        assertTrue(Education.isValidNoOfDays(12)); //Normal number
-        assertTrue(Education.isValidNoOfDays("12")); // normal number as string
+        assertTrue(SearchContainer.isValidNoOfDays(12)); //Normal number
+        assertTrue(SearchContainer.isValidNoOfDays("12")); // normal number as string
+        assertTrue(SearchContainer.isValidNoOfDays((String)null)); //May not be null
+        assertTrue(SearchContainer.isValidNoOfDays((Integer) null)); //May not be null if new
+        assertTrue(SearchContainer.isValidNoOfDays("   ")); //If it may noy be null it may be empty
 
         //False
-        assertFalse(Education.isValidNoOfDays(0));
-        assertFalse(Education.isValidNoOfDays("0"));
-        assertFalse(Education.isValidNoOfDays(-12));
-        assertFalse(Education.isValidNoOfDays("-12"));
-        assertFalse(Education.isValidNoOfDays("12ab")); //may not contain numbers
-        assertFalse(Education.isValidNoOfDays((String)null)); //May not be null
-        assertFalse(Education.isValidNoOfDays((Integer) null)); //May not be null if new
-        assertFalse(Education.isValidNoOfDays("   ")); //If it may noy be null it may be empty
+        assertFalse(SearchContainer.isValidNoOfDays(0));
+        assertFalse(SearchContainer.isValidNoOfDays("0"));
+        assertFalse(SearchContainer.isValidNoOfDays(-12));
+        assertFalse(SearchContainer.isValidNoOfDays("-12"));
+        assertFalse(SearchContainer.isValidNoOfDays("12ab")); //may not contain numbers
     }
 
     @Test
     public void isValidEmployeeID() {
         //True
-        assertTrue(Employee.isValidEmployeeID(12)); //Normal number
-        assertTrue(Employee.isValidEmployeeID("12")); // normal number as string
-        assertTrue(Employee.isValidEmployeeID((String)null)); //May be null
-        assertTrue(Employee.isValidEmployeeID((Integer) null)); //May be null if new
-        assertTrue(Employee.isValidEmployeeID("   ")); //If it may be null it may be empty
+        assertTrue(SearchContainer.isValidEmployeeID(12)); //Normal number
+        assertTrue(SearchContainer.isValidEmployeeID("12")); // normal number as string
+        assertTrue(SearchContainer.isValidEmployeeID((String)null)); //May be null
+        assertTrue(SearchContainer.isValidEmployeeID((Integer) null)); //May be null if new
+        assertTrue(SearchContainer.isValidEmployeeID("   ")); //If it may be null it may be empty
 
         //False
-        assertFalse(Employee.isValidEmployeeID(0));
-        assertFalse(Employee.isValidEmployeeID("0"));
-        assertFalse(Employee.isValidEmployeeID(-12));
-        assertFalse(Employee.isValidEmployeeID("-12"));
-        assertFalse(Employee.isValidEmployeeID("12ab")); //may not contain numbers
+        assertFalse(SearchContainer.isValidEmployeeID(0));
+        assertFalse(SearchContainer.isValidEmployeeID("0"));
+        assertFalse(SearchContainer.isValidEmployeeID(-12));
+        assertFalse(SearchContainer.isValidEmployeeID("-12"));
+        assertFalse(SearchContainer.isValidEmployeeID("12ab")); //may not contain numbers
     }
 
     @Test
     public void isValidEmployeeFirstName() {
         //True
-        assertTrue(Employee.isValidEmployeeFirstName("Peter")); //valid name
-        assertTrue(Employee.isValidEmployeeFirstName("   ")); //May be empty
-        assertTrue(Employee.isValidEmployeeFirstName(null)); //may be null
+        assertTrue(SearchContainer.isValidEmployeeFirstName("Peter")); //valid name
+        assertTrue(SearchContainer.isValidEmployeeFirstName("   ")); //May be empty
+        assertTrue(SearchContainer.isValidEmployeeFirstName(null)); //may be null
 
         //False
         //Way to long
-        assertFalse(Employee.isValidEmployeeFirstName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
+        assertFalse(SearchContainer.isValidEmployeeFirstName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
 
     @Test
     public void isValidEmployeeLastName() {
         //True
-        assertTrue(Employee.isValidEmployeeLastName("Peter")); //valid name
-        assertTrue(Employee.isValidEmployeeLastName("   ")); //May be empty
-        assertTrue(Employee.isValidEmployeeLastName(null)); //may be null
+        assertTrue(SearchContainer.isValidEmployeeLastName("Peter")); //valid name
+        assertTrue(SearchContainer.isValidEmployeeLastName("   ")); //May be empty
+        assertTrue(SearchContainer.isValidEmployeeLastName(null)); //may be null
 
         //False
         //Way to long
-        assertFalse(Employee.isValidEmployeeLastName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
+        assertFalse(SearchContainer.isValidEmployeeLastName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
 
     @Test
     public void isValidCprNr() {
-        assertTrue(Employee.isValidCprNr("0707923865")); // right length
+        assertTrue(SearchContainer.isValidCprNr("0707923865")); // right length
+        assertTrue(SearchContainer.isValidCprNr("07078652")); // to short
+        assertTrue(SearchContainer.isValidCprNr("    "));
+        assertTrue(SearchContainer.isValidCprNr(null));
 
-        assertFalse(Employee.isValidCprNr("07079238652")); // to long
-        assertFalse(Employee.isValidCprNr("07078652")); // to short
-        assertFalse(Employee.isValidCprNr("07079a3865")); // contain letters
-        assertFalse(Employee.isValidCprNr("    "));
-        assertFalse(Employee.isValidCprNr(null));
+        assertFalse(SearchContainer.isValidCprNr("07079238652")); // to long
+        assertFalse(SearchContainer.isValidCprNr("07079a3865")); // contain letters
     }
 
     @Test
     public void isValidEmail() {
-        assertTrue(Employee.isValidEmail("Sven@mail.com")); //Right and has @
-        assertTrue(Employee.isValidEmail("    "));
-        assertTrue(Employee.isValidEmail(null));
+        assertTrue(SearchContainer.isValidEmail("Sven@mail.com")); //Right and has @
+        assertTrue(SearchContainer.isValidEmail("    "));
+        assertTrue(SearchContainer.isValidEmail(null));
+        assertTrue(SearchContainer.isValidEmail("svenmail.com")); //no @
 
         //Way to long an contains @
-        assertFalse(Employee.isValidEmail("abcdefg@hicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
-        assertFalse(Employee.isValidEmail("svenmail.com")); //no @
+        assertFalse(SearchContainer.isValidEmail("abcdefg@hicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
+
     }
 
 
     @Test
     public void isValidPhoneNr() {
-        assertTrue(Employee.isValidPhoneNr("123456")); //Valid length
-        assertTrue(Employee.isValidPhoneNr("    "));
-        assertTrue(Employee.isValidPhoneNr(null));
+        assertTrue(SearchContainer.isValidPhoneNr("123456")); //Valid length
+        assertTrue(SearchContainer.isValidPhoneNr("    "));
+        assertTrue(SearchContainer.isValidPhoneNr(null));
 
         //To long
-        assertFalse(Employee.isValidPhoneNr("21451515121451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515155"));
-        assertFalse(Employee.isValidPhoneNr("124a21")); //contain letters
-        assertFalse(Employee.isValidPhoneNr("-12421")); //negative number
+        assertFalse(SearchContainer.isValidPhoneNr("21451515121451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515152145151515214515151521451515155"));
+        assertFalse(SearchContainer.isValidPhoneNr("124a21")); //contain letters
+        assertFalse(SearchContainer.isValidPhoneNr("-12421")); //negative number
     }
 
     @Test
     public void isValidInterviewID() {
         //True
-        assertTrue(Interview.isValidInterviewID(12)); //Normal number
-        assertTrue(Interview.isValidInterviewID("12")); // normal number as string
-        assertTrue(Interview.isValidInterviewID((String)null)); //May be null
-        assertTrue(Interview.isValidInterviewID((Integer) null)); //May be null if new
-        assertTrue(Interview.isValidInterviewID("   ")); //If it may be null it may be empty
+        assertTrue(SearchContainer.isValidInterviewID(12)); //Normal number
+        assertTrue(SearchContainer.isValidInterviewID("12")); // normal number as string
+        assertTrue(SearchContainer.isValidInterviewID((String)null)); //May be null
+        assertTrue(SearchContainer.isValidInterviewID((Integer) null)); //May be null if new
+        assertTrue(SearchContainer.isValidInterviewID("   ")); //If it may be null it may be empty
 
         //False
-        assertFalse(Interview.isValidInterviewID(0));
-        assertFalse(Interview.isValidInterviewID("0"));
-        assertFalse(Interview.isValidInterviewID(-12));
-        assertFalse(Interview.isValidInterviewID("-12"));
-        assertFalse(Interview.isValidInterviewID("12ab")); //may not contain numbers
+        assertFalse(SearchContainer.isValidInterviewID(0));
+        assertFalse(SearchContainer.isValidInterviewID("0"));
+        assertFalse(SearchContainer.isValidInterviewID(-12));
+        assertFalse(SearchContainer.isValidInterviewID("-12"));
+        assertFalse(SearchContainer.isValidInterviewID("12ab")); //may not contain numbers
     }
 
     @Test
     public void isValidInterviewName() {
         //True
-        assertTrue(Interview.isValidInterviewName("A Consultation")); //valid name
+        assertTrue(SearchContainer.isValidInterviewName("A Consultation")); //valid name
+        assertTrue(SearchContainer.isValidInterviewName("   "));
+        assertTrue(SearchContainer.isValidInterviewName(null));
 
         //False
-        assertFalse(Interview.isValidInterviewName("   "));
-        assertFalse(Interview.isValidInterviewName(null));
         //Way to long
-        assertFalse(Interview.isValidInterviewName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
+        assertFalse(SearchContainer.isValidInterviewName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
 
 
     @Test
     public void isValidProviderID() {
         //True
-        assertTrue(Provider.isValidProviderID(12)); //Normal number
-        assertTrue(Provider.isValidProviderID("12")); // normal number as string
-        assertTrue(Provider.isValidProviderID((String)null)); //May be null
-        assertTrue(Provider.isValidProviderID((Integer) null)); //May be null if new
-        assertTrue(Provider.isValidProviderID("   ")); //If it may be null it may be empty
+        assertTrue(SearchContainer.isValidProviderID(12)); //Normal number
+        assertTrue(SearchContainer.isValidProviderID("12")); // normal number as string
+        assertTrue(SearchContainer.isValidProviderID((String)null)); //May be null
+        assertTrue(SearchContainer.isValidProviderID((Integer) null)); //May be null if new
+        assertTrue(SearchContainer.isValidProviderID("   ")); //If it may be null it may be empty
 
         //False
-        assertFalse(Provider.isValidProviderID(0));
-        assertFalse(Provider.isValidProviderID("0"));
-        assertFalse(Provider.isValidProviderID(-12));
-        assertFalse(Provider.isValidProviderID("-12"));
-        assertFalse(Provider.isValidProviderID("12ab")); //may not contain numbers
+        assertFalse(SearchContainer.isValidProviderID(0));
+        assertFalse(SearchContainer.isValidProviderID("0"));
+        assertFalse(SearchContainer.isValidProviderID(-12));
+        assertFalse(SearchContainer.isValidProviderID("-12"));
+        assertFalse(SearchContainer.isValidProviderID("12ab")); //may not contain numbers
     }
 
     @Test
     public void isValidProviderName() {
         //True
-        assertTrue(Provider.isValidProviderName("Providername")); //valid name
+        assertTrue(SearchContainer.isValidProviderName("Providername")); //valid name
+        assertTrue(SearchContainer.isValidProviderName("   "));
+        assertTrue(SearchContainer.isValidProviderName(null));
 
         //False
-        assertFalse(Provider.isValidProviderName("   "));
-        assertFalse(Provider.isValidProviderName(null));
         //Way to long
-        assertFalse(Provider.isValidProviderName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
+        assertFalse(SearchContainer.isValidProviderName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
 }

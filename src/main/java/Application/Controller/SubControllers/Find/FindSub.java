@@ -114,7 +114,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
             @Override
             protected boolean computeValue() {
-                System.out.println("FindSub.computeValue company valid");
                 return handleCompanySectionInput();
             }
         };
@@ -134,7 +133,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
             @Override
             protected boolean computeValue() {
-                System.out.println("FindSub.computeValue consultatiobalid");
                 return handleConsultationSectionInput();
             }
         };
@@ -160,7 +158,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
             @Override
             protected boolean computeValue() {
-                System.out.println("FindSub.computeValue employeevalid");
                 return handleEmployeeSectionInput();
             }
         };
@@ -177,7 +174,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
             @Override
             protected boolean computeValue() {
-                System.out.println("FindSub.computeValue interview valid");
                 return handleInterviewSectionInput();
             }
         };
@@ -199,7 +195,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
             @Override
             protected boolean computeValue() {
-                System.out.println("FindSub.computeValue education valid");
                 return handleEducationSectionInput();
             }
         };
@@ -216,7 +211,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
             @Override
             protected boolean computeValue() {
-                System.out.println("FindSub.computeValue provider valid");
                 return handleProviderSectionInput();
             }
         };
@@ -234,7 +228,6 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
             @Override
             protected boolean computeValue() {
-                System.out.println("FindSub.computeValue all valid");
                 return isAllValid();
             }
         };

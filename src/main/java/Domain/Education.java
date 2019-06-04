@@ -248,6 +248,11 @@ public class Education {
      * @return String with first found problem,null if valid.
      */
     public static String noOfDaysInvalidCause(String noOfDays) {
+        if (noOfDays == null){
+            return "Number of days may not be null!";
+        }if (noOfDays.trim().isEmpty()){
+            return "Number of days may not be empty!";
+        }
         try{
             return noOfDaysInvalidCause(Integer.parseInt(noOfDays));
         }catch (NumberFormatException e){

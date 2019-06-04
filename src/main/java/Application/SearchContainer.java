@@ -472,13 +472,13 @@ public class SearchContainer {
      */
     public static String cvrNrInvalidCause(String cvrNr) {
         if (cvrNr == null) {
-            return "CvrNr may not be Null!";
+            return null;
         } else if (cvrNr.trim().isEmpty()) {
-            return "CvrNr may not be empty!";
+            return null;
         } else if (!cvrNr.matches("[0-9]+")) {
             return "CvrNr may not contain letters!";
-        } else if (cvrNr.length() != Company.getCvrExactLength()) {
-            return "CvrNr must be "+Company.getCvrExactLength()+" characters long!";
+        } else if(cvrNr.length() > Company.getCvrExactLength()){
+            return "Cvr may not be longer than "+Company.getCvrExactLength()+" letters!";
         }
         return null;
     }
@@ -502,9 +502,9 @@ public class SearchContainer {
      */
     public static String companyNameInvalidClause(String name) {
         if (name == null) {
-            return "Company Name may not be Null!";
+            return null;
         } else if (name.trim().isEmpty()) {
-            return "Company Name may not be empty!";
+            return null;
         } else if (name.length() > Company.getCompanyNameMaxLength()) {
             return "Company Name must be "+Company.getCompanyNameMaxLength()+" letters or less!";
         }
@@ -589,10 +589,10 @@ public class SearchContainer {
      */
     public static String consultationNameInvalidCause(String consultationName){
         if (consultationName == null){
-            return "Consultation name may not be null";
+            return null;
         }
         else if (consultationName.trim().isEmpty()){
-            return "A consultation name is required";
+            return null;
         }
         else if (consultationName.length() > Consultation.getConsultationNameMaxLength()){
             return "Consultation name have to be less than "+Consultation.getConsultationNameMaxLength()+" characters";
@@ -619,7 +619,7 @@ public class SearchContainer {
      */
     public static String dateInvalidCause(LocalDate startDate, LocalDate endDate){
         if (startDate == null || endDate == null){
-            return "Dates may not be empty";
+            return null;
         }
         else if(endDate.isBefore(startDate)){
             return "start date must be before end date";
@@ -699,10 +699,10 @@ public class SearchContainer {
     public static String educationNameInvalidCause (String educationName)
     {
         if (educationName == null){
-            return "Education cant be null";
+            return null;
         }
         else if (educationName.trim().isEmpty()){
-            return "Education must have a name";
+            return null;
         }
         else if (educationName.length() > Education.getEducationNameMaxLength()){
             return "Education must consist of a name less than "+Education.getEducationNameMaxLength()+" characters";
@@ -741,7 +741,7 @@ public class SearchContainer {
     public static String noOfDaysInvalidCause(Integer NoOfDays)
     {
         if (NoOfDays == null){
-            return "Number of days cant be null";
+            return null;
         }
         else if (NoOfDays > Education.getNoOfDaysMaxNumber()){
             return "Number of days cant be more than "+Education.getNoOfDaysMaxNumber()+"!";
@@ -761,6 +761,11 @@ public class SearchContainer {
      * @return String with first found problem,null if valid.
      */
     public static String noOfDaysInvalidCause(String noOfDays) {
+        if (noOfDays == null){
+            return null;
+        }if (noOfDays.trim().isEmpty()){
+            return null;
+        }
         try{
             return noOfDaysInvalidCause(Integer.parseInt(noOfDays));
         }catch (NumberFormatException e){
@@ -831,13 +836,13 @@ public class SearchContainer {
 
     public static String cprNrInvalidCause(String cprNr) {
         if (cprNr == null) {
-            return "CprNr may not be null!";
+            return null;
         }
         if (cprNr.trim().isEmpty()) {
-            return "CprNr may not be empty!";
+            return null;
         }
-        if (cprNr.length() != Employee.getCprExactLength()) {
-            return "CprNr must be "+Employee.getCprExactLength()+" letters long";
+        if (cprNr.length() > Employee.getCprExactLength()) {
+            return "CprNr must be "+Employee.getCprExactLength()+" letters or less!";
         }
         if (!cprNr.matches("[0-9]+")) {
             return "CprNr may not contain letters!";
@@ -853,9 +858,6 @@ public class SearchContainer {
         if (email != null) {
             if (email.trim().isEmpty()) {
                 return null;
-            }
-            if (!email.contains("@")) {
-                return "Email must contain an @";
             }
             if (email.length() > Employee.getEmailMaxLength()) {
                 return "Email must be "+Employee.getEmailMaxLength()+" or less letters!";
@@ -953,9 +955,9 @@ public class SearchContainer {
      */
     public static String interviewNameInvalidCause(String interviewName) {
         if (interviewName == null) {
-            return "Interview Name may not be null!";
+            return null;
         } else if (interviewName.trim().isEmpty()) {
-            return "Interview Name may not be empty!";
+            return null;
         } else if (interviewName.length() > Interview.getInterviewNameMaxLength()) {
             return "Interview Name must be "+ Interview.getInterviewNameMaxLength() +" Characters or less!";
         }
@@ -1031,9 +1033,9 @@ public class SearchContainer {
      */
     public static String providerNameInvalidCause(String providerName) {
         if (providerName == null) {
-            return "Provider Name may not be Null!";
+            return null;
         } else if (providerName.trim().isEmpty()) {
-            return "ProviderName may not be empty!";
+            return null;
         } else if (providerName.length() > Provider.getProviderNameMaxLength()) {
             return "Provider Name must be "+ Provider.getProviderNameMaxLength() +" letters or less";
         }
