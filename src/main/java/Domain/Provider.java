@@ -21,6 +21,10 @@ public class Provider {
         return providerName;
     }
 
+    public static int getProviderNameMaxLength() {
+        return PROVIDER_NAME_MAX_LENGTH;
+    }
+
     /**
      * Converts empty String to null.
      * @param providerName new provider name.
