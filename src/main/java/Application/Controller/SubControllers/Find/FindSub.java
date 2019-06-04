@@ -9,6 +9,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
@@ -16,48 +17,84 @@ import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
+/**
+ * SubController for the search UI. This subController represents the search values the user can fil out.
+ * It is also this Class that connects to the Database and fetches the result. It is up to the parent
+ * controllers to format that result into an TableView.
+ * @see DbFacade
+ */
 @SuppressWarnings("Duplicates")
-public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some point this class neec to be claned up, we realy dont validate input we do that at the SearchContainer
+public class FindSub extends AbstractController {
 
     //Company
-    public TitledPane companyPane;
-    public TextField companyIDTextField;
-    public TextField cvrNrTextField;
-    public TextField companyNameTextField;
+    @FXML
+    private TitledPane companyPane;
+    @FXML
+    private TextField companyIDTextField;
+    @FXML
+    private TextField cvrNrTextField;
+    @FXML
+    private TextField companyNameTextField;
     //Consultation
-    public TitledPane consultationPane;
-    public DatePicker consultationMaxDatePicker;
-    public DatePicker consultationMinDatePicker;
-    public TextField consultationNameTextField;
-    public TextField consultationIDTextField;
+    @FXML
+    private TitledPane consultationPane;
+    @FXML
+    private DatePicker consultationMaxDatePicker;
+    @FXML
+    private DatePicker consultationMinDatePicker;
+    @FXML
+    private TextField consultationNameTextField;
+    @FXML
+    private TextField consultationIDTextField;
     //Employee
-    public TitledPane employeePane;
-    public TextField employeeIDTextField;
-    public TextField empFirstNameTextField;
-    public TextField empLastNameTextField;
-    public TextField cprNrTextField;
-    public TextField eMailTextField;
-    public TextField phoneNrTextField;
+    @FXML
+    private TitledPane employeePane;
+    @FXML
+    private TextField employeeIDTextField;
+    @FXML
+    private TextField empFirstNameTextField;
+    @FXML
+    private TextField empLastNameTextField;
+    @FXML
+    private TextField cprNrTextField;
+    @FXML
+    private TextField eMailTextField;
+    @FXML
+    private TextField phoneNrTextField;
     //Interview
-    public TitledPane interviewPane;
-    public TextField interviewIDTextField;
-    public TextField interviewsNameTextField;
+    @FXML
+    private TitledPane interviewPane;
+    @FXML
+    private TextField interviewIDTextField;
+    @FXML
+    private TextField interviewsNameTextField;
     //Education
-    public TitledPane educationPane;
-    public TextField amuNrTextField;
-    public TextField educationNameTextField;
-    public TextField educationNoOfDaysTextField;
-    public DatePicker educationMinDatePicker;
-    public DatePicker educationMaxDatePicker;
+    @FXML
+    private TitledPane educationPane;
+    @FXML
+    private TextField amuNrTextField;
+    @FXML
+    private TextField educationNameTextField;
+    @FXML
+    private TextField educationNoOfDaysTextField;
+    @FXML
+    private DatePicker educationMinDatePicker;
+    @FXML
+    private DatePicker educationMaxDatePicker;
     //provider
-    public TitledPane providerPane;
-    public TextField providerIDTextField;
-    public TextField providerNameTextField;
+    @FXML
+    private TitledPane providerPane;
+    @FXML
+    private TextField providerIDTextField;
+    @FXML
+    private TextField providerNameTextField;
 
-    public Button searchButton; //TODO do i need this?
-    public Button resetButton; //TODO do i need this evt clean up
+    @FXML
+    private Button searchButton; //TODO do i need this?
+    @FXML
+    private Button resetButton; //TODO do i need this evt clean up
 
-    private ArrayList<Company> searchResult;
+    public ArrayList<Company> searchResult;
     private SearchContainer previousSearchContainer = null;
 
     //BooleanBindings
@@ -101,6 +138,11 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
     private SimpleBooleanProperty isValidProviderID = new SimpleBooleanProperty(true);
     private SimpleBooleanProperty isValidProviderName = new SimpleBooleanProperty(true);
 
+    /**
+     * Set ups the binding and validation for the Controller.
+     * Most notably disables the Search button if any validation criteria is not met.
+     * Validation is done with static validators in {@link SearchContainer}.
+     */
     public void initialize() {
         //Company section
         companyIDTextField.textProperty().addListener(observable -> handleCompanyIdInput());
@@ -241,6 +283,12 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
         resetToEmpty();
     }
 
+    /**
+     * {@inheritDoc}
+     * <br/><br/>
+     * This implementation is used to reset the textFields to the previous search query.
+     * {@link #handleReset(ActionEvent)} will also reset the fields to this searchContainers values, when loaded.
+     */
     @Override
     public void initValues(SearchContainer searchContainer) {
         this.previousSearchContainer = searchContainer;
@@ -650,8 +698,8 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
         return companyBool && consultationBool && employeeBool && interviewBool && educationBool && providerBool;
     }
 
-
-    public void handleSearch(ActionEvent event) {
+    @FXML
+    private void handleSearch(ActionEvent event) {
         SearchContainer container = new SearchContainer();
 
         //We operate under the assumption that the search button is not clicked before the integer is valid
@@ -767,19 +815,23 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
         providerNameTextField.setText(previousSearchContainer.getProviderName());
     }
 
-    public void resetConsultationMinDate(ActionEvent event) {
+    @FXML
+    private void resetConsultationMinDate(ActionEvent event) {
         consultationMinDatePicker.setValue(null);
     }
 
-    public void resetConsultationMaxDate(ActionEvent event) {
+    @FXML
+    private void resetConsultationMaxDate(ActionEvent event) {
         consultationMaxDatePicker.setValue(null);
     }
 
-    public void resetEducationMinDate(ActionEvent event) {
+    @FXML
+    private void resetEducationMinDate(ActionEvent event) {
         educationMinDatePicker.setValue(null);
     }
 
-    public void resetEducationMaxDate(ActionEvent event) {
+    @FXML
+    private void resetEducationMaxDate(ActionEvent event) {
         educationMaxDatePicker.setValue(null);
     }
 }
