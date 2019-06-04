@@ -186,18 +186,18 @@ public class Consultation {
             return true;
         }
         //Test all fields
-        if (!this.consultationID.equals(other.consultationID)){
+        if (!Objects.equals(this.consultationID, other.consultationID)){
             return false;
         }
-        if (!this.consultationName.equals(other.consultationName)){
+        if (!Objects.equals(this.consultationName,other.consultationName)){
             return false;
         }
-        if (!this.startDate.equals(other.startDate)){
+        if (!Objects.equals(this.startDate,other.startDate)){
             return false;
         }
-        if (!this.endDate.equals(other.endDate)){
+        if (!Objects.equals(this.endDate,other.endDate)){
             return false;
         }
-        return this.employees.equals(other.employees);
+        return Objects.equals(this.employees,other.employees);
     }
 }

@@ -2,10 +2,6 @@ package Foundation;
 
 import Application.SearchContainer;
 import Domain.*;
-import Foundation.DB;
-import Foundation.Sp;
-import Foundation.SpGetKey;
-import Foundation.SpWithRs;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -170,11 +166,11 @@ public class DbFacade {
         DB database = DB.getInstance();
 
         // 1 Insert this employee and get the id
-        Integer oldEmployeeID = employee.getEmployeeId();
+        Integer oldEmployeeID = employee.getEmployeeID();
         String employeeFirstName = employee.getEmployeeFirstName();
         String employeeLastName = employee.getEmployeeLastName();
         String CPRnr = employee.getCprNr();
-        String eMail = employee.geteMail();
+        String eMail = employee.getEmail();
         String phoneNr = employee.getPhoneNr();
 
         int newEmployeeID = database.executeStoredProcedure(SpGetKey.PLACE_EMPLOYEE, oldEmployeeID, employeeFirstName, employeeLastName, CPRnr, eMail, phoneNr);

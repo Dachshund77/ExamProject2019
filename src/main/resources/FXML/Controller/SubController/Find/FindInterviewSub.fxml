@@ -9,10 +9,10 @@
 <SplitPane dividerPositions="0.5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="Application.Controller.SubControllers.Find.FindInterviewSub">
     <items>
-        <fx:include fx:id="FindSub" source="FindSub.fxml"/>
+        <fx:include fx:id="findSub" source="FindSub.fxml"/>
         <TableView fx:id="interviewTableView" prefHeight="200.0" prefWidth="200.0">
             <columns>
-                <TableColumn fx:id="interviewIDColumn" prefWidth="75.0" text="ID"/>
+                <TableColumn fx:id="interviewIDColumn" prefWidth="75.0" text="Interview ID"/>
                 <TableColumn fx:id="interviewNameColumn" prefWidth="75.0" text="Name"/>
             </columns>
             <columnResizePolicy>

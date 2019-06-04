@@ -226,6 +226,6 @@ public class Company {
             return false;
         }
 
-        return !Objects.equals(this.educationList, other.educationList);
+        return Objects.equals(this.educationList, other.educationList);
     }
 }

@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class FinishedEducation {
     private final Integer finishedEducationID;
@@ -91,12 +92,12 @@ public class FinishedEducation {
             return true;
         }
         //Test all fields
-        if (!this.finishedEducationID.equals(other.finishedEducationID)){
+        if (!Objects.equals(this.finishedEducationID,other.finishedEducationID)){
             return false;
         }
-        if (!this.education.equals(other.education)){
+        if (!Objects.equals(this.education,other.education)){
             return false;
         }
-        return this.dateFinished.equals(other.dateFinished);
+        return Objects.equals(this.dateFinished,other.dateFinished);
     }
 }

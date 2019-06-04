@@ -1,5 +1,7 @@
 package Domain;
 
+import java.util.Objects;
+
 public class EducationWish {
     private final Integer educationWishID;
     private Education education;
@@ -152,12 +154,12 @@ public class EducationWish {
             return true;
         }
         //Test all fields
-        if (!this.educationWishID.equals(other.educationWishID)){
+        if (!Objects.equals(this.educationWishID,other.educationWishID)){
             return false;
         }
-        if (!this.education.equals(other.education)){
+        if (!Objects.equals(this.education,other.education)){
             return false;
         }
-        return this.priority.equals(other.priority);
+        return Objects.equals(this.priority,other.priority);
     }
 }

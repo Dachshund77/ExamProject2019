@@ -9,10 +9,10 @@
 <SplitPane dividerPositions="0.5" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="Application.Controller.SubControllers.Find.FindProviderSub">
     <items>
-        <fx:include fx:id="FindSub" source="FindSub.fxml"/>
+        <fx:include fx:id="findSub" source="FindSub.fxml"/>
         <TableView fx:id="providerTableView" prefHeight="200.0" prefWidth="200.0">
             <columns>
-                <TableColumn fx:id="providerIDColumn" prefWidth="75.0" text="ID"/>
+                <TableColumn fx:id="providerIDColumn" prefWidth="75.0" text="Provider ID"/>
                 <TableColumn fx:id="providerNameColumn" prefWidth="75.0" text="Name"/>
             </columns>
             <columnResizePolicy>

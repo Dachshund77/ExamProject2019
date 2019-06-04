@@ -8,11 +8,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 
@@ -253,7 +250,7 @@ public class EmployeeSub extends AbstractController {
             employeeFirstNameTextField.setText(selectedEmployee.getEmployeeFirstName());
             employeeLastNameTextField.setText(selectedEmployee.getEmployeeLastName());
             cprNrTextField.setText(selectedEmployee.getCprNr());
-            emailTextField.setText(selectedEmployee.geteMail());
+            emailTextField.setText(selectedEmployee.getEmail());
             phoneNrTextField.setText(selectedEmployee.getPhoneNr());
         }
         else

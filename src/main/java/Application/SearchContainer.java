@@ -5,6 +5,7 @@ import Foundation.DB;
 import Foundation.DbFacade;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Helper class that is used to pass search queries to the Database.
@@ -57,16 +58,17 @@ public class SearchContainer {
 
     /**
      * Converts String to Integer. If not able sets the field to null.
+     *
      * @param companyID new company ID
      */
     public void setCompanyID(String companyID) {
-        if(companyID == null || companyID.trim().isEmpty()) {
+        if (companyID == null || companyID.trim().isEmpty()) {
             this.companyID = null;
             return;
         }
         try {
             this.companyID = Integer.parseInt(companyID);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.companyID = null;
         }
 
@@ -78,12 +80,13 @@ public class SearchContainer {
 
     /**
      * Convert empty Strings to null.
+     *
      * @param cvrNr new cvr Nr.
      */
     public void setCvrNr(String cvrNr) {
-        if (cvrNr == null || cvrNr.trim().isEmpty()){
+        if (cvrNr == null || cvrNr.trim().isEmpty()) {
             this.cvrNr = null;
-        }else {
+        } else {
             this.cvrNr = cvrNr;
         }
     }
@@ -94,12 +97,13 @@ public class SearchContainer {
 
     /**
      * Converts empty Strings to null.
+     *
      * @param companyName new Company name
      */
     public void setCompanyName(String companyName) {
-        if (companyName == null || companyName.trim().isEmpty()){
+        if (companyName == null || companyName.trim().isEmpty()) {
             this.companyName = null;
-        }else {
+        } else {
             this.companyName = companyName;
         }
     }
@@ -114,16 +118,17 @@ public class SearchContainer {
 
     /**
      * Converts String to Integer. If not able sets the field to bull.
+     *
      * @param consultationID new Consultation ID
      */
     public void setConsultationID(String consultationID) {
-        if (consultationID == null || consultationID.trim().isEmpty()){
+        if (consultationID == null || consultationID.trim().isEmpty()) {
             this.consultationID = null;
             return;
         }
         try {
             this.consultationID = Integer.parseInt(consultationID);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.consultationID = null;
         }
     }
@@ -134,10 +139,11 @@ public class SearchContainer {
 
     /**
      * Converts empty Strings to null.
+     *
      * @param consultationName new consultation name.
      */
     public void setConsultationName(String consultationName) {
-        if (consultationName == null || consultationName.trim().isEmpty()){
+        if (consultationName == null || consultationName.trim().isEmpty()) {
             this.consultationName = null;
         } else {
             this.consultationName = consultationName;
@@ -170,16 +176,17 @@ public class SearchContainer {
 
     /**
      * Converts String to Integer. If not able the field is set to null.
+     *
      * @param employeeID new employee ID.
      */
     public void setEmployeeID(String employeeID) {
-        if (employeeID == null || employeeID.trim().isEmpty()){
+        if (employeeID == null || employeeID.trim().isEmpty()) {
             this.employeeID = null;
             return;
         }
         try {
             this.employeeID = Integer.parseInt(employeeID);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.employeeID = null;
         }
     }
@@ -190,10 +197,11 @@ public class SearchContainer {
 
     /**
      * Converts empty Strings to null
+     *
      * @param employeeFirstName new employee First name.
      */
     public void setEmployeeFirstName(String employeeFirstName) {
-        if (employeeFirstName == null || employeeFirstName.trim().isEmpty()){
+        if (employeeFirstName == null || employeeFirstName.trim().isEmpty()) {
             this.employeeFirstName = null;
         } else {
             this.employeeFirstName = employeeFirstName;
@@ -206,10 +214,11 @@ public class SearchContainer {
 
     /**
      * Converts empty Strings to null.
+     *
      * @param employeeLastName new employee last name.
      */
     public void setEmployeeLastName(String employeeLastName) {
-        if (employeeLastName== null || employeeLastName.trim().isEmpty()){
+        if (employeeLastName == null || employeeLastName.trim().isEmpty()) {
             this.employeeLastName = null;
         } else {
             this.employeeLastName = employeeLastName;
@@ -222,12 +231,13 @@ public class SearchContainer {
 
     /**
      * Converts empty String to null.
+     *
      * @param cprNr new cpr nr.
      */
     public void setCprNr(String cprNr) {
-        if (cprNr == null || cprNr.trim().isEmpty()){
+        if (cprNr == null || cprNr.trim().isEmpty()) {
             this.cprNr = null;
-        }else {
+        } else {
             this.cprNr = cprNr;
         }
     }
@@ -238,12 +248,13 @@ public class SearchContainer {
 
     /**
      * Converts empty Strings to null.
+     *
      * @param email new Email.
      */
     public void setEmail(String email) {
-        if (email == null || email.trim().isEmpty()){
+        if (email == null || email.trim().isEmpty()) {
             this.email = null;
-        }else {
+        } else {
             this.email = email;
         }
     }
@@ -254,10 +265,11 @@ public class SearchContainer {
 
     /**
      * Converts empty Strings to null.
+     *
      * @param phoneNr new phone nr.
      */
     public void setPhoneNr(String phoneNr) {
-        if (phoneNr == null || phoneNr.trim().isEmpty()){
+        if (phoneNr == null || phoneNr.trim().isEmpty()) {
             this.phoneNr = null;
         } else {
             this.phoneNr = phoneNr;
@@ -274,16 +286,17 @@ public class SearchContainer {
 
     /**
      * Converts String to Integer. If not able to the field is set to null.
+     *
      * @param interviewID new interview ID.
      */
     public void setInterviewID(String interviewID) {
-        if (interviewID == null || interviewID.trim().isEmpty()){
+        if (interviewID == null || interviewID.trim().isEmpty()) {
             this.interviewID = null;
             return;
         }
         try {
             this.interviewID = Integer.parseInt(interviewID);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.interviewID = null;
         }
     }
@@ -294,10 +307,11 @@ public class SearchContainer {
 
     /**
      * Converts empty Strings to null.
+     *
      * @param interviewName new interview name.
      */
     public void setInterviewName(String interviewName) {
-        if (interviewName == null || interviewName.trim().isEmpty()){
+        if (interviewName == null || interviewName.trim().isEmpty()) {
             this.interviewName = null;
         } else {
             this.interviewName = interviewName;
@@ -314,16 +328,17 @@ public class SearchContainer {
 
     /**
      * Converts String to Integer. If not able to the field is net to null.
+     *
      * @param amuNr new amu nr.
      */
     public void setAmuNr(String amuNr) {
-        if (amuNr == null || amuNr.trim().isEmpty()){
+        if (amuNr == null || amuNr.trim().isEmpty()) {
             this.AmuNr = null;
             return;
         }
         try {
             this.AmuNr = Integer.parseInt(amuNr);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.AmuNr = null;
         }
     }
@@ -334,12 +349,13 @@ public class SearchContainer {
 
     /**
      * Converts empty Strings to null.
+     *
      * @param educationName new education name
      */
     public void setEducationName(String educationName) {
-        if (educationName == null || educationName.trim().isEmpty()){
+        if (educationName == null || educationName.trim().isEmpty()) {
             this.educationName = null;
-        }else {
+        } else {
             this.educationName = educationName;
         }
     }
@@ -354,16 +370,17 @@ public class SearchContainer {
 
     /**
      * Converts String to Integer. If not able to the field is set to null.
+     *
      * @param educationNoOfDays new education number of days value.
      */
     public void setEducationNoOfDays(String educationNoOfDays) {
-        if (educationNoOfDays == null || educationNoOfDays.trim().isEmpty()){
+        if (educationNoOfDays == null || educationNoOfDays.trim().isEmpty()) {
             this.educationNoOfDays = null;
             return;
         }
         try {
             this.educationNoOfDays = Integer.parseInt(educationNoOfDays);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.educationNoOfDays = null;
         }
     }
@@ -394,16 +411,17 @@ public class SearchContainer {
 
     /**
      * Converts String to Integer. If not able to the field is set to null.
+     *
      * @param providerID new Provider ID
      */
     public void setProviderID(String providerID) {
-        if (providerID == null || providerID.trim().isEmpty()){
+        if (providerID == null || providerID.trim().isEmpty()) {
             this.providerID = null;
             return;
         }
         try {
             this.providerID = Integer.parseInt(providerID);
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             this.providerID = null;
         }
     }
@@ -414,10 +432,11 @@ public class SearchContainer {
 
     /**
      * Converts empty String to null.
+     *
      * @param providerName new Provider name.
      */
     public void setProviderName(String providerName) {
-        if (providerName == null || providerName.trim().isEmpty()){
+        if (providerName == null || providerName.trim().isEmpty()) {
             this.providerName = null;
         } else {
             this.providerName = providerName;
@@ -468,10 +487,10 @@ public class SearchContainer {
      * @return String with reason, null if none are detected.
      */
     public static String companyIDInvalidCause(String companyID) {
-        if (companyID == null){
+        if (companyID == null) {
             return null;
         }
-        if (companyID.trim().isEmpty()){
+        if (companyID.trim().isEmpty()) {
             return null;
         }
         try {
@@ -505,8 +524,8 @@ public class SearchContainer {
             return null;
         } else if (!cvrNr.matches("[0-9]+")) {
             return "CvrNr may not contain letters!";
-        } else if(cvrNr.length() > Company.getCvrExactLength()){
-            return "Cvr may not be longer than "+Company.getCvrExactLength()+" letters!";
+        } else if (cvrNr.length() > Company.getCvrExactLength()) {
+            return "Cvr may not be longer than " + Company.getCvrExactLength() + " letters!";
         }
         return null;
     }
@@ -534,7 +553,7 @@ public class SearchContainer {
         } else if (name.trim().isEmpty()) {
             return null;
         } else if (name.length() > Company.getCompanyNameMaxLength()) {
-            return "Company Name must be "+Company.getCompanyNameMaxLength()+" letters or less!";
+            return "Company Name must be " + Company.getCompanyNameMaxLength() + " letters or less!";
         }
         return null;
     }
@@ -544,20 +563,22 @@ public class SearchContainer {
     /**
      * Check if consultation ID is not null
      * consultationID should also be positive
+     *
      * @param consultationID Integer to be tested
      * @return True if valid
      */
-    public static boolean isValidConsultationID(Integer consultationID){
+    public static boolean isValidConsultationID(Integer consultationID) {
         return consultationIDInvalidCause(consultationID) == null;
     }
 
     /**
      * Check if consultation ID is not null
      * consultationID should also be positive
+     *
      * @param consultationID String to be tested
      * @return True if valid
      */
-    public static boolean isValidConsultationID(String consultationID){
+    public static boolean isValidConsultationID(String consultationID) {
         return consultationIDInvalidCause(consultationID) == null;
     }
 
@@ -565,11 +586,12 @@ public class SearchContainer {
      * returns the first reason for an error
      * if conditions are not met
      * Error = negative number
+     *
      * @param consultationID Integer to be tested
      * @return First invalid reason, null if valid
      */
-    public static String consultationIDInvalidCause(Integer consultationID){
-        if (consultationID != null && consultationID <= 0){
+    public static String consultationIDInvalidCause(Integer consultationID) {
+        if (consultationID != null && consultationID <= 0) {
             return "Company is must be positive!";
         }
         return null;
@@ -579,19 +601,20 @@ public class SearchContainer {
      * returns the first reason for an error
      * if conditions are not met
      * Error = negative number
+     *
      * @param consultationID String to be tested
      * @return First invalid reason, null if valid
      */
-    public static String consultationIDInvalidCause(String consultationID){
-        if (consultationID == null){
+    public static String consultationIDInvalidCause(String consultationID) {
+        if (consultationID == null) {
             return null;
         }
-        if (consultationID.trim().isEmpty()){
+        if (consultationID.trim().isEmpty()) {
             return null;
         }
-        try{
+        try {
             return consultationIDInvalidCause(Integer.parseInt(consultationID));
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return "Must be a number!";
         }
     }
@@ -599,11 +622,12 @@ public class SearchContainer {
     /**
      * If consultationName is null, an empty string and over 50 chars
      * it results in an error
+     *
      * @param consultationName String to be tested
      * @return First invalid reason, null if valid
      */
-    public static boolean isValidConsultationName(String consultationName){
-        return consultationNameInvalidCause(consultationName)==null;
+    public static boolean isValidConsultationName(String consultationName) {
+        return consultationNameInvalidCause(consultationName) == null;
     }
 
     /**
@@ -612,44 +636,44 @@ public class SearchContainer {
      * consultationName = NULL
      * consultationName = Empty string
      * consultationName = More than 50 chars
+     *
      * @param consultationName String to be tested
      * @return String with first invalid reason, Null if valid
      */
-    public static String consultationNameInvalidCause(String consultationName){
-        if (consultationName == null){
+    public static String consultationNameInvalidCause(String consultationName) {
+        if (consultationName == null) {
             return null;
-        }
-        else if (consultationName.trim().isEmpty()){
+        } else if (consultationName.trim().isEmpty()) {
             return null;
-        }
-        else if (consultationName.length() > Consultation.getConsultationNameMaxLength()){
-            return "Consultation name have to be less than "+Consultation.getConsultationNameMaxLength()+" characters";
+        } else if (consultationName.length() > Consultation.getConsultationNameMaxLength()) {
+            return "Consultation name have to be less than " + Consultation.getConsultationNameMaxLength() + " characters";
         }
         return null;
     }
 
     /**
      * checks if startDate is before endDate
+     *
      * @param startDate localDate at start
-     * @param endDate localDate at end
+     * @param endDate   localDate at end
      * @return True if valid combination
      */
-    public static boolean isValidDate(LocalDate startDate, LocalDate endDate){
-        return dateInvalidCause(startDate,endDate) == null;
+    public static boolean isValidDate(LocalDate startDate, LocalDate endDate) {
+        return dateInvalidCause(startDate, endDate) == null;
     }
 
     /**
      * Throws an error if dates are NULL
      * also throws an error if end date is before start date
+     *
      * @param startDate LocalDate at start
-     * @param endDate LocalDate at end
+     * @param endDate   LocalDate at end
      * @return String with first invalid reason, null if valid.
      */
-    public static String dateInvalidCause(LocalDate startDate, LocalDate endDate){
-        if (startDate == null || endDate == null){
+    public static String dateInvalidCause(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) {
             return null;
-        }
-        else if(endDate.isBefore(startDate)){
+        } else if (endDate.isBefore(startDate)) {
             return "start date must be before end date";
         }
         return null;
@@ -659,29 +683,32 @@ public class SearchContainer {
 
     /**
      * Amu nr may not be negative.
+     *
      * @param amuNr Integer to be tested.
      * @return True if valid.
      */
-    public static boolean isValidAmuNr(Integer amuNr){
-        return amuNrInvalidCause(amuNr)== null;
+    public static boolean isValidAmuNr(Integer amuNr) {
+        return amuNrInvalidCause(amuNr) == null;
     }
 
     /**
      * Amu nr may not be negative.
+     *
      * @param amuNr String to be tested.
      * @return True if valid.
      */
-    public static boolean isValidAmuNr(String amuNr){
+    public static boolean isValidAmuNr(String amuNr) {
         return amuNrInvalidCause(amuNr) == null;
     }
 
     /**
      * Return the first reason why an amuNr is invalid.
+     *
      * @param amuNr Integer to be tested.
      * @return String with first problem, null if valid.
      */
-    public static String amuNrInvalidCause(Integer amuNr){
-        if (amuNr != null && amuNr <= 0){
+    public static String amuNrInvalidCause(Integer amuNr) {
+        if (amuNr != null && amuNr <= 0) {
             return "Amu Nr must be positive!";
         }
         return null;
@@ -689,30 +716,31 @@ public class SearchContainer {
 
     /**
      * Return the first reason why an amuNr is invalid.
+     *
      * @param amuNr String to be tested.
      * @return String with first problem, null if valid.
      */
-    public static String amuNrInvalidCause(String amuNr){
-        if (amuNr == null){
+    public static String amuNrInvalidCause(String amuNr) {
+        if (amuNr == null) {
             return null;
         }
-        if (amuNr.trim().isEmpty()){
+        if (amuNr.trim().isEmpty()) {
             return null;
         }
-        try{
+        try {
             return amuNrInvalidCause(Integer.parseInt(amuNr));
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return "Must be a number!";
         }
     }
 
     /**
      * checks if educationName is valid
+     *
      * @param educationName String to be tested.
      * @return True if valid.
      */
-    public static boolean isValidEducationName(String educationName)
-    {
+    public static boolean isValidEducationName(String educationName) {
         return educationNameInvalidCause(educationName) == null;
     }
 
@@ -721,40 +749,38 @@ public class SearchContainer {
      * educationName = NULL
      * educationName = Empty string
      * educationName = Bigger than 30 chars
+     *
      * @param educationName String to be tested.
      * @return String with first problem, null if valid.
      */
-    public static String educationNameInvalidCause (String educationName)
-    {
-        if (educationName == null){
+    public static String educationNameInvalidCause(String educationName) {
+        if (educationName == null) {
             return null;
-        }
-        else if (educationName.trim().isEmpty()){
+        } else if (educationName.trim().isEmpty()) {
             return null;
-        }
-        else if (educationName.length() > Education.getEducationNameMaxLength()){
-            return "Education must consist of a name less than "+Education.getEducationNameMaxLength()+" characters";
+        } else if (educationName.length() > Education.getEducationNameMaxLength()) {
+            return "Education must consist of a name less than " + Education.getEducationNameMaxLength() + " characters";
         }
         return null;
     }
 
     /**
      * checks if NoOfDays arent null and within limit
+     *
      * @param noOfDays Integer to be tested
      * @return True if valid.
      */
-    public static boolean isValidNoOfDays(Integer noOfDays)
-    {
+    public static boolean isValidNoOfDays(Integer noOfDays) {
         return noOfDaysInvalidCause(noOfDays) == null;
     }
 
     /**
      * checks if NoOfDays arent null and within limit
+     *
      * @param noOfDays String to be tested.
      * @return True if valid.
      */
-    public static boolean isValidNoOfDays(String noOfDays)
-    {
+    public static boolean isValidNoOfDays(String noOfDays) {
         return noOfDaysInvalidCause(noOfDays) == null;
     }
 
@@ -763,18 +789,16 @@ public class SearchContainer {
      * NoOfDays = NULL
      * NoOfDays = Negative number
      * NoOfDays = Bigger than 15
+     *
      * @param NoOfDays Integer to be tested.
      * @return String with first found problem, null if valid.
      */
-    public static String noOfDaysInvalidCause(Integer NoOfDays)
-    {
-        if (NoOfDays == null){
+    public static String noOfDaysInvalidCause(Integer NoOfDays) {
+        if (NoOfDays == null) {
             return null;
-        }
-        else if (NoOfDays > Education.getNoOfDaysMaxNumber()){
-            return "Number of days cant be more than "+Education.getNoOfDaysMaxNumber()+"!";
-        }
-        else if (NoOfDays <= 0){
+        } else if (NoOfDays > Education.getNoOfDaysMaxNumber()) {
+            return "Number of days cant be more than " + Education.getNoOfDaysMaxNumber() + "!";
+        } else if (NoOfDays <= 0) {
             return "Number of days must be positive!";
         }
         return null;
@@ -785,18 +809,20 @@ public class SearchContainer {
      * NoOfDays = NULL
      * NoOfDays = Negative number
      * NoOfDays = Bigger than 15
+     *
      * @param noOfDays String to be tested.
      * @return String with first found problem,null if valid.
      */
     public static String noOfDaysInvalidCause(String noOfDays) {
-        if (noOfDays == null){
-            return null;
-        }if (noOfDays.trim().isEmpty()){
+        if (noOfDays == null) {
             return null;
         }
-        try{
+        if (noOfDays.trim().isEmpty()) {
+            return null;
+        }
+        try {
             return noOfDaysInvalidCause(Integer.parseInt(noOfDays));
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return "Must be a number!";
         }
     }
@@ -839,7 +865,7 @@ public class SearchContainer {
     public static String employeeFirstNameInvalidCause(String employeeFirstName) {
         if (employeeFirstName != null) {
             if (employeeFirstName.length() > Employee.getEmployeeFirstNameMaxLength()) {
-                return "First Name must be "+Employee.getEmployeeFirstNameMaxLength()+" or less letters!";
+                return "First Name must be " + Employee.getEmployeeFirstNameMaxLength() + " or less letters!";
             }
         }
         return null;
@@ -852,7 +878,7 @@ public class SearchContainer {
     public static String employeeLastNameInvalidCause(String employeeLastName) {
         if (employeeLastName != null) {
             if (employeeLastName.length() > Employee.getEmployeeLastNameMaxLength()) {
-                return "Last Name must be "+Employee.getEmployeeLastNameMaxLength()+" or less letters!";
+                return "Last Name must be " + Employee.getEmployeeLastNameMaxLength() + " or less letters!";
             }
         }
         return null;
@@ -870,7 +896,7 @@ public class SearchContainer {
             return null;
         }
         if (cprNr.length() > Employee.getCprExactLength()) {
-            return "CprNr must be "+Employee.getCprExactLength()+" letters or less!";
+            return "CprNr must be " + Employee.getCprExactLength() + " letters or less!";
         }
         if (!cprNr.matches("[0-9]+")) {
             return "CprNr may not contain letters!";
@@ -888,7 +914,7 @@ public class SearchContainer {
                 return null;
             }
             if (email.length() > Employee.getEmailMaxLength()) {
-                return "Email must be "+Employee.getEmailMaxLength()+" or less letters!";
+                return "Email must be " + Employee.getEmailMaxLength() + " or less letters!";
             }
         }
         return null;
@@ -907,7 +933,7 @@ public class SearchContainer {
                 return "Phone Number may not Contain letters!";
             }
             if (phoneNr.length() > Employee.getPhoneNrMaxLength()) {
-                return "Phone Number must be "+Employee.getPhoneNrMaxLength()+" or less letters!";
+                return "Phone Number must be " + Employee.getPhoneNrMaxLength() + " or less letters!";
             }
         }
         return null;
@@ -951,15 +977,15 @@ public class SearchContainer {
      * @return String with first found reason, null if Integer is valid.
      */
     public static String interviewIDInvalidCause(String interviewID) {
-        if (interviewID == null){
+        if (interviewID == null) {
             return null;
         }
-        if (interviewID.trim().isEmpty()){
+        if (interviewID.trim().isEmpty()) {
             return null;
         }
-        try{
+        try {
             return interviewIDInvalidCause(Integer.parseInt(interviewID));
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return "Must be a number!";
         }
     }
@@ -987,7 +1013,7 @@ public class SearchContainer {
         } else if (interviewName.trim().isEmpty()) {
             return null;
         } else if (interviewName.length() > Interview.getInterviewNameMaxLength()) {
-            return "Interview Name must be "+ Interview.getInterviewNameMaxLength() +" Characters or less!";
+            return "Interview Name must be " + Interview.getInterviewNameMaxLength() + " Characters or less!";
         }
         return null;
     }
@@ -1004,7 +1030,7 @@ public class SearchContainer {
         return invalidProviderIDCause(id) == null;
     }
 
-    public static boolean isValidProviderID(String id){
+    public static boolean isValidProviderID(String id) {
         return invalidProviderIDCause(id) == null;
     }
 
@@ -1030,15 +1056,15 @@ public class SearchContainer {
      * @return String with first reason or null if valid.
      */
     public static String invalidProviderIDCause(String id) {
-        if (id == null){
+        if (id == null) {
             return null;
         }
-        if (id.trim().isEmpty()){
+        if (id.trim().isEmpty()) {
             return null;
         }
-        try{
+        try {
             return invalidProviderIDCause(Integer.parseInt(id));
-        }catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return "Must be a number!";
         }
     }
@@ -1065,7 +1091,7 @@ public class SearchContainer {
         } else if (providerName.trim().isEmpty()) {
             return null;
         } else if (providerName.length() > Provider.getProviderNameMaxLength()) {
-            return "Provider Name must be "+ Provider.getProviderNameMaxLength() +" letters or less";
+            return "Provider Name must be " + Provider.getProviderNameMaxLength() + " letters or less";
         }
         return null;
     }
@@ -1078,73 +1104,73 @@ public class SearchContainer {
             return false;
         }
         SearchContainer other = (SearchContainer) obj;
-        if (this == other){
+        if (this == other) {
             return true;
         }
         //Test all fields
-        if (!this.companyID.equals(other.companyID)) {
+        if (!Objects.equals(this.companyID, other.companyID)) {
             return false;
         }
-        if (!this.cvrNr.equals(other.cvrNr)) {
+        if (!Objects.equals(this.cvrNr, other.cvrNr)) {
             return false;
         }
-        if (!this.companyName.equals(other.companyName)) {
+        if (!Objects.equals(this.companyName, other.companyName)) {
             return false;
         }
-        if (!this.consultationID.equals(other.consultationID)) {
+        if (!Objects.equals(this.consultationID, other.consultationID)) {
             return false;
         }
-        if (!this.consultationName.equals(other.consultationName)) {
+        if (!Objects.equals(this.consultationName, other.consultationName)) {
             return false;
         }
-        if (!this.consultationMinDate.equals(other.consultationMinDate)) {
+        if (!Objects.equals(this.consultationMinDate, other.consultationMinDate)) {
             return false;
         }
-        if (!this.consultationMaxDate.equals(other.consultationMaxDate)) {
+        if (!Objects.equals(this.consultationMaxDate, other.consultationMaxDate)) {
             return false;
         }
-        if (!this.employeeID.equals(other.employeeID)) {
+        if (!Objects.equals(this.employeeID, other.employeeID)) {
             return false;
         }
-        if (!this.employeeFirstName.equals(other.employeeFirstName)) {
+        if (!Objects.equals(this.employeeFirstName, other.employeeFirstName)) {
             return false;
         }
-        if (!this.employeeLastName.equals(other.employeeLastName)) {
+        if (!Objects.equals(this.employeeLastName, other.employeeLastName)) {
             return false;
         }
-        if (!this.cprNr.equals(other.cprNr)) {
+        if (!Objects.equals(this.cprNr, other.cprNr)) {
             return false;
         }
-        if (!this.email.equals(other.email)) {
+        if (!Objects.equals(this.email, other.email)) {
             return false;
         }
-        if (!this.phoneNr.equals(other.phoneNr)) {
+        if (!Objects.equals(this.phoneNr, other.phoneNr)) {
             return false;
         }
-        if (!this.interviewID.equals(other.interviewID)) {
+        if (!Objects.equals(this.interviewID, other.interviewID)) {
             return false;
         }
-        if (!this.interviewName.equals(other.interviewName)) {
+        if (!Objects.equals(this.interviewName, other.interviewName)) {
             return false;
         }
-        if (!this.AmuNr.equals(other.AmuNr)) {
+        if (!Objects.equals(this.AmuNr, other.AmuNr)) {
             return false;
         }
-        if (!educationName.equals(other.educationName)) {
+        if (!Objects.equals(educationName, other.educationName)) {
             return false;
         }
-        if (!educationNoOfDays.equals(other.educationNoOfDays)) {
+        if (!Objects.equals(educationNoOfDays, other.educationNoOfDays)) {
             return false;
         }
-        if (!this.educationMinDate.equals(other.educationMinDate)) {
+        if (!Objects.equals(this.educationMinDate, other.educationMinDate)) {
             return false;
         }
-        if (!this.educationMaxDate.equals(other.educationMaxDate)) {
+        if (!Objects.equals(this.educationMaxDate, other.educationMaxDate)) {
             return false;
         }
-        if (!this.providerID.equals(other.providerID)) {
+        if (!Objects.equals(this.providerID, other.providerID)) {
             return false;
         }
-        return this.providerName.equals(other.providerName);
+        return Objects.equals(this.providerName, other.providerName);
     }
 }

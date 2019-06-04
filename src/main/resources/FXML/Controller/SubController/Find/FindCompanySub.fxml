@@ -13,7 +13,7 @@
         <fx:include fx:id="findSub" source="FindSub.fxml"/>
         <TableView fx:id="companyTableView">
             <columns>
-                <TableColumn fx:id="companyIDColumn" prefWidth="50.0" text="ID"/>
+                <TableColumn fx:id="companyIDColumn" prefWidth="50.0" text="Company ID"/>
                 <TableColumn fx:id="cvrNrColumn" prefWidth="-1.0" text="Cvr NR"/>
                 <TableColumn fx:id="companyNameColumn" prefWidth="-1.0" text="Name"/>
             </columns>
