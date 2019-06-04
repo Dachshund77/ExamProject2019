@@ -3,18 +3,16 @@ package Application.Controller.SubControllers.Find;
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
 import Domain.Company;
-import Domain.Consultation;
 import Foundation.DbFacade;
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 /**
@@ -94,7 +92,7 @@ public class FindSub extends AbstractController {
     @FXML
     private Button resetButton; //TODO do i need this evt clean up
 
-    public ArrayList<Company> searchResult = new ArrayList<>();
+    private ObservableList<Company> searchResultList = FXCollections.observableArrayList();
     private SearchContainer previousSearchContainer = null;
 
     //BooleanBindings
@@ -731,7 +729,9 @@ public class FindSub extends AbstractController {
         //Connect to db
         try {
             DbFacade.connect();
-            searchResult = DbFacade.findCompanies(container);
+            searchResultList.clear();
+            searchResultList.addAll(DbFacade.findCompanies(container));
+
             DbFacade.disconnect();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -751,6 +751,8 @@ public class FindSub extends AbstractController {
         } else {
             resetToPreviousSearch();
         }
+        //Clear searchResultList
+        searchResultList.clear();
     }
 
     private void resetToEmpty() {
@@ -831,5 +833,9 @@ public class FindSub extends AbstractController {
     @FXML
     private void resetEducationMaxDate(ActionEvent event) {
         educationMaxDatePicker.setValue(null);
+    }
+
+    public ObservableList<Company> getSearchResultList() {
+        return searchResultList;
     }
 }

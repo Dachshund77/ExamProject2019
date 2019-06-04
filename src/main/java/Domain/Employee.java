@@ -90,7 +90,7 @@ public class Employee {
      * @param employeeFirstName new employee first name.
      */
     public void setEmployeeFirstName(String employeeFirstName) {
-        if (employeeFirstName.trim().isEmpty()) {
+        if (employeeFirstName==null ||employeeFirstName.trim().isEmpty()) {
             this.employeeFirstName = null;
         } else {
             this.employeeFirstName = employeeFirstName;
@@ -103,7 +103,7 @@ public class Employee {
      * @param employeeLastName new employee last name.
      */
     public void setEmployeeLastName(String employeeLastName) {
-        if (employeeLastName.trim().isEmpty()) {
+        if (employeeLastName == null ||employeeLastName.trim().isEmpty()) {
             this.employeeLastName = null;
         } else {
             this.employeeLastName = employeeLastName;
@@ -116,7 +116,7 @@ public class Employee {
      * @param cprNr new cprNr
      */
     public void setCprNr(String cprNr) {
-        if (cprNr.trim().isEmpty()) {
+        if (cprNr == null || cprNr.trim().isEmpty()) {
             this.cprNr = null;
         } else {
             this.cprNr = cprNr;
@@ -129,7 +129,7 @@ public class Employee {
      * @param eMail new email.
      */
     public void seteMail(String eMail) {
-        if (eMail.trim().isEmpty()) {
+        if (eMail == null || eMail.trim().isEmpty()) {
             this.eMail = null;
         } else {
             this.eMail = eMail;
@@ -142,7 +142,7 @@ public class Employee {
      * @param phoneNr new Phone nr.
      */
     public void setPhoneNr(String phoneNr) {
-        if (phoneNr.trim().isEmpty()) {
+        if (phoneNr == null || phoneNr.trim().isEmpty()) {
             this.phoneNr = null;
         } else {
             this.phoneNr = phoneNr;

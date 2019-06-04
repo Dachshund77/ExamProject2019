@@ -80,4 +80,12 @@ public class EmployeeTest {
         assertFalse(Employee.isValidPhoneNr("124a21")); //contain letters
         assertFalse(Employee.isValidPhoneNr("-12421")); //negative number
     }
+
+    @Test
+    public void equals1() {
+        Employee employee1 = new Employee(null,null,null,null,null,null,null);
+        Employee employee2 = new Employee(null,null,null,null,null,null,null);
+
+        assertEquals(employee1,employee2);
+    }
 }

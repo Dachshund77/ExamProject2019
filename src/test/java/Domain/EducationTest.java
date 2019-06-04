@@ -60,4 +60,11 @@ public class EducationTest {
         assertFalse(Education.isValidNoOfDays("   ")); //If it may noy be null it may be empty
     }
 
+    @Test
+    public void equals1() {
+        Education education1 = new Education(null,null,null,null,null,null);
+        Education education2 = new Education(null,null,null,null,null,null);
+
+        assertEquals(education1,education2);
+    }
 }

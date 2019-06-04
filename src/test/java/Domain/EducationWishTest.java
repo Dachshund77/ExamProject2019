@@ -42,4 +42,12 @@ public class EducationWishTest {
         assertFalse(EducationWish.isValidPriority((String)null));
         assertFalse(EducationWish.isValidPriority((Integer)null));
     }
+
+    @Test
+    public void equals1() {
+        EducationWish educationWish1 = new EducationWish(null,null,null);
+        EducationWish educationWish2 = new EducationWish(null,null,null);
+
+        assertEquals(educationWish1,educationWish2);
+    }
 }

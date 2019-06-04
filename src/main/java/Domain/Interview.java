@@ -80,7 +80,7 @@ public class Interview {
      * @param interviewName new interview Name.
      */
     public void setInterviewName(String interviewName) {
-        if (interviewName.trim().isEmpty()){
+        if (interviewName == null || interviewName.trim().isEmpty()){
             this.interviewName = null;
         } else {
             this.interviewName = interviewName;

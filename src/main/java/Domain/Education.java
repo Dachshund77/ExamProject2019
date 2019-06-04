@@ -71,7 +71,7 @@ public class Education {
      * @param educationName new educationName
      */
     public void setEducationName(String educationName) {
-        if (educationName.trim().isEmpty()){
+        if (educationName == null || educationName.trim().isEmpty()){
             this.educationName = null;
         } else {
             this.educationName = educationName;
@@ -83,7 +83,7 @@ public class Education {
      * @param description new description.
      */
     public void setDescription(String description) {
-        if (description.trim().isEmpty()){
+        if (description == null || description.trim().isEmpty()){
             this.description = null;
         }else {
             this.description = description;

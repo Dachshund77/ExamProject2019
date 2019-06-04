@@ -34,4 +34,12 @@ public class ProviderTest {
         //Way to long
         assertFalse(Provider.isValidProviderName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
+
+    @Test
+    public void equals1() {
+        Provider provider1 = new Provider(null,null);
+        Provider provider2 = new Provider(null,null);
+
+        assertEquals(provider1,provider2);
+    }
 }

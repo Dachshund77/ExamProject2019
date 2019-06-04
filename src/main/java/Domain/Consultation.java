@@ -53,7 +53,7 @@ public class Consultation {
      * @param consultationName new consultationName.
      */
     public void setConsultationName(String consultationName) {
-        if (consultationName.trim().isEmpty()){
+        if (consultationName == null || consultationName.trim().isEmpty()){
             this.consultationName = null;
         }else {
             this.consultationName = consultationName;

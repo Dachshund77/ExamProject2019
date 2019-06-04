@@ -47,4 +47,12 @@ public class CompanyTest {
         //Way to long
         assertFalse(Company.isValidCompanyName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
+
+    @Test
+    public void equals1() {
+        Company testCompany1 = new Company(null,null,null,null,null);
+        Company testCompany2 = new Company(null,null,null,null,null);
+
+        assertEquals(testCompany1, testCompany2);
+    }
 }

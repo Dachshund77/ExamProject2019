@@ -30,7 +30,7 @@ public class Provider {
      * @param providerName new provider name.
      */
     public void setProviderName(String providerName) {
-        if (providerName.trim().isEmpty()){
+        if (providerName == null || providerName.trim().isEmpty()){
             this.providerName = null;
         } else {
             this.providerName = providerName;
