@@ -10,26 +10,29 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Domain.EmployeeSub">
+    
     <center>
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="119.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="368.0" minWidth="10.0" prefWidth="237.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="353.0" minWidth="10.0" prefWidth="244.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="368.0" minWidth="10.0" prefWidth="239.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="353.0" minWidth="10.0" prefWidth="121.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="353.0" minWidth="10.0" prefWidth="123.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="15.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="144.0" minHeight="4.0" prefHeight="25.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="129.0" minHeight="15.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="144.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="181.0" minHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="159.0" minHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="165.0" minHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="165.0" minHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="165.0" minHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="343.0" minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="343.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="343.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="343.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
                 <Label alignment="CENTER" prefHeight="17.0" prefWidth="142.0" text="Employee first name" GridPane.rowIndex="2" />
@@ -65,7 +68,7 @@
                     <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                     </GridPane.margin></TextField>
-                <TableView fx:id="interviewTableView" prefHeight="298.0" prefWidth="234.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="7">
+                <TableView fx:id="interviewTableView" prefHeight="121.0" prefWidth="234.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="7">
                     <columns>
                         <TableColumn fx:id="interviewIDColumn" prefWidth="113.0" text="Interview ID" />
                         <TableColumn fx:id="interviewNameColumn" prefWidth="120.0" text="Interview name" />
@@ -83,6 +86,8 @@
                         <Tooltip fx:id="emailTooltip" text="Empty Tooltip" />
                     </tooltip>
                 </TextField>
+            <Button fx:id="addInterview" mnemonicParsing="false" prefWidth="110.0" text="Add interview" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Button fx:id="removeInterview" mnemonicParsing="false" onAction="#handleRemoveInterview" prefWidth="110.0" text="Remove interview" GridPane.columnIndex="3" GridPane.rowIndex="8" />
             </children>
         </GridPane>
     </center>

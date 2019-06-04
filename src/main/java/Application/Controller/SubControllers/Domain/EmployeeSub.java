@@ -5,9 +5,12 @@ import Domain.Employee;
 import Domain.Interview;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
@@ -39,12 +42,16 @@ public class EmployeeSub extends AbstractController {
     private SimpleBooleanProperty eMailIsValid = new SimpleBooleanProperty(true);
     private SimpleBooleanProperty phoneNrIsValid = new SimpleBooleanProperty(true);
 
+    ObservableList<Interview> list = FXCollections.observableArrayList();
+
     /**
      * Initalizes the controller
      * Setting up listeners to TextFields and binding them
+     * Sets up a TableView if an employee has been selected, with interview data for them.
      */
     public void initialize(){
-        if(selectedEmployee == null)
+
+        if(selectedEmployee != null)
         {
             interviewTableView.setVisible(false);
         }
@@ -53,7 +60,20 @@ public class EmployeeSub extends AbstractController {
         cprNrTextField.textProperty().addListener((observable -> handleCprNrInput()));
         emailTextField.textProperty().addListener((observable -> handleEmailInput()));
         phoneNrTextField.textProperty().addListener((observable -> handlePhoneNrInput()));
-        //setup Tableview
+
+        interviewIDColumn.setCellValueFactory(new PropertyValueFactory<>("interviewID"));
+        interviewNameColumn.setCellValueFactory(new PropertyValueFactory<>("interviewName"));
+
+        interviewTableView.getColumns().setAll(interviewIDColumn, interviewNameColumn);
+        Interview TestInterview =  new Interview(1,"Test 1",null,null,null,null,null,null,null);
+        Interview TestInterview2 =  new Interview(2,"Test 2",null,null,null,null,null,null,null);
+        Interview TestInterview3 =  new Interview(3,"Test 3",null,null,null,null,null,null,null);
+
+        interviewTableView.setItems(list);
+
+        list.add(TestInterview);
+        list.add(TestInterview2);
+        list.add(TestInterview3);
 
         isValid = new BooleanBinding() {
             {
@@ -98,9 +118,6 @@ public class EmployeeSub extends AbstractController {
      * If the input is wrong, it displays a tooltip with the error and makes the field red
      */
     public void handleFirstNameInput(){
-        // whenever input in textfield is detected, react on it
-        // should update its tooltip
-        // should also update is valid
         if(Employee.isValidEmployeeFirstName(employeeFirstNameTextField.getText()))
         {
             employeeFirstNameTextField.setTooltip(null);
@@ -200,7 +217,8 @@ public class EmployeeSub extends AbstractController {
     }
 
     public void handleRemoveInterview(ActionEvent event){
-
+        Interview selectedData = interviewTableView.getSelectionModel().getSelectedItem();
+        list.remove(selectedData);
     }
 
     public void handleAddInterview(ActionEvent event){

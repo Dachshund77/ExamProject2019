@@ -7,6 +7,7 @@ import Domain.Employee;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 
 import java.sql.SQLException;
@@ -18,7 +19,18 @@ public class AlterEmployee extends AbstractController {
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
+    @FXML
+    private Button resetButton;
+
+    @FXML
+    private Button cancelButton;
+
+    @FXML
+    private Button changeAction;
+
     private SearchContainer searchContainer;
+
+    private Employee selectedEmployee;
 
     /**
      * This will bind the confirmation button to the subcontroller
@@ -28,7 +40,6 @@ public class AlterEmployee extends AbstractController {
     @FXML
     private void initialize(){
         confirmationButton.disableProperty().bind(employeeSubController.isValid.not());
-
     }
 
     @Override
