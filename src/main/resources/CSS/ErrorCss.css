@@ -8,8 +8,8 @@
     -fx-background-color: red;
 }
 
-.TitledPane-Error > .title   {
-    -fx-background-color: red;
+.TitledPane-Error {
+    -fx-text-fill: red;
 }
 
 .DatePicker-Error .text-field{

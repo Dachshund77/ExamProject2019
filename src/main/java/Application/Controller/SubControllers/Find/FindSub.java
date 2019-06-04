@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
+@SuppressWarnings("Duplicates")
 public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some point this class neec to be claned up, we realy dont validate input we do that at the SearchContainer
 
     //Company
@@ -106,12 +107,14 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
         companyValid = new BooleanBinding() {
             {
-                bind(isValidCompanyID);
-                bind(isValidCvrNr);
-                bind(isValidCompanyName);
+                super.bind(isValidCompanyID);
+                super.bind(isValidCvrNr);
+                super.bind(isValidCompanyName);
             }
+
             @Override
             protected boolean computeValue() {
+                System.out.println("FindSub.computeValue company valid");
                 return handleCompanySectionInput();
             }
         };
@@ -124,12 +127,14 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
         consultationValid = new BooleanBinding() {
             {
-                bind(isValidConsultationID);
-                bind(isValidConsultationName);
-                bind(isValidConsultationDates);
+                super.bind(isValidConsultationID);
+                super.bind(isValidConsultationName);
+                super.bind(isValidConsultationDates);
             }
+
             @Override
             protected boolean computeValue() {
+                System.out.println("FindSub.computeValue consultatiobalid");
                 return handleConsultationSectionInput();
             }
         };
@@ -139,21 +144,23 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
         employeeIDTextField.textProperty().addListener(observable -> handleEmpIdInput());
         empFirstNameTextField.textProperty().addListener(observable -> handleEmpFirstNameInput());
         empLastNameTextField.textProperty().addListener(observable -> handleEmpLastNameInput());
-        cprNrTextField.textProperty().addListener(observable ->  handleCprNrInput());
+        cprNrTextField.textProperty().addListener(observable -> handleCprNrInput());
         eMailTextField.textProperty().addListener(observable -> handleEmailInput());
         phoneNrTextField.textProperty().addListener(observable -> handlePhoneNrInput());
 
         employeeValid = new BooleanBinding() {
             {
-                bind(isValidEmpID);
-                bind(isValidEmpFirstName);
-                bind(isValidEmpLastName);
-                bind(isValidCprNr);
-                bind(isValidEmail);
-                bind(isValidPhoneNr);
+                super.bind(isValidEmpID);
+                super.bind(isValidEmpFirstName);
+                super.bind(isValidEmpLastName);
+                super.bind(isValidCprNr);
+                super.bind(isValidEmail);
+                super.bind(isValidPhoneNr);
             }
+
             @Override
             protected boolean computeValue() {
+                System.out.println("FindSub.computeValue employeevalid");
                 return handleEmployeeSectionInput();
             }
         };
@@ -164,11 +171,13 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
         interviewValid = new BooleanBinding() {
             {
-                bind(isValidInterviewID);
-                bind(isValidInterviewName);
+                super.bind(isValidInterviewID);
+                super.bind(isValidInterviewName);
             }
+
             @Override
             protected boolean computeValue() {
+                System.out.println("FindSub.computeValue interview valid");
                 return handleInterviewSectionInput();
             }
         };
@@ -182,13 +191,15 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
         educationValid = new BooleanBinding() {
             {
-                bind(isValidAmuNr);
-                bind(isValidEducationName);
-                bind(isValidNoOfEducationDays);
-                bind(isValidEducationDates);
+                super.bind(isValidAmuNr);
+                super.bind(isValidEducationName);
+                super.bind(isValidNoOfEducationDays);
+                super.bind(isValidEducationDates);
             }
+
             @Override
             protected boolean computeValue() {
+                System.out.println("FindSub.computeValue education valid");
                 return handleEducationSectionInput();
             }
         };
@@ -199,11 +210,13 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
 
         providerValid = new BooleanBinding() {
             {
-                bind(isValidProviderID);
-                bind(isValidProviderName);
+                super.bind(isValidProviderID);
+                super.bind(isValidProviderName);
             }
+
             @Override
             protected boolean computeValue() {
+                System.out.println("FindSub.computeValue provider valid");
                 return handleProviderSectionInput();
             }
         };
@@ -211,15 +224,17 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
         //Master binding(search button)
         allValid = new BooleanBinding() {
             {
-                bind(companyValid);
-                bind(consultationValid);
-                bind(employeeValid);
-                bind(interviewValid);
-                bind(educationValid);
-                bind(providerValid);
+                super.bind(companyValid);
+                super.bind(consultationValid);
+                super.bind(employeeValid);
+                super.bind(interviewValid);
+                super.bind(educationValid);
+                super.bind(providerValid);
             }
+
             @Override
             protected boolean computeValue() {
+                System.out.println("FindSub.computeValue all valid");
                 return isAllValid();
             }
         };
@@ -238,204 +253,411 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
     }
 
     private void handleCompanyIdInput() {
-        if (SearchContainer.isValidCompanyID(companyIDTextField.getText())){
+        if (SearchContainer.isValidCompanyID(companyIDTextField.getText())) {
             companyIDTextField.setTooltip(null);
             isValidCompanyID.set(true);
             companyIDTextField.getStyleClass().removeAll("TextField-Error");
-        } else{
+        } else {
             String invalidCause = SearchContainer.companyIDInvalidCause(companyIDTextField.getText());
             companyIDTextField.setTooltip(new Tooltip(invalidCause));
             isValidCompanyID.set(false);
-            if (!companyIDTextField.getStyleClass().contains("TextField-Error")){
+            if (!companyIDTextField.getStyleClass().contains("TextField-Error")) {
                 companyIDTextField.getStyleClass().add("TextField-Error");
             }
         }
     }
 
     private void handleCvrNrInput() {
-        if (SearchContainer.isValidCvrNr(cvrNrTextField.getText())){
+        if (SearchContainer.isValidCvrNr(cvrNrTextField.getText())) {
             cvrNrTextField.setTooltip(null);
             isValidCvrNr.set(true);
             cvrNrTextField.getStyleClass().removeAll("TextField-Error");
-        } else{
+        } else {
             String invalidCause = SearchContainer.cvrNrInvalidCause(cvrNrTextField.getText());
             cvrNrTextField.setTooltip(new Tooltip(invalidCause));
             isValidCvrNr.set(false);
-            if (!cvrNrTextField.getStyleClass().contains("TextField-Error")){
+            if (!cvrNrTextField.getStyleClass().contains("TextField-Error")) {
                 cvrNrTextField.getStyleClass().add("TextField-Error");
             }
         }
     }
 
     private void handleCompanyNameInput() {
-        if (SearchContainer.isValidCompanyName(companyNameTextField.getText())){
+        if (SearchContainer.isValidCompanyName(companyNameTextField.getText())) {
             companyNameTextField.setTooltip(null);
             isValidCompanyName.set(true);
             companyNameTextField.getStyleClass().removeAll("TextField-Error");
-        } else{
+        } else {
             String invalidCause = SearchContainer.companyNameInvalidClause(companyNameTextField.getText());
             companyNameTextField.setTooltip(new Tooltip(invalidCause));
             isValidCompanyName.set(false);
-            if (!companyNameTextField.getStyleClass().contains("TextField-Error")){
+            if (!companyNameTextField.getStyleClass().contains("TextField-Error")) {
                 companyNameTextField.getStyleClass().add("TextField-Error");
             }
         }
     }
 
     private void handleConsultationIdInput() {
-        if (SearchContainer.isValidConsultationID(consultationIDTextField.getText())){
+        if (SearchContainer.isValidConsultationID(consultationIDTextField.getText())) {
             consultationIDTextField.setTooltip(null);
             isValidConsultationID.set(true);
             consultationIDTextField.getStyleClass().removeAll("TextField-Error");
-        } else{
+        } else {
             String invalidCause = SearchContainer.consultationIDInvalidCause(consultationIDTextField.getText());
             consultationIDTextField.setTooltip(new Tooltip(invalidCause));
             isValidConsultationID.set(false);
-            if (!consultationIDTextField.getStyleClass().contains("TextField-Error")){
+            if (!consultationIDTextField.getStyleClass().contains("TextField-Error")) {
                 consultationIDTextField.getStyleClass().add("TextField-Error");
             }
         }
     }
 
     private void handleConsultationNameInput() {
-        if (SearchContainer.isValidCompanyName(consultationNameTextField.getText())){
+        if (SearchContainer.isValidCompanyName(consultationNameTextField.getText())) {
             consultationNameTextField.setTooltip(null);
             isValidConsultationName.set(true);
             consultationNameTextField.getStyleClass().removeAll("TextField-Error");
-        } else{
+        } else {
             String invalidCause = SearchContainer.consultationNameInvalidCause(consultationNameTextField.getText());
             consultationNameTextField.setTooltip(new Tooltip(invalidCause));
             isValidConsultationName.set(false);
-            if (!consultationNameTextField.getStyleClass().contains("TextField-Error")){
+            if (!consultationNameTextField.getStyleClass().contains("TextField-Error")) {
                 consultationNameTextField.getStyleClass().add("TextField-Error");
             }
         }
     }
 
+    @SuppressWarnings("Duplicates")
     private void handleConsultationDateInput() {
-        if (SearchContainer.isValidDate(consultationMinDatePicker.getValue(), consultationMaxDatePicker.getValue())){
+        if (SearchContainer.isValidDate(consultationMinDatePicker.getValue(), consultationMaxDatePicker.getValue())) {
             consultationMinDatePicker.setTooltip(null);
             consultationMaxDatePicker.setTooltip(null);
             isValidConsultationDates.set(true);
             consultationMinDatePicker.getStyleClass().removeAll("DatePicker-Error");
             consultationMaxDatePicker.getStyleClass().removeAll("DatePicker-Error");
-        } else{
+        } else {
             String invalidCause = SearchContainer.dateInvalidCause(consultationMinDatePicker.getValue(), consultationMaxDatePicker.getValue());
             consultationMinDatePicker.setTooltip(new Tooltip(invalidCause));
             consultationMaxDatePicker.setTooltip(new Tooltip(invalidCause));
             isValidConsultationName.set(false);
-            if (!consultationMinDatePicker.getStyleClass().contains("DatePicker-Error")){
+            if (!consultationMinDatePicker.getStyleClass().contains("DatePicker-Error")) {
                 consultationMinDatePicker.getStyleClass().add("DatePicker-Error");
             }
-            if (!consultationMaxDatePicker.getStyleClass().contains("DatePicker-Error")){
+            if (!consultationMaxDatePicker.getStyleClass().contains("DatePicker-Error")) {
                 consultationMaxDatePicker.getStyleClass().add("DatePicker-Error");
             }
         }
     }
 
     private void handleEmpIdInput() {
-        if (SearchContainer.isValidEmployeeID(employeeIDTextField.getText())){
+        if (SearchContainer.isValidEmployeeID(employeeIDTextField.getText())) {
             employeeIDTextField.setTooltip(null);
             isValidEmpID.set(true);
             employeeIDTextField.getStyleClass().removeAll("TextField-Error");
-        } else{
+        } else {
             String invalidCause = SearchContainer.employeeIDInvalidCause(employeeIDTextField.getText());
             employeeIDTextField.setTooltip(new Tooltip(invalidCause));
             isValidEmpID.set(false);
-            if (!employeeIDTextField.getStyleClass().contains("TextField-Error")){
+            if (!employeeIDTextField.getStyleClass().contains("TextField-Error")) {
                 employeeIDTextField.getStyleClass().add("TextField-Error");
             }
         }
-
     }
 
     private void handleEmpFirstNameInput() {
-
+        if (SearchContainer.isValidEmployeeFirstName(empFirstNameTextField.getText())) {
+            empFirstNameTextField.setTooltip(null);
+            isValidEmpFirstName.set(true);
+            empFirstNameTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.employeeFirstNameInvalidCause(empFirstNameTextField.getText());
+            empFirstNameTextField.setTooltip(new Tooltip(invalidCause));
+            isValidEmpFirstName.set(false);
+            if (!empFirstNameTextField.getStyleClass().contains("TextField-Error")) {
+                empFirstNameTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleEmpLastNameInput() {
-
+        if (SearchContainer.isValidEmployeeLastName(empLastNameTextField.getText())) {
+            empLastNameTextField.setTooltip(null);
+            isValidEmpLastName.set(true);
+            empLastNameTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.employeeLastNameInvalidCause(empLastNameTextField.getText());
+            empLastNameTextField.setTooltip(new Tooltip(invalidCause));
+            isValidEmpLastName.set(false);
+            if (!empLastNameTextField.getStyleClass().contains("TextField-Error")) {
+                empLastNameTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleCprNrInput() {
-
+        if (SearchContainer.isValidCprNr(cprNrTextField.getText())) {
+            cprNrTextField.setTooltip(null);
+            isValidCprNr.set(true);
+            cprNrTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.cprNrInvalidCause(cprNrTextField.getText());
+            cprNrTextField.setTooltip(new Tooltip(invalidCause));
+            isValidCprNr.set(false);
+            if (!cprNrTextField.getStyleClass().contains("TextField-Error")) {
+                cprNrTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleEmailInput() {
-
+        if (SearchContainer.isValidEmail(eMailTextField.getText())) {
+            eMailTextField.setTooltip(null);
+            isValidEmail.set(true);
+            eMailTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.eMailInvalidCause(eMailTextField.getText());
+            eMailTextField.setTooltip(new Tooltip(invalidCause));
+            isValidEmail.set(false);
+            if (!eMailTextField.getStyleClass().contains("TextField-Error")) {
+                eMailTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handlePhoneNrInput() {
-
+        if (SearchContainer.isValidPhoneNr(phoneNrTextField.getText())) {
+            phoneNrTextField.setTooltip(null);
+            isValidPhoneNr.set(true);
+            phoneNrTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.phoneNumberInvalidCause(phoneNrTextField.getText());
+            phoneNrTextField.setTooltip(new Tooltip(invalidCause));
+            isValidPhoneNr.set(false);
+            if (!phoneNrTextField.getStyleClass().contains("TextField-Error")) {
+                phoneNrTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleInterviewIdInput() {
-
+        if (SearchContainer.isValidInterviewID(interviewIDTextField.getText())) {
+            interviewIDTextField.setTooltip(null);
+            isValidInterviewID.set(true);
+            interviewIDTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.interviewIDInvalidCause(interviewIDTextField.getText());
+            interviewIDTextField.setTooltip(new Tooltip(invalidCause));
+            isValidInterviewID.set(false);
+            if (!interviewIDTextField.getStyleClass().contains("TextField-Error")) {
+                interviewIDTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleInterviewNameInput() {
-
+        if (SearchContainer.isValidInterviewName(interviewsNameTextField.getText())) {
+            interviewsNameTextField.setTooltip(null);
+            isValidInterviewName.set(true);
+            interviewsNameTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.interviewNameInvalidCause(interviewsNameTextField.getText());
+            interviewsNameTextField.setTooltip(new Tooltip(invalidCause));
+            isValidInterviewName.set(false);
+            if (!interviewsNameTextField.getStyleClass().contains("TextField-Error")) {
+                interviewsNameTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleAmuNrInput() {
-
+        if (SearchContainer.isValidAmuNr(amuNrTextField.getText())) {
+            amuNrTextField.setTooltip(null);
+            isValidAmuNr.set(true);
+            amuNrTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.amuNrInvalidCause(amuNrTextField.getText());
+            amuNrTextField.setTooltip(new Tooltip(invalidCause));
+            isValidAmuNr.set(false);
+            if (!amuNrTextField.getStyleClass().contains("TextField-Error")) {
+                amuNrTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleEducationNameInput() {
-
+        if (SearchContainer.isValidEducationName(educationNameTextField.getText())) {
+            educationNameTextField.setTooltip(null);
+            isValidEducationName.set(true);
+            educationNameTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.educationNameInvalidCause(educationNameTextField.getText());
+            educationNameTextField.setTooltip(new Tooltip(invalidCause));
+            isValidEducationName.set(false);
+            if (!educationNameTextField.getStyleClass().contains("TextField-Error")) {
+                educationNameTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleNoOfEducationDaysInput() {
-
+        if (SearchContainer.isValidNoOfDays(educationNoOfDaysTextField.getText())) {
+            educationNoOfDaysTextField.setTooltip(null);
+            isValidNoOfEducationDays.set(true);
+            educationNoOfDaysTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.noOfDaysInvalidCause(educationNoOfDaysTextField.getText());
+            educationNoOfDaysTextField.setTooltip(new Tooltip(invalidCause));
+            isValidNoOfEducationDays.set(false);
+            if (!educationNoOfDaysTextField.getStyleClass().contains("TextField-Error")) {
+                educationNoOfDaysTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
+    @SuppressWarnings("Duplicates")
     private void handleEducationDateInput() {
-
+        if (SearchContainer.isValidDate(educationMinDatePicker.getValue(), educationMaxDatePicker.getValue())) {
+            educationMinDatePicker.setTooltip(null);
+            educationMaxDatePicker.setTooltip(null);
+            isValidEducationDates.set(true);
+            educationMinDatePicker.getStyleClass().removeAll("DatePicker-Error");
+            educationMaxDatePicker.getStyleClass().removeAll("DatePicker-Error");
+        } else {
+            String invalidCause = SearchContainer.dateInvalidCause(educationMinDatePicker.getValue(), educationMaxDatePicker.getValue());
+            educationMinDatePicker.setTooltip(new Tooltip(invalidCause));
+            educationMaxDatePicker.setTooltip(new Tooltip(invalidCause));
+            isValidEducationDates.set(false);
+            if (!educationMinDatePicker.getStyleClass().contains("DatePicker-Error")) {
+                educationMinDatePicker.getStyleClass().add("DatePicker-Error");
+            }
+            if (!educationMaxDatePicker.getStyleClass().contains("DatePicker-Error")) {
+                educationMaxDatePicker.getStyleClass().add("DatePicker-Error");
+            }
+        }
     }
 
     private void handleProviderIdInput() {
-
+        if (SearchContainer.isValidProviderID(providerIDTextField.getText())) {
+            providerIDTextField.setTooltip(null);
+            isValidProviderID.set(true);
+            providerIDTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.invalidProviderIDCause(providerIDTextField.getText());
+            providerIDTextField.setTooltip(new Tooltip(invalidCause));
+            isValidProviderID.set(false);
+            if (!providerIDTextField.getStyleClass().contains("TextField-Error")) {
+                providerIDTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
     private void handleProviderNameInput() {
-
+        if (SearchContainer.isValidProviderName(providerNameTextField.getText())) {
+            providerNameTextField.setTooltip(null);
+            isValidProviderName.set(true);
+            providerNameTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = SearchContainer.providerNameInvalidCause(providerNameTextField.getText());
+            providerNameTextField.setTooltip(new Tooltip(invalidCause));
+            isValidProviderName.set(false);
+            if (!providerNameTextField.getStyleClass().contains("TextField-Error")) {
+                providerNameTextField.getStyleClass().add("TextField-Error");
+            }
+        }
     }
 
-    private boolean handleCompanySectionInput(){
-        if (isValidCompanyID.get() && isValidCompanyName.get() && isValidCvrNr.get()){
+    @SuppressWarnings("Duplicates")
+    private boolean handleCompanySectionInput() {
+        if (isValidCompanyID.get() && isValidCompanyName.get() && isValidCvrNr.get()) {
             companyPane.getStyleClass().removeAll("TitledPane-Error");
             return true;
-        }else {
-            if (!companyPane.getStyleClass().contains("TitledPane-Error")){
+        } else {
+            if (!companyPane.getStyleClass().contains("TitledPane-Error")) {
                 companyPane.getStyleClass().add("TitledPane-Error");
             }
             return false;
         }
     }
 
-    private boolean handleConsultationSectionInput(){
-        return true;
+
+    @SuppressWarnings("Duplicates")
+    private boolean handleConsultationSectionInput() {
+        if (isValidConsultationID.get() && isValidConsultationName.get() && isValidConsultationDates.get()) {
+            consultationPane.getStyleClass().removeAll("TitledPane-Error");
+            return true;
+        } else {
+            if (!consultationPane.getStyleClass().contains("TitledPane-Error")) {
+                consultationPane.getStyleClass().add("TitledPane-Error");
+            }
+            return false;
+        }
     }
 
-    private boolean handleEmployeeSectionInput(){
-        return true;
+
+    @SuppressWarnings("Duplicates")
+    private boolean handleEmployeeSectionInput() {
+        if (isValidEmpID.get() && isValidEmpFirstName.get() && isValidEmpLastName.get() && isValidEmail.get() && isValidPhoneNr.get() && isValidCprNr.get()) {
+            employeePane.getStyleClass().removeAll("TitledPane-Error");
+            return true;
+        } else {
+            if (!employeePane.getStyleClass().contains("TitledPane-Error")) {
+                employeePane.getStyleClass().add("TitledPane-Error");
+            }
+            return false;
+        }
     }
 
-    private boolean handleInterviewSectionInput(){
-        return true;
+
+
+    private boolean handleInterviewSectionInput() {
+        if (isValidInterviewID.get() && isValidInterviewName.get()) {
+            interviewPane.getStyleClass().removeAll("TitledPane-Error");
+            return true;
+        } else {
+            if (!interviewPane.getStyleClass().contains("TitledPane-Error")) {
+                interviewPane.getStyleClass().add("TitledPane-Error");
+            }
+            return false;
+        }
     }
 
-    private boolean handleEducationSectionInput(){
-        return true;
+
+
+    @SuppressWarnings("Duplicates")
+    private boolean handleEducationSectionInput() {
+        if (isValidAmuNr.get() && isValidEducationName.get() && isValidNoOfEducationDays.get() && isValidEducationDates.get()) {
+            educationPane.getStyleClass().removeAll("TitledPane-Error");
+            return true;
+        } else {
+            if (!educationPane.getStyleClass().contains("TitledPane-Error")) {
+                educationPane.getStyleClass().add("TitledPane-Error");
+            }
+            return false;
+        }
     }
 
-    private boolean handleProviderSectionInput(){
-        return true;
+    private boolean handleProviderSectionInput() {
+        if (isValidProviderID.get() && isValidProviderName.get()) {
+            providerPane.getStyleClass().removeAll("TitledPane-Error");
+            return true;
+        } else {
+            if (!providerPane.getStyleClass().contains("TitledPane-Error")) {
+                providerPane.getStyleClass().add("TitledPane-Error");
+            }
+            return false;
+        }
     }
 
-    private boolean isAllValid(){
-        return companyValid.get() && consultationValid.get() && employeeValid.get() && interviewValid.get() && educationValid.get() && providerValid.get();
+    private boolean isAllValid() {
+        boolean companyBool = companyValid.get();
+        boolean consultationBool = consultationValid.get();
+        boolean employeeBool = employeeValid.get();
+        boolean interviewBool = interviewValid.get();
+        boolean educationBool = educationValid.get();
+        boolean providerBool = providerValid.get();
+        return companyBool && consultationBool && employeeBool && interviewBool && educationBool && providerBool;
     }
+
 
     public void handleSearch(ActionEvent event) {
         SearchContainer container = new SearchContainer();
