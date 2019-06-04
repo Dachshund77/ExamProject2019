@@ -7,3 +7,12 @@
     -fx-border-color: black;
     -fx-background-color: red;
 }
+
+.TitledPane-Error > .title   {
+    -fx-background-color: red;
+}
+
+.DatePicker-Error .text-field{
+    -fx-text-fill: black;
+    -fx-control-inner-background: red;
+}
