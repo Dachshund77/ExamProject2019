@@ -4,6 +4,7 @@ import Application.Controller.AbstractController;
 import Application.SearchContainer;
 import Domain.Company;
 import Domain.Consultation;
+import Foundation.DbFacade;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 
+import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
 
@@ -681,7 +683,14 @@ public class FindSub extends AbstractController { // FIXME: 31/05/2019 at some p
         container.setProviderID(providerIDTextField.getText());
         container.setProviderName(providerNameTextField.getText());
 
-        //TODO actual search to facade
+        //Connect to db
+        try {
+            DbFacade.connect();
+            searchResult = DbFacade.findCompanies(container);
+            DbFacade.disconnect();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
