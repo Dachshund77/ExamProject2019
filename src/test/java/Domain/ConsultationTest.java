@@ -42,10 +42,12 @@ public class ConsultationTest {
     @Test
     public void isValidDate() {
         LocalDate first = LocalDate.of(2000,10,10);
+        LocalDate same = LocalDate.of(2000,10,10);
         LocalDate second = LocalDate.of(2010,10,10);
 
         //True
         assertTrue(Consultation.isValidDate(first,second));
+        assertTrue(Consultation.isValidDate(first,same));
 
         //False
         assertFalse(Consultation.isValidDate(null,second));
