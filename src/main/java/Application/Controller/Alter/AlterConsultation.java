@@ -1,7 +1,6 @@
 package Application.Controller.Alter;
 
 import Application.Controller.AbstractController;
-import Application.Controller.SubControllers.Domain.CompanySub;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
 import Application.SearchContainer;
 import Domain.Consultation;
@@ -15,7 +14,7 @@ import java.sql.SQLException;
 public class AlterConsultation extends AbstractController {
 
     @FXML
-    private ConsultationSub consultationSub; //SubController
+    private ConsultationSub consultationSubController; //SubController
 
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
@@ -29,7 +28,7 @@ public class AlterConsultation extends AbstractController {
     @FXML
     private void initialize() {
         // hook up the  button with subcontroller form correctness
-        confirmationButton.disableProperty().bind(consultationSub.isValid.not());
+        confirmationButton.disableProperty().bind(consultationSubController.isValid.not());
     }
 
     @Override
@@ -53,8 +52,8 @@ public class AlterConsultation extends AbstractController {
     @FXML
     private void handleConfirmation(ActionEvent event) {
         //Creates a new consultation Obj to send to the database
-        Consultation createNewConsultationObj = new Consultation(null, consultationSub.consultationNameTextField.getText(),
-                consultationSub.startDatePicker.getValue(), consultationSub.endDatePicker.getValue(), null);
+        Consultation createNewConsultationObj = new Consultation(null, consultationSubController.consultationNameTextField.getText(),
+                consultationSubController.startDatePicker.getValue(), consultationSubController.endDatePicker.getValue(), null);
         try {
             DbFacade.connect();
             //FIXME Need pop-up implementation ↓↓↓
@@ -74,6 +73,6 @@ public class AlterConsultation extends AbstractController {
     @FXML
     private void handleReset(ActionEvent event) {
         // call subcontroller reset
-        consultationSub.resetForm();
+        consultationSubController.resetForm();
     }
 }

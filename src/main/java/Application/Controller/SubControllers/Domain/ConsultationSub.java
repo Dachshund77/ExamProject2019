@@ -63,7 +63,6 @@ public class ConsultationSub extends AbstractController {
             bind(startDateIsValid);
             bind(endDateIsValid);
             }
-
             @Override
             protected boolean computeValue() {
 
@@ -74,6 +73,7 @@ public class ConsultationSub extends AbstractController {
                 return false;
             }
         };
+        resetForm();
     }
 
     @Override
@@ -97,28 +97,29 @@ public class ConsultationSub extends AbstractController {
         }
     }
 
-
     public void handleDatePickerInput() {
         LocalDate localDateStartDate = startDatePicker.getValue();
         LocalDate localDateEndDate = endDatePicker.getValue();
+        System.out.println(localDateStartDate);
+        System.out.println(localDateEndDate);
 
-        if (localDateEndDate.isBefore(localDateStartDate)){
-            String errorCause = "The end date is before the start date";
-            startDatePicker.setTooltip(new Tooltip(errorCause));
+        if (localDateStartDate.isBefore(localDateEndDate)) {
+            startDatePicker.setTooltip(null);
+            startDateIsValid.set(true);
+            startDatePicker.getStyleClass().removeAll("DatePicker-Error");
+
+            endDatePicker.setTooltip(null);
+            endDateIsValid.set(true);
+            endDatePicker.getStyleClass().removeAll("DatePicker-Error");
+        } else {
+            String invalidCause = Consultation.dateInvalidCause(localDateStartDate, localDateEndDate);
+            startDatePicker.setTooltip(new Tooltip(invalidCause));
             startDateIsValid.set(false);
-            endDatePicker.setTooltip(new Tooltip(errorCause));
+            endDatePicker.setTooltip(new Tooltip(invalidCause));
             endDateIsValid.set(false);
             if (!endDatePicker.getStyleClass().contains("DatePicker-Error") && !startDatePicker.getStyleClass().contains("DatePicker-Error")){
                 startDatePicker.getStyleClass().add("DatePicker-Error");
                 endDatePicker.getStyleClass().add("DatePicker-Error");
-            } else {
-                startDatePicker.setTooltip(null);
-                startDateIsValid.set(true);
-                startDatePicker.getStyleClass().removeAll("DatePicker-Error");
-
-                endDatePicker.setTooltip(null);
-                endDateIsValid.set(true);
-                endDatePicker.getStyleClass().removeAll("DatePicker-Error");
             }
         }
     }
@@ -126,6 +127,8 @@ public class ConsultationSub extends AbstractController {
 
     public void setDisabled(boolean bool) {
         consultationNameTextField.setDisable(bool);
+        startDatePicker.setDisable(bool);
+        endDatePicker.setDisable(bool);
     }
 
     public void resetForm() {
