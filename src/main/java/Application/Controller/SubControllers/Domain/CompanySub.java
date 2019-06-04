@@ -5,8 +5,7 @@ import Application.Controller.PopUp.Find.FindCompanyPopUp;
 import Domain.Company;
 import Domain.Consultation;
 import Domain.Education;
-import Foundation.DbFacade;
-import UI.NEWSTUFF.CompanyChoice;
+
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -78,8 +77,7 @@ public class CompanySub extends AbstractController {
         ObservableList<Education> educationList = FXCollections.observableArrayList();
         educationTableView.setItems(educationList);
 
-        CompanyChoice c = new CompanyChoice();
-        Company foundC = c.showAndReturn(new FindCompanyPopUp());
+
 
         //Hides the tableviews when the user selects "New Company"
 
