@@ -139,4 +139,25 @@ public class EducationWish {
             return "Must be a number!";
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!(obj instanceof EducationWish)) {
+            return false;
+        }
+        EducationWish other = (EducationWish) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.educationWishID.equals(other.educationWishID)){
+            return false;
+        }
+        if (!this.education.equals(other.education)){
+            return false;
+        }
+        return this.priority.equals(other.priority);
+    }
 }

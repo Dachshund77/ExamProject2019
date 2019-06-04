@@ -462,5 +462,42 @@ public class Interview {
         }
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!(obj instanceof Interview)) {
+            return false;
+        }
+        Interview other = (Interview) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.interviewID.equals(other.interviewID)){
+            return false;
+        }
+        if (!this.interviewName.equals(other.interviewName)){
+            return false;
+        }
+        if (!this.productUnderstanding.equals(other.productUnderstanding)){
+            return false;
+        }
+        if (!this.problemUnderstanding.equals(other.problemUnderstanding)){
+            return false;
+        }
+        if (!this.flexibility.equals(other.flexibility)){
+            return false;
+        }
+        if (!this.qualityAwareness.equals(other.qualityAwareness)){
+            return false;
+        }
+        if (!this.cooperation.equals(other.cooperation)){
+            return false;
+        }
+        if (!this.finishedEducations.equals(other.finishedEducations)){
+            return false;
+        }
+        return this.educationWishes.equals(other.educationWishes);
+    }
 }

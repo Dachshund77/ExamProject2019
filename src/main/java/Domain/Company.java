@@ -2,6 +2,8 @@ package Domain;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import jdk.jfr.Description;
+import org.apache.ibatis.annotations.Delete;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Company {
+
 
     private final Integer companyID;
     private String cvrNr;
@@ -193,4 +196,30 @@ public class Company {
         return null;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!(obj instanceof Company)) {
+            return false;
+        }
+        Company other = (Company) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.companyID.equals(other.companyID)){
+            return false;
+        }
+        if (!this.cvrNr.equals(other.cvrNr)){
+            return false;
+        }
+        if (!this.companyName.equals(other.companyName)){
+            return false;
+        }
+        if(!this.consultations.equals(other.consultations)){
+            return false;
+        }
+        return this.educationList.equals(other.educationList);
+    }
 }

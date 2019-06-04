@@ -261,4 +261,37 @@ public class Employee {
         }
         return null;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!(obj instanceof Employee)) {
+            return false;
+        }
+        Employee other = (Employee) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.employeeID.equals(other.employeeID)){
+            return false;
+        }
+        if (!this.employeeFirstName.equals(other.employeeFirstName)){
+            return false;
+        }
+        if (!this.employeeLastName.equals(other.employeeLastName)){
+            return false;
+        }
+        if (!this.cprNr.equals(other.cprNr)){
+            return false;
+        }
+        if (!this.eMail.equals(other.eMail)){
+            return false;
+        }
+        if (!this.phoneNr.equals(other.phoneNr)){
+            return false;
+        }
+        return this.interviews.equals(other.interviews);
+    }
 }

@@ -112,4 +112,22 @@ public class Provider {
         }
         return null;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null){
+            return false;
+        } else if (!(obj instanceof Provider)){
+            return false;
+        }
+        Provider other = (Provider) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.providerID.equals(other.providerID)){
+            return false;
+        }
+        return this.providerName.equals(other.providerName);
+    }
 }

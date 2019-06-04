@@ -94,7 +94,7 @@ public class FindSub extends AbstractController {
     @FXML
     private Button resetButton; //TODO do i need this evt clean up
 
-    public ArrayList<Company> searchResult;
+    public ArrayList<Company> searchResult = new ArrayList<>();
     private SearchContainer previousSearchContainer = null;
 
     //BooleanBindings
@@ -622,7 +622,6 @@ public class FindSub extends AbstractController {
         }
     }
 
-
     @SuppressWarnings("Duplicates")
     private boolean handleConsultationSectionInput() {
         if (isValidConsultationID.get() && isValidConsultationName.get() && isValidConsultationDates.get()) {
@@ -635,7 +634,6 @@ public class FindSub extends AbstractController {
             return false;
         }
     }
-
 
     @SuppressWarnings("Duplicates")
     private boolean handleEmployeeSectionInput() {
@@ -661,7 +659,6 @@ public class FindSub extends AbstractController {
             return false;
         }
     }
-
 
     @SuppressWarnings("Duplicates")
     private boolean handleEducationSectionInput() {
@@ -747,7 +744,8 @@ public class FindSub extends AbstractController {
      * @param event user clicked the reset button.
      */
     @SuppressWarnings("Duplicates")
-    public void handleReset(ActionEvent event) {
+    @FXML
+    private void handleReset(ActionEvent event) {
         if (previousSearchContainer == null) {
             resetToEmpty();
         } else {

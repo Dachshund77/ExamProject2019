@@ -174,5 +174,30 @@ public class Consultation {
         return null;
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (!(obj instanceof Consultation)) {
+            return false;
+        }
+        Consultation other = (Consultation) obj;
+        if (this == other){
+            return true;
+        }
+        //Test all fields
+        if (!this.consultationID.equals(other.consultationID)){
+            return false;
+        }
+        if (!this.consultationName.equals(other.consultationName)){
+            return false;
+        }
+        if (!this.startDate.equals(other.startDate)){
+            return false;
+        }
+        if (!this.endDate.equals(other.endDate)){
+            return false;
+        }
+        return this.employees.equals(other.employees);
+    }
 }
