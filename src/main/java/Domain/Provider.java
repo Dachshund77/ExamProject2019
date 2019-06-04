@@ -6,9 +6,11 @@ public class Provider {
     private final Integer providerID;
     private String providerName;
 
+    private static final int PROVIDER_NAME_MAX_LENGTH = 30;
+
     public Provider(Integer providerID, String providerName) {
         this.providerID = providerID;
-        this.providerName = providerName;
+        setProviderName(providerName);
     }
 
     public Integer getProviderID() {
@@ -17,6 +19,18 @@ public class Provider {
 
     public String getProviderName() {
         return providerName;
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param providerName new provider name.
+     */
+    public void setProviderName(String providerName) {
+        if (providerName.trim().isEmpty()){
+            this.providerName = null;
+        } else {
+            this.providerName = providerName;
+        }
     }
 
     /**
@@ -41,8 +55,8 @@ public class Provider {
      * @return String with first reason or null if valid.
      */
     public static String invalidProviderIDCause(Integer id) {
-        if (id != null && id < 0) {
-            return "Provider ID may not be negative";
+        if (id != null && id <= 0) {
+            return "Provider ID must be positive!";
         }
         return null;
     }
@@ -55,6 +69,12 @@ public class Provider {
      * @return String with first reason or null if valid.
      */
     public static String invalidProviderIDCause(String id) {
+        if (id == null){
+            return null;
+        }
+        if (id.trim().isEmpty()){
+            return null;
+        }
         try{
             return invalidProviderIDCause(Integer.parseInt(id));
         }catch (NumberFormatException e){
@@ -83,8 +103,8 @@ public class Provider {
             return "Provider Name may not be Null!";
         } else if (providerName.trim().isEmpty()) {
             return "ProviderName may not be empty!";
-        } else if (providerName.length() > 30) {
-            return "Provider Name must be 30 letters or less";
+        } else if (providerName.length() > PROVIDER_NAME_MAX_LENGTH) {
+            return "Provider Name must be "+PROVIDER_NAME_MAX_LENGTH+" letters or less";
         }
         return null;
     }

@@ -17,3 +17,4 @@ dependencies {
     implementation group: 'com.microsoft.sqlserver', name: 'sqljdbc4', version: '4.2-6'
     implementation group: 'org.mybatis', name: 'mybatis', version: '3.5.1'
 }
+

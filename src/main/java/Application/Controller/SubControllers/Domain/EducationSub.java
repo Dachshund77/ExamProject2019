@@ -8,16 +8,16 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
-import javafx.event.Event;
+
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 public class EducationSub extends AbstractController {
 
-    public Label AmuNrText;
+    public Text AmuNrText;
     public TextField educationNameTextField;
     public TextArea descriptionTextArea;
     public TextField noOfDaysTextField; // may be converted to a drop down if you want

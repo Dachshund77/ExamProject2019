@@ -1,17 +1,17 @@
-/*package UI.OLDUI;
+package UI;
 
+import Application.Controller.ViewController;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import Application.NEWSTUFF.Controller.ViewController;
 
-public class DelCounMain extends Application {
+public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = ViewController.DEL_COUN_CONTROLLER.loadParent();
-        primaryStage.setTitle("Delete consultation");
+        Parent root = ViewController.MAIN_CONTROLLER.loadParent();
+        primaryStage.setTitle("MAIN");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         primaryStage.setResizable(true);
@@ -21,4 +21,4 @@ public class DelCounMain extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-}*/
+}

@@ -15,9 +15,12 @@ public class Interview {
     private ArrayList<FinishedEducation> finishedEducations;
     private ArrayList<EducationWish> educationWishes;
 
+    private static final int INTERVIEW_NAME_MAX_LENGTH = 30;
+    private static final int QUALITY_MAX_VALUE = 5;
+
     public Interview(Integer interviewID, String interviewName, Integer productUnderstanding, Integer problemUnderstanding, Integer flexibility, Integer qualityAwareness, Integer cooperation, ArrayList<FinishedEducation> finishedEducations, ArrayList<EducationWish> educationWishes) {
         this.interviewID = interviewID;
-        this.interviewName = interviewName;
+        setInterviewName(interviewName);
         this.productUnderstanding = productUnderstanding;
         this.problemUnderstanding = problemUnderstanding;
         this.flexibility = flexibility;
@@ -64,6 +67,26 @@ public class Interview {
         return educationWishes;
     }
 
+    public static int getInterviewNameMaxLength() {
+        return INTERVIEW_NAME_MAX_LENGTH;
+    }
+
+    public static int getQualityMaxValue() {
+        return QUALITY_MAX_VALUE;
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param interviewName new interview Name.
+     */
+    public void setInterviewName(String interviewName) {
+        if (interviewName.trim().isEmpty()){
+            this.interviewName = null;
+        } else {
+            this.interviewName = interviewName;
+        }
+    }
+
     /**
      * A valid interview ID may not be negative.
      *
@@ -86,8 +109,8 @@ public class Interview {
      * @return String with first found reason, null if Integer is valid.
      */
     public static String interviewIDInvalidCause(Integer interviewID) {
-        if (interviewID != null && interviewID < 0) {
-            return "Interview ID may not be negative!";
+        if (interviewID != null && interviewID <= 0) {
+            return "Interview ID must be positive!";
         }
         return null;
     }
@@ -100,6 +123,12 @@ public class Interview {
      * @return String with first found reason, null if Integer is valid.
      */
     public static String interviewIDInvalidCause(String interviewID) {
+        if (interviewID == null){
+            return null;
+        }
+        if (interviewID.trim().isEmpty()){
+            return null;
+        }
         try{
             return interviewIDInvalidCause(Integer.parseInt(interviewID));
         }catch (NumberFormatException e){
@@ -129,8 +158,8 @@ public class Interview {
             return "Interview Name may not be null!";
         } else if (interviewName.trim().isEmpty()) {
             return "Interview Name may not be empty!";
-        } else if (interviewName.length() > 30) {
-            return "Interview Name must be 30 Characters or less!";
+        } else if (interviewName.length() > INTERVIEW_NAME_MAX_LENGTH) {
+            return "Interview Name must be "+INTERVIEW_NAME_MAX_LENGTH+" Characters or less!";
         }
         return null;
     }
@@ -164,11 +193,11 @@ public class Interview {
      */
     public static String productUnderstandingInvalidCause(Integer integer) {
         if (integer == null) {
-            return "Product understanding may noy be null!";
+            return null;
         } else if (integer < 0) {
             return "Product understanding may not be negative!";
-        } else if (integer > 5) {
-            return "Product understanding must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Product understanding must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -181,6 +210,12 @@ public class Interview {
      * @return String with the first reason it is not valid, null if valid.
      */
     public static String productUnderstandingInvalidCause(String integer) {
+        if (integer == null){
+            return null;
+        }
+        if (integer.trim().isEmpty()){
+            return null;
+        }
         try{
             return productUnderstandingInvalidCause(Integer.parseInt(integer));
         }catch (NumberFormatException e){
@@ -217,11 +252,11 @@ public class Interview {
      */
     public static String problemUnderstandingInvalidCause(Integer integer) {
         if (integer == null) {
-            return "Problem understanding may noy be null!";
+            return null;
         } else if (integer < 0) {
             return "Problem understanding may not be negative!";
-        } else if (integer > 5) {
-            return "Problem understanding must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Problem understanding must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -234,6 +269,12 @@ public class Interview {
      * @return String with the first reason it is not valid, null if valid.
      */
     public static String problemUnderstandingInvalidCause(String integer) {
+        if (integer == null){
+            return null;
+        }
+        if (integer.trim().isEmpty()){
+            return null;
+        }
         try{
             return problemUnderstandingInvalidCause(Integer.parseInt(integer));
         }catch (NumberFormatException e){
@@ -271,11 +312,11 @@ public class Interview {
      */
     public static String flexibilityInvalidCause(Integer integer) {
         if (integer == null) {
-            return "Flexibility may noy be null!";
+            return null;
         } else if (integer < 0) {
             return "Flexibility may not be negative!";
-        } else if (integer > 5) {
-            return "Flexibility must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Flexibility must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -288,6 +329,12 @@ public class Interview {
      * @return String with the first reason it is not valid, null if valid.
      */
     public static String flexibilityInvalidCause(String integer) {
+        if (integer == null){
+            return null;
+        }
+        if (integer.trim().isEmpty()){
+            return null;
+        }
         try{
             return flexibilityInvalidCause(Integer.parseInt(integer));
         }catch (NumberFormatException e){
@@ -325,11 +372,11 @@ public class Interview {
      */
     public static String qualityAwarenessInvalidCause(Integer integer) {
         if (integer == null) {
-            return "Quality Awareness may noy be null!";
+            return null;
         } else if (integer < 0) {
             return "Quality Awareness  may not be negative!";
-        } else if (integer > 5) {
-            return "Quality Awareness  must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Quality Awareness  must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -342,6 +389,12 @@ public class Interview {
      * @return String with the first reason it is not valid, null if valid.
      */
     public static String qualityAwarenessInvalidCause(String integer) {
+        if (integer == null){
+            return null;
+        }
+        if (integer.trim().isEmpty()){
+            return null;
+        }
         try{
             return qualityAwarenessInvalidCause(Integer.parseInt(integer));
         }catch (NumberFormatException e){
@@ -379,11 +432,11 @@ public class Interview {
      */
     public static String cooperationInvalidCause(Integer integer) {
         if (integer == null) {
-            return "Cooperation may noy be null!";
+            return null;
         } else if (integer < 0) {
             return "Cooperation may not be negative!";
-        } else if (integer > 5) {
-            return "Cooperation must be 5 or less!";
+        } else if (integer > QUALITY_MAX_VALUE) {
+            return "Cooperation must be "+QUALITY_MAX_VALUE+" or less!";
         }
         return null;
     }
@@ -396,6 +449,12 @@ public class Interview {
      * @return String with the first reason it is not valid, null if valid.
      */
     public static String cooperationInvalidCause(String integer) {
+        if (integer == null){
+            return null;
+        }
+        if (integer.trim().isEmpty()){
+            return null;
+        }
         try{
             return cooperationInvalidCause(Integer.parseInt(integer));
         }catch (NumberFormatException e){

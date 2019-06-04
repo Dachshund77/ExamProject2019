@@ -22,10 +22,13 @@ public class Education {
     private ArrayList<LocalDate> dates;
     private Provider provider;
 
+    private static final int EDUCATION_NAME_MAX_LENGTH = 50;
+    private static final int NO_OF_DAYS_MAX_NUMBER = 15;
+
     public Education(Integer amuNr, String educationName, String description, Integer noOfDays, ArrayList<LocalDate> dates, Provider provider) {
         this.amuNr = amuNr;
-        this.educationName = educationName;
-        this.description = description;
+        setEducationName(educationName);
+        setDescription(description);
         this.noOfDays = noOfDays;
         this.dates = Objects.requireNonNullElseGet(dates, ArrayList::new);
         this.provider = provider;
@@ -55,6 +58,37 @@ public class Education {
         return provider;
     }
 
+    public static int getEducationNameMaxLength() {
+        return EDUCATION_NAME_MAX_LENGTH;
+    }
+
+    public static int getNoOfDaysMaxNumber() {
+        return NO_OF_DAYS_MAX_NUMBER;
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param educationName new educationName
+     */
+    public void setEducationName(String educationName) {
+        if (educationName.trim().isEmpty()){
+            this.educationName = null;
+        } else {
+            this.educationName = educationName;
+        }
+    }
+
+    /**
+     * Converts empty String to null
+     * @param description new description.
+     */
+    public void setDescription(String description) {
+        if (description.trim().isEmpty()){
+            this.description = null;
+        }else {
+            this.description = description;
+        }
+    }
 
     /**
      * Amu nr may not be negative.
@@ -80,8 +114,8 @@ public class Education {
      * @return String with first problem, null if valid.
      */
     public static String amuNrInvalidCause(Integer amuNr){
-        if (amuNr != null && amuNr < 0){
-            return "Amu Nr may not be negative!";
+        if (amuNr != null && amuNr <= 0){
+            return "Amu Nr must be positive!";
         }
         return null;
     }
@@ -92,6 +126,12 @@ public class Education {
      * @return String with first problem, null if valid.
      */
     public static String amuNrInvalidCause(String amuNr){
+        if (amuNr == null){
+            return null;
+        }
+        if (amuNr.trim().isEmpty()){
+            return null;
+        }
         try{
             return amuNrInvalidCause(Integer.parseInt(amuNr));
         }catch (NumberFormatException e){
@@ -125,8 +165,8 @@ public class Education {
         else if (educationName.trim().isEmpty()){
             return "Education must have a name";
         }
-        else if (educationName.length() > 30){
-            return "Education must consist of a name less than 30 characters";
+        else if (educationName.length() > EDUCATION_NAME_MAX_LENGTH){
+            return "Education must consist of a name less than "+EDUCATION_NAME_MAX_LENGTH+" characters";
         }
         return null;
     }
@@ -142,23 +182,20 @@ public class Education {
     }
 
     /**
-     * throws an error if:
-     * description = NULL
-     * description = Empty string
+     * yeah this test is kinda pointless since it never not null
      * @param description string to be tested.
      * @return String with first problem, null if valid.
      */
     public static String descriptionInvalidCause (String description)
     {
         if (description == null){
-            return "Description must not be null";
+            return null;
         }
-        else if (description.trim().isEmpty()){
-            return "Description must contain some information"; //TODO but dont we allow null values? -Sven
+        else if (description.trim().isEmpty()) {
+            return null; //TODO this test is never not null..........
         }
         return null;
     }
-
 
     /**
      * checks if NoOfDays arent null and within limit
@@ -193,11 +230,11 @@ public class Education {
        if (NoOfDays == null){
            return "Number of days cant be null";
        }
-       else if (NoOfDays > 15){
-           return "Number of days cant be more than 15";
+       else if (NoOfDays > NO_OF_DAYS_MAX_NUMBER){
+           return "Number of days cant be more than "+NO_OF_DAYS_MAX_NUMBER+"!";
        }
-       else if (NoOfDays < 0){
-           return "Number of days cant be negative";
+       else if (NoOfDays <= 0){
+           return "Number of days must be positive!";
        }
         return null;
     }

@@ -52,8 +52,8 @@ public class FinishedEducation {
      * @return
      */
     public static String finishedEducationIDInvalidCause(Integer finishedEducationID) {
-         if (finishedEducationID != null && finishedEducationID < 0) {
-            return "FinishedEducationID cant be negative";
+         if (finishedEducationID != null && finishedEducationID <= 0) {
+            return "FinishedEducationID must be positive!";
         }
         return null;
     }
@@ -66,6 +66,12 @@ public class FinishedEducation {
      * @return
      */
     public static String finishedEducationIDInvalidCause(String finishedEducationID) {
+        if (finishedEducationID == null){
+            return null;
+        }
+        if (finishedEducationID.trim().isEmpty()){
+            return null;
+        }
         try{
             return finishedEducationIDInvalidCause(Integer.parseInt(finishedEducationID));
         }catch (NumberFormatException e){

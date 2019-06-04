@@ -1,4 +1,4 @@
-package UI.NEWSTUFF;
+package UI;
 
 import Application.Controller.PopUp.InterviewReturnableController;
 //import Application.NEWSTUFF.Controller.InterviewReturnableController;

@@ -13,9 +13,11 @@ public class Consultation {
     private LocalDate endDate;
     private ArrayList<Employee> employees;
 
+    private static final int CONSULTATION_NAME_MAX_LENGTH = 50;
+
     public Consultation(Integer consultationID, String consultationName, LocalDate startDate, LocalDate endDate, ArrayList<Employee> employees) {
         this.consultationID = consultationID;
-        this.consultationName = consultationName;
+        setConsultationName(consultationName);
         this.startDate = startDate;
         this.endDate = endDate;
         this.employees = Objects.requireNonNullElseGet(employees, ArrayList::new);
@@ -40,6 +42,22 @@ public class Consultation {
 
     public ArrayList<Employee> getEmployees() {
         return employees;
+    }
+
+    public static int getConsultationNameMaxLength() {
+        return CONSULTATION_NAME_MAX_LENGTH;
+    }
+
+    /**
+     * Converts empty String to null.
+     * @param consultationName new consultationName.
+     */
+    public void setConsultationName(String consultationName) {
+        if (consultationName.trim().isEmpty()){
+            this.consultationName = null;
+        }else {
+            this.consultationName = consultationName;
+        }
     }
 
     /**
@@ -70,8 +88,8 @@ public class Consultation {
      * @return First invalid reason, null if valid
      */
     public static String consultationIDInvalidCause(Integer consultationID){
-       if (consultationID < 0){
-           return "Company is may not be negative";
+       if (consultationID != null && consultationID <= 0){
+           return "Company is must be positive!";
        }
        return null;
     }
@@ -84,6 +102,12 @@ public class Consultation {
      * @return First invalid reason, null if valid
      */
     public static String consultationIDInvalidCause(String consultationID){
+        if (consultationID == null){
+            return null;
+        }
+        if (consultationID.trim().isEmpty()){
+            return null;
+        }
         try{
             return consultationIDInvalidCause(Integer.parseInt(consultationID));
         }catch (NumberFormatException e){
@@ -117,8 +141,8 @@ public class Consultation {
         else if (consultationName.trim().isEmpty()){
             return "A consultation name is required";
         }
-        else if (consultationName.length() > 50){
-            return "Consultation name have to be less than 50 characters";
+        else if (consultationName.length() > CONSULTATION_NAME_MAX_LENGTH){
+            return "Consultation name have to be less than "+CONSULTATION_NAME_MAX_LENGTH+" characters";
         }
         return null;
     }
@@ -141,8 +165,8 @@ public class Consultation {
      * @return String with first invalid reason, null if valid.
      */
     public static String dateInvalidCause(LocalDate startDate, LocalDate endDate){
-        if (isValidDate(null, null)){
-            return "Dates must not be null";
+        if (startDate == null || endDate == null){
+            return "Dates may not be empty";
         }
         else if(endDate.isBefore(startDate)){
             return "start date must be before end date";

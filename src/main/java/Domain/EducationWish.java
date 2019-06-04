@@ -1,14 +1,11 @@
 package Domain;
 
-import javafx.beans.property.SimpleIntegerProperty;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class EducationWish {
     private final Integer educationWishID;
     private Education education;
     private Integer priority;
+
+    private static final int MAX_PRIORITY = 3;
 
     public EducationWish(Integer educationWishID, Education education, Integer priority) {
         this.educationWishID = educationWishID;
@@ -28,6 +25,9 @@ public class EducationWish {
       return priority;
     }
 
+    public static int getMaxPriority() {
+        return MAX_PRIORITY;
+    }
 
     /**
      * checks if educationID isnt negative
@@ -57,8 +57,8 @@ public class EducationWish {
      */
     public static String educationWishIDInvalidCause (Integer educationWishID)
     {
-        if (educationWishID != null && educationWishID < 0){
-            return "EducationWishID cant be null";
+        if (educationWishID != null && educationWishID <= 0){
+            return "EducationWishID must be positive";
         }
         return null;
     }
@@ -70,6 +70,12 @@ public class EducationWish {
      * @return
      */
     public static String educationWishIDInvalidCause (String educationWishID) {
+        if (educationWishID == null){
+            return null;
+        }
+        if (educationWishID.trim().isEmpty()){
+            return null;
+        }
         try{
             return educationWishIDInvalidCause(Integer.parseInt(educationWishID));
         }catch (NumberFormatException e){
@@ -109,11 +115,11 @@ public class EducationWish {
         if (priority == null){
             return "Priority cant be null";
         }
-        if (priority < 0 ){
-            return "Priority cant be negative";
+        if (priority <= 0 ){
+            return "Priority must be positive!";
         }
-        if (priority > 3){
-            return "Priority cant be bigger than 3";
+        if (priority > MAX_PRIORITY){
+            return "Priority cant be bigger than "+ MAX_PRIORITY +"!";
         }
         return null;
     }
