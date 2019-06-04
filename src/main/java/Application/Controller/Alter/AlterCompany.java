@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 
 import java.sql.SQLException;
 
+//TODO NEEDS JAVADOC -Sven
 public class AlterCompany extends AbstractController {
 
     @FXML
@@ -35,6 +36,7 @@ public class AlterCompany extends AbstractController {
         //Save search container for returning
         previousSearch = searchContainer;
         //propergate Consultation to setup form
+        //TODO THERE IS MISSING STUFF HERE -Sven
     }
 
     @FXML
@@ -42,9 +44,9 @@ public class AlterCompany extends AbstractController {
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null){
-
+            //TODO THERE IS MISSING STUFF HERE -Sven
         } else {
-
+            //TODO THERE IS MISSING STUFF HERE -Sven
         }
     }
 
@@ -61,7 +63,7 @@ public class AlterCompany extends AbstractController {
         System.out.println(companySubController.isValid.get());
         Company createNewCompanyObj = new Company(null, companySubController.cvrNrTextField.getText(),
                 companySubController.companyNameTextField.getText(), null, null);
-
+            //TODO rewirte the subcontroller to private, sorry
         try {
             DbFacade.connect();
             DbFacade.insertCompany(createNewCompanyObj);

@@ -20,8 +20,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-
-public class CompanySub extends AbstractController {
+//TODO NEED JAVADOC
+public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT WILL NOT BE USED, INCREASE READABILITY
 
     public Label companyIDText;
     public TextField cvrNrTextField;
@@ -60,7 +60,7 @@ public class CompanySub extends AbstractController {
         consultationTableView.getColumns().setAll(consultationNameColumn, consultationStartDateColumn, consultationEndDateColumn);
         //FXCollections.observableArrayList(consultationArrayList);
 
-        LocalDate date1 = LocalDate.of(2001, 11, 21);
+        LocalDate date1 = LocalDate.of(2001, 11, 21); //TODO LEFT OVER CODE?
         LocalDate date2 = LocalDate.of(2021, 11, 21);
         Consultation newCons = new Consultation(2, "something", date1, date2, null);
 
@@ -170,7 +170,7 @@ public class CompanySub extends AbstractController {
 
     public void handleCompanyPopUp(ActionEvent event){
         CompanyChoice c = new CompanyChoice();
-        Company foundC = c.showAndReturn(new FindCompanyPopUp());
+        Company foundC = c.showAndReturn(new FindCompanyPopUp()); //TODO We are literly not doing anything with that value?
     }
 
     /**
