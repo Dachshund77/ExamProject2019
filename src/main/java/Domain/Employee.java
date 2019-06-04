@@ -87,7 +87,7 @@ public class Employee {
     public static String employeeFirstNameInvalidCause(String employeeFirstName) {
         if (employeeFirstName != null) {
             if (employeeFirstName.length() > 30) {
-                return "First Name must be 30 or less letters!";
+                return "First Name must be 30 letters or less!";
             }
         }
         return null;
@@ -100,7 +100,7 @@ public class Employee {
     public static String employeeLastNameInvalidCause(String employeeLastName) {
         if (employeeLastName != null) {
             if (employeeLastName.length() > 30){
-                return "Last Name must be 30 or less letters!";
+                return "Last Name must be 30 letters or less!";
             }
         }
         return null;
@@ -113,7 +113,7 @@ public class Employee {
     public static String cprNrInvalidCause(String cprNr) {
         if (cprNr != null) {
             if (cprNr.length() != 10){
-                return "CprNr must be 10 letters long";
+                return "CprNr must be 10 numbers!";
             } if (!cprNr.matches("[0-9]+")){
                 return "CprNr may not contain letters!";
             }
@@ -126,7 +126,7 @@ public class Employee {
     }
 
     public static String eMailInvalidCause(String email) {
-        if (email != null) {
+        if (email != null && !email.equals("")) {
             if (!email.contains("@")){
                 return "Email must contain an @";
             } if (email.length() > 30){
@@ -141,9 +141,9 @@ public class Employee {
     }
 
     public static String phoneNumberInvalidCause(String phoneNr) {
-        if (phoneNr != null) {
+        if (phoneNr != null && !phoneNr.equals("")) {
             if (!phoneNr.matches("[0-9]+")){
-                return "Phone Number may not Contain letters!";
+                return "Phone Number may not contain letters!";
             } if (phoneNr.length() > 20){
                 return "Phone Number must be 20 or less letters!";
             }

@@ -3,6 +3,7 @@ package Application.Controller.SubControllers.Domain;
 import Application.Controller.AbstractController;
 import Domain.Employee;
 import Domain.Interview;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,13 +17,10 @@ public class EmployeeSub extends AbstractController {
 
     public Label employeeIDText;
     public TextField employeeFirstNameTextField;
-    public Tooltip employeeFirstnameTooltip;
     public TextField employeeLastNameTextField;
-    public Tooltip employeeLastNameTooltip;
     public TextField cprNrTextField;
-    public Tooltip cprNrTooltip;
+    public TextField emailTextField;
     public TextField phoneNrTextField;
-    public Tooltip phoneNrTooltip;
     public TableView<Interview> interviewTableView;
     public TableColumn<Interview,Integer> interviewIDColumn;
     public TableColumn<Interview,String> interviewNameColumn;
@@ -32,37 +30,173 @@ public class EmployeeSub extends AbstractController {
 
     private ArrayList<Interview> interviews;
 
-
-    public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
+    public BooleanBinding isValid; // Hook for parent class to activate confirm button
     public Employee selectedEmployee;
 
+    private SimpleBooleanProperty employeeFirstNameIsValid = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty employeeLastNameIsValid = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty cprNrIsValid = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty eMailIsValid = new SimpleBooleanProperty(true);
+    private SimpleBooleanProperty phoneNrIsValid = new SimpleBooleanProperty(true);
+
+    /**
+     * Initalizes the controller
+     * Setting up listeners to TextFields and binding them
+     */
     public void initialize(){
+        if(selectedEmployee == null)
+        {
+            interviewTableView.setVisible(false);
+        }
+        employeeFirstNameTextField.textProperty().addListener((observable -> handleFirstNameInput()));
+        employeeLastNameTextField.textProperty().addListener((observable -> handleLastNameInput()));
+        cprNrTextField.textProperty().addListener((observable -> handleCprNrInput()));
+        emailTextField.textProperty().addListener((observable -> handleEmailInput()));
+        phoneNrTextField.textProperty().addListener((observable -> handlePhoneNrInput()));
         //setup Tableview
-        //setup is valid
-        // setup bindings
+
+        isValid = new BooleanBinding() {
+            {
+                bind(employeeFirstNameIsValid);
+                bind(employeeLastNameIsValid);
+                bind(cprNrIsValid);
+                bind(eMailIsValid);
+                bind(phoneNrIsValid);
+            }
+            @Override
+            protected boolean computeValue() {
+                if (employeeFirstNameIsValid.get() && employeeLastNameIsValid.get()
+                        && cprNrIsValid.get() && eMailIsValid.get() && phoneNrIsValid.get()) {
+                    System.out.println("true");
+                    return true;
+                } else {
+                    System.out.println("false");
+                    return false;
+                }
+            }
+        };
+
+        resetForm();
     }
 
+    /**
+     * Intializes the employee domain
+     * And performs the resetForm() method, to prime the listeners
+     * @param employee
+     */
     @Override
     public void initValues(Employee employee) {
         // hook up employee
+        selectedEmployee = employee;
+        resetForm();
     }
 
-    public void handleFirstNameInput(KeyEvent keyevent){
+    /**
+     * On every keypress in the TextField employeeFirstNameTextField,
+     * this method updates due to a listener.
+     * Checks if the input is valid or not.
+     * If the input is wrong, it displays a tooltip with the error and makes the field red
+     */
+    public void handleFirstNameInput(){
         // whenever input in textfield is detected, react on it
         // should update its tooltip
         // should also update is valid
+        if(Employee.isValidEmployeeFirstName(employeeFirstNameTextField.getText()))
+        {
+            employeeFirstNameTextField.setTooltip(null);
+            employeeFirstNameIsValid.set(true);
+            employeeFirstNameTextField.getStyleClass().remove("TextField-Error");
+        } else {
+            String invalidCause = Employee.employeeFirstNameInvalidCause(employeeFirstNameTextField.getText());
+            employeeFirstNameTextField.setTooltip(new Tooltip(invalidCause));
+            employeeFirstNameIsValid.set(false);
+            if(!employeeFirstNameTextField.getStyleClass().contains("TextField-Error"))
+                employeeFirstNameTextField.getStyleClass().add("TextField-Error");
+        }
     }
 
-    public void handleLastNameInput(KeyEvent keyEvent){
-
+    /**
+     * On every keypress in the TextField employeeLastNameTextField,
+     * this method updates due to a listener.
+     * Checks if the input is valid or not.
+     * If the input is wrong, it displays a tooltip with the error and makes the field red
+     */
+    public void handleLastNameInput(){
+        if(Employee.isValidEmployeeLastName(employeeLastNameTextField.getText()))
+        {
+            employeeLastNameTextField.setTooltip(null);
+            employeeLastNameIsValid.set(true);
+            employeeLastNameTextField.getStyleClass().remove("TextField-Error");
+        } else {
+            String invalidCause = Employee.employeeLastNameInvalidCause(employeeLastNameTextField.getText());
+            employeeLastNameTextField.setTooltip(new Tooltip(invalidCause));
+            employeeLastNameIsValid.set(false);
+            if(!employeeLastNameTextField.getStyleClass().contains("TextField-Error"))
+                employeeLastNameTextField.getStyleClass().add("TextField-Error");
+        }
     }
 
-    public void handleCprNrInput(KeyEvent keyEvent){
-
+    /**
+     * On every keypress in the TextField cprNrTextField,
+     * this method updates due to a listener.
+     * Checks if the input is valid or not.
+     * If the input is wrong, it displays a tooltip with the error and makes the field red
+     */
+    public void handleCprNrInput(){
+        if(Employee.isValidCprNr(cprNrTextField.getText()))
+        {
+            cprNrTextField.setTooltip(null);
+            cprNrIsValid.set(true);
+            cprNrTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = Employee.cprNrInvalidCause(cprNrTextField.getText());
+            cprNrTextField.setTooltip(new Tooltip(invalidCause));
+            cprNrIsValid.set(false);
+            if(!cprNrTextField.getStyleClass().contains("TextField-Error"))
+                cprNrTextField.getStyleClass().add("TextField-Error");
+        }
     }
 
-    public void handlePhoneNrInput(KeyEvent keyEvent){
+    /**
+     * On every keypress in the TextField emailTextField,
+     * this method updates due to a listener.
+     * Checks if the input is valid or not.
+     * If the input is wrong, it displays a tooltip with the error and makes the field red
+     */
+    public void handleEmailInput(){
+        if(Employee.isValidEmail(emailTextField.getText()))
+        {
+            emailTextField.setTooltip(null);
+            eMailIsValid.set(true);
+            emailTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = Employee.eMailInvalidCause(emailTextField.getText());
+            emailTextField.setTooltip(new Tooltip(invalidCause));
+            eMailIsValid.set(false);
+            if(!emailTextField.getStyleClass().contains("TextField-Error"))
+                emailTextField.getStyleClass().add("TextField-Error");
+        }
+    }
 
+    /**
+     * On every keypress in the TextField phoneNrTextField,
+     * this method updates due to a listener.
+     * Checks if the input is valid or not.
+     * If the input is wrong, it displays a tooltip with the error and makes the field red
+     */
+    public void handlePhoneNrInput(){
+        if(Employee.isValidPhoneNr(phoneNrTextField.getText()))
+        {
+            phoneNrTextField.setTooltip(null);
+            employeeFirstNameIsValid.set(true);
+            phoneNrTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = Employee.phoneNumberInvalidCause(phoneNrTextField.getText());
+            phoneNrTextField.setTooltip(new Tooltip(invalidCause));
+            phoneNrIsValid.set(false);
+            if(!phoneNrTextField.getStyleClass().contains("TextField-Error"))
+                phoneNrTextField.getStyleClass().add("TextField-Error");
+        }
     }
 
     public void handleRemoveInterview(ActionEvent event){
@@ -77,14 +211,40 @@ public class EmployeeSub extends AbstractController {
 
     }
 
-    public void updateIsValid(){
-        // Manages the isValid property aka when all values are valid = true
+    /**
+     * A check for the if the fields are valid.
+     * For use in AlterEmployee to disable or enable "Confirm" button
+     * @param bool
+     */
+    public void setDisabled(boolean bool){
+        employeeFirstNameTextField.setDisable(bool);
+        employeeLastNameTextField.setDisable(bool);
+        cprNrTextField.setDisable(bool);
+        emailTextField.setDisable(bool);
+        phoneNrTextField.setDisable(bool);
     }
 
-    public void setEditable(boolean bool){
-
-    }
+    /**
+     * Method to reset the TextFields, either manually or through startup
+     * Checks if you got here by selecting an employee or through new.
+     * If an employee is selected, it will setup the fields with information
+     */
     public void resetForm(){
-        //Reset fields, set field if it has a selected Domain object
+        if(selectedEmployee != null)
+        {
+            employeeFirstNameTextField.setText(selectedEmployee.getEmployeeFirstName());
+            employeeLastNameTextField.setText(selectedEmployee.getEmployeeLastName());
+            cprNrTextField.setText(selectedEmployee.getCprNr());
+            emailTextField.setText(selectedEmployee.geteMail());
+            phoneNrTextField.setText(selectedEmployee.getPhoneNr());
+        }
+        else
+        {
+            employeeFirstNameTextField.setText("");
+            employeeLastNameTextField.setText("");
+            cprNrTextField.setText("");
+            emailTextField.setText("");
+            phoneNrTextField.setText("");
+        }
     }
 }
