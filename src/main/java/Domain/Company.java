@@ -214,18 +214,18 @@ public class Company {
             return false;
         }
 
-        if (!this.cvrNr.equals(other.cvrNr)) {
+        if (!Objects.equals(this.cvrNr, other.cvrNr)) {
             return false;
         }
 
-        if (!this.companyName.equals(other.companyName)) {
+        if (!Objects.equals(this.companyName, other.companyName)) {
             return false;
         }
 
-        if (!this.consultations.equals(other.consultations)) {
+        if (!Objects.equals(this.consultations, other.consultations)) {
             return false;
         }
 
-        return this.educationList.equals(other.educationList);
+        return !Objects.equals(this.educationList, other.educationList);
     }
 }
