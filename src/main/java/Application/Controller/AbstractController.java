@@ -3,6 +3,9 @@ package Application.Controller;
 import Application.SearchContainer;
 import Domain.*;
 
+/**
+ * Intermediate implementation for all controllers.
+ */
 public abstract class AbstractController implements Controllers {
 
 

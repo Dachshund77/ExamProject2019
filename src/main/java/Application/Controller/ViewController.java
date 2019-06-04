@@ -12,7 +12,15 @@ import java.io.IOException;
 /**
  * Can be used to change and load the scenes easily.
  * The enum class will store the relative path to the fxml so that we don't need to type it multiple times.
+ * LoadParent methods can be used to replace any node on a controller with the specified controller.
  */
+ /*
+            If another parameter needs to passed follow thees steps:
+            1) Create a initValues( - your parameters -) in the Controllers interface
+            2) Create the same initValues in the Abstract class AbstractController, and please keep the style of error messages
+            3) Copy paste this method in here and change the parameter and initValues( - your parameters -)
+            4) Override the created method in the controller you want it to be used.
+            */
 public enum ViewController {
     // Other
     MAIN_CONTROLLER("/FXML/Controller/Other/MainController.fxml"),
@@ -57,7 +65,6 @@ public enum ViewController {
     FIND_INTERVIEW_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml"),
     FIND_PROVIDER_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml");
 
-
     private final String URL;
 
     ViewController(String url) {
@@ -65,144 +72,320 @@ public enum ViewController {
     }
 
     /**
-     * Returns the root node for the Application.NEWSTUFF.OLDCONTROLLERS.AbstractController.
-     * This method should be used when no previous scene is loaded.
-     * @return Parent of Application.NEWSTUFF.OLDCONTROLLERS.AbstractController
+     * Returns the root node for the controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controller root node.
+     *
+     * @return Parent of specified Controller.
      */
-    public Parent loadParent(){
+    public Parent loadParent() {
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource(URL));
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return root;
     }
 
-    public void loadParent(String string) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(String) initValues(String)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param string Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(String string) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(string);
+
+        return loadParent();
     }
 
-    public void loadParent(Provider provider) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(Provider) initValues(Provider)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param provider Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(Provider provider) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(provider);
+
+        return loadParent();
     }
 
-    public void loadParent(Education education) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(Education) initValues(Education)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param education Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(Education education) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(education);
+
+        return loadParent();
     }
 
-    public void loadParent(Employee employee) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(Employee) initValues(Employee)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param employee Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(Employee employee) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(employee);
+
+        return loadParent();
     }
 
-    public void loadParent(Interview interview) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(Interview) initValues(Interview)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param interview Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(Interview interview) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(interview);
+
+        return loadParent();
     }
 
-    public void loadParent(Consultation consultation) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(Consultation) initValues(Consultation)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param consultation Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(Consultation consultation) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(consultation);
+
+        return loadParent();
     }
 
-    public void loadParent(Company company) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(Company) initValues(Company)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param company Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(Company company) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(company);
+
+        return loadParent();
     }
 
-    public void loadParent(SearchContainer searchContainer) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer) initValues(SearchContainer)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(searchContainer);
+
+        return loadParent();
     }
 
-    public void loadParent(SearchContainer searchContainer, Provider provider) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer, Provider) initValues(SearchContainer, Provider)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @param provider        Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer, Provider provider) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(searchContainer, provider);
+
+        return loadParent();
     }
 
-    public void loadParent(SearchContainer searchContainer, Education education) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer, Education) initValues(SearchContainer, Education)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @param education       Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer, Education education) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(searchContainer, education);
+
+        return loadParent();
     }
 
-    public void loadParent(SearchContainer searchContainer, Employee employee) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer, Employee) initValues(SearchContainer, Employee)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @param employee        Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer, Employee employee) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(searchContainer, employee);
+
+        return loadParent();
     }
 
-    public void loadParent(SearchContainer searchContainer, Interview interview) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer, Interview) initValues(SearchContainer, Interview)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @param interview       Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer, Interview interview) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(searchContainer, interview);
+
+        return loadParent();
     }
 
-    public void loadParent(SearchContainer searchContainer, Consultation consultation) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer, Consultation) initValues(SearchContainer, Consultation)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @param consultation    Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer, Consultation consultation) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(searchContainer, consultation);
+
+        return loadParent();
     }
 
-    public void loadParent(SearchContainer searchContainer, Company company) {
-        loadParent();
-
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer, Company) initValues(SearchContainer, Company)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @param company         Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer, Company company) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(URL));
         Controllers newController = loader.getController();
         newController.initValues(searchContainer, company);
+
+        return loadParent();
     }
 
     /**
@@ -230,19 +413,12 @@ public enum ViewController {
      * <font color="red">
      * IMPORTANT:
      * </font>
-     * In order to pass a value the new controller needs to extends the 'Application.NEWSTUFF.OLDCONTROLLERS.AbstractController' abstract class and override its methods.
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param string Value that will passed on to the controller
      */
-            /*
-            If another parameter needs to passed follow thees steps:
-            1) Create a initValues( - your parameters -) in the Application.OLDCONTROLLERS interface
-            2) Create the same initValues in the Abstract class Application.NEWSTUFF.OLDCONTROLLERS.AbstractController, and please keep the style of error messages
-            3) Copy paste this method in here and change the parameter and newController.initValues( - your parameters -)
-            4) Override the created method in the controller you want it to be used.
-            */
     public void reLoad(Scene scene, String string) {
         reLoad(scene);
 
@@ -252,6 +428,20 @@ public enum ViewController {
         newController.initValues(string);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param provider Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, Provider provider) {
         reLoad(scene);
 
@@ -261,6 +451,20 @@ public enum ViewController {
         newController.initValues(provider);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param education Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, Education education) {
         reLoad(scene);
 
@@ -270,6 +474,20 @@ public enum ViewController {
         newController.initValues(education);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param employee Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, Employee employee) {
         reLoad(scene);
 
@@ -279,6 +497,20 @@ public enum ViewController {
         newController.initValues(employee);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param interview Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, Interview interview) {
         reLoad(scene);
 
@@ -288,6 +520,20 @@ public enum ViewController {
         newController.initValues(interview);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param consultation Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, Consultation consultation) {
         reLoad(scene);
 
@@ -297,6 +543,20 @@ public enum ViewController {
         newController.initValues(consultation);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param company Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, Company company) {
         reLoad(scene);
 
@@ -306,6 +566,20 @@ public enum ViewController {
         newController.initValues(company);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param searchContainer Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, SearchContainer searchContainer) {
         reLoad(scene);
 
@@ -315,6 +589,21 @@ public enum ViewController {
         newController.initValues(searchContainer);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param searchContainer Value that will passed on to the controller
+     * @param provider Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, SearchContainer searchContainer, Provider provider) {
         reLoad(scene);
 
@@ -324,6 +613,21 @@ public enum ViewController {
         newController.initValues(searchContainer, provider);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param searchContainer Value that will passed on to the controller
+     * @param education Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, SearchContainer searchContainer, Education education) {
         reLoad(scene);
 
@@ -333,6 +637,21 @@ public enum ViewController {
         newController.initValues(searchContainer, education);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param searchContainer Value that will passed on to the controller
+     * @param employee Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, SearchContainer searchContainer, Employee employee) {
         reLoad(scene);
 
@@ -342,6 +661,21 @@ public enum ViewController {
         newController.initValues(searchContainer, employee);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param searchContainer Value that will passed on to the controller
+     * @param interview Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, SearchContainer searchContainer, Interview interview) {
         reLoad(scene);
 
@@ -351,6 +685,21 @@ public enum ViewController {
         newController.initValues(searchContainer, interview);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param searchContainer Value that will passed on to the controller
+     * @param consultation Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, SearchContainer searchContainer, Consultation consultation) {
         reLoad(scene);
 
@@ -360,6 +709,21 @@ public enum ViewController {
         newController.initValues(searchContainer, consultation);
     }
 
+    /**
+     * Loads a new scene and passes a value to the new controller.
+     * The scene URL is defined in the Enum constructor.
+     * <br><br>
+     * <p>
+     * <font color="red">
+     * IMPORTANT:
+     * </font>
+     * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
+     * </p>
+     *
+     * @param scene  The scene that will be replaced on reLoad
+     * @param searchContainer Value that will passed on to the controller
+     * @param company Value that will passed on to the controller
+     */
     public void reLoad(Scene scene, SearchContainer searchContainer, Company company) {
         reLoad(scene);
 
