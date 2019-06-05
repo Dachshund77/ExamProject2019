@@ -52,6 +52,14 @@ public class SearchContainer {
         return companyID;
     }
 
+    public String getCompanyIDasString(){
+        if (companyID == null){
+            return null;
+        } else {
+            return companyID.toString();
+        }
+    }
+
     public void setCompanyID(Integer companyID) {
         this.companyID = companyID;
     }
@@ -112,6 +120,14 @@ public class SearchContainer {
         return consultationID;
     }
 
+    public String getConsultationIDasString(){
+        if (consultationID == null){
+            return null;
+        } else {
+            return consultationID.toString();
+        }
+    }
+
     public void setConsultationID(Integer consultationID) {
         this.consultationID = consultationID;
     }
@@ -170,9 +186,18 @@ public class SearchContainer {
         return employeeID;
     }
 
+    public String getEmployeeIDasString(){
+        if (employeeID == null){
+            return null;
+        } else {
+            return employeeID.toString();
+        }
+    }
+
     public void setEmployeeID(Integer employeeID) {
         this.employeeID = employeeID;
     }
+
 
     /**
      * Converts String to Integer. If not able the field is set to null.
@@ -305,6 +330,14 @@ public class SearchContainer {
         return interviewName;
     }
 
+    public String getInterviewIDasString(){
+        if (interviewID == null){
+            return null;
+        } else {
+            return interviewID.toString();
+        }
+    }
+
     /**
      * Converts empty Strings to null.
      *
@@ -320,6 +353,14 @@ public class SearchContainer {
 
     public Integer getAmuNr() {
         return AmuNr;
+    }
+
+    public String getAmuNrAsString(){
+        if (AmuNr == null){
+            return null;
+        } else {
+            return AmuNr.toString();
+        }
     }
 
     public void setAmuNr(Integer amuNr) {
@@ -364,6 +405,14 @@ public class SearchContainer {
         return educationNoOfDays;
     }
 
+    public String getEducationNoOfDaysAsString(){
+        if (educationNoOfDays == null){
+            return null;
+        } else {
+            return educationNoOfDays.toString();
+        }
+    }
+
     public void setEducationNoOfDays(Integer educationNoOfDays) {
         this.educationNoOfDays = educationNoOfDays;
     }
@@ -403,6 +452,14 @@ public class SearchContainer {
 
     public Integer getProviderID() {
         return providerID;
+    }
+
+    public String getProviderIDasString(){
+        if (providerID == null){
+            return null;
+        } else {
+            return providerID.toString();
+        }
     }
 
     public void setProviderID(Integer providerID) {

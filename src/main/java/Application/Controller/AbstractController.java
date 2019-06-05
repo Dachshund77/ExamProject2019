@@ -78,4 +78,6 @@ public abstract class AbstractController implements Controllers {
     public void initValues(SearchContainer searchContainer, Company company){
         throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
     }
+
+
 }

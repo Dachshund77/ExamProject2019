@@ -791,32 +791,32 @@ public class FindSub extends AbstractController {
     }
 
     private void resetToPreviousSearch() {
-        companyIDTextField.setText(previousSearchContainer.getCompanyID().toString());
+        companyIDTextField.setText(previousSearchContainer.getCompanyIDasString());
         cvrNrTextField.setText(previousSearchContainer.getCompanyName());
         companyNameTextField.setText(previousSearchContainer.getCompanyName());
         //Consultation
-        consultationMaxDatePicker.getEditor().setText(previousSearchContainer.getConsultationMaxDate().toString());
-        consultationMinDatePicker.getEditor().setText(previousSearchContainer.getConsultationMinDate().toString());
+        consultationMaxDatePicker.setValue(previousSearchContainer.getConsultationMaxDate());
+        consultationMinDatePicker.setValue(previousSearchContainer.getConsultationMinDate());
         consultationNameTextField.setText(previousSearchContainer.getConsultationName());
-        consultationIDTextField.setText(previousSearchContainer.getConsultationID().toString());
+        consultationIDTextField.setText(previousSearchContainer.getConsultationIDasString());
         //Employee
-        employeeIDTextField.setText(previousSearchContainer.getEmployeeID().toString());
+        employeeIDTextField.setText(previousSearchContainer.getEmployeeIDasString());
         empFirstNameTextField.setText(previousSearchContainer.getEmployeeFirstName());
         empLastNameTextField.setText(previousSearchContainer.getEmployeeLastName());
         cprNrTextField.setText(previousSearchContainer.getCprNr());
         eMailTextField.setText(previousSearchContainer.getEmail());
         phoneNrTextField.setText(previousSearchContainer.getPhoneNr());
         //Interview
-        interviewIDTextField.setText(previousSearchContainer.getInterviewID().toString());
+        interviewIDTextField.setText(previousSearchContainer.getInterviewIDasString());
         interviewsNameTextField.setText(previousSearchContainer.getInterviewName());
         //Education
-        amuNrTextField.setText(previousSearchContainer.getAmuNr().toString());
+        amuNrTextField.setText(previousSearchContainer.getAmuNrAsString());
         educationNameTextField.setText(previousSearchContainer.getEducationName());
-        educationNoOfDaysTextField.setText(previousSearchContainer.getEducationNoOfDays().toString());
-        educationMinDatePicker.getEditor().setText(previousSearchContainer.getEducationMinDate().toString());
-        educationMaxDatePicker.getEditor().setText(previousSearchContainer.getEducationMaxDate().toString());
+        educationNoOfDaysTextField.setText(previousSearchContainer.getEducationNoOfDaysAsString());
+        educationMinDatePicker.setValue(previousSearchContainer.getEducationMinDate());
+        educationMaxDatePicker.setValue(previousSearchContainer.getEducationMaxDate());
         //provider
-        providerIDTextField.setText(previousSearchContainer.getProviderID().toString());
+        providerIDTextField.setText(previousSearchContainer.getProviderIDasString());
         providerNameTextField.setText(previousSearchContainer.getProviderName());
     }
 
