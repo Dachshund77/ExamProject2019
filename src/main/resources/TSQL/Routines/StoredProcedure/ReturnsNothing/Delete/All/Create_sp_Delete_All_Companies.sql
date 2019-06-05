@@ -1,0 +1,5 @@
+CREATE OR ALTER PROCEDURE sp_Delete_All_Companies
+AS
+BEGIN
+    DELETE FROM tbl_Company
+END;

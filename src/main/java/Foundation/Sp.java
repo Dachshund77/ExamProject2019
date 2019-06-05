@@ -23,6 +23,18 @@ public enum Sp implements Procedure {
     DELETE_INTERVIEW_BY_PK("sp_Delete_Interview_By_PK"),
     DELETE_PROVIDER_BY_PK("sp_Delete_Provider_By_PK"),
 
+    //DELETE ALL
+    DELETE_ALL_PROVIDERS("sp_Delete_All_Providers"),
+    DELETE_ALL_EDUCATIONS("sp_Delete_All_Educations"),
+    DELETE_ALL_EDUCATION_WISHES("sp_Delete_All_Education_Wishes"),
+    DELETE_ALL_FINISHED_EDUCATIONS("sp_Delete_All_Finished_Educations"),
+    DELETE_ALL_INTERVIEWS("sp_Delete_All_Interviews"),
+    DELETE_ALL_EMPLOYEES("sp_Delete_All_Employees"),
+    DELETE_ALL_CONSULTATIONS("sp_Delete_All_Consultations"),
+    DELETE_ALL_COMPANIES("sp_Delete_All_Companies"),
+    DELETE_ALL_DB_ENTRIES("sp_Delete_All_DB_Entries"),
+
+
     //INSERT
     INSERT_COMPANY_EDUCATION_BRIDGE("sp_Insert_Company_Education_Bridge"),
     INSERT_CONSULTATION_EMPLOYEE_BRIDGE("sp_Insert_Consultation_Employee_Bridge"),
