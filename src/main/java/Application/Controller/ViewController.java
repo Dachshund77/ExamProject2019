@@ -59,11 +59,11 @@ public enum ViewController {
 
     //Pop up Controllers
     FIND_COMPANY_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml"),
-    FIND_CONSULTATION_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml"),
-    FIND_EDUCATION_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml"),
-    FIND_EMPLOYEE_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml"),
-    FIND_INTERVIEW_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml"),
-    FIND_PROVIDER_POPUP("/FXML/Controller/PopUp/Find/FindCompanyPopUp.fxml");
+    FIND_CONSULTATION_POPUP("/FXML/Controller/PopUp/Find/FindConsultationPopUp.fxml"),
+    FIND_EDUCATION_POPUP("/FXML/Controller/PopUp/Find/FindEducationPopUp.fxml"),
+    FIND_EMPLOYEE_POPUP("/FXML/Controller/PopUp/Find/FindEmployeePopUp.fxml"),
+    FIND_INTERVIEW_POPUP("/FXML/Controller/PopUp/Find/FindInterviewPopUp.fxml"),
+    FIND_PROVIDER_POPUP("/FXML/Controller/PopUp/Find/FindProviderPopUp.fxml");
 
     private final String URL;
 

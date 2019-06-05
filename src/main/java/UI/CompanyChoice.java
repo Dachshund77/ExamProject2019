@@ -14,7 +14,7 @@ public class CompanyChoice extends Stage {
     public Company showAndReturn(CompanyReturnableController controller){
         Parent root = controller.getParent();
         super.setTitle("Select company");
-        super.setScene(new Scene(root, 600, 400));
+        super.setScene(new Scene(root, 600, 500));
         initModality(Modality.APPLICATION_MODAL);
         super.showAndWait();
         return controller.getReturn();

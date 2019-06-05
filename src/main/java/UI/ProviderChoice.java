@@ -14,7 +14,7 @@ public class ProviderChoice extends Stage {
     public Provider showAndReturn(ProviderReturnableController controller){
         Parent root = controller.getParent();
         super.setTitle("Select provider");
-        super.setScene(new Scene(root, 600, 400));
+        super.setScene(new Scene(root, 600, 500));
         initModality(Modality.APPLICATION_MODAL);
         super.showAndWait();
         return controller.getReturn();

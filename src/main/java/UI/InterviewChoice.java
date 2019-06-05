@@ -13,7 +13,7 @@ public class InterviewChoice extends Stage {
     public Interview showAndReturn(InterviewReturnableController controller){
         Parent root = controller.getParent();
         super.setTitle("Select interview");
-        super.setScene(new Scene(root, 600, 400));
+        super.setScene(new Scene(root, 600, 500));
         initModality(Modality.APPLICATION_MODAL);
         super.showAndWait();
         return controller.getReturn();

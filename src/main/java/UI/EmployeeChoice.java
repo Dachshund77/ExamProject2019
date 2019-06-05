@@ -13,7 +13,7 @@ public class EmployeeChoice extends Stage {
     public Employee showAndReturn(EmployeeReturnableController controller){
         Parent root = controller.getParent();
         super.setTitle("Select employee");
-        super.setScene(new Scene(root, 600, 400));
+        super.setScene(new Scene(root, 600, 500));
         initModality(Modality.APPLICATION_MODAL);
         super.showAndWait();
         return controller.getReturn();
