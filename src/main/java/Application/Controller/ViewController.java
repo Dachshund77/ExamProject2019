@@ -21,6 +21,7 @@ import java.io.IOException;
             3) Copy paste this method in here and change the parameter and initValues( - your parameters -)
             4) Override the created method in the controller you want it to be used.
             */
+@SuppressWarnings("Duplicates")
 public enum ViewController {
     // Other
     MAIN_CONTROLLER("/FXML/Controller/Other/MainController.fxml"),
@@ -101,11 +102,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(String string) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(string);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(string);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -122,11 +127,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Provider provider) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(provider);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(provider);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -143,11 +152,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Education education) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(education);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(education);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -164,11 +177,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Employee employee) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(employee);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -185,11 +202,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Interview interview) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(interview);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(interview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -206,11 +227,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Consultation consultation) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(consultation);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(consultation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -227,11 +252,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Company company) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(company);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(company);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -248,11 +277,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -270,11 +303,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Provider provider) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, provider);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, provider);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -292,11 +329,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Education education) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, education);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, education);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -314,10 +355,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Employee employee) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, employee);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return loadParent();
     }
@@ -336,10 +382,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Interview interview) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, interview);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, interview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return loadParent();
     }
@@ -358,11 +409,15 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Consultation consultation) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, consultation);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, consultation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
 
@@ -380,13 +435,18 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Company company) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, company);
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, company);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return loadParent();
     }
+
 
     /**
      * Loads a new scene.
@@ -421,11 +481,15 @@ public enum ViewController {
      */
     public void reLoad(Scene scene, String string) {
         reLoad(scene);
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(string);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(string);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -439,16 +503,22 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene    The scene that will be replaced on reLoad
      * @param provider Value that will passed on to the controller
      */
     public void reLoad(Scene scene, Provider provider) {
         reLoad(scene);
+        try {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(provider);
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(provider);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -462,16 +532,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene     The scene that will be replaced on reLoad
      * @param education Value that will passed on to the controller
      */
     public void reLoad(Scene scene, Education education) {
         reLoad(scene);
+        try {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(education);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(education);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -485,16 +560,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene    The scene that will be replaced on reLoad
      * @param employee Value that will passed on to the controller
      */
     public void reLoad(Scene scene, Employee employee) {
         reLoad(scene);
+        try {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(employee);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -508,16 +588,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene     The scene that will be replaced on reLoad
      * @param interview Value that will passed on to the controller
      */
     public void reLoad(Scene scene, Interview interview) {
         reLoad(scene);
+        try {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(interview);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(interview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -531,16 +616,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene        The scene that will be replaced on reLoad
      * @param consultation Value that will passed on to the controller
      */
     public void reLoad(Scene scene, Consultation consultation) {
         reLoad(scene);
+        try {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(consultation);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(consultation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -554,16 +644,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene   The scene that will be replaced on reLoad
      * @param company Value that will passed on to the controller
      */
     public void reLoad(Scene scene, Company company) {
         reLoad(scene);
+        try {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(company);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(company);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -577,16 +672,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene           The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
      */
     public void reLoad(Scene scene, SearchContainer searchContainer) {
         reLoad(scene);
+        try {
 
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -600,17 +700,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene           The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param provider Value that will passed on to the controller
+     * @param provider        Value that will passed on to the controller
      */
     public void reLoad(Scene scene, SearchContainer searchContainer, Provider provider) {
         reLoad(scene);
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, provider);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, provider);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -624,17 +728,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene           The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param education Value that will passed on to the controller
+     * @param education       Value that will passed on to the controller
      */
     public void reLoad(Scene scene, SearchContainer searchContainer, Education education) {
         reLoad(scene);
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, education);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, education);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -648,17 +756,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene           The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param employee Value that will passed on to the controller
+     * @param employee        Value that will passed on to the controller
      */
     public void reLoad(Scene scene, SearchContainer searchContainer, Employee employee) {
         reLoad(scene);
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, employee);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            Controllers newController = loader.getController();
+            loader.load();
+            newController.initValues(searchContainer, employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -672,17 +784,21 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene           The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param interview Value that will passed on to the controller
+     * @param interview       Value that will passed on to the controller
      */
     public void reLoad(Scene scene, SearchContainer searchContainer, Interview interview) {
         reLoad(scene);
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, interview);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, interview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -696,18 +812,23 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene           The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param consultation Value that will passed on to the controller
+     * @param consultation    Value that will passed on to the controller
      */
     public void reLoad(Scene scene, SearchContainer searchContainer, Consultation consultation) {
         reLoad(scene);
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, consultation);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, consultation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     /**
      * Loads a new scene and passes a value to the new controller.
@@ -720,16 +841,20 @@ public enum ViewController {
      * In order to pass a value the new controller needs to extends the AbstractController abstract class and override its methods.
      * </p>
      *
-     * @param scene  The scene that will be replaced on reLoad
+     * @param scene           The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param company Value that will passed on to the controller
+     * @param company         Value that will passed on to the controller
      */
     public void reLoad(Scene scene, SearchContainer searchContainer, Company company) {
         reLoad(scene);
-
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, company);
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, company);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

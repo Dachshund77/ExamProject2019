@@ -93,6 +93,7 @@ public class FindSub extends AbstractController {
 
     private ObservableList<Company> searchResultList = FXCollections.observableArrayList();
     private SearchContainer previousSearchContainer = null;
+    private SearchContainer currentSearchContainer = null;
 
     //BooleanBindings
     private BooleanBinding allValid;
@@ -727,6 +728,7 @@ public class FindSub extends AbstractController {
         container.setProviderID(providerIDTextField.getText());
         container.setProviderName(providerNameTextField.getText());
 
+        currentSearchContainer = container;
         //Connect to db
         try {
             DbFacade.connect();
@@ -748,8 +750,10 @@ public class FindSub extends AbstractController {
     @FXML
     private void handleReset(ActionEvent event) {
         if (previousSearchContainer == null) {
+            currentSearchContainer = null;
             resetToEmpty();
         } else {
+            currentSearchContainer = previousSearchContainer;
             resetToPreviousSearch();
         }
         //Clear searchResultList
@@ -838,5 +842,9 @@ public class FindSub extends AbstractController {
 
     public ObservableList<Company> getSearchResultList() {
         return searchResultList;
+    }
+
+    public SearchContainer getCurrentSearchContainer() {
+        return currentSearchContainer;
     }
 }

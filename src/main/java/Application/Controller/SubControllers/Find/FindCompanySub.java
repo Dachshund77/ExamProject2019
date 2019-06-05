@@ -74,4 +74,12 @@ public class FindCompanySub extends AbstractController {
             }
         }
     }
+
+    public TableView<Company> getCompanyTableView() {
+        return companyTableView;
+    }
+
+    public FindSub getFindSubController() {
+        return findSubController;
+    }
 }
