@@ -17,7 +17,19 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CompanyChoice extends Stage {
 
     public Company showAndReturn(CompanyReturnableController controller)  {
-        Parent root = controller.getParent();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(ViewController.FIND_COMPANY_POPUP.getURL()));
+
+
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        CompanyReturnableController controllerTest = loader.getController();
+
+        //loader.setController(controllerTest); not needed
         super.setTitle("Select company");
         Scene scene = new Scene(root, 600, 400);
         super.setScene(scene);
@@ -25,14 +37,13 @@ public class CompanyChoice extends Stage {
 
         super.showAndWait();
 
-        System.out.println("Returned value to Company choice " + controller.getReturn());
-        return controller.getReturn();
+        System.out.println("Returned value to Company choice " + controllerTest.getReturn());
+        return controllerTest.getReturn();
     }
 
     public Company showAndReturn(CompanyReturnableController controller, Company company) {
-        throw new UnsupportedOperationException("Not impleneted");
-        //controller.initValues(company);
-        //super.showAndWait();
-        //return controller.getReturn();
+        controller.initValues(company);
+        super.showAndWait();
+        return controller.getReturn();
     }
 }
