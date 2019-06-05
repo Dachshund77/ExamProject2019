@@ -24,6 +24,9 @@ public class FindEmployeePopUp extends EmployeeReturnableController {
     public void handleCancel(ActionEvent actionEvent) {
     }
 
+    /**
+     * @return Loads the FindEducationPopUp Stage
+     */
     @Override
     public Parent getParent() {
         return ViewController.FIND_EMPLOYEE_POPUP.loadParent();

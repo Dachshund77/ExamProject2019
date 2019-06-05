@@ -26,6 +26,9 @@ public class FindConsultationPopUp extends ConsultationReturnableController {
     public void handleCancel(ActionEvent actionEvent) {
     }
 
+    /**
+     * @return Loads the FindConsultationPopUp Stage
+     */
     @Override
     public Parent getParent() {
         return ViewController.FIND_CONSULTATION_POPUP.loadParent();

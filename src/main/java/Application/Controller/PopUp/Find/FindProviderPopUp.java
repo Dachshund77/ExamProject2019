@@ -24,6 +24,9 @@ public class FindProviderPopUp extends ProviderReturnableController {
     public void handleCancel(ActionEvent actionEvent) {
     }
 
+    /**
+     * @return Loads the FindProviderPopUp Stage
+     */
     @Override
     public Parent getParent() {
         return ViewController.FIND_PROVIDER_POPUP.loadParent();

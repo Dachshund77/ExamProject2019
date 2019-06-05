@@ -25,6 +25,9 @@ public class FindInterviewPopUp extends InterviewReturnableController {
     public void handleCancel(ActionEvent actionEvent) {
     }
 
+    /**
+     * @return Loads the FindCInterviewPopUp Stage
+     */
     @Override
     public Parent getParent() {
         return ViewController.FIND_INTERVIEW_POPUP.loadParent();

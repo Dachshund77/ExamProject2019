@@ -24,6 +24,9 @@ public class FindCompanyPopUp extends CompanyReturnableController {
     public void handleCancel(ActionEvent actionEvent) {
     }
 
+    /**
+     * @return Loads the FindCompanyPopUp Stage
+     */
     @Override
     public Parent getParent() {
         return ViewController.FIND_COMPANY_POPUP.loadParent();

@@ -24,6 +24,9 @@ public class FindEducationPopUp extends EducationReturnableController {
     public void handleCancel(ActionEvent actionEvent) {
     }
 
+    /**
+     * @return Loads the FindEducationPopUp Stage
+     */
     @Override
     public Parent getParent() {
         return ViewController.FIND_EDUCATION_POPUP.loadParent();

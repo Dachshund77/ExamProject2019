@@ -13,7 +13,7 @@ public class AlterInterview extends AbstractController {
     @FXML
     private InterviewSub interviewSubController;
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
 
     private SearchContainer previousSearch;
 
@@ -27,6 +27,7 @@ public class AlterInterview extends AbstractController {
         //Save search container for returning
         previousSearch = searchContainer;
         //propergate Consultation to setup form
+        interviewSubController.initValues(interview);
     }
 
     @FXML
@@ -40,11 +41,18 @@ public class AlterInterview extends AbstractController {
         }
     }
 
+    /**
+     * When the user clicks "confirm"
+     * an interview object is created and send to the database
+     * @param event sends an interview object to the database
+     */
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //Write to db
     }
 
+    /**
+     * @param event Resets the user required fields
+     */
     @FXML
     private void handleReset(ActionEvent event) {
         interviewSubController.resetForm();

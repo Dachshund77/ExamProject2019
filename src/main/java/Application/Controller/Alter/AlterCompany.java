@@ -2,9 +2,11 @@ package Application.Controller.Alter;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.CompanySub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Company;
 import Foundation.DbFacade;
+import UI.CompanyChoice;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +20,7 @@ public class AlterCompany extends AbstractController {
     private CompanySub companySubController;
 
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
 
     private SearchContainer previousSearch;
 
@@ -33,11 +35,10 @@ public class AlterCompany extends AbstractController {
 
     @Override
     public void initValues(SearchContainer searchContainer, Company company) {
-        //Save search container for returning
         previousSearch = searchContainer;
-        //propergate Consultation to setup form
-        //TODO THERE IS MISSING STUFF HERE -Sven
+        companySubController.initValues(company);
     }
+
 
     @FXML
     private void handleCancel(ActionEvent event) {
@@ -59,8 +60,6 @@ public class AlterCompany extends AbstractController {
      */
     @FXML //FIXME sends 2 objects to the company
     private void handleConfirmation(ActionEvent event) {
-
-        System.out.println(companySubController.isValid.get());
         Company createNewCompanyObj = new Company(null, companySubController.cvrNrTextField.getText(),
                 companySubController.companyNameTextField.getText(), null, null);
             //TODO rewirte the subcontroller to private, sorry

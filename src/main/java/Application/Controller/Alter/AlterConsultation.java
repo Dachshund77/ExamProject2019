@@ -14,10 +14,9 @@ import java.sql.SQLException;
 public class AlterConsultation extends AbstractController {
 
     @FXML
-    private ConsultationSub consultationSubController; //SubController
-
+    private ConsultationSub consultationSubController;
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
 
     private SearchContainer previousSearch;
 
@@ -27,15 +26,14 @@ public class AlterConsultation extends AbstractController {
      */
     @FXML
     private void initialize() {
-        // hook up the  button with subcontroller form correctness
         confirmationButton.disableProperty().bind(consultationSubController.isValid.not());
     }
 
+
     @Override
     public void initValues(SearchContainer searchContainer, Consultation consultation) {
-        //Save search container for returning
         previousSearch = searchContainer;
-        //propergate Consultation to setup form
+        consultationSubController.initValues(consultation);
     }
 
     @FXML
@@ -49,6 +47,12 @@ public class AlterConsultation extends AbstractController {
         }
     }
 
+    /**
+     * When the user clicks on the "confirm" button
+     * a consultation object is created and send to the database
+     *
+     * @param event create consultation object and send it to the database
+     */
     @FXML
     private void handleConfirmation(ActionEvent event) {
         //Creates a new consultation Obj to send to the database
@@ -69,10 +73,11 @@ public class AlterConsultation extends AbstractController {
         }
     }
 
-
+    /**
+     * @param event Resets the user required fields
+     */
     @FXML
     private void handleReset(ActionEvent event) {
-        // call subcontroller reset
         consultationSubController.resetForm();
     }
 }

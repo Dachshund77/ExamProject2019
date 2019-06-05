@@ -42,7 +42,6 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
     public ArrayList<Consultation> consultationArrayList = new ArrayList<>();
     public ArrayList<Education> educationArrayList;
 
-    //public SimpleBooleanProperty isValid; // Hook for parent class to activate confirm button
     public Company selectedCompany;
 
     public BooleanBinding isValid;
@@ -58,21 +57,8 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
         consultationEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         consultationTableView.getColumns().setAll(consultationNameColumn, consultationStartDateColumn, consultationEndDateColumn);
-        //FXCollections.observableArrayList(consultationArrayList);
-
-        LocalDate date1 = LocalDate.of(2001, 11, 21); //TODO LEFT OVER CODE?
-        LocalDate date2 = LocalDate.of(2021, 11, 21);
-        Consultation newCons = new Consultation(2, "something", date1, date2, null);
-
-        ObservableList<Consultation> list = FXCollections.observableArrayList();
-
-        consultationTableView.setItems(list);
-
-        list.add(newCons);
-        //TODO Delete later plz
 
          //Setting up EducationTableView
-
         educationNameColumn.setCellValueFactory(new PropertyValueFactory<>("educationName"));
         educationTableView.getColumns().setAll(educationNameColumn);
         ObservableList<Education> educationList = FXCollections.observableArrayList();
@@ -80,18 +66,23 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
 
 
         //Hides the tableviews when the user selects "New Company"
-
         if (selectedCompany == null) {
             educationTableView.setVisible(false);
             consultationTableView.setVisible(false);
         }
 
-        // adds a listener to the handlers of
-        // cvrTextField and companyNameTextfield
-
+        /*
+         adds a listener to the handlers of
+         cvrTextField and companyNameTextfield
+         */
         cvrNrTextField.textProperty().addListener(((observable) -> handleCvrNrInput()));
         companyNameTextField.textProperty().addListener(((observable) -> handleCompanyNameInput()));
 
+        /*
+        binds the .isValid() to the controls
+        and returns true or false depending
+        if the requirements are met
+         */
         isValid = new BooleanBinding() {
             {
                 bind(companyNameIsValid);
@@ -100,10 +91,8 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
             @Override
             protected boolean computeValue() {
                 if (companyNameIsValid.get() && cvrNrIsValid.get()) {
-                    System.out.println("True");
                     return true;
                 } else {
-                    System.out.println("False");
                     return false;
                 }
             }
@@ -168,10 +157,11 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
         }
     }
 
+    /*
     public void handleCompanyPopUp(ActionEvent event){
         CompanyChoice c = new CompanyChoice();
         Company foundC = c.showAndReturn(new FindCompanyPopUp()); //TODO We are literly not doing anything with that value?
-    }
+    }*/
 
     /**
      * checks if both TextFields have valid content
