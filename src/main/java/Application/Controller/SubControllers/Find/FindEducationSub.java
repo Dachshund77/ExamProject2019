@@ -113,4 +113,12 @@ public class FindEducationSub extends AbstractController {
             }
         }
     }
+
+    public TableView<Education> getEducationTableView() {
+        return educationTableView;
+    }
+
+    public FindSub getFindSubController() {
+        return findSubController;
+    }
 }

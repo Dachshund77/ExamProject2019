@@ -91,6 +91,14 @@ public class FindEmployeeSub extends AbstractController {
             }
         }
     }
+
+    public TableView<Employee> getEmployeeTableView() {
+        return employeeTableView;
+    }
+
+    public FindSub getFindSubController() {
+        return findSubController;
+    }
 }
 
 

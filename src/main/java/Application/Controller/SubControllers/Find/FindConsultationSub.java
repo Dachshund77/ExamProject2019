@@ -86,4 +86,11 @@ public class FindConsultationSub extends AbstractController {
         }
     }
 
+    public TableView<Consultation> getConsultationTableView() {
+        return consultationTableView;
+    }
+
+    public FindSub getFindSubController() {
+        return findSubController;
+    }
 }

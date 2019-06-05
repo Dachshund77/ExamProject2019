@@ -108,4 +108,12 @@ public class FindProviderSub extends AbstractController {
             }
         }
     }
+
+    public TableView<Provider> getProviderTableView() {
+        return providerTableView;
+    }
+
+    public FindSub getFindSubController() {
+        return findSubController;
+    }
 }

@@ -85,4 +85,12 @@ public class FindInterviewSub extends AbstractController {
             }
         }
     }
+
+    public TableView<Interview> getInterviewTableView() {
+        return interviewTableView;
+    }
+
+    public FindSub getFindSubController() {
+        return findSubController;
+    }
 }
