@@ -9,5 +9,5 @@ public abstract class InterviewReturnableController extends AbstractController {
 
     public abstract Interview getReturn();
 
-    public abstract Parent getParent();
+    public abstract String getURL();
 }

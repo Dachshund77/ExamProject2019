@@ -10,6 +10,6 @@ public abstract class CompanyReturnableController extends AbstractController{
 
     public abstract Company getReturn();
 
-    public abstract Parent getParent();
+    public abstract String getURL();
 
 }

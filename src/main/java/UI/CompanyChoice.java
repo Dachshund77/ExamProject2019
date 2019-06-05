@@ -17,8 +17,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class CompanyChoice extends Stage {
 
     public Company showAndReturn(CompanyReturnableController controller)  {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(ViewController.FIND_COMPANY_POPUP.getURL()));
-
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(controller.getURL()));
 
         Parent root = null;
         try {
@@ -27,18 +26,13 @@ public class CompanyChoice extends Stage {
             e.printStackTrace();
         }
 
-        CompanyReturnableController controllerTest = loader.getController();
-
-        //loader.setController(controllerTest); not needed
-        super.setTitle("Select company");
+        CompanyReturnableController loadedController = loader.getController();
+        setTitle("Select company");
         Scene scene = new Scene(root, 600, 400);
-        super.setScene(scene);
+        setScene(scene);
         initModality(Modality.APPLICATION_MODAL);
-
-        super.showAndWait();
-
-        System.out.println("Returned value to Company choice " + controllerTest.getReturn());
-        return controllerTest.getReturn();
+        showAndWait();
+        return loadedController.getReturn();
     }
 
     public Company showAndReturn(CompanyReturnableController controller, Company company) {

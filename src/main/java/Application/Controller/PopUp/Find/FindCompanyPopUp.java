@@ -40,21 +40,19 @@ public class FindCompanyPopUp extends CompanyReturnableController {
 
     public void handleConfirmation(ActionEvent actionEvent) {
         Stage stage = (Stage) confirmationButton.getScene().getWindow();
-        System.out.println("Setting the SelectedCompany " + companyTableView.getSelectionModel().getSelectedItem());
         selectedCompany = companyTableView.getSelectionModel().getSelectedItem(); //Confirmation can only be activated if something is selected
-        stage.hide();
+        stage.close();
     }
 
     public void handleCancel(ActionEvent actionEvent) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         selectedCompany = null;
-        stage.fireEvent(new WindowEvent(stage,WindowEvent.WINDOW_CLOSE_REQUEST));
-        stage.hide();
+        stage.close();
     }
 
     @Override
-    public Parent getParent() {
-        return ViewController.FIND_COMPANY_POPUP.loadParent();
+    public String getURL() {
+        return ViewController.FIND_COMPANY_POPUP.getURL();
     }
 
     @Override

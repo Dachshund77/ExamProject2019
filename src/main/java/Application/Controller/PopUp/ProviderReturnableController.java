@@ -9,5 +9,5 @@ public abstract class ProviderReturnableController extends AbstractController {
 
    public abstract Provider getReturn();
 
-    public abstract Parent getParent();
+    public abstract String getURL();
 }
