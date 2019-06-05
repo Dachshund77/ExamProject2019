@@ -207,7 +207,6 @@ public class SearchContainerTest {
 
     }
 
-
     @Test
     public void isValidPhoneNr() {
         assertTrue(SearchContainer.isValidPhoneNr("123456")); //Valid length
@@ -249,7 +248,6 @@ public class SearchContainerTest {
         assertFalse(SearchContainer.isValidInterviewName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
     }
 
-
     @Test
     public void isValidProviderID() {
         //True
@@ -277,5 +275,33 @@ public class SearchContainerTest {
         //False
         //Way to long
         assertFalse(SearchContainer.isValidProviderName("abcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghicabcdefghic"));
+    }
+
+    @Test
+    public void equalsNullPointerTest() {
+        SearchContainer searchContainer1 = new SearchContainer();
+        SearchContainer searchContainer2 = new SearchContainer();
+
+        assertEquals(searchContainer1,searchContainer2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+
+    }
+
+    @Test
+    public void equalsSameDomain(){
+
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+
+    }
+
+    @Test
+    public void equalsNullObjects(){
+
     }
 }

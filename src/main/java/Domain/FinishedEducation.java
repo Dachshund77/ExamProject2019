@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class FinishedEducation {
+public class FinishedEducation implements Domain{
     private final Integer finishedEducationID;
     private Education education;
     private LocalDate dateFinished;

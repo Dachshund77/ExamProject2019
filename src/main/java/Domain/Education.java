@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Education {
+public class Education implements Domain{
     private final Integer amuNr;
     private String educationName;
     private String description;

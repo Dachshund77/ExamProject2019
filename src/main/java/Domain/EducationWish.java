@@ -2,7 +2,7 @@ package Domain;
 
 import java.util.Objects;
 
-public class EducationWish {
+public class EducationWish implements Domain{
     private final Integer educationWishID;
     private Education education;
     private Integer priority;

@@ -125,10 +125,30 @@ public class InterviewTest {
 
 
     @Test
-    public void equals1() {
+    public void equalsNullPointerTest() {
         Interview interview1 = new Interview(null, null, null, null, null, null, null, null, null);
         Interview interview2 = new Interview(null, null, null, null, null, null, null, null, null);
 
         assertEquals(interview1,interview2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+
+    }
+
+    @Test
+    public void equalsSameDomain(){
+
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+
+    }
+
+    @Test
+    public void equalsNullObjects(){
+
     }
 }

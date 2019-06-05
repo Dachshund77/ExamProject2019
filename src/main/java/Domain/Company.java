@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Company {
+public class Company implements Domain{
 
 
     private final Integer companyID;

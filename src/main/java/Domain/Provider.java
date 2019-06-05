@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.util.Objects;
 
-public class Provider {
+public class Provider implements Domain{
     private final Integer providerID;
     private String providerName;
 

@@ -36,10 +36,44 @@ public class ProviderTest {
     }
 
     @Test
-    public void equals1() {
+    public void equalsNullPointerTest() {
         Provider provider1 = new Provider(null,null);
         Provider provider2 = new Provider(null,null);
 
         assertEquals(provider1,provider2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+        Provider provider1 = new Provider(4,"Test");
+
+        assertEquals(provider1,provider1);
+    }
+
+    @Test
+    public void equalsSameDomain(){
+        Domain domain1 = new Provider(2,"Test");
+        Domain domain2 = new Provider(2,"Test");
+        Domain domain3 = new Provider(3,"Test");
+
+        assertEquals(domain1,domain2);
+        assertNotEquals(domain1,domain3);
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+        Domain domain1 = new Provider(2,"Test");
+        Domain testCompany1 = new Company(1,"13","241",null,null);
+
+        assertNotEquals(domain1,testCompany1);
+    }
+
+    @Test
+    public void equalsNullObjects(){
+        Provider provider1= null;
+        Provider provider2 = new Provider(4,"Test");
+
+        assertNotEquals(provider1,provider2);
+        assertNotEquals(provider2,provider1);
     }
 }

@@ -57,10 +57,30 @@ public class ConsultationTest {
     }
 
     @Test
-    public void equals1() {
+    public void equalsNullPointerTest() {
         Consultation consultation1 = new Consultation(null,null,null,null,null);
         Consultation consultation2 = new Consultation(null,null,null,null,null);
 
         assertEquals(consultation1,consultation2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+
+    }
+
+    @Test
+    public void equalsSameDomain(){
+
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+
+    }
+
+    @Test
+    public void equalsNullObjects(){
+
     }
 }

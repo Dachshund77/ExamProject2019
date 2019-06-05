@@ -24,10 +24,30 @@ public class FinishedEducationTest {
 
 
     @Test
-    public void equals1() {
+    public void equalsNullPointerTest() {
         FinishedEducation finishedEducation1 = new FinishedEducation(null,null,null);
         FinishedEducation finishedEducation2 = new FinishedEducation(null,null,null);
 
         assertEquals(finishedEducation1,finishedEducation2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+
+    }
+
+    @Test
+    public void equalsSameDomain(){
+
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+
+    }
+
+    @Test
+    public void equalsNullObjects(){
+
     }
 }

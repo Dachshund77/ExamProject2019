@@ -3,7 +3,7 @@ package Domain;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Interview {
+public class Interview implements Domain{
 
     private final Integer interviewID;
     private String interviewName;

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class Consultation {
+public class Consultation implements Domain{
 
     private final Integer consultationID;
     private String consultationName;

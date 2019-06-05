@@ -82,10 +82,30 @@ public class EmployeeTest {
     }
 
     @Test
-    public void equals1() {
+    public void equalsNullPointerTest() {
         Employee employee1 = new Employee(null,null,null,null,null,null,null);
         Employee employee2 = new Employee(null,null,null,null,null,null,null);
 
         assertEquals(employee1,employee2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+
+    }
+
+    @Test
+    public void equalsSameDomain(){
+
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+
+    }
+
+    @Test
+    public void equalsNullObjects(){
+
     }
 }

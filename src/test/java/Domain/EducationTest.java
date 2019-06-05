@@ -61,10 +61,30 @@ public class EducationTest {
     }
 
     @Test
-    public void equals1() {
+    public void equalsNullPointerTest() {
         Education education1 = new Education(null,null,null,null,null,null);
         Education education2 = new Education(null,null,null,null,null,null);
 
         assertEquals(education1,education2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+
+    }
+
+    @Test
+    public void equalsSameDomain(){
+
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+
+    }
+
+    @Test
+    public void equalsNullObjects(){
+
     }
 }
