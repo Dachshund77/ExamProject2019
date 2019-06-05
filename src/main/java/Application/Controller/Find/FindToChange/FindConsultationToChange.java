@@ -52,13 +52,13 @@ public class FindConsultationToChange extends AbstractController {
     @FXML
     private void handleConfirmation(ActionEvent event) {
         //Get selection
-        Consultation toBeChangedCompany = consultationTableView.getSelectionModel().getSelectedItem();
+        Consultation toBeChangedConsultation = consultationTableView.getSelectionModel().getSelectedItem();
 
         //Get the search container
         SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
 
         //Goto Change Company
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.ALTER_CONSULTATION.loadParent(currentSearch, toBeChangedCompany));
+        ((BorderPane) root).setCenter(ViewController.ALTER_CONSULTATION.loadParent(currentSearch, toBeChangedConsultation));
     }
 }

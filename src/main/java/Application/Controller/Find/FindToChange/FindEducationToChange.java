@@ -53,14 +53,14 @@ public class FindEducationToChange extends AbstractController {
     @FXML
     private void handleConfirmation(ActionEvent event) {
         //Get selection
-        Education toBeChangedCompany = educationTableView.getSelectionModel().getSelectedItem();
+        Education toBeChangedEducation = educationTableView.getSelectionModel().getSelectedItem();
 
         //Get the search container
         SearchContainer currentSearch = findEducationSubController.getFindSubController().getCurrentSearchContainer();
 
         //Goto Change Company
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.ALTER_COMPANY.loadParent(currentSearch, toBeChangedCompany));
+        ((BorderPane) root).setCenter(ViewController.ALTER_EDUCATION.loadParent(currentSearch, toBeChangedEducation));
 
     }
 }

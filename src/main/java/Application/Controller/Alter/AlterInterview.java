@@ -19,7 +19,7 @@ public class AlterInterview extends AbstractController {
 
     @FXML
     private void initialize(){
-        confirmationButton.disableProperty().bind(interviewSubController.isValid.not());
+        confirmationButton.disableProperty().bind(interviewSubController.isValid.not()); // FIXME: 05/06/2019 NULLPOINTE EXCEPTION since the underlying subControllerdoes not exists
     }
 
     @Override
