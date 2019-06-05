@@ -26,7 +26,8 @@ public class FindProviderToChange extends AbstractController {
     @FXML
     private void initialize(){
         // Load the TableView reference from subController
-        providerTableView = findProviderSubController.getProviderTableView();
+        //providerTableView = findProviderSubController.getProviderTableView();
+
 
         // hook up the confirmation button
         confirmationButton.disableProperty().bind(providerTableView.getSelectionModel().selectedItemProperty().isNull());
@@ -57,11 +58,11 @@ public class FindProviderToChange extends AbstractController {
         Provider toBeChangedProvider = providerTableView.getSelectionModel().getSelectedItem();
 
         //Get the search container
-        SearchContainer currentSearch = findProviderSubController.getFindSubController().getCurrentSearchContainer();
+       // SearchContainer currentSearch = findProviderSubController.getFindSubController().getCurrentSearchContainer();
 
         //Goto Change Company
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.ALTER_PROVIDER.loadParent(currentSearch, toBeChangedProvider));
+        //((BorderPane) root).setCenter(ViewController.ALTER_PROVIDER.loadParent(currentSearch, toBeChangedProvider));
 
     }
 }
