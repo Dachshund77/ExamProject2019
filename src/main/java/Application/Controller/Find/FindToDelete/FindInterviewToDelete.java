@@ -22,7 +22,7 @@ public class FindInterviewToDelete extends AbstractController {
     private FindInterviewSub findInterviewSubController;
 
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
     @FXML
     private Button cancelButton;
 
@@ -32,7 +32,6 @@ public class FindInterviewToDelete extends AbstractController {
      */
     @FXML
     private void initialize(){
-        // hook up the  button with subcontroller form correctness
         confirmationButton.disableProperty().bind(findInterviewSubController.getInterviewTableView().getSelectionModel().selectedItemProperty().isNull());
     }
 
@@ -68,12 +67,10 @@ public class FindInterviewToDelete extends AbstractController {
      */
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //goto next
         Interview toBeDeletedInterview = findInterviewSubController.getInterviewTableView().getSelectionModel().getSelectedItem();
-
-        //Get the search container
         SearchContainer currentSearch = findInterviewSubController.getFindSubController().getCurrentSearchContainer();
 
-        confirmationButton.getScene().setRoot(ViewController.DELETE_INTERVIEW.loadParent(currentSearch, toBeDeletedInterview));
+        Parent root = confirmationButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.DELETE_INTERVIEW.loadParent(currentSearch, toBeDeletedInterview));
     }
 }

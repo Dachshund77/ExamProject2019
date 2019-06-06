@@ -22,7 +22,7 @@ public class FindEmployeeToDelete extends AbstractController {
     private FindEmployeeSub findEmployeeSubController;
 
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
     @FXML
     private Button cancelButton;
 
@@ -32,7 +32,6 @@ public class FindEmployeeToDelete extends AbstractController {
      */
     @FXML
     private void initialize(){
-        // hook up the  button with subcontroller form correctness
         confirmationButton.disableProperty().bind(findEmployeeSubController.getEmployeeTableView().getSelectionModel().selectedItemProperty().isNull());
     }
 
@@ -70,12 +69,10 @@ public class FindEmployeeToDelete extends AbstractController {
      */
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //goto next
-        Employee toBeDeletedEducation = findEmployeeSubController.getEmployeeTableView().getSelectionModel().getSelectedItem();
-
-        //Get the search container
+        Employee toBeDeletedEmployee = findEmployeeSubController.getEmployeeTableView().getSelectionModel().getSelectedItem();
         SearchContainer currentSearch = findEmployeeSubController.getFindSubController().getCurrentSearchContainer();
 
-        confirmationButton.getScene().setRoot(ViewController.DELETE_EMPLOYEE.loadParent(currentSearch, toBeDeletedEducation));
+        Parent root = confirmationButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.DELETE_EMPLOYEE.loadParent(currentSearch, toBeDeletedEmployee));
     }
 }

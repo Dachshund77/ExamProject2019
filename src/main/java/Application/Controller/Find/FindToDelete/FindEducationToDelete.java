@@ -70,6 +70,7 @@ public class FindEducationToDelete extends AbstractController {
         Education toBeDeletedEducation = findEducationSubController.getEducationTableView().getSelectionModel().getSelectedItem();
         SearchContainer currentSearch = findEducationSubController.getFindSubController().getCurrentSearchContainer();
 
-        confirmationButton.getScene().setRoot(ViewController.DELETE_EDUCATION.loadParent(currentSearch, toBeDeletedEducation));
+        Parent root = confirmationButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.DELETE_EDUCATION.loadParent(currentSearch, toBeDeletedEducation));
     }
 }

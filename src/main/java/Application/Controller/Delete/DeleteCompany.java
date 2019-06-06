@@ -32,7 +32,4 @@ public class DeleteCompany extends AbstractController {
     public void handleConfirmation(ActionEvent actionEvent) {
 
     }
-
-    public void handleCancel(ActionEvent actionEvent) {
-    }
 }

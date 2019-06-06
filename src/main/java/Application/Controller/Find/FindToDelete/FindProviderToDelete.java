@@ -69,6 +69,7 @@ public class FindProviderToDelete extends AbstractController {
         Provider toBeDeletedProvider = findProviderSubController.getProviderTableView().getSelectionModel().getSelectedItem();
         SearchContainer currentSearch = findProviderSubController.getFindSubController().getCurrentSearchContainer();
 
-        confirmationButton.getScene().setRoot(ViewController.DELETE_PROVIDER.loadParent(currentSearch, toBeDeletedProvider));
+        Parent root = confirmationButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.DELETE_PROVIDER.loadParent(currentSearch, toBeDeletedProvider));
     }
 }
