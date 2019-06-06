@@ -9,7 +9,10 @@ import Application.SearchContainer;
 import Domain.Company;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+
+import javax.swing.text.View;
 
 public class DeleteCompany extends AbstractController {
 
@@ -27,11 +30,15 @@ public class DeleteCompany extends AbstractController {
 
     }
 
-    //TODO set searchContainer results into correspondingt textFields
+    //TODO set searchContainer results into corresponding textFields
     @Override
     public void initValues(SearchContainer searchContainer, Company company){
         previousSearch = searchContainer;
-        deleteCompanySubController.initValues(searchContainer);
+       // deleteCompanySubController.companyNameTextField.setText(searchContainer.getCompanyName());
+
+        //returns null
+        company.setCompanyName(searchContainer.getCompanyName());
+        System.out.println(company.getCompanyName());
     }
 
     public void handleCancel(ActionEvent actionEvent) {
