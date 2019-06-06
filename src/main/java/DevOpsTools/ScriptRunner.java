@@ -26,7 +26,7 @@ public class ScriptRunner {
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Education.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Date.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Company.sql").getFile()));
-        executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Company_Education_Bridge.sql").getFile()));
+        //executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Company_Education_Bridge.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Consultation.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Employee.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Consultation_Employee_Bridge.sql").getFile()));
