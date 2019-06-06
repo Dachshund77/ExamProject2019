@@ -2,15 +2,12 @@ package Application.Controller.Alter;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.CompanySub;
-import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Company;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
 
@@ -38,21 +35,15 @@ public class AlterCompany extends AbstractController {
     public void initValues(SearchContainer searchContainer, Company company) {
         //Save search container for returning
         previousSearch = searchContainer;
-        System.out.println("searchContainer = " + searchContainer);
-        System.out.println("init test "+company);
         //propergate Consultation to setup form
         //TODO THERE IS MISSING STUFF HERE -Sven
     }
 
     @FXML
     private void handleCancel(ActionEvent event) {
-        System.out.println("Test debug2");
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null){
-            System.out.println("Test debug");
-            Parent root = confirmationButton.getScene().getRoot();
-            ((BorderPane) root).setCenter(ViewController.FIND_COMPANY_TO_CHANGE.loadParent(previousSearch));
             //TODO THERE IS MISSING STUFF HERE -Sven
         } else {
             //TODO THERE IS MISSING STUFF HERE -Sven

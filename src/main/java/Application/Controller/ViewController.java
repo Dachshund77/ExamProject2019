@@ -71,6 +71,11 @@ public enum ViewController {
         this.URL = url;
     }
 
+
+    public String getURL() {
+        return URL;
+    }
+
     /**
      * Returns the root node for the controller.
      * This method should be used when no previous scene is loaded or
@@ -101,12 +106,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(String string) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(string);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(string);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -122,12 +132,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Provider provider) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(provider);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(provider);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -143,12 +158,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Education education) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(education);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(education);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -164,12 +184,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Employee employee) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(employee);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -185,12 +210,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Interview interview) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(interview);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(interview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -206,12 +236,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Consultation consultation) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(consultation);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(consultation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -227,12 +262,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(Company company) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(company);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(company);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -248,12 +288,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -270,12 +315,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Provider provider) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, provider);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, provider);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -292,12 +342,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Education education) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, education);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, education);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -314,12 +369,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Employee employee) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, employee);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -336,12 +396,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Interview interview) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, interview);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, interview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -358,12 +423,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Consultation consultation) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, consultation);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, consultation);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -380,12 +450,17 @@ public enum ViewController {
      * @return Parent of specified Controller.
      */
     public Parent loadParent(SearchContainer searchContainer, Company company) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(URL));
-        Controllers newController = loader.getController();
-        newController.initValues(searchContainer, company);
-
-        return loadParent();
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, company);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
     }
 
     /**
@@ -393,7 +468,9 @@ public enum ViewController {
      * The scene URL is defined in the Enum constructor.
      *
      * @param scene The scene that will be replaced on reLoad
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(URL));
@@ -418,7 +495,9 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param string Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, String string) {
         reLoad(scene);
 
@@ -441,7 +520,9 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param provider Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, Provider provider) {
         reLoad(scene);
 
@@ -464,7 +545,9 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param education Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, Education education) {
         reLoad(scene);
 
@@ -487,7 +570,9 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param employee Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, Employee employee) {
         reLoad(scene);
 
@@ -510,7 +595,9 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param interview Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, Interview interview) {
         reLoad(scene);
 
@@ -533,7 +620,9 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param consultation Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, Consultation consultation) {
         reLoad(scene);
 
@@ -556,7 +645,9 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param company Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, Company company) {
         reLoad(scene);
 
@@ -579,7 +670,9 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, SearchContainer searchContainer) {
         reLoad(scene);
 
@@ -602,8 +695,10 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param provider Value that will passed on to the controller
+     * @param provider        Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, SearchContainer searchContainer, Provider provider) {
         reLoad(scene);
 
@@ -626,8 +721,10 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param education Value that will passed on to the controller
+     * @param education       Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, SearchContainer searchContainer, Education education) {
         reLoad(scene);
 
@@ -650,8 +747,10 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param employee Value that will passed on to the controller
+     * @param employee        Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, SearchContainer searchContainer, Employee employee) {
         reLoad(scene);
 
@@ -674,8 +773,10 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param interview Value that will passed on to the controller
+     * @param interview       Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, SearchContainer searchContainer, Interview interview) {
         reLoad(scene);
 
@@ -698,8 +799,10 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param consultation Value that will passed on to the controller
+     * @param consultation    Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, SearchContainer searchContainer, Consultation consultation) {
         reLoad(scene);
 
@@ -722,8 +825,10 @@ public enum ViewController {
      *
      * @param scene  The scene that will be replaced on reLoad
      * @param searchContainer Value that will passed on to the controller
-     * @param company Value that will passed on to the controller
+     * @param company         Value that will passed on to the controller
+     * @deprecated rather use LoadParent to replace nodes.
      */
+    @Deprecated
     public void reLoad(Scene scene, SearchContainer searchContainer, Company company) {
         reLoad(scene);
 

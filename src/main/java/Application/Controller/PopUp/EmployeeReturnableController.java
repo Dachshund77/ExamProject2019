@@ -9,5 +9,5 @@ public abstract class EmployeeReturnableController extends AbstractController {
 
     public abstract Employee getReturn();
 
-    public abstract Parent getParent();
+    public abstract String getURL();
 }

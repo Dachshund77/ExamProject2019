@@ -9,5 +9,5 @@ public abstract class ConsultationReturnableController extends AbstractControlle
 
     public abstract Consultation getReturn();
 
-    public abstract Parent getParent();
+    public abstract String getURL();
 }
