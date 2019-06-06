@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
+import javax.swing.text.View;
+
 public class FindEducationToDelete extends AbstractController {
 
 
@@ -18,37 +20,56 @@ public class FindEducationToDelete extends AbstractController {
     private FindEducationSub findEducationSubController;
 
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
     @FXML
     private Button cancelButton;
 
+    /**
+     * disables the confirm button
+     * until the user has selected an education
+     */
     @FXML
     private void initialize(){
-        // hook up the  button with subcontroller form correctness
         confirmationButton.disableProperty().bind(findEducationSubController.getEducationTableView().getSelectionModel().selectedItemProperty().isNull());
     }
 
+    /**
+     * initializes the findEducationSubController
+     * to have values from the searchContainer
+     * @param searchContainer
+     */
     @Override
     public void initValues(SearchContainer searchContainer) {
         //Send to FindSub controller to fill out form and reset
         findEducationSubController.initValues(searchContainer);
     }
 
+    /**
+     * If the user clicks the "cancel" button
+     * the user will return to the main scene
+     * @param event
+     */
     @FXML
     private void handleCancel(ActionEvent event) {
         cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
+    /**
+     * when the user has selected a company
+     * and pressed the "confirm" button
+     * the user will be presented with a new stage
+     * where it is possible to see the following
+     * Education AMU No.
+     * Education name
+     * Education Description
+     * Education Lenght ( number of days)
+     * @param event
+     */
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //goto next
         Education toBeDeletedEducation = findEducationSubController.getEducationTableView().getSelectionModel().getSelectedItem();
-
-        //Get the search container
         SearchContainer currentSearch = findEducationSubController.getFindSubController().getCurrentSearchContainer();
 
-        Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.DELETE_COMPANY.loadParent(currentSearch, toBeDeletedEducation));
-
+        confirmationButton.getScene().setRoot(ViewController.DELETE_EDUCATION.loadParent(currentSearch, toBeDeletedEducation));
     }
 }

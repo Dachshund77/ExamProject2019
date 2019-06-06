@@ -1,7 +1,9 @@
 package Application.Controller.Delete;
 
 import Application.Controller.AbstractController;
+import Application.Controller.Find.FindToDelete.FindCompanyToDelete;
 import Application.Controller.SubControllers.Domain.CompanySub;
+import Application.Controller.SubControllers.Find.FindCompanySub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Company;
@@ -25,17 +27,11 @@ public class DeleteCompany extends AbstractController {
 
     }
 
+    //TODO set searchContainer results into correspondingt textFields
     @Override
     public void initValues(SearchContainer searchContainer, Company company){
         previousSearch = searchContainer;
-
-        //deleteCompanySubController.cvrNrTextField.setText(searchContainer.getCvrNr());
-        //deleteCompanySubController.companyNameTextField.setText(searchContainer.getCompanyName());
-        //deleteCompanySubController.companyIDText.setText(searchContainer.getCompanyIDasString());
-        //System.out.println(searchContainer.getCompanyName());
-        //System.out.println(searchContainer.getCompanyID());
-        //System.out.println(searchContainer.getCvrNr());
-
+        deleteCompanySubController.initValues(searchContainer);
     }
 
     public void handleCancel(ActionEvent actionEvent) {

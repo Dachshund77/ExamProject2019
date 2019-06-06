@@ -2,7 +2,6 @@ package Application.Controller.Alter;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
-import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Consultation;
 import Foundation.DbFacade;

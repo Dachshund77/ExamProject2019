@@ -23,7 +23,7 @@ public class FindCompanyToDelete extends AbstractController {
     @FXML
     private FindCompanySub findCompanySubController;
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
     @FXML
     private Button cancelButton;
 
@@ -34,7 +34,6 @@ public class FindCompanyToDelete extends AbstractController {
      */
     @FXML
     private void initialize(){
-        // hook up the  button with subcontroller form correctness
         confirmationButton.disableProperty().bind(findCompanySubController.getCompanyTableView().getSelectionModel().selectedItemProperty().isNull());
     }
 
@@ -56,7 +55,6 @@ public class FindCompanyToDelete extends AbstractController {
      */
     @FXML
     private void handleCancel(ActionEvent event) {
-        //Return to main screen
         cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
@@ -72,17 +70,15 @@ public class FindCompanyToDelete extends AbstractController {
      */
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //goto next
 
         Company toBeDeletedCompany = findCompanySubController.getCompanyTableView().getSelectionModel().getSelectedItem();
 
-        //Get the search container
         SearchContainer currentSearch = findCompanySubController.getFindSubController().getCurrentSearchContainer();
 
         confirmationButton.getScene().setRoot(ViewController.DELETE_COMPANY.loadParent(currentSearch, toBeDeletedCompany));
-        /*
-        Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.DELETE_COMPANY.loadParent(currentSearch, toBeDeletedCompany));
-        */
     }
+
+
+
+
 }

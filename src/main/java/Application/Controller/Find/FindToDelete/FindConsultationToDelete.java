@@ -28,7 +28,7 @@ public class FindConsultationToDelete extends AbstractController {
     @FXML
     private FindConsultationSub findConsultationSubController;
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
     @FXML
     private Button cancelButton;
 
@@ -43,7 +43,7 @@ public class FindConsultationToDelete extends AbstractController {
     }
 
     /**
-     * initializes the findConsutlationController
+     * initializes the findConsultationController
      * to have values from the searchContainer
      * @param searchContainer
      */
@@ -60,7 +60,6 @@ public class FindConsultationToDelete extends AbstractController {
      */
     @FXML
     private void handleCancel(ActionEvent event) {
-        //Return to main screen
         cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
@@ -69,23 +68,19 @@ public class FindConsultationToDelete extends AbstractController {
      * and pressed the "confirm" button
      * the user will be presented with a new stage
      * where it is possible to see the following;
-     * Company ID
-     * Company name
-     * Company CVR No.
+     * Consultation ID
+     * Consultation name
+     * Consultation start date
+     * Consultation end date
      * @param event
      */
+
+    //FIXME Throws "Can't be casted" exception
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //goto next
         Consultation toBeDeletedConsultation = findConsultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
-        //Get the search container
         SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
 
         confirmationButton.getScene().setRoot(ViewController.DELETE_CONSULTATION.loadParent(currentSearch, toBeDeletedConsultation));
-
-        /*
-        Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.DELETE_CONSULTATION.loadParent(currentSearch, toBeDeletedConsultation));
-        */
     }
 }

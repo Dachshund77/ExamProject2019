@@ -74,7 +74,6 @@ public enum ViewController {
     DELETE_INTERVIEW("/FXML/Controller/Delete/DeleteInterview.fxml"),
     DELETE_PROVIDER("/FXML/Controller/Delete/DeleteProvider.fxml");
 
-
     private final String URL;
 
     ViewController(String url) {
