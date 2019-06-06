@@ -27,27 +27,62 @@ public class FindCompanyToDelete extends AbstractController {
     @FXML
     private Button cancelButton;
 
+
+    /**
+     * disables the confirm button
+     * until the user has selected a company
+     */
     @FXML
     private void initialize(){
         // hook up the  button with subcontroller form correctness
         confirmationButton.disableProperty().bind(findCompanySubController.getCompanyTableView().getSelectionModel().selectedItemProperty().isNull());
-
     }
 
+    /**
+     * initializes the findCompanySubController
+     * to have values from the searchContainer
+     * @param searchContainer
+     */
     @Override
     public void initValues(SearchContainer searchContainer) {
         //Send to FindSub controller to fill out form and reset
         findCompanySubController.initValues(searchContainer);
     }
 
+    /**
+     * If the user clicks the "cancel" button
+     * the user will return to the main scene
+     * @param event
+     */
     @FXML
     private void handleCancel(ActionEvent event) {
         //Return to main screen
         cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
+    /**
+     * when the user has selected a company
+     * and pressed the "confirm" button
+     * the user will be presented with a new stage
+     * where it is possible to see the following
+     * Company ID
+     * Company name
+     * Company CVR No.
+     * @param event
+     */
     @FXML
     private void handleConfirmation(ActionEvent event) {
         //goto next
+
+        Company toBeDeletedCompany = findCompanySubController.getCompanyTableView().getSelectionModel().getSelectedItem();
+
+        //Get the search container
+        SearchContainer currentSearch = findCompanySubController.getFindSubController().getCurrentSearchContainer();
+
+        confirmationButton.getScene().setRoot(ViewController.DELETE_COMPANY.loadParent(currentSearch, toBeDeletedCompany));
+        /*
+        Parent root = confirmationButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.DELETE_COMPANY.loadParent(currentSearch, toBeDeletedCompany));
+        */
     }
 }

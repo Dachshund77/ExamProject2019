@@ -64,7 +64,16 @@ public enum ViewController {
     FIND_EDUCATION_POPUP("/FXML/Controller/PopUp/Find/FindEducationPopUp.fxml"),
     FIND_EMPLOYEE_POPUP("/FXML/Controller/PopUp/Find/FindEmployeePopUp.fxml"),
     FIND_INTERVIEW_POPUP("/FXML/Controller/PopUp/Find/FindInterviewPopUp.fxml"),
-    FIND_PROVIDER_POPUP("/FXML/Controller/PopUp/Find/FindProviderPopUp.fxml");
+    FIND_PROVIDER_POPUP("/FXML/Controller/PopUp/Find/FindProviderPopUp.fxml"),
+
+    //GoTo Delete X domain record
+    DELETE_COMPANY("/FXML/Controller/Delete/DeleteCompany.fxml"),
+    DELETE_CONSULTATION("/FXML/Controller/Delete/DeleteConsultation.fxml"),
+    DELETE_EDUCATION("/FXML/Controller/Delete/DeleteEducation.fxml"),
+    DELETE_EMPLOYEE("/FXML/Controller/Delete/DeleteEmployee.fxml"),
+    DELETE_INTERVIEW("/FXML/Controller/Delete/DeleteInterview.fxml"),
+    DELETE_PROVIDER("/FXML/Controller/Delete/DeleteProvider.fxml");
+
 
     private final String URL;
 

@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -23,7 +24,7 @@ import java.util.Arrays;
 //TODO NEED JAVADOC
 public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT WILL NOT BE USED, INCREASE READABILITY
 
-    public Label companyIDText;
+    public Text companyIDText;
     public TextField cvrNrTextField;
     public Tooltip cvrNrTooltip;
     public TextField companyNameTextField;

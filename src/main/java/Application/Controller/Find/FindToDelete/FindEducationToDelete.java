@@ -4,9 +4,12 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindEducationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.Education;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 
 public class FindEducationToDelete extends AbstractController {
 
@@ -22,11 +25,13 @@ public class FindEducationToDelete extends AbstractController {
     @FXML
     private void initialize(){
         // hook up the  button with subcontroller form correctness
+        confirmationButton.disableProperty().bind(findEducationSubController.getEducationTableView().getSelectionModel().selectedItemProperty().isNull());
     }
 
     @Override
     public void initValues(SearchContainer searchContainer) {
         //Send to FindSub controller to fill out form and reset
+        findEducationSubController.initValues(searchContainer);
     }
 
     @FXML
@@ -37,5 +42,13 @@ public class FindEducationToDelete extends AbstractController {
     @FXML
     private void handleConfirmation(ActionEvent event) {
         //goto next
+        Education toBeDeletedEducation = findEducationSubController.getEducationTableView().getSelectionModel().getSelectedItem();
+
+        //Get the search container
+        SearchContainer currentSearch = findEducationSubController.getFindSubController().getCurrentSearchContainer();
+
+        Parent root = confirmationButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.DELETE_COMPANY.loadParent(currentSearch, toBeDeletedEducation));
+
     }
 }

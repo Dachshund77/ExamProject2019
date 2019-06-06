@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Domain.CompanySub">
     <center>
@@ -41,11 +42,6 @@
                   <Tooltip fx:id="companyNameTooltip" text="Empty Tooltip" />
                </tooltip>
             </TextField>
-            <Label fx:id="companyIDText" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="18.0" prefWidth="277.0" text="Create new company" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets top="-25.0" />
-               </GridPane.margin>
-            </Label>
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="91.0" text="CVR No.">
                <GridPane.margin>
                   <Insets bottom="-25.0" />
@@ -63,6 +59,11 @@
                 <TableColumn fx:id="educationNameColumn" prefWidth="178.0" text="Education name" />
               </columns>
             </TableView>
+            <Text fx:id="companyIDText" strokeType="OUTSIDE" strokeWidth="0.0" text="CompanyIDText" textAlignment="CENTER" wrappingWidth="277.13671875" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets top="-25.0" />
+               </GridPane.margin>
+            </Text>
          </children>
       </GridPane>
    </center>
