@@ -34,6 +34,7 @@ public class AlterProvider extends AbstractController {
         //Save search container for returning
         previousSearch = searchContainer;
         //propergate Consultation to setup form
+        providerSubController.initValues(provider);
     }
 
     @FXML

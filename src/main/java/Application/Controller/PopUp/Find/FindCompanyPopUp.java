@@ -50,6 +50,9 @@ public class FindCompanyPopUp extends CompanyReturnableController {
         stage.close();
     }
 
+    /**
+     * @return Loads the FindCompanyPopUp Stage
+     */
     @Override
     public String getURL() {
         return ViewController.FIND_COMPANY_POPUP.getURL();

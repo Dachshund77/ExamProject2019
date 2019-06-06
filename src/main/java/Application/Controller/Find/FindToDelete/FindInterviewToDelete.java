@@ -2,6 +2,7 @@ package Application.Controller.Find.FindToDelete;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindInterviewSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,12 +10,14 @@ import javafx.scene.control.Button;
 
 public class FindInterviewToDelete extends AbstractController {
 
+
     @FXML
     private FindInterviewSub findInterviewSubController;
 
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
-
+    @FXML
+    private Button cancelButton;
     @FXML
     private void initialize(){
         // hook up the  button with subcontroller form correctness
@@ -27,7 +30,7 @@ public class FindInterviewToDelete extends AbstractController {
 
     @FXML
     private void handleCancel(ActionEvent event) {
-        //Return to main screen
+        cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
     @FXML

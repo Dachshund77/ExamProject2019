@@ -84,10 +84,8 @@ public class EmployeeSub extends AbstractController {
             protected boolean computeValue() {
                 if (employeeFirstNameIsValid.get() && employeeLastNameIsValid.get()
                         && cprNrIsValid.get() && eMailIsValid.get() && phoneNrIsValid.get()) {
-                    System.out.println("true");
                     return true;
                 } else {
-                    System.out.println("false");
                     return false;
                 }
             }
@@ -103,7 +101,6 @@ public class EmployeeSub extends AbstractController {
      */
     @Override
     public void initValues(Employee employee) {
-        // hook up employee
         selectedEmployee = employee;
         resetForm();
     }

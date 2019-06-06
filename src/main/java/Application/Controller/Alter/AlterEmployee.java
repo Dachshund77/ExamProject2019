@@ -17,7 +17,7 @@ public class AlterEmployee extends AbstractController {
     private EmployeeSub employeeSubController;
 
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
 
     @FXML
     private Button resetButton;

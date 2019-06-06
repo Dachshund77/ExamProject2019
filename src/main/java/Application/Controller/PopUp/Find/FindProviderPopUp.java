@@ -17,8 +17,9 @@ public class FindProviderPopUp extends ProviderReturnableController {
     private Button confirmationButton;
     @FXML
     private Button cancelButton;
-
+    @FXML
     private TableView<Provider> providerTableView;
+    @FXML
     private Provider selectedProvider;
 
 
@@ -51,6 +52,9 @@ public class FindProviderPopUp extends ProviderReturnableController {
         return ViewController.FIND_COMPANY_POPUP.getURL();
     }
 
+    /**
+     * @return Loads the FindProviderPopUp Stage
+     */
     @Override
     public Provider getReturn() {
         return selectedProvider;
