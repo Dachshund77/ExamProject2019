@@ -9,5 +9,5 @@ public abstract class EducationReturnableController extends AbstractController {
 
     public abstract Education getReturn();
 
-    public abstract Parent getParent();
+    public abstract String getURL();
 }
