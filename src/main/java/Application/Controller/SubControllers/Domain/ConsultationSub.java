@@ -13,12 +13,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ConsultationSub extends AbstractController {
 
-    public Label consultationIDText;
+    public Text consultationIDText;
     public TextField consultationNameTextField;
     public Tooltip consultationNameTooltip;
     public DatePicker startDatePicker;
