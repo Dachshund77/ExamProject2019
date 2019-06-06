@@ -28,7 +28,7 @@ public class CompanyChoice extends Stage {
 
         CompanyReturnableController loadedController = loader.getController();
         setTitle("Select company");
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 600, 500);
         setScene(scene);
         initModality(Modality.APPLICATION_MODAL);
         showAndWait();

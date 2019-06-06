@@ -52,6 +52,9 @@ public class FindEducationPopUp extends EducationReturnableController {
         return ViewController.FIND_EDUCATION_POPUP.getURL();
     }
 
+    /**
+     * @return Loads the FindEducationPopUp Stage
+     */
     @Override
     public Education getReturn() {
         return selectedEducation;

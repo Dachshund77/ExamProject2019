@@ -16,28 +16,30 @@ public class ProviderSub extends AbstractController {
     public TextField providerNameTextfield;
     public Tooltip providerNameTooltip;
 
-    public BooleanBinding isValid; // Hook for parent class to activate confirm button
+    public BooleanBinding isValid;
     public Provider selectedProvider;
     private SimpleBooleanProperty providerNameIsValid = new SimpleBooleanProperty(true);
 
     public void initialize() {
 
-        /**
-         * adds a listener to the handler for
-         * providerNameTextfield
+        /*
+         adds a listener to the handler for providerNameTextfield
          */
         providerNameTextfield.textProperty().addListener((observable -> handleProviderNameInput()));
 
+        /*
+        binds the .isValid() to the controls
+        and returns true or false depending
+        if the requirements are met
+         */
         isValid = new BooleanBinding() {
 
             @Override
             protected boolean computeValue() {
                 bind(providerNameIsValid);
                 if (providerNameIsValid.get()) {
-                    System.out.println("True");
                     return true;
                 } else {
-                    System.out.println("False");
                     return false;
                 }
             }
@@ -74,7 +76,6 @@ public class ProviderSub extends AbstractController {
             if (!providerNameTextfield.getStyleClass().contains("TextField-Error")) {
                 providerNameTextfield.getStyleClass().add("TextField-Error");
             }
-
         }
     }
 

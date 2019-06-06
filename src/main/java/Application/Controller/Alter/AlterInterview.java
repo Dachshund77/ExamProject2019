@@ -4,29 +4,34 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.InterviewSub;
 import Application.SearchContainer;
 import Domain.Interview;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+
+import java.sql.SQLException;
 
 public class AlterInterview extends AbstractController {
 
     @FXML
     private InterviewSub interviewSubController;
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
 
     private SearchContainer previousSearch;
 
     @FXML
     private void initialize(){
-        confirmationButton.disableProperty().bind(interviewSubController.isValid.not()); // FIXME: 05/06/2019 NULLPOINTE EXCEPTION since the underlying subControllerdoes not exists
+        confirmationButton.disableProperty().bind(interviewSubController.isValid.not());
     }
+
 
     @Override
     public void initValues(SearchContainer searchContainer, Interview interview) {
         //Save search container for returning
         previousSearch = searchContainer;
         //propergate Consultation to setup form
+        interviewSubController.initValues(interview);
     }
 
     @FXML
@@ -40,11 +45,40 @@ public class AlterInterview extends AbstractController {
         }
     }
 
+    /**
+     * When the user clicks "confirm"
+     * an interview object is created and send to the database
+     * @param event sends an interview object to the database
+     */
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        //Write to db
+        int productUnderstanding = Integer.parseInt(interviewSubController.productUnderstandingComboBox.getValue().toString());
+        int problemUnderstanding = Integer.parseInt(interviewSubController.problemUnderstandingComboBox.getValue().toString());
+        int qualityAwareness = Integer.parseInt(interviewSubController.qualityAwarenessComboBox.getValue().toString());
+        int cooperation = Integer.parseInt(interviewSubController.cooperationComboBox.getValue().toString());
+        int flexibility = Integer.parseInt(interviewSubController.flexibilityComboBox.getValue().toString());
+
+        /*Interview createNewInterviewObj = new Interview(null,interviewSubController.interViewNameTextField.getText(),
+                productUnderstanding,problemUnderstanding,qualityAwareness,cooperation,flexibility,null,null); //FIXME : Needs finished and education wishes
+        */
+        try {
+            DbFacade.connect();
+            //DbFacade.insertInterview(createNewInterviewObj,); // FIXME : Needs to get an employeeID
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
+    /**
+     * @param event Resets the user required fields
+     */
     @FXML
     private void handleReset(ActionEvent event) {
         interviewSubController.resetForm();

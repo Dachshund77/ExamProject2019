@@ -58,24 +58,19 @@ public class EducationSub extends AbstractController {
                 bind(noOfDaysIsValid);
                 // validate the actual expression
                 if (educationNameIsValid.get() && descriptionIsValid.get() && noOfDaysIsValid.get()) {
-                    System.out.println("true");
                     return true;
                 } else {
-                    System.out.println("false");
                     return false;
                 }
             }
         };
-
-        // we should at least call reset for here once so that the start validation is set
         resetForm();
     }
 
     @Override
     public void initValues(Education education) {
-        //Hook up education
         selectedEducation = education;
-        resetForm(); //easy set of all values to the form if you wrote the reset form correctlty ofc
+        resetForm();
     }
 
     private void handleEducationNameInput() {

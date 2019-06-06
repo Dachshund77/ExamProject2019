@@ -60,7 +60,11 @@ public class ConsultationSub extends AbstractController {
         startDatePicker.valueProperty().addListener((observable -> handleDatePickerInput()));
         endDatePicker.valueProperty().addListener((observable -> handleDatePickerInput()));
 
-
+        /*
+        binds the .isValid() to the controls
+        and returns true or false depending
+        if the requirements are met
+         */
         isValid = new BooleanBinding() {
             {
             bind(consultationNameIsValid);
@@ -69,11 +73,9 @@ public class ConsultationSub extends AbstractController {
             }
             @Override
             protected boolean computeValue() {
-
                 if (consultationNameIsValid.get() && startDateIsValid.get() && endDateIsValid.get()) {
-                    System.out.println("True");
+                    return true;
                 } else
-                    System.out.println("False");
                 return false;
             }
         };

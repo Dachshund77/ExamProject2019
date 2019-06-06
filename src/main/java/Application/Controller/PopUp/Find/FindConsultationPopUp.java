@@ -52,6 +52,9 @@ public class FindConsultationPopUp extends ConsultationReturnableController {
         return ViewController.FIND_CONSULTATION_POPUP.getURL();
     }
 
+    /**
+     * @return Loads the FindConsultationPopUp Stage
+     */
     @Override
     public Consultation getReturn() {
         return selectedConsultation;

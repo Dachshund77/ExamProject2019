@@ -52,6 +52,9 @@ public class FindEmployeePopUp extends EmployeeReturnableController {
         return ViewController.FIND_EMPLOYEE_POPUP.getURL();
     }
 
+    /**
+     * @return Loads the FindEducationPopUp Stage
+     */
     @Override
     public Employee getReturn() {
         return selectedEmployee;

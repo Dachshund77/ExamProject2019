@@ -46,11 +46,7 @@ public class AlterCompany extends AbstractController {
     private void handleCancel(ActionEvent event) {
         //Return to main screen or search
         //if coming from search return to search with initValues
-        System.out.println("Handle cancle test 1");
         if (previousSearch != null){
-            System.out.println("Handle cancle test 1");
-            Parent root = confirmationButton.getScene().getRoot();
-            ((BorderPane) root).setCenter(ViewController.FIND_COMPANY_TO_CHANGE.loadParent(previousSearch));
             //TODO THERE IS MISSING STUFF HERE -Sven
         } else {
             //TODO THERE IS MISSING STUFF HERE -Sven

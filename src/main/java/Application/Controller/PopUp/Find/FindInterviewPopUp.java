@@ -53,6 +53,9 @@ public class FindInterviewPopUp extends InterviewReturnableController {
         return ViewController.FIND_INTERVIEW_POPUP.getURL();
     }
 
+    /**
+     * @return Loads the FindCInterviewPopUp Stage
+     */
     @Override
     public Interview getReturn() {
         return selectedInterview;
