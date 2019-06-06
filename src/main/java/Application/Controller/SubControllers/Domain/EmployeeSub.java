@@ -199,7 +199,7 @@ public class EmployeeSub extends AbstractController {
         if(Employee.isValidPhoneNr(phoneNrTextField.getText()))
         {
             phoneNrTextField.setTooltip(null);
-            employeeFirstNameIsValid.set(true);
+            phoneNrIsValid.set(true);
             phoneNrTextField.getStyleClass().removeAll("TextField-Error");
         } else {
             String invalidCause = Employee.phoneNumberInvalidCause(phoneNrTextField.getText());

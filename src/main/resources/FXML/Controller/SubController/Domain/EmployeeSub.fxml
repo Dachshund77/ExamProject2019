@@ -39,7 +39,7 @@
                 <Label alignment="CENTER" prefHeight="17.0" prefWidth="126.0" text="Employee last name" GridPane.rowIndex="3" />
                 <Label alignment="CENTER" prefHeight="17.0" prefWidth="200.0" text="CPR No." GridPane.rowIndex="4" />
                 <Label alignment="CENTER" prefHeight="17.0" prefWidth="188.0" text="Phone No." GridPane.rowIndex="6" />
-                <Label fx:id="employeeIDText" alignment="CENTER" prefHeight="17.0" prefWidth="210.0" text="New customer employee" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label fx:id="employeeIDText" alignment="CENTER" prefHeight="17.0" prefWidth="258.0" text="New customer employee" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <TextField fx:id="employeeFirstNameTextField" onKeyTyped="#handleFirstNameInput" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <tooltip>
                         <Tooltip fx:id="employeeFirstnameTooltip" text="Empty Tooltip" />
