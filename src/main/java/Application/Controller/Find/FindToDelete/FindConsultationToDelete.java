@@ -74,13 +74,12 @@ public class FindConsultationToDelete extends AbstractController {
      * Consultation end date
      * @param event
      */
-
-    //FIXME Throws "Can't be casted" exception
     @FXML
     private void handleConfirmation(ActionEvent event) {
         Consultation toBeDeletedConsultation = findConsultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
         SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
 
-        confirmationButton.getScene().setRoot(ViewController.DELETE_CONSULTATION.loadParent(currentSearch, toBeDeletedConsultation));
+        Parent root = confirmationButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.DELETE_CONSULTATION.loadParent(currentSearch, toBeDeletedConsultation));
     }
 }

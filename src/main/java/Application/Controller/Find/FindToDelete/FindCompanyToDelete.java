@@ -75,10 +75,7 @@ public class FindCompanyToDelete extends AbstractController {
 
         SearchContainer currentSearch = findCompanySubController.getFindSubController().getCurrentSearchContainer();
 
-        confirmationButton.getScene().setRoot(ViewController.DELETE_COMPANY.loadParent(currentSearch, toBeDeletedCompany));
+        Parent root = confirmationButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.DELETE_COMPANY.loadParent(currentSearch, toBeDeletedCompany));
     }
-
-
-
-
 }
