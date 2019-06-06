@@ -1,6 +1,7 @@
 package Application.Controller.Find.FindToDelete;
 
 import Application.Controller.AbstractController;
+import Application.Controller.SubControllers.Domain.CompanySub;
 import Application.Controller.SubControllers.Find.FindCompanySub;
 import Application.Controller.SubControllers.Find.FindSub;
 import Application.Controller.ViewController;
@@ -29,6 +30,8 @@ public class FindCompanyToDelete extends AbstractController {
     @FXML
     private void initialize(){
         // hook up the  button with subcontroller form correctness
+        confirmationButton.disableProperty().bind(findCompanySubController.getCompanyTableView().getSelectionModel().selectedItemProperty().isNull());
+
     }
 
     @Override
