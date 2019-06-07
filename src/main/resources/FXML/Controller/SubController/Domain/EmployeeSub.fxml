@@ -86,7 +86,7 @@
                         <Tooltip fx:id="emailTooltip" text="Empty Tooltip" />
                     </tooltip>
                 </TextField>
-            <Button fx:id="addInterview" mnemonicParsing="false" prefWidth="110.0" text="Add interview" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Button fx:id="addInterview" mnemonicParsing="false" onAction="#handleAddInterview" prefWidth="110.0" text="Add interview" GridPane.columnIndex="2" GridPane.rowIndex="8" />
             <Button fx:id="removeInterview" mnemonicParsing="false" onAction="#handleRemoveInterview" prefWidth="110.0" text="Remove interview" GridPane.columnIndex="3" GridPane.rowIndex="8" />
             </children>
         </GridPane>

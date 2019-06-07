@@ -1,8 +1,11 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Application.Controller.PopUp.Alter.AlterInterviewPopUp;
+import Application.Controller.PopUp.Find.FindInterviewPopUp;
 import Domain.Employee;
 import Domain.Interview;
+import UI.InterviewChoice;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -24,13 +27,13 @@ public class EmployeeSub extends AbstractController {
     public TableView<Interview> interviewTableView;
     public TableColumn<Interview,Integer> interviewIDColumn;
     public TableColumn<Interview,String> interviewNameColumn;
-    public Button removeInterviewButton;
-    public Button newInterviewButton;
+    public Button removeInterview;
+    public Button addInterview;
     public Button seeDetailedInterviewButton; //maybe
 
     private ArrayList<Interview> interviews;
 
-    public BooleanBinding isValid; // Hook for parent class to activate confirm button
+    public BooleanBinding isValid;
     public Employee selectedEmployee;
 
     private SimpleBooleanProperty employeeFirstNameIsValid = new SimpleBooleanProperty(true);
@@ -47,11 +50,6 @@ public class EmployeeSub extends AbstractController {
      * Sets up a TableView if an employee has been selected, with interview data for them.
      */
     public void initialize(){
-
-        if(selectedEmployee != null)
-        {
-            interviewTableView.setVisible(false);
-        }
         employeeFirstNameTextField.textProperty().addListener((observable -> handleFirstNameInput()));
         employeeLastNameTextField.textProperty().addListener((observable -> handleLastNameInput()));
         cprNrTextField.textProperty().addListener((observable -> handleCprNrInput()));
@@ -90,7 +88,6 @@ public class EmployeeSub extends AbstractController {
                 }
             }
         };
-
         resetForm();
     }
 
@@ -210,23 +207,28 @@ public class EmployeeSub extends AbstractController {
         }
     }
 
+    /**
+     * A method to remove a interview from the TableView
+     * @param event Upon selecting an item from the table and clicking "Remove interview"
+     */
     public void handleRemoveInterview(ActionEvent event){
         Interview selectedData = interviewTableView.getSelectionModel().getSelectedItem();
         list.remove(selectedData);
     }
 
+    /**
+     * A method to add a interview to the Employee and Table
+     * @param event Upon clicking "Add interview"
+     */
     public void handleAddInterview(ActionEvent event){
         //open popup and stuff
-    }
-
-    public void handleSeeInterview(ActionEvent event){
-
+        InterviewChoice newSeeInterview = new InterviewChoice();
+        //Interview foundInterview = newSeeInterview.showAndReturn(new AlterInterviewPopUp()); //TODO : After Alter pop has been created
     }
 
     /**
-     * A check for the if the fields are valid.
-     * For use in AlterEmployee to disable or enable "Confirm" button
-     * @param bool
+     * A method to disable TextFields, in cases that needs it
+     * @param bool true or false, depending on if fields should be disabled
      */
     public void setDisabled(boolean bool){
         employeeFirstNameTextField.setDisable(bool);
@@ -249,6 +251,9 @@ public class EmployeeSub extends AbstractController {
             cprNrTextField.setText(selectedEmployee.getCprNr());
             emailTextField.setText(selectedEmployee.getEmail());
             phoneNrTextField.setText(selectedEmployee.getPhoneNr());
+            interviewTableView.setVisible(true);
+            addInterview.setVisible(true);
+            removeInterview.setVisible(true);
         }
         else
         {
@@ -257,6 +262,9 @@ public class EmployeeSub extends AbstractController {
             cprNrTextField.setText("");
             emailTextField.setText("");
             phoneNrTextField.setText("");
+            interviewTableView.setVisible(false);
+            addInterview.setVisible(false);
+            removeInterview.setVisible(false);
         }
     }
 }

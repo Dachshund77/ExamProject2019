@@ -1,6 +1,7 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Domain.Education;
 import Domain.EducationWish;
 import Domain.FinishedEducation;
 import Domain.Interview;
@@ -10,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
 import java.time.LocalDate;
@@ -55,16 +57,25 @@ public class InterviewSub extends AbstractController {
     private SimpleBooleanProperty flexibilityIsValid = new SimpleBooleanProperty(false);
 
     ObservableList<Integer> numberList;
+    ObservableList<EducationWish> educationWishList = FXCollections.observableArrayList();
+    ObservableList<FinishedEducation> finishedEducationList = FXCollections.observableArrayList();
 
     public void initialize(){
-
         setQualityNumberList();
 
         interViewNameTextField.textProperty().addListener((observable -> handleInterviewNameInput()));
 
-        //setup listview
-        //Setup isValid
-        //setup bindings
+        finishedEducationNameColumn.setCellValueFactory(new PropertyValueFactory<>("education"));
+        finishedEducationDateColumn.setCellValueFactory(new PropertyValueFactory<>("dateFinished"));
+        educationWishNameColumn.setCellValueFactory(new PropertyValueFactory<>("education"));
+        educationWishPriorityColumn.setCellValueFactory(new PropertyValueFactory<>("priority"));
+
+        finishedEducationTableView.getColumns().setAll(finishedEducationNameColumn,finishedEducationDateColumn);
+        educationWishTableView.getColumns().setAll(educationWishNameColumn,educationWishPriorityColumn);
+
+        finishedEducationTableView.setItems(finishedEducationList);
+        educationWishTableView.setItems(educationWishList);
+
         isValid = new BooleanBinding() {
             {
                 bind(interViewNameIsValid);
@@ -86,7 +97,6 @@ public class InterviewSub extends AbstractController {
                 }
             }
         };
-
         resetForm();
 
         productUnderstandingComboBox.getItems().setAll(numberList);
@@ -98,7 +108,8 @@ public class InterviewSub extends AbstractController {
 
     @Override
     public void initValues(Interview interview) {
-        // hook up interview
+        selectedInterview = interview;
+        resetForm();
     }
 
     /**
@@ -129,7 +140,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleProductUnderstandingBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals("1 - " + Interview.getQualityMaxValue())) {
+        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(productUnderstandingComboBox.getValue().toString());
             if (Interview.isValidProductUnderstanding(chosenNum)) {
                 productUnderstandingComboBox.setTooltip(null);
@@ -152,7 +163,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleProblemUnderstandingBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals("1 - " + Interview.getQualityMaxValue())) {
+        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(problemUnderstandingComboBox.getValue().toString());
             if (Interview.isValidProblemUnderstanding(chosenNum)) {
                 problemUnderstandingComboBox.setTooltip(null);
@@ -176,7 +187,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleQualityAwarenessBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals("1 - " + Interview.getQualityMaxValue())) {
+        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(qualityAwarenessComboBox.getValue().toString());
             if (Interview.isValidQualityAwareness(chosenNum)) {
                 qualityAwarenessIsValid.set(true);
@@ -199,7 +210,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleCooperationBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals("1 - " + Interview.getQualityMaxValue())) {
+        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(cooperationComboBox.getValue().toString());
             if (Interview.isValidCooperation(chosenNum)) {
                 cooperationComboBox.setTooltip(null);
@@ -222,7 +233,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleFlexibilityBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals("1 - " + Interview.getQualityMaxValue())) {
+        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(flexibilityComboBox.getValue().toString());
             if (Interview.isValidFlexibility(chosenNum)) {
                 flexibilityComboBox.setTooltip(null);
@@ -238,19 +249,31 @@ public class InterviewSub extends AbstractController {
         }
     }
     public void handleAddEducationWish(ActionEvent event){
-
+        EducationWish newData = new EducationWish(null,null,1); // TODO : Setup information to be inserted
+        educationWishList.add(newData);
     }
 
     public void handleAddFinishedEducation(ActionEvent event){
-
+        FinishedEducation newData = new FinishedEducation(null,null,LocalDate.now()); //TODO : Setup information to be inserted
+        finishedEducationList.add(newData);
     }
 
+    /**
+     * Removes an education wish from the table
+     * @param event Upon selecting a wish and clicking the "Remove education" button
+     */
     public void handleRemoveEducationWish(ActionEvent event){
-
+        EducationWish selectedData = educationWishTableView.getSelectionModel().getSelectedItem();
+        educationWishList.remove(selectedData);
     }
 
+    /**
+     * Removes a finished education from the table
+     * @param event Upon selecting a finished education and clicking the "Remove finished education" button
+     */
     public void handleRemoveFinishedEducation(ActionEvent event){
-
+        FinishedEducation selectedData = finishedEducationTableView.getSelectionModel().getSelectedItem();
+        finishedEducationList.remove(selectedData);
     }
 
     public void handlePickFinishedEducation(ActionEvent actionEvent) {
@@ -258,8 +281,8 @@ public class InterviewSub extends AbstractController {
     }
 
     /**
-     * A check for the if the fields are valid
-     * @param bool
+     * A method to disable Fields, in cases that needs it
+     * @param bool true or false, depending on if fields should be disabled
      */
     public void setDisabled(boolean bool){
         interViewNameTextField.setDisable(bool);
@@ -274,15 +297,13 @@ public class InterviewSub extends AbstractController {
      * Initalizes a ArrayList to provide the ComboBoxes with numbers.
      * Numbers are depending on QUALITY_MAX_VALUE in Interview.java
      */
-    public void setQualityNumberList()
-    {
+    public void setQualityNumberList() {
         ArrayList<Integer> setNumberList = new ArrayList<>();
         for (int i = 1; i < Interview.getQualityMaxValue() + 1; i++) {
             setNumberList.add(i);
         }
         numberList = FXCollections.observableArrayList(setNumberList);
     }
-
     /**
      * Method to reset fields and comboboxes, either manually or through startup.
      * Checks if the user got there by selecting an interview or if they want to create a new.
@@ -296,11 +317,12 @@ public class InterviewSub extends AbstractController {
             qualityAwarenessComboBox.setValue(selectedInterview.getProductUnderstanding());
             cooperationComboBox.setValue(selectedInterview.getProductUnderstanding());
             flexibilityComboBox.setValue(selectedInterview.getProductUnderstanding());
+            setDisabled(true);
         }
         else
         {
             interViewNameTextField.setText("");
-            productUnderstandingComboBox.setValue(defaultComboBoxText); //FIXME : Does not reset to default text in ComboBoxes, if a value has been picked.
+            productUnderstandingComboBox.setValue(defaultComboBoxText); //FIXME : Does not reset to default text in ComboBoxes, if a value has been picked beforehand.
             problemUnderstandingComboBox.setValue(defaultComboBoxText);
             qualityAwarenessComboBox.setValue(defaultComboBoxText);
             cooperationComboBox.setValue(defaultComboBoxText);
@@ -320,5 +342,6 @@ public class InterviewSub extends AbstractController {
             flexibilityIsValid.set(false);
 
         }
+
     }
 }
