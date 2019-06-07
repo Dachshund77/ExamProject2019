@@ -158,12 +158,6 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
         }
     }
 
-    /*
-    public void handleCompanyPopUp(ActionEvent event){
-        CompanyChoice c = new CompanyChoice();
-        Company foundC = c.showAndReturn(new FindCompanyPopUp()); //TODO We are literly not doing anything with that value?
-    }*/
-
     /**
      * checks if both TextFields have valid content
      *
@@ -172,6 +166,9 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
     public void setDisabled(boolean bool) {
         companyNameTextField.setDisable(bool);
         cvrNrTextField.setDisable(bool);
+        newConsultationButton.setDisable(bool);
+        addCompany.setDisable(bool);
+
     }
 
     /**

@@ -840,7 +840,7 @@ public class DbFacade {
      */
     public static boolean deleteInterview(int interviewID) throws SQLException {
         DB database = DB.getInstance();
-        return database.executeStoredProcedure(Sp.DELETE_INTERVIEW_BY_PK);
+        return database.executeStoredProcedure(Sp.DELETE_INTERVIEW_BY_PK,interviewID);
     }
 
 

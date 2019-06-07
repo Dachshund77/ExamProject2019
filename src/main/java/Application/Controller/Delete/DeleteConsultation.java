@@ -2,6 +2,7 @@ package Application.Controller.Delete;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Consultation;
 import Domain.Education;
@@ -23,7 +24,7 @@ public class DeleteConsultation extends AbstractController {
 
     @FXML
     public void initialize(){
-
+        consultationSubController.setDisabled(true);
     }
 
     /**
@@ -46,13 +47,9 @@ public class DeleteConsultation extends AbstractController {
      * @param actionEvent
      */
     public void handleConfirmation(ActionEvent actionEvent) {
-        Consultation createToDeleteConsultationObj = new Consultation(consultationSubController.selectedConsultation.getConsultationID(),
-                consultationSubController.selectedConsultation.getConsultationName(), consultationSubController.selectedConsultation.getStartDate(),
-                consultationSubController.selectedConsultation.getEndDate(), consultationSubController.selectedConsultation.getEmployees());
-
         try {
             DbFacade.connect();
-            DbFacade.deleteConsultation(createToDeleteConsultationObj.getConsultationID());
+            DbFacade.deleteConsultation(consultationSubController.selectedConsultation.getConsultationID());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -62,6 +59,6 @@ public class DeleteConsultation extends AbstractController {
                 e.printStackTrace();
             }
         }
-
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 }

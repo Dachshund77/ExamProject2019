@@ -2,6 +2,7 @@ package Application.Controller.Delete;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.EducationSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Education;
 import Foundation.DbFacade;
@@ -21,7 +22,7 @@ public class DeleteEducation extends AbstractController {
 
     @FXML
     public void initialize(){
-
+        educationSubController.setDisabled(true);
     }
 
     /**
@@ -44,14 +45,10 @@ public class DeleteEducation extends AbstractController {
      * @param actionEvent
      */
     public void handleConfirmation(ActionEvent actionEvent) {
-        Education createToDeleteEducationObj = new Education(educationSubController.selectedEducation.getAmuNr(),
-                educationSubController.selectedEducation.getEducationName(), educationSubController.selectedEducation.getDescription(),
-                educationSubController.selectedEducation.getNoOfDays(), educationSubController.selectedEducation.getDates(),
-                educationSubController.selectedEducation.getProvider());
 
         try {
             DbFacade.connect();
-            DbFacade.deleteEducation(createToDeleteEducationObj.getAmuNr());
+            DbFacade.deleteEducation(educationSubController.selectedEducation.getAmuNr());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -61,5 +58,6 @@ public class DeleteEducation extends AbstractController {
                 e.printStackTrace();
             }
         }
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 }

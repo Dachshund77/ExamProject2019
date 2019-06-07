@@ -2,14 +2,18 @@ package Application.Controller.Delete;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.CompanySub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Company;
 import Domain.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 
+import javax.swing.text.View;
 import java.sql.SQLException;
 
 public class DeleteCompany extends AbstractController {
@@ -21,8 +25,17 @@ public class DeleteCompany extends AbstractController {
 
     private SearchContainer previousSearch;
 
+    /**
+     * Removes ability to edit the textfields as well
+     * also removes the companyIDText
+     *
+     * sidenote: CVR number will show red, if the CVR is less than 8 digits
+     */
     @FXML
     public void initialize(){
+        companySubController.companyIDText.setVisible(false);
+        companySubController.companyNameTextField.setEditable(false);
+        companySubController.cvrNrTextField.setEditable(false);
 
     }
 
@@ -47,14 +60,9 @@ public class DeleteCompany extends AbstractController {
      * @param actionEvent
      */
     public void handleConfirmation(ActionEvent actionEvent) {
-
-        Company createToDeleteCompanyObj = new Company(companySubController.selectedCompany.getCompanyID(),
-                companySubController.selectedCompany.getCvrNr(),
-                companySubController.selectedCompany.getCompanyName(), companySubController.selectedCompany.getConsultations(),
-                companySubController.selectedCompany.getEducationList());
         try {
             DbFacade.connect();
-            DbFacade.deleteCompany(createToDeleteCompanyObj.getCompanyID());
+            DbFacade.deleteCompany(companySubController.selectedCompany.getCompanyID());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -64,5 +72,8 @@ public class DeleteCompany extends AbstractController {
                 e.printStackTrace();
             }
         }
+
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
+
     }
 }

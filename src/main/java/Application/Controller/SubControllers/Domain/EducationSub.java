@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class EducationSub extends AbstractController {
 
-    public Text AmuNrText;
     public TextField educationNameTextField;
     public TextArea descriptionTextArea;
     public TextField noOfDaysTextField; // may be converted to a drop down if you want
@@ -88,7 +87,6 @@ public class EducationSub extends AbstractController {
     }
 
     private void handleDescriptionInput() {
-        //Gets text validates it and reacts on it. Is called whenever something happens to the text property of the textfield
         if (Education.isValidDescription(descriptionTextArea.getText())) {
             descriptionTextArea.setTooltip(null);
             descriptionIsValid.set(true);
@@ -107,15 +105,12 @@ public class EducationSub extends AbstractController {
 
 
     public void setDisabled(boolean bool) {
-        //Was changed from set editable to set Disable same logic better naming convention for reflecting thr actual code
         educationNameTextField.setDisable(bool);
         descriptionTextArea.setDisable(bool);
         noOfDaysTextField.setDisable(bool);
     }
 
     public void resetForm() {
-        //Reset fields, set field if it has a selected Domain object
-        //If no previous education was loaded, just reset evrything  to start values, if education was loaded reset to educations fields.
         if (selectedEducation != null) {
             educationNameTextField.setText(selectedEducation.getEducationName());
             descriptionTextArea.setText(selectedEducation.getDescription());

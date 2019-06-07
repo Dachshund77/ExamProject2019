@@ -2,6 +2,7 @@ package Application.Controller.Delete;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.InterviewSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Interview;
 import Foundation.DbFacade;
@@ -21,7 +22,7 @@ public class DeleteInterview extends AbstractController {
 
     @FXML
     public void initialize(){
-
+       interviewSubController.setDisabled(true);
     }
 
     /**
@@ -46,19 +47,9 @@ public class DeleteInterview extends AbstractController {
      * @param actionEvent
      */
     public void handleConfirmation(ActionEvent actionEvent) {
-        Interview createToDeleteInterviewObj = new Interview(interviewSubController.selectedInterview.getInterviewID(),
-                interviewSubController.selectedInterview.getInterviewName(),
-                interviewSubController.selectedInterview.getProductUnderstanding(),
-                interviewSubController.selectedInterview.getProblemUnderstanding(),
-                interviewSubController.selectedInterview.getFlexibility(),
-                interviewSubController.selectedInterview.getQualityAwareness(),
-                interviewSubController.selectedInterview.getCooperation(),
-                interviewSubController.selectedInterview.getFinishedEducations(),
-                interviewSubController.selectedInterview.getEducationWishes());
-
         try {
             DbFacade.connect();
-            DbFacade.deleteInterview(createToDeleteInterviewObj.getInterviewID());
+            DbFacade.deleteInterview(interviewSubController.selectedInterview.getInterviewID());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -68,5 +59,6 @@ public class DeleteInterview extends AbstractController {
                 e.printStackTrace();
             }
         }
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 }

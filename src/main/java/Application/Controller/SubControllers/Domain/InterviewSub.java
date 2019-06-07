@@ -99,6 +99,8 @@ public class InterviewSub extends AbstractController {
     @Override
     public void initValues(Interview interview) {
         // hook up interview
+        selectedInterview = interview;
+                resetForm();
     }
 
     /**
@@ -268,6 +270,24 @@ public class InterviewSub extends AbstractController {
         qualityAwarenessComboBox.setDisable(bool);
         cooperationComboBox.setDisable(bool);
         flexibilityComboBox.setDisable(bool);
+        addEducationWishbutton.setDisable(bool);
+        addEducationWishbutton.setVisible(false);
+        removeEducationWishButton.setDisable(bool);
+        removeEducationWishButton.setVisible(false);
+        pickEduForWishButton.setDisable(bool);
+        pickEduForWishButton.setVisible(false);
+        addFinishedEducationButton.setDisable(bool);
+        addFinishedEducationButton.setVisible(false);
+        removeFinishedEducationButton.setDisable(bool);
+        removeFinishedEducationButton.setVisible(false);
+        pickEduForFinishedEducationButton.setDisable(bool);
+        pickEduForFinishedEducationButton.setVisible(false);
+        educationWishTableView.setVisible(false);
+        educationWishTableView.setDisable(bool);
+        finishedEducationTableView.setVisible(false);
+        finishedEducationTableView.setDisable(bool);
+        dateForFinishedEducation.setVisible(false);
+        dateForFinishedEducation.setDisable(bool);
     }
 
     /**
@@ -296,6 +316,7 @@ public class InterviewSub extends AbstractController {
             qualityAwarenessComboBox.setValue(selectedInterview.getProductUnderstanding());
             cooperationComboBox.setValue(selectedInterview.getProductUnderstanding());
             flexibilityComboBox.setValue(selectedInterview.getProductUnderstanding());
+
         }
         else
         {

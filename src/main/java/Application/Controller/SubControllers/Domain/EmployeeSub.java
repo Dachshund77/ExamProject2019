@@ -24,9 +24,8 @@ public class EmployeeSub extends AbstractController {
     public TableView<Interview> interviewTableView;
     public TableColumn<Interview,Integer> interviewIDColumn;
     public TableColumn<Interview,String> interviewNameColumn;
-    public Button removeInterviewButton;
-    public Button newInterviewButton;
-    public Button seeDetailedInterviewButton; //maybe
+    public Button removeInterview;
+    public Button addInterview;
 
     private ArrayList<Interview> interviews;
 
@@ -234,6 +233,12 @@ public class EmployeeSub extends AbstractController {
         cprNrTextField.setDisable(bool);
         emailTextField.setDisable(bool);
         phoneNrTextField.setDisable(bool);
+        removeInterview.setDisable(bool);
+        removeInterview.setVisible(false);
+        addInterview.setDisable(bool);
+        addInterview.setVisible(false);
+        interviewTableView.setVisible(false);
+        interviewTableView.setDisable(bool);
     }
 
     /**

@@ -2,6 +2,7 @@ package Application.Controller.Delete;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.EmployeeSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Consultation;
 import Domain.Employee;
@@ -22,7 +23,7 @@ public class DeleteEmployee extends AbstractController {
 
     @FXML
     public void initialize() {
-
+        employeeSubController.setDisabled(true);
     }
 
     /**
@@ -47,14 +48,10 @@ public class DeleteEmployee extends AbstractController {
      * @param actionEvent
      */
     public void handleConfirmation(ActionEvent actionEvent) {
-        Employee createToDeleteEmployeeObj = new Employee(employeeSubController.selectedEmployee.getEmployeeID(),
-                employeeSubController.selectedEmployee.getEmployeeFirstName(), employeeSubController.selectedEmployee.getEmployeeLastName(),
-                employeeSubController.selectedEmployee.getCprNr(), employeeSubController.selectedEmployee.getEmail(),
-                employeeSubController.selectedEmployee.getPhoneNr(), employeeSubController.selectedEmployee.getInterviews());
 
         try {
             DbFacade.connect();
-            DbFacade.deleteEmployee(createToDeleteEmployeeObj.getEmployeeID());
+            DbFacade.deleteEmployee(employeeSubController.selectedEmployee.getEmployeeID());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -64,5 +61,6 @@ public class DeleteEmployee extends AbstractController {
                 e.printStackTrace();
             }
         }
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 }

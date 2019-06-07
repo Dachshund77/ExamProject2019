@@ -29,10 +29,12 @@ public class ConsultationSub extends AbstractController {
     public TableColumn<Employee, String> employeeFirstNameColumn;
     public TableColumn<Employee, String> employeeLastNameColumn;
     public Button selectCompanyButton;
+    public Label startDateLabel;
+    public Label endDateLabel;
 
     private ArrayList<Employee> employeeArrayList;
 
-    public BooleanBinding isValid; // Hook for parent class to activate confirm button
+    public BooleanBinding isValid;
     private SimpleBooleanProperty consultationNameIsValid = new SimpleBooleanProperty(true);
     private SimpleBooleanProperty startDateIsValid = new SimpleBooleanProperty(true);
     private SimpleBooleanProperty endDateIsValid = new SimpleBooleanProperty(true);
@@ -136,7 +138,15 @@ public class ConsultationSub extends AbstractController {
     public void setDisabled(boolean bool) {
         consultationNameTextField.setDisable(bool);
         startDatePicker.setDisable(bool);
+        startDatePicker.setVisible(false);
+        startDateLabel.setVisible(false);
         endDatePicker.setDisable(bool);
+        endDatePicker.setVisible(false);
+        endDateLabel.setVisible(false);
+        selectCompanyButton.setDisable(bool);
+        selectCompanyButton.setVisible(false);
+        consultationIDText.setVisible(false);
+
     }
 
     public void resetForm() {
@@ -150,7 +160,5 @@ public class ConsultationSub extends AbstractController {
     public void handleSelectCompany(ActionEvent actionEvent) {
         CompanyChoice newSelectCompany = new CompanyChoice();
         Company foundCompany = newSelectCompany.showAndReturn(new FindCompanyPopUp());
-
-
     }
 }
