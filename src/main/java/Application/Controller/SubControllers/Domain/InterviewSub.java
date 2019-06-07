@@ -89,10 +89,8 @@ public class InterviewSub extends AbstractController {
             protected boolean computeValue() {
                 if (interViewNameIsValid.get() && productUnderstandingIsValid.get() && problemUnderstandingIsValid.get()
                         && qualityAwarenessIsValid.get() && cooperationIsValid.get() && flexibilityIsValid.get()){
-                    System.out.println("true");
                     return true;
                 } else {
-                    System.out.println("false");
                     return false;
                 }
             }
