@@ -1,4 +1,4 @@
-CREATE OR ALTER FUNCTION udf_Filter_tbl_Provider(@ProviderID INT, @ProviderName VARCHAR(30))
+CREATE OR ALTER FUNCTION udf_Filter_tbl_Provider(@ProviderID INT, @ProviderName NVARCHAR(30))
     RETURNS TABLE
         AS
         RETURN

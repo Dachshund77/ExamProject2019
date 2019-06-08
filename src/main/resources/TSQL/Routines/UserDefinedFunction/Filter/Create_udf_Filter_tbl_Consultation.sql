@@ -1,4 +1,4 @@
-CREATE OR ALTER FUNCTION udf_Filter_tbl_Consultation(@ConsultationID INT, @ConsultationName VARCHAR(50),
+CREATE OR ALTER FUNCTION udf_Filter_tbl_Consultation(@ConsultationID INT, @ConsultationName NVARCHAR(50),
                                                      @MinDate DATE, @MaxDate DATE)
     RETURNS TABLE
         AS

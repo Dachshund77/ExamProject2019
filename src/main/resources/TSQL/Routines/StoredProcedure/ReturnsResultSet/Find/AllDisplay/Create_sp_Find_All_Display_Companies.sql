@@ -1,5 +1,5 @@
-CREATE OR ALTER PROCEDURE sp_Fin_All_Display_Companies(@CompanyID INT, @CvrNr VARCHAR(80),
-                                                       @CompanyName VARCHAR(50))
+CREATE OR ALTER PROCEDURE sp_Find_All_Display_Companies(@CompanyID INT, @CvrNr NVARCHAR(80),
+                                                       @CompanyName NVARCHAR(50))
 AS
     BEGIN
         SET NOCOUNT ON

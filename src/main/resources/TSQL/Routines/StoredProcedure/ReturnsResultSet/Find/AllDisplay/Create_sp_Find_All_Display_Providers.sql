@@ -1,5 +1,5 @@
 CREATE OR ALTER PROCEDURE sp_Find_All_Display_Providers(@ProviderID INT,
-                                          @ProviderName VARCHAR(30))
+                                          @ProviderName NVARCHAR(30))
 AS
 BEGIN
     SET NOCOUNT ON

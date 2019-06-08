@@ -1,4 +1,4 @@
-CREATE OR ALTER FUNCTION udf_Filter_tbl_Education(@AmuNR INT, @EducationName VARCHAR(30), @NoOfDays INT)
+CREATE OR ALTER FUNCTION udf_Filter_tbl_Education(@AmuNR INT, @EducationName NVARCHAR(30), @NoOfDays INT)
     RETURNS TABLE
         AS
         RETURN

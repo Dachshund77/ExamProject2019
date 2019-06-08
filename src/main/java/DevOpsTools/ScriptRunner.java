@@ -26,7 +26,6 @@ public class ScriptRunner {
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Education.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Date.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Company.sql").getFile()));
-        //executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Company_Education_Bridge.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Consultation.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Employee.sql").getFile()));
         executionOrder.add(new File(getClass().getResource("/TSQL/Script/TableCreation/Create_tbl_Consultation_Employee_Bridge.sql").getFile()));
@@ -37,6 +36,16 @@ public class ScriptRunner {
         // Add table types
         executionOrder.addAll(getFilesFromResourceDir(new File(getClass().getResource("/TSQL/Script/TableTypes").getFile())));
 
+        //Add the delete all procedure the order matters here
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_Providers.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_Interviews.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_Finished_Educations.Sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_Employees.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_Educations.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_Education_Wishes.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_Consultations.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_Companies.sql").getFile()));
+        executionOrder.add(new File(getClass().getResource("/TSQL/Routines/StoredProcedure/ReturnsNothing/Delete/All/Create_sp_Delete_All_DB_Entries.sql").getFile()));
         //It should not matter what order routines get added to the db
 
         executionOrder.addAll(getFilesFromResourceDir(new File(getClass().getResource("/TSQL/Routines").getFile())));

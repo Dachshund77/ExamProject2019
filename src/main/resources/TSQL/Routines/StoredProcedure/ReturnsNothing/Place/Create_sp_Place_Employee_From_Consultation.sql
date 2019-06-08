@@ -1,9 +1,9 @@
 CREATE OR ALTER PROCEDURE sp_Place_Employee_From_Consultation(@EmployeeID INT,
-                                                 @NewEmployeeFirstName varchar(30),
-                                                 @NewEmployeeLastName varchar(30),
-                                                 @NewCprNr varchar(10),
-                                                 @NewEmail varchar(30),
-                                                 @NewPhoneNr varchar(20),
+                                                 @NewEmployeeFirstName Nvarchar(30),
+                                                 @NewEmployeeLastName Nvarchar(30),
+                                                 @NewCprNr Nvarchar(10),
+                                                 @NewEmail Nvarchar(30),
+                                                 @NewPhoneNr Nvarchar(20),
                                                  @ConsultationID INT)
 AS
 BEGIN

@@ -8,7 +8,6 @@ import java.util.EnumSet;
  */
 public enum Sp implements Procedure {
     //DELETE
-    DELETE_COMPANY_EDUCATION_BRIDGE_BY_COMPANY_ID("sp_Delete_Company_Education_Bridge_By_Company_ID"),
     DELETE_CONSULTATION_BY_COMPANY_ID("sp_Delete_Consultation_By_Company_ID"),
     DELETE_DATE_BY_AMU_NR("sp_Delete_Date_By_AmuNr"),
     DELETE_EMPLOYEE_BY_CONSULTATION_ID("sp_Delete_Employee_By_Consultation_ID"),
@@ -36,7 +35,6 @@ public enum Sp implements Procedure {
 
 
     //INSERT
-    INSERT_COMPANY_EDUCATION_BRIDGE("sp_Insert_Company_Education_Bridge"),
     INSERT_CONSULTATION_EMPLOYEE_BRIDGE("sp_Insert_Consultation_Employee_Bridge"),
 
     //PLACE

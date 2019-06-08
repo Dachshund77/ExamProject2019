@@ -1,5 +1,5 @@
 CREATE OR ALTER PROCEDURE sp_Place_Provider(@ProviderID INT OUTPUT ,
-                                   @newProviderName VARCHAR(30))
+                                   @newProviderName NVARCHAR(30))
 AS
 BEGIN
     SET NOCOUNT ON

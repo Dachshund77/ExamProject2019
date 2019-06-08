@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE sp_Place_Interview(@NewInterviewID INT OUTPUT, @interviewName VARCHAR(30), @EmpID INT,
+CREATE OR ALTER PROCEDURE sp_Place_Interview(@NewInterviewID INT OUTPUT, @interviewName NVARCHAR(30), @EmpID INT,
                                              @ProdRating INT,
                                              @ProbRating INT, @FlexRating INT, @QualRating INT, @CoopRating INT)
 AS

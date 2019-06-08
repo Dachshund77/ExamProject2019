@@ -1,4 +1,4 @@
-CREATE OR ALTER FUNCTION udf_Filter_tbl_Interview(@fld_InterviewID INT, @fld_InterviewName VARCHAR(30))
+CREATE OR ALTER FUNCTION udf_Filter_tbl_Interview(@fld_InterviewID INT, @fld_InterviewName NVARCHAR(30))
     RETURNS TABLE
         AS
         RETURN

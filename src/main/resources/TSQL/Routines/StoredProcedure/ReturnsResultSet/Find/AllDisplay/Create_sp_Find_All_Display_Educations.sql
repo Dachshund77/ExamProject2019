@@ -1,5 +1,5 @@
 CREATE OR ALTER PROCEDURE sp_Find_All_Display_Educations(@AmuNr INT,
-                                                         @EducationName VARCHAR(30), @NoOfDays INT)
+                                                         @EducationName NVARCHAR(30), @NoOfDays INT)
 AS
 BEGIN
     SET NOCOUNT ON
@@ -16,5 +16,5 @@ BEGIN
            fld_NoOfDays As EducationNoOfDays,
            fld_ProviderName AS ProviderName
     FROM @tbl_Education
-    LEFT JOIN tbl_Provider ON @tbl_Education.fld_ProviderID = tbl_Provider.fld_ProviderID
+    LEFT JOIN tbl_Provider ON [@tbl_Education].fld_ProviderID = [tbl_Provider].fld_ProviderID
 END;

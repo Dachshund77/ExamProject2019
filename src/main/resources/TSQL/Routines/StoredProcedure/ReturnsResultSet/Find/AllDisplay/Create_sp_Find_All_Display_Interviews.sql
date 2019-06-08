@@ -1,5 +1,5 @@
 CREATE OR ALTER PROCEDURE sp_Find_All_Display_Interviews(@fld_InterviewID INT,
-                                                         @fld_InterviewName VARCHAR(30))
+                                                         @fld_InterviewName NVARCHAR(30))
 AS
 BEGIN
     SET NOCOUNT ON

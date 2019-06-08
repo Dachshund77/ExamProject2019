@@ -1,6 +1,6 @@
-CREATE OR ALTER PROCEDURE sp_Find_All_Display_Employees(@fld_EmployeeID INT, @fld_EmployeeFirstName VARCHAR(30),
-                                                        @fld_EmployeeLastName VARCHAR(30), @fld_CprNr VARCHAR(10),
-                                                        @fld_Email VARCHAR(30), @fld_PhoneNr VARCHAR(20))
+CREATE OR ALTER PROCEDURE sp_Find_All_Display_Employees(@fld_EmployeeID INT, @fld_EmployeeFirstName NVARCHAR(30),
+                                                        @fld_EmployeeLastName NVARCHAR(30), @fld_CprNr NVARCHAR(10),
+                                                        @fld_Email NVARCHAR(30), @fld_PhoneNr NVARCHAR(20))
 AS
 BEGIN
     SET NOCOUNT ON
