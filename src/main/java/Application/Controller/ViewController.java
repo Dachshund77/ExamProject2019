@@ -1,7 +1,7 @@
 package Application.Controller;
 
 import Application.SearchContainer;
-import Domain.*;
+import Domain.DomainObjects.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

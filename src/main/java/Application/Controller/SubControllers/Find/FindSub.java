@@ -2,7 +2,7 @@ package Application.Controller.SubControllers.Find;
 
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
-import Domain.Company;
+import Domain.DomainObjects.Company;
 import Foundation.DbFacade;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;

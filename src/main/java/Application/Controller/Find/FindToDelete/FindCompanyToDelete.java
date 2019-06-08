@@ -1,21 +1,12 @@
 package Application.Controller.Find.FindToDelete;
 
 import Application.Controller.AbstractController;
-import Application.Controller.SubControllers.Domain.CompanySub;
 import Application.Controller.SubControllers.Find.FindCompanySub;
-import Application.Controller.SubControllers.Find.FindSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Company;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 
 public class FindCompanyToDelete extends AbstractController {
 

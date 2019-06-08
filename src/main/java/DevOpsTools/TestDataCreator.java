@@ -1,6 +1,6 @@
 package DevOpsTools;
 
-import Domain.*;
+import Domain.DomainObjects.*;
 import Foundation.DB;
 import Foundation.DbFacade;
 

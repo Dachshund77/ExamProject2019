@@ -4,7 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindEmployeeSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Employee;
+import Domain.DomainObjects.Employee;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;

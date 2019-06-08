@@ -3,7 +3,7 @@ package Application.Controller.PopUp.Find;
 import Application.Controller.PopUp.ConsultationReturnableController;
 import Application.Controller.SubControllers.Find.FindConsultationSub;
 import Application.Controller.ViewController;
-import Domain.Consultation;
+import Domain.DomainObjects.Consultation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

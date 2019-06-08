@@ -1,10 +1,5 @@
-package Domain;
+package Domain.DomainObjects;
 
-import javafx.beans.property.SimpleIntegerProperty;
-
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 

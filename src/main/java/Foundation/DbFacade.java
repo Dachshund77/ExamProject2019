@@ -1,7 +1,7 @@
 package Foundation;
 
 import Application.SearchContainer;
-import Domain.*;
+import Domain.DomainObjects.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

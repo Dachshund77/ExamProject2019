@@ -1,6 +1,6 @@
 package Domain;
 
-import jdk.vm.ci.meta.Local;
+import Domain.DomainObjects.Consultation;
 import org.junit.Test;
 
 import java.time.LocalDate;

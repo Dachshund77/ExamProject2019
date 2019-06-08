@@ -1,13 +1,10 @@
 package Application.Controller.Find.FindToChange;
 
 import Application.Controller.AbstractController;
-import Application.Controller.SubControllers.Domain.ConsultationSub;
 import Application.Controller.SubControllers.Find.FindCompanySub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Company;
-import Domain.Consultation;
-import javafx.beans.binding.BooleanBinding;
+import Domain.DomainObjects.Company;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;

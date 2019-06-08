@@ -1,4 +1,5 @@
-package Domain;
+package Domain.DomainObjects;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;

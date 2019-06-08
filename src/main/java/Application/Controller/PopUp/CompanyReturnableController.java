@@ -1,10 +1,7 @@
 package Application.Controller.PopUp;
 
 import Application.Controller.AbstractController;
-import Application.Controller.Controllers;
-import Domain.Company;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
+import Domain.DomainObjects.Company;
 
 public abstract class CompanyReturnableController extends AbstractController{
 

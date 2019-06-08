@@ -4,7 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindInterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Interview;
+import Domain.DomainObjects.Interview;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;

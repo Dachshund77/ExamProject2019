@@ -4,7 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindProviderSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Provider;
+import Domain.DomainObjects.Provider;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;

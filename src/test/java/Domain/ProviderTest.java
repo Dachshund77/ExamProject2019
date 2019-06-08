@@ -1,5 +1,8 @@
 package Domain;
 
+import Domain.DomainObjects.Company;
+import Domain.DomainObjects.Domain;
+import Domain.DomainObjects.Provider;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

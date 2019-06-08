@@ -3,7 +3,7 @@ package Application.Controller.PopUp.Find;
 import Application.Controller.PopUp.ProviderReturnableController;
 import Application.Controller.SubControllers.Find.FindProviderSub;
 import Application.Controller.ViewController;
-import Domain.Provider;
+import Domain.DomainObjects.Provider;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

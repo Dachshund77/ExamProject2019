@@ -4,7 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindConsultationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Consultation;
+import Domain.DomainObjects.Consultation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;

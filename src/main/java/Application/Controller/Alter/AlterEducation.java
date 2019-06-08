@@ -3,7 +3,7 @@ package Application.Controller.Alter;
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.EducationSub;
 import Application.SearchContainer;
-import Domain.Education;
+import Domain.DomainObjects.Education;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

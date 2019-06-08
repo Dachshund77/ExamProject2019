@@ -1,5 +1,6 @@
 package Domain;
 
+import Domain.DomainObjects.FinishedEducation;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

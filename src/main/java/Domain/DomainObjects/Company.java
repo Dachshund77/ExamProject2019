@@ -1,12 +1,5 @@
-package Domain;
+package Domain.DomainObjects;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import jdk.jfr.Description;
-import org.apache.ibatis.annotations.Delete;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
 

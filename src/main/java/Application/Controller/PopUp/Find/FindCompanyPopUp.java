@@ -3,15 +3,12 @@ package Application.Controller.PopUp.Find;
 import Application.Controller.PopUp.CompanyReturnableController;
 import Application.Controller.SubControllers.Find.FindCompanySub;
 import Application.Controller.ViewController;
-import Domain.Company;
-import javafx.application.Platform;
+import Domain.DomainObjects.Company;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class FindCompanyPopUp extends CompanyReturnableController {
 

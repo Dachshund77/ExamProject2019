@@ -2,7 +2,9 @@ package Application.Controller.SubControllers.Find;
 
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
-import Domain.*;
+import Domain.DomainObjects.Company;
+import Domain.DomainObjects.Consultation;
+import Domain.DomainObjects.Employee;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;

@@ -1,7 +1,7 @@
 package UI;
 
 import Application.Controller.PopUp.ProviderReturnableController;
-import Domain.Provider;
+import Domain.DomainObjects.Provider;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

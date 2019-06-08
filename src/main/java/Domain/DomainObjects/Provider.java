@@ -1,6 +1,4 @@
-package Domain;
-
-import javafx.beans.property.SimpleStringProperty;
+package Domain.DomainObjects;
 
 import java.util.Objects;
 

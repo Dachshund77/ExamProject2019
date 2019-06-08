@@ -3,7 +3,7 @@ package Application.Controller.Delete;
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.CompanySub;
 import Application.SearchContainer;
-import Domain.Company;
+import Domain.DomainObjects.Company;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
