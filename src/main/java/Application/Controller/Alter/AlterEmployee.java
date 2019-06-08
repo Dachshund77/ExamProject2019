@@ -28,7 +28,7 @@ public class AlterEmployee extends AbstractController {
     @FXML
     private Button changeAction;
 
-    private SearchContainer searchContainer;
+    private SearchContainer previousSearch;
 
     private Employee selectedEmployee;
 
@@ -46,6 +46,7 @@ public class AlterEmployee extends AbstractController {
     public void initValues(SearchContainer searchContainer, Employee employee) {
         //Save search container for returning
         //propergate Consultation to setup form
+        previousSearch = searchContainer;
         employeeSubController.initValues(employee);
     }
 

@@ -9,7 +9,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.Alter.AlterProvider">
     <top>
-        <fx:include fx:id="ProviderSub" source="../SubController/Domain/ProviderSub.fxml"/>
+        <fx:include fx:id="providerSub" source="../SubController/Domain/ProviderSub.fxml"/>
     </top>
     <bottom>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">

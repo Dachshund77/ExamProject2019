@@ -38,6 +38,7 @@ public class AlterCompany extends AbstractController {
     public void initValues(SearchContainer searchContainer, Company company) {
         //Save search container for returning
         previousSearch = searchContainer;
+        companySubController.initValues(company);
         //propergate Consultation to setup form
         //TODO THERE IS MISSING STUFF HERE -Sven
     }
