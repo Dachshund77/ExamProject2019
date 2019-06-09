@@ -25,6 +25,7 @@ public class AlterEducation extends AbstractController {
     @FXML
     private void initialize(){
         confirmationButton.disableProperty().bind(educationSubController.isValid.not());
+        educationSubController.resetForm();
     }
 
     @Override

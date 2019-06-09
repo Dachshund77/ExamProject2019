@@ -40,6 +40,7 @@ public class AlterEmployee extends AbstractController {
     @FXML
     private void initialize(){
         confirmationButton.disableProperty().bind(employeeSubController.isValid.not());
+        employeeSubController.resetForm();
     }
 
     @Override

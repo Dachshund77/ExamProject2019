@@ -23,6 +23,7 @@ public class AlterInterview extends AbstractController {
     @FXML
     private void initialize(){
         confirmationButton.disableProperty().bind(interviewSubController.isValid.not());
+        interviewSubController.resetForm();
     }
 
 

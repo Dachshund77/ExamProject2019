@@ -2,6 +2,7 @@ package Application.Controller.Alter;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.Consultation;
 import Foundation.DbFacade;
@@ -19,6 +20,9 @@ public class AlterConsultation extends AbstractController {
     private ConsultationSub consultationSubController;
     @FXML
     private Button confirmationButton;
+    @FXML
+    private Button cancelButton;
+
 
     private SearchContainer previousSearch;
 
@@ -29,6 +33,7 @@ public class AlterConsultation extends AbstractController {
     @FXML
     private void initialize() {
         confirmationButton.disableProperty().bind(consultationSubController.isValid.not());
+        consultationSubController.resetForm();
     }
 
 
@@ -44,8 +49,15 @@ public class AlterConsultation extends AbstractController {
         //if coming from search return to search with initValues
         if (previousSearch != null){
 
-        } else {
+            /*
+            Consultation returnedConsultation = consultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
+            SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
+            */
 
+            Parent root = cancelButton.getScene().getRoot();
+            ((BorderPane) root).setCenter(ViewController.ALTER_CONSULTATION.loadParent(previousSearch));
+        } else {
+            cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }
     }
 

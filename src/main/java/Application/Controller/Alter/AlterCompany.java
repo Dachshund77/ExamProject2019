@@ -21,7 +21,10 @@ public class AlterCompany extends AbstractController {
     private CompanySub companySubController;
 
     @FXML
-    private Button confirmationButton; //Button needs to be disable when form is not correct
+    private Button confirmationButton;
+    @FXML
+    private Button cancelButton;
+
 
     private SearchContainer previousSearch;
 
@@ -32,6 +35,7 @@ public class AlterCompany extends AbstractController {
     @FXML
     private void initialize() {
         confirmationButton.disableProperty().bind(companySubController.isValid.not());
+        companySubController.resetForm();
     }
 
     @Override
@@ -48,9 +52,15 @@ public class AlterCompany extends AbstractController {
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null){
-            //TODO THERE IS MISSING STUFF HERE -Sven
+            /*
+            Company returnedCompany = findConsultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
+            SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
+            */
+
+            Parent root = cancelButton.getScene().getRoot();
+            ((BorderPane) root).setCenter(ViewController.ALTER_COMPANY.loadParent(previousSearch));
         } else {
-            //TODO THERE IS MISSING STUFF HERE -Sven
+            cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }
     }
 
