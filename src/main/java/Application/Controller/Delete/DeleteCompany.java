@@ -4,8 +4,6 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.CompanySub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Company;
-import Domain.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import Domain.DomainObjects.Company;

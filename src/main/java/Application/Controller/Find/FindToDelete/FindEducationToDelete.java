@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
-import javax.swing.text.View;
 import java.sql.SQLException;
 
 public class FindEducationToDelete extends AbstractController {
@@ -36,7 +35,11 @@ public class FindEducationToDelete extends AbstractController {
      */
     @FXML
     private void initialize(){
-        confirmationButton.disableProperty().bind(findEducationSubController.getEducationTableView().getSelectionModel().selectedItemProperty().isNull());
+        // Load the TableView reference from subController
+        educationTableView = findEducationSubController.getEducationTableView();
+
+        // hook up the confirmation button
+        confirmationButton.disableProperty().bind(educationTableView.getSelectionModel().selectedItemProperty().isNull());
     }
 
     /**

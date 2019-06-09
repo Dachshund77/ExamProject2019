@@ -74,7 +74,6 @@ public class FindCompanyToDelete extends AbstractController {
     @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
-
         //Init values
         Company toBeDeletedCompany = null;
 

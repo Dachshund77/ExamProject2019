@@ -4,7 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.EducationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Education;
+import Domain.DomainObjects.Education;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

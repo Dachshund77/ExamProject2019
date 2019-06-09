@@ -4,7 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ProviderSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Provider;
+import Domain.DomainObjects.Provider;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
