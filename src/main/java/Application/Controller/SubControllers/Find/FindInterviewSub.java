@@ -41,6 +41,9 @@ public class FindInterviewSub extends AbstractController {
         Button searchButton = findSubController.getSearchButton();
         searchButton.setOnAction(event -> handleSearch());
 
+        Button resetButton = findSubController.getResetButton();
+        resetButton.setOnAction(event -> displayData.clear());
+
         //Setup TableView
         interviewTableView.setItems(displayData);
 

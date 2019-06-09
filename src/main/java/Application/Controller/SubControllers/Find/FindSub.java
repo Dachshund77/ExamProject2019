@@ -879,4 +879,8 @@ public class FindSub extends AbstractController {
     public Button getSearchButton() {
         return searchButton;
     }
+
+    public Button getResetButton() {
+        return resetButton;
+    }
 }

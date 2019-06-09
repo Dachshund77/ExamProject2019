@@ -19,7 +19,7 @@ public enum SpWithRs implements Procedure {
     FIND_CONSULTATIONS_BY_COMPANY_ID("sp_Find_Consultations_By_Company_ID"),
     FIND_DATES_BY_EDUCATION_ID("sp_Find_Dates_By_Education_ID"),
     FIND_EDUCATIONS_BY_EDUCATION_WISH_ID("sp_Find_Educations_By_Education_Wish_ID"),
-    FIND_EDUCATIONS_WISHES_BY_INTERVIEW_ID("sp_Find_Education_Wishes_By_Interview_ID"),
+    FIND_EDUCATION_WISHES_BY_INTERVIEW_ID("sp_Find_Education_Wishes_By_Interview_ID"),
     FIND_EDUCATIONS_BY_FINISHED_EDUCATION_ID("sp_Find_Educations_By_Finished_Education_ID"),
     FIND_EMPLOYEES_BY_CONSULTATION_ID("sp_Find_Employees_By_Consultation_ID"),
     FIND_FINISHED_EDUCATIONS_BY_INTERVIEW_ID("sp_Finished_Educations_By_Interview_ID"),

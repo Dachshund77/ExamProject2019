@@ -764,7 +764,7 @@ public class DbFacade {
         ArrayList<EducationWish> returnArrayList = new ArrayList<>();
 
         //get the data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATIONS_WISHES_BY_INTERVIEW_ID, interviewID);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION_WISHES_BY_INTERVIEW_ID, interviewID);
         while (rs.next()) {
             int newEducationWishId = rs.getInt("EducationWishID");
             if (!rs.wasNull()) {
@@ -807,7 +807,7 @@ public class DbFacade {
     private static Education findEducationByFinishedEducationID(int finishedEducationID) throws SQLException {
         Education returnEducation = null;
 
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATIONS_WISHES_BY_INTERVIEW_ID, finishedEducationID);
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATIONS_BY_FINISHED_EDUCATION_ID, finishedEducationID);
         while (rs.next()) {
             int newEducationId = rs.getInt("EducationAmuNr");
             //Return if cached already

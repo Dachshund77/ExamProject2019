@@ -44,6 +44,9 @@ public class FindConsultationSub extends AbstractController {
         Button searchButton = findSubController.getSearchButton();
         searchButton.setOnAction(event -> handleSearch());
 
+        Button resetButton = findSubController.getResetButton();
+        resetButton.setOnAction(event -> displayData.clear());
+
         //Setup TableView
         consultationTableView.setItems(displayData);
 

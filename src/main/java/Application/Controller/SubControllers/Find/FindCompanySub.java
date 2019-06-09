@@ -40,6 +40,9 @@ public class FindCompanySub extends AbstractController {
         Button searchButton = findSubController.getSearchButton();
         searchButton.setOnAction(event -> handleSearch());
 
+        Button resetButton = findSubController.getResetButton();
+        resetButton.setOnAction(event -> displayData.clear());
+
         //Setup TableView
         companyTableView.setItems(displayData);
 
