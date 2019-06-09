@@ -155,10 +155,10 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
      * @param bool
      */
     public void setDisabled(boolean bool) {
-        companyNameTextField.setDisable(bool);
+        companyNameTextField.setDisable(bool); //TODO we should add ja opacity style to this, the look of the disable textfield is horrifying
         cvrNrTextField.setDisable(bool);
-        newConsultationButton.setDisable(bool);
-        addCompany.setDisable(bool);
+        //newConsultationButton.setDisable(bool); //Todo thoose button literaly do not exist, implement them or dont call them at all. NullPointerException else - Sven
+        //addCompany.setDisable(bool);
 
     }
 

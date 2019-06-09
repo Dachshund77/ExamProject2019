@@ -693,53 +693,7 @@ public class FindSub extends AbstractController {
         boolean providerBool = providerValid.get();
         return companyBool && consultationBool && employeeBool && interviewBool && educationBool && providerBool;
     }
-/*
-    @FXML
-    private void handleSearch(ActionEvent event) {
-        SearchContainer container = new SearchContainer();
 
-        //We operate under the assumption that the search button is not clicked before the integer is valid
-        container.setCompanyID(companyIDTextField.getText());
-        container.setCvrNr(cvrNrTextField.getText());
-        container.setCompanyName(companyNameTextField.getText());
-        //Consultation
-        container.setConsultationMaxDate(consultationMaxDatePicker.getValue());
-        container.setConsultationMinDate(consultationMinDatePicker.getValue());
-        container.setConsultationName(consultationNameTextField.getText());
-        container.setConsultationID(consultationIDTextField.getText());
-        //Employee
-        container.setEmployeeID(employeeIDTextField.getText());
-        container.setEmployeeFirstName(empFirstNameTextField.getText());
-        container.setEmployeeLastName(empLastNameTextField.getText());
-        container.setCprNr(cprNrTextField.getText());
-        container.setEmail(eMailTextField.getText());
-        container.setPhoneNr(phoneNrTextField.getText());
-        //Interview
-        container.setInterviewID(interviewIDTextField.getText());
-        container.setInterviewName(interviewsNameTextField.getText());
-        //Education
-        container.setAmuNr(amuNrTextField.getText());
-        container.setEducationName(educationNameTextField.getText());
-        container.setEducationNoOfDays(educationNoOfDaysTextField.getText());
-        container.setEducationMinDate(educationMinDatePicker.getValue());
-        container.setEducationMaxDate(educationMaxDatePicker.getValue());
-        //provider
-        container.setProviderID(providerIDTextField.getText());
-        container.setProviderName(providerNameTextField.getText());
-
-        currentSearchContainer = container;
-        //Connect to db
-        try {
-            DbFacade.connect();
-            searchResultList.clear();
-            searchResultList.addAll(DbFacade.findCompanies(container));
-
-            DbFacade.disconnect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-*/
     /**
      * Builds a searchContainer with the corresponding values of the
      *filled out textboxes.
@@ -778,7 +732,6 @@ public class FindSub extends AbstractController {
 
         return container;
     }
-
 
     /**
      * Reset all field to be empty or if a previous SearchContainer was loaded set the field to the previous values.
@@ -828,7 +781,7 @@ public class FindSub extends AbstractController {
 
     private void resetToPreviousSearch() {
         companyIDTextField.setText(previousSearchContainer.getCompanyIDasString());
-        cvrNrTextField.setText(previousSearchContainer.getCompanyName());
+        cvrNrTextField.setText(previousSearchContainer.getCvrNr());
         companyNameTextField.setText(previousSearchContainer.getCompanyName());
         //Consultation
         consultationMaxDatePicker.setValue(previousSearchContainer.getConsultationMaxDate());
