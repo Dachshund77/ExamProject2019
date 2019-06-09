@@ -5,15 +5,18 @@ import Application.Controller.SubControllers.Find.FindEducationSub;
 import Application.Controller.SubControllers.Find.FindEmployeeSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Education;
-import Domain.Employee;
+import Domain.DisplayObjects.DisplayEmployee;
+import Domain.DomainObjects.Employee;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
 import javax.swing.text.View;
+import java.sql.SQLException;
 
 public class FindEmployeeToDelete extends AbstractController {
 
@@ -26,13 +29,19 @@ public class FindEmployeeToDelete extends AbstractController {
     @FXML
     private Button cancelButton;
 
+    private TableView<DisplayEmployee> employeeTableView;
+
     /**
      * disables the confirm button
      * until the user has selected an employee
      */
     @FXML
     private void initialize(){
-        confirmationButton.disableProperty().bind(findEmployeeSubController.getEmployeeTableView().getSelectionModel().selectedItemProperty().isNull());
+        // Load the TableView reference from subController
+        employeeTableView = findEmployeeSubController.getEmployeeTableView();
+
+        // hook up the confirmation button
+        confirmationButton.disableProperty().bind(employeeTableView.getSelectionModel().selectedItemProperty().isNull());
     }
 
     /**
@@ -67,9 +76,30 @@ public class FindEmployeeToDelete extends AbstractController {
      * Employee E-Mail
      * @param event
      */
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        Employee toBeDeletedEmployee = findEmployeeSubController.getEmployeeTableView().getSelectionModel().getSelectedItem();
+        //Init values
+        Employee toBeDeletedEmployee = null;
+
+        //Get selection
+        DisplayEmployee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+        int id = selectedEmployee.getEmployeeID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeDeletedEmployee = DbFacade.findEmployeeByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
         SearchContainer currentSearch = findEmployeeSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();

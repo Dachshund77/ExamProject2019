@@ -53,6 +53,7 @@ public class FindInterviewToChange extends AbstractController {
         root.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
         Interview toBeChangedInterview = null;

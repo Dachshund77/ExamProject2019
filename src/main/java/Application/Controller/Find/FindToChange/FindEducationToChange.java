@@ -54,6 +54,7 @@ public class FindEducationToChange extends AbstractController {
         root.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
         //Init values
