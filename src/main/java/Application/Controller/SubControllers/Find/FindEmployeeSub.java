@@ -2,49 +2,50 @@ package Application.Controller.SubControllers.Find;
 
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
+import Domain.DisplayObjects.DisplayEmployee;
 import Domain.DomainObjects.Company;
 import Domain.DomainObjects.Consultation;
 import Domain.DomainObjects.Employee;
+import Foundation.DbFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FindEmployeeSub extends AbstractController {
     @FXML
     private FindSub findSubController;
     @FXML
-    private TableView<Employee> employeeTableView;
+    private TableView<DisplayEmployee> employeeTableView;
     @FXML
-    private TableColumn<Employee, Integer> employeeIDColumn;
+    private TableColumn<DisplayEmployee, Integer> employeeIDColumn;
     @FXML
-    private TableColumn<Employee, String> employeeCprColumn;
+    private TableColumn<DisplayEmployee, String> employeeCprColumn;
     @FXML
-    private TableColumn<Employee, String> employeeFirstNameColumn;
+    private TableColumn<DisplayEmployee, String> employeeFirstNameColumn;
     @FXML
-    private TableColumn<Employee, String> employeeLastNameColumn;
+    private TableColumn<DisplayEmployee, String> employeeLastNameColumn;
     @FXML
-    private TableColumn<Employee, String> employeeEmailColumn;
+    private TableColumn<DisplayEmployee, String> employeeEmailColumn;
     @FXML
-    private TableColumn<Employee, String> employeePhoneNrColumn;
+    private TableColumn<DisplayEmployee, String> employeePhoneNrColumn;
 
-    private ObservableList<Company> searchResultList;
-    private ObservableList<Employee> displayData;
+    private ObservableList<DisplayEmployee> displayData;
 
     public void initialize() {
         //Init values
         displayData = FXCollections.observableArrayList();
 
-        //Fetch the subController needed references
-        searchResultList = findSubController.getSearchResultList();
-
-        //Register listener
-        searchResultList.addListener((ListChangeListener<? super Company>) observable -> formatDisplayData());
+        //Fetch the subController and register event handler
+        Button searchButton = findSubController.getSearchButton();
+        searchButton.setOnAction(event -> handleSearch());
 
         //Setup TableView
         employeeTableView.setItems(displayData);
@@ -61,6 +62,23 @@ public class FindEmployeeSub extends AbstractController {
 
     }
 
+    private void handleSearch(){
+        try {
+            DbFacade.connect();
+            SearchContainer container = findSubController.getCurrentSearchContainer();
+            displayData.addAll(DbFacade.findDisplayEmployees(container));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * {@inheritDoc}
      * <br/><br/>
@@ -72,29 +90,9 @@ public class FindEmployeeSub extends AbstractController {
         findSubController.initValues(searchContainer);
     }
 
-    /**
-     * Formats the output from the search query into Employee objects that only occur once.
-     *
-     * @see Employee
-     */
-    private void formatDisplayData() {
-        //Cleans out previous data
-        displayData.clear();
-        //
-        for (Company company : searchResultList) {
-            ArrayList<Consultation> tempConsultations = company.getConsultations();
-            for (Consultation consultation : tempConsultations) {
-                ArrayList<Employee> tempEmployees = consultation.getEmployees();
-                for (Employee employee : tempEmployees) {
-                    if (!displayData.contains(employee)) {
-                        displayData.add(employee);
-                    }
-                }
-            }
-        }
-    }
 
-    public TableView<Employee> getEmployeeTableView() {
+
+    public TableView<DisplayEmployee> getEmployeeTableView() {
         return employeeTableView;
     }
 

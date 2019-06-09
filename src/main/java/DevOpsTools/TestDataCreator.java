@@ -218,7 +218,7 @@ public class TestDataCreator {
             educations.add(createEducation());
         }
 
-        return new Company(null,cvrNr, companyName.toString(),consultations,educations);
+        return new Company(null,cvrNr, companyName.toString(),consultations);
     }
 
     private LocalDate randomDate(){ //TODO parameterize and maybe understand that damn code block

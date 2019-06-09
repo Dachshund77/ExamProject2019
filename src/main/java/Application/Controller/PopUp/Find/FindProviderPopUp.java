@@ -3,12 +3,16 @@ package Application.Controller.PopUp.Find;
 import Application.Controller.PopUp.ProviderReturnableController;
 import Application.Controller.SubControllers.Find.FindProviderSub;
 import Application.Controller.ViewController;
+import Domain.DisplayObjects.DisplayProvider;
 import Domain.DomainObjects.Provider;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class FindProviderPopUp extends ProviderReturnableController {
     @FXML
@@ -18,8 +22,8 @@ public class FindProviderPopUp extends ProviderReturnableController {
     @FXML
     private Button cancelButton;
     @FXML
-    private TableView<Provider> providerTableView;
-    @FXML
+    private TableView<DisplayProvider> providerTableView;
+
     private Provider selectedProvider;
 
 
@@ -35,9 +39,28 @@ public class FindProviderPopUp extends ProviderReturnableController {
 
     }
 
+    @SuppressWarnings("Duplicates")
+    @FXML
     public void handleConfirmation(ActionEvent actionEvent) {
+        //Get selection
+        DisplayProvider selectedItem = providerTableView.getSelectionModel().getSelectedItem();
+        int id = selectedItem.getProviderID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            selectedProvider = DbFacade.findProviderByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
         Stage stage = (Stage) confirmationButton.getScene().getWindow();
-        selectedProvider = providerTableView.getSelectionModel().getSelectedItem(); //Confirmation can only be activated if something is selected
         stage.close();
     }
 

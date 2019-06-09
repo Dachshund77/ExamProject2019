@@ -62,7 +62,7 @@ public class AlterCompany extends AbstractController {
 
         System.out.println(companySubController.isValid.get());
         Company createNewCompanyObj = new Company(null, companySubController.cvrNrTextField.getText(),
-                companySubController.companyNameTextField.getText(), null, null);
+                companySubController.companyNameTextField.getText(), null);
             //TODO rewirte the subcontroller to private, sorry
         try {
             DbFacade.connect();

@@ -2,42 +2,44 @@ package Application.Controller.SubControllers.Find;
 
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
+import Domain.DisplayObjects.DisplayInterview;
+import Domain.DisplayObjects.DisplayProvider;
 import Domain.DomainObjects.Company;
 import Domain.DomainObjects.Consultation;
 import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
+import Foundation.DbFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FindInterviewSub extends AbstractController {
     @FXML
     private FindSub findSubController;
     @FXML
-    private TableView<Interview> interviewTableView;
+    private TableView<DisplayInterview> interviewTableView;
     @FXML
-    private TableColumn<Interview, Integer> interviewIDColumn;
+    private TableColumn<DisplayInterview, Integer> interviewIDColumn;
     @FXML
-    private TableColumn<Interview, String> interviewNameColumn;
+    private TableColumn<DisplayInterview, String> interviewNameColumn;
 
-    private ObservableList<Company> searchResultList;
-    private ObservableList<Interview> displayData;
+    private ObservableList<DisplayInterview> displayData;
 
     public void initialize() {
         //Init values
         displayData = FXCollections.observableArrayList();
 
-        //Fetch the subController needed references
-        searchResultList = findSubController.getSearchResultList();
-
-        //Register listener
-        searchResultList.addListener((ListChangeListener<? super Company>) observable -> formatDisplayData());
+        //Fetch the subController and register event handler
+        Button searchButton = findSubController.getSearchButton();
+        searchButton.setOnAction(event -> handleSearch());
 
         //Setup TableView
         interviewTableView.setItems(displayData);
@@ -47,6 +49,23 @@ public class FindInterviewSub extends AbstractController {
 
         interviewTableView.getColumns().setAll(interviewIDColumn, interviewNameColumn);
 
+    }
+
+    private void handleSearch(){
+        try {
+            DbFacade.connect();
+            SearchContainer container = findSubController.getCurrentSearchContainer();
+            displayData.addAll(DbFacade.findDisplayInterviews(container));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -60,32 +79,8 @@ public class FindInterviewSub extends AbstractController {
         findSubController.initValues(searchContainer);
     }
 
-    /**
-     * Formats the output from the search query into Interview objects that only occur once.
-     *
-     * @see Interview
-     */
-    private void formatDisplayData() {
-        //Cleans out previous data
-        displayData.clear();
-        //
-        for (Company company : searchResultList) {
-            ArrayList<Consultation> tempConsultations = company.getConsultations();
-            for (Consultation consultation : tempConsultations) {
-                ArrayList<Employee> tempEmployees = consultation.getEmployees();
-                for (Employee employee : tempEmployees) {
-                    ArrayList<Interview> tempInterviews = employee.getInterviews();
-                    for (Interview tempInterview : tempInterviews) {
-                        if (!displayData.contains(tempInterview)) {
-                            displayData.add(tempInterview);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
-    public TableView<Interview> getInterviewTableView() {
+    public TableView<DisplayInterview> getInterviewTableView() {
         return interviewTableView;
     }
 

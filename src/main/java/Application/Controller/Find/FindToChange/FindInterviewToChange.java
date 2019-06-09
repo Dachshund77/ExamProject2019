@@ -4,7 +4,9 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindInterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DisplayObjects.DisplayInterview;
 import Domain.DomainObjects.Interview;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -12,13 +14,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
+import java.sql.SQLException;
+
 public class FindInterviewToChange extends AbstractController {
     @FXML
     private FindInterviewSub findInterviewSubController;
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
-    private TableView<Interview> interviewTableView;
+    private TableView<DisplayInterview> interviewTableView;
 
 
     @FXML
@@ -51,8 +55,25 @@ public class FindInterviewToChange extends AbstractController {
 
     @FXML
     private void handleConfirmation(ActionEvent event) {
+        Interview toBeChangedInterview = null;
+
         //Get selection
-        Interview toBeChangedInterview = interviewTableView.getSelectionModel().getSelectedItem();
+        DisplayInterview selectedInterview = interviewTableView.getSelectionModel().getSelectedItem();
+        int id = selectedInterview.getInterviewID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeChangedInterview = DbFacade.findInterviewByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
         //Get the search container
         SearchContainer currentSearch = findInterviewSubController.getFindSubController().getCurrentSearchContainer();

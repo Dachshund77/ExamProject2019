@@ -2,16 +2,20 @@ package Application.Controller.SubControllers.Find;
 
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
+import Domain.DisplayObjects.DisplayConsultation;
 import Domain.DomainObjects.Company;
 import Domain.DomainObjects.Consultation;
+import Foundation.DbFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -20,28 +24,25 @@ public class FindConsultationSub extends AbstractController {
     @FXML
     private FindSub findSubController;
     @FXML
-    private TableView<Consultation> consultationTableView;
+    private TableView<DisplayConsultation> consultationTableView;
     @FXML
-    private TableColumn<Consultation, Integer> consultationIDColumn;
+    private TableColumn<DisplayConsultation, Integer> consultationIDColumn;
     @FXML
-    private TableColumn<Consultation, String> consultationNameColumn;
+    private TableColumn<DisplayConsultation, String> consultationNameColumn;
     @FXML
-    private TableColumn<Consultation, LocalDate> startDateColumn;
+    private TableColumn<DisplayConsultation, LocalDate> startDateColumn;
     @FXML
-    private TableColumn<Consultation, LocalDate> endDateColumn;
+    private TableColumn<DisplayConsultation, LocalDate> endDateColumn;
 
-    private ObservableList<Company> searchResultList;
-    private ObservableList<Consultation> displayData;
+    private ObservableList<DisplayConsultation> displayData;
 
     public void initialize() {
         //Init values
         displayData = FXCollections.observableArrayList();
 
-        //Fetch the subController needed references
-        searchResultList = findSubController.getSearchResultList();
-
-        //Register listener
-        searchResultList.addListener((ListChangeListener<? super Company>) observable -> formatDisplayData());
+        //Fetch the subController and register event handler
+        Button searchButton = findSubController.getSearchButton();
+        searchButton.setOnAction(event -> handleSearch());
 
         //Setup TableView
         consultationTableView.setItems(displayData);
@@ -55,6 +56,23 @@ public class FindConsultationSub extends AbstractController {
 
     }
 
+    private void handleSearch(){
+        try {
+            DbFacade.connect();
+            SearchContainer container = findSubController.getCurrentSearchContainer();
+            displayData.addAll(DbFacade.findDisplayConsultations(container));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * {@inheritDoc}
      * <br/><br/>
@@ -66,26 +84,9 @@ public class FindConsultationSub extends AbstractController {
         findSubController.initValues(searchContainer);
     }
 
-    /**
-     * Formats the output from the search query into Consultation objects that only occur once.
-     *
-     * @see Consultation
-     */
-    private void formatDisplayData() {
-        //Cleans out previous data
-        displayData.clear();
-        //
-        for (Company company : searchResultList) {
-            ArrayList<Consultation> tempConsultations = company.getConsultations();
-            for (Consultation consultation : tempConsultations) {
-                if (!displayData.contains(consultation)) {
-                    displayData.add(consultation);
-                }
-            }
-        }
-    }
 
-    public TableView<Consultation> getConsultationTableView() {
+
+    public TableView<DisplayConsultation> getConsultationTableView() {
         return consultationTableView;
     }
 

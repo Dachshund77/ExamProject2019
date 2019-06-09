@@ -4,13 +4,17 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindProviderSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DisplayObjects.DisplayProvider;
 import Domain.DomainObjects.Provider;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+
+import java.sql.SQLException;
 
 public class FindProviderToChange extends AbstractController {
 
@@ -20,7 +24,7 @@ public class FindProviderToChange extends AbstractController {
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
-    private TableView<Provider> providerTableView;
+    private TableView<DisplayProvider> providerTableView;
 
 
     @FXML
@@ -53,8 +57,26 @@ public class FindProviderToChange extends AbstractController {
 
     @FXML
     private void handleConfirmation(ActionEvent event) {
+        //Init values
+        Provider toBeChangedProvider = null;
+
         //Get selection
-        Provider toBeChangedProvider = providerTableView.getSelectionModel().getSelectedItem();
+        DisplayProvider selectedProvider = providerTableView.getSelectionModel().getSelectedItem();
+        int id = selectedProvider.getProviderID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeChangedProvider = DbFacade.findProviderByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
         //Get the search container
         SearchContainer currentSearch = findProviderSubController.getFindSubController().getCurrentSearchContainer();

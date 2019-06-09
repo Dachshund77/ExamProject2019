@@ -4,13 +4,17 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindCompanySub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DisplayObjects.DisplayCompany;
 import Domain.DomainObjects.Company;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+
+import java.sql.SQLException;
 
 public class FindCompanyToChange extends AbstractController {
 
@@ -19,7 +23,7 @@ public class FindCompanyToChange extends AbstractController {
     @FXML
     private Button confirmationButton;
 
-    private TableView<Company> companyTableView;
+    private TableView<DisplayCompany> companyTableView;
 
 
     @FXML
@@ -50,10 +54,29 @@ public class FindCompanyToChange extends AbstractController {
         root.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
+        //Init values
+        Company toBeChangedCompany = null;
+
         //Get selection
-        Company toBeChangedCompany = companyTableView.getSelectionModel().getSelectedItem();
+        DisplayCompany selectedCompany = companyTableView.getSelectionModel().getSelectedItem();
+        int id = selectedCompany.getCompanyID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeChangedCompany = DbFacade.findCompanyByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
         //Get the search container
         SearchContainer currentSearch = findCompanySubController.getFindSubController().getCurrentSearchContainer();

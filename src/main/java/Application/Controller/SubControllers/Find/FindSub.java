@@ -87,13 +87,12 @@ public class FindSub extends AbstractController {
     private TextField providerNameTextField;
 
     @FXML
-    private Button searchButton; //TODO do i need this?
+    private Button searchButton;
     @FXML
     private Button resetButton; //TODO do i need this evt clean up
 
-    private ObservableList<Company> searchResultList = FXCollections.observableArrayList();
+
     private SearchContainer previousSearchContainer = null;
-    private SearchContainer currentSearchContainer = null;
 
     //BooleanBindings
     private BooleanBinding allValid;
@@ -292,7 +291,7 @@ public class FindSub extends AbstractController {
     public void initValues(SearchContainer searchContainer) {
         this.previousSearchContainer = searchContainer;
         resetToPreviousSearch();
-        handleSearch(new ActionEvent()); //TODO i have no idea if this works - Sven
+        //handleSearch(new ActionEvent()); //TODO Remove later
     }
 
     private void handleCompanyIdInput() {
@@ -694,7 +693,7 @@ public class FindSub extends AbstractController {
         boolean providerBool = providerValid.get();
         return companyBool && consultationBool && employeeBool && interviewBool && educationBool && providerBool;
     }
-
+/*
     @FXML
     private void handleSearch(ActionEvent event) {
         SearchContainer container = new SearchContainer();
@@ -740,6 +739,46 @@ public class FindSub extends AbstractController {
             e.printStackTrace();
         }
     }
+*/
+    /**
+     * Builds a searchContainer with the corresponding values of the
+     *filled out textboxes.
+     * @return SearchContainer with filled out values.
+     */
+    public SearchContainer getCurrentSearchContainer(){
+        SearchContainer container = new SearchContainer();
+
+        container.setCompanyID(companyIDTextField.getText());
+        container.setCvrNr(cvrNrTextField.getText());
+        container.setCompanyName(companyNameTextField.getText());
+        //Consultation
+        container.setConsultationMaxDate(consultationMaxDatePicker.getValue());
+        container.setConsultationMinDate(consultationMinDatePicker.getValue());
+        container.setConsultationName(consultationNameTextField.getText());
+        container.setConsultationID(consultationIDTextField.getText());
+        //Employee
+        container.setEmployeeID(employeeIDTextField.getText());
+        container.setEmployeeFirstName(empFirstNameTextField.getText());
+        container.setEmployeeLastName(empLastNameTextField.getText());
+        container.setCprNr(cprNrTextField.getText());
+        container.setEmail(eMailTextField.getText());
+        container.setPhoneNr(phoneNrTextField.getText());
+        //Interview
+        container.setInterviewID(interviewIDTextField.getText());
+        container.setInterviewName(interviewsNameTextField.getText());
+        //Education
+        container.setAmuNr(amuNrTextField.getText());
+        container.setEducationName(educationNameTextField.getText());
+        container.setEducationNoOfDays(educationNoOfDaysTextField.getText());
+        container.setEducationMinDate(educationMinDatePicker.getValue());
+        container.setEducationMaxDate(educationMaxDatePicker.getValue());
+        //provider
+        container.setProviderID(providerIDTextField.getText());
+        container.setProviderName(providerNameTextField.getText());
+
+        return container;
+    }
+
 
     /**
      * Reset all field to be empty or if a previous SearchContainer was loaded set the field to the previous values.
@@ -750,14 +789,11 @@ public class FindSub extends AbstractController {
     @FXML
     private void handleReset(ActionEvent event) {
         if (previousSearchContainer == null) {
-            currentSearchContainer = null;
             resetToEmpty();
         } else {
-            currentSearchContainer = previousSearchContainer;
             resetToPreviousSearch();
         }
         //Clear searchResultList
-        searchResultList.clear();
     }
 
     private void resetToEmpty() {
@@ -840,11 +876,7 @@ public class FindSub extends AbstractController {
         educationMaxDatePicker.setValue(null);
     }
 
-    public ObservableList<Company> getSearchResultList() {
-        return searchResultList;
-    }
-
-    public SearchContainer getCurrentSearchContainer() {
-        return currentSearchContainer;
+    public Button getSearchButton() {
+        return searchButton;
     }
 }

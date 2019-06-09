@@ -3,12 +3,16 @@ package Application.Controller.PopUp.Find;
 import Application.Controller.PopUp.ConsultationReturnableController;
 import Application.Controller.SubControllers.Find.FindConsultationSub;
 import Application.Controller.ViewController;
+import Domain.DisplayObjects.DisplayConsultation;
 import Domain.DomainObjects.Consultation;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class FindConsultationPopUp extends ConsultationReturnableController {
 
@@ -19,7 +23,7 @@ public class FindConsultationPopUp extends ConsultationReturnableController {
     @FXML
     private Button cancelButton;
 
-    private TableView<Consultation> consultationTableView;
+    private TableView<DisplayConsultation> consultationTableView;
     private Consultation selectedConsultation;
 
 
@@ -35,9 +39,28 @@ public class FindConsultationPopUp extends ConsultationReturnableController {
 
     }
 
+    @SuppressWarnings("Duplicates")
+    @FXML
     public void handleConfirmation(ActionEvent actionEvent) {
+        //Get selection
+        DisplayConsultation selectedItem = consultationTableView.getSelectionModel().getSelectedItem();
+        int id = selectedItem.getConsultationID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            selectedConsultation = DbFacade.findConsultationByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
         Stage stage = (Stage) confirmationButton.getScene().getWindow();
-        selectedConsultation = consultationTableView.getSelectionModel().getSelectedItem(); //Confirmation can only be activated if something is selected
         stage.close();
     }
 
