@@ -2,17 +2,14 @@ package UI;
 
 import Application.Controller.PopUp.CompanyReturnableController;
 //import Application.NEWSTUFF.Controller.CompanyReturnableController;
-import Application.Controller.ViewController;
-import Domain.Company;
+import Domain.DomainObjects.Company;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CompanyChoice extends Stage {
 

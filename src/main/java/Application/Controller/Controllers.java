@@ -1,9 +1,7 @@
 package Application.Controller;
 
-import Application.Controller.AbstractController;
-import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.*;
+import Domain.DomainObjects.*;
 
 /**
  * Interface to allow polymorphism between this applications Controllers.

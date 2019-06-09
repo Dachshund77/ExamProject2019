@@ -1,6 +1,6 @@
 CREATE OR ALTER PROCEDURE sp_Place_Education(@AmuNr INT OUTPUT,
                                     @NewProviderID INT,
-                                    @NewEducationName VARCHAR(30),
+                                    @NewEducationName NVARCHAR(30),
                                     @newDescription NVARCHAR(MAX),
                                     @newNoOfDays INT)
 AS

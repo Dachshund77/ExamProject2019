@@ -3,11 +3,10 @@ package Application.Controller.Alter;
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.EmployeeSub;
 import Application.SearchContainer;
-import Domain.Employee;
+import Domain.DomainObjects.Employee;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 
 import java.sql.SQLException;

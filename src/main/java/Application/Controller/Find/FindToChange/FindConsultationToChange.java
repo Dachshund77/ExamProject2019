@@ -4,13 +4,17 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindConsultationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Consultation;
+import Domain.DisplayObjects.DisplayConsultation;
+import Domain.DomainObjects.Consultation;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+
+import java.sql.SQLException;
 
 public class FindConsultationToChange extends AbstractController {
 
@@ -19,7 +23,7 @@ public class FindConsultationToChange extends AbstractController {
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
-    private TableView<Consultation> consultationTableView;
+    private TableView<DisplayConsultation> consultationTableView;
 
     @FXML
     private void initialize(){
@@ -49,10 +53,29 @@ public class FindConsultationToChange extends AbstractController {
         root.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
+        //init values
+        Consultation toBeChangedConsultation = null;
+
         //Get selection
-        Consultation toBeChangedConsultation = consultationTableView.getSelectionModel().getSelectedItem();
+        DisplayConsultation selectedConsultation = consultationTableView.getSelectionModel().getSelectedItem();
+        int id = selectedConsultation.getConsultationID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeChangedConsultation = DbFacade.findConsultationByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
         //Get the search container
         SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();

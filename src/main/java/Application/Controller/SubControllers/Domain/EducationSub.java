@@ -1,16 +1,13 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Domain.Education;
-import Domain.Provider;
+import Domain.DomainObjects.Education;
+import Domain.DomainObjects.Provider;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
-import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -56,11 +53,7 @@ public class EducationSub extends AbstractController {
                 bind(descriptionIsValid);
                 bind(noOfDaysIsValid);
                 // validate the actual expression
-                if (educationNameIsValid.get() && descriptionIsValid.get() && noOfDaysIsValid.get()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return educationNameIsValid.get() && descriptionIsValid.get() && noOfDaysIsValid.get();
             }
         };
         resetForm();

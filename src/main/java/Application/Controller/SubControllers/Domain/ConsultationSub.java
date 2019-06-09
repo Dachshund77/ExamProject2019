@@ -2,9 +2,9 @@ package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
 import Application.Controller.PopUp.Find.FindCompanyPopUp;
-import Domain.Company;
-import Domain.Consultation;
-import Domain.Employee;
+import Domain.DomainObjects.Company;
+import Domain.DomainObjects.Consultation;
+import Domain.DomainObjects.Employee;
 import UI.CompanyChoice;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -77,10 +77,7 @@ public class ConsultationSub extends AbstractController {
             }
             @Override
             protected boolean computeValue() {
-                if (consultationNameIsValid.get() && startDateIsValid.get() && endDateIsValid.get()) {
-                    return true;
-                } else
-                return false;
+                return consultationNameIsValid.get() && startDateIsValid.get() && endDateIsValid.get();
             }
         };
         resetForm();

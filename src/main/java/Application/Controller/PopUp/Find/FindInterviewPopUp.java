@@ -3,13 +3,16 @@ package Application.Controller.PopUp.Find;
 import Application.Controller.PopUp.InterviewReturnableController;
 import Application.Controller.SubControllers.Find.FindInterviewSub;
 import Application.Controller.ViewController;
-import Domain.Company;
-import Domain.Interview;
+import Domain.DisplayObjects.DisplayInterview;
+import Domain.DomainObjects.Interview;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class FindInterviewPopUp extends InterviewReturnableController {
 
@@ -20,7 +23,7 @@ public class FindInterviewPopUp extends InterviewReturnableController {
     @FXML
     private Button cancelButton;
 
-    private TableView<Interview> interviewTableView;
+    private TableView<DisplayInterview> interviewTableView;
     private Interview selectedInterview;
 
 
@@ -36,9 +39,28 @@ public class FindInterviewPopUp extends InterviewReturnableController {
 
     }
 
+    @SuppressWarnings("Duplicates")
+    @FXML
     public void handleConfirmation(ActionEvent actionEvent) {
+        //Get selection
+        DisplayInterview selectedItem = interviewTableView.getSelectionModel().getSelectedItem();
+        int id = selectedItem.getInterviewID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            selectedInterview = DbFacade.findInterviewByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
         Stage stage = (Stage) confirmationButton.getScene().getWindow();
-        selectedInterview = interviewTableView.getSelectionModel().getSelectedItem(); //Confirmation can only be activated if something is selected
         stage.close();
     }
 

@@ -1,9 +1,7 @@
 package Application.Controller.PopUp;
 
 import Application.Controller.AbstractController;
-import Application.Controller.Controllers;
-import Domain.Education;
-import javafx.scene.Parent;
+import Domain.DomainObjects.Education;
 
 public abstract class EducationReturnableController extends AbstractController {
 

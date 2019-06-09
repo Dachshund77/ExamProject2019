@@ -2,7 +2,7 @@ package UI;
 
 import Application.Controller.PopUp.InterviewReturnableController;
 //import Application.NEWSTUFF.Controller.InterviewReturnableController;
-import Domain.Interview;
+import Domain.DomainObjects.Interview;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

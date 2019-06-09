@@ -2,7 +2,7 @@ package UI;
 
 import Application.Controller.PopUp.EmployeeReturnableController;
 //import Application.NEWSTUFF.Controller.EmployeeReturnableController;
-import Domain.Employee;
+import Domain.DomainObjects.Employee;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

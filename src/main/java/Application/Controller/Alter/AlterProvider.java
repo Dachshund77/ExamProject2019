@@ -4,6 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ProviderSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DomainObjects.Provider;
 import Domain.Company;
 import Domain.Consultation;
 import Domain.Provider;

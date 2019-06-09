@@ -1,7 +1,7 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Domain.Provider;
+import Domain.DomainObjects.Provider;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.TextField;
@@ -35,11 +35,7 @@ public class ProviderSub extends AbstractController {
             @Override
             protected boolean computeValue() {
                 bind(providerNameIsValid);
-                if (providerNameIsValid.get()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return providerNameIsValid.get();
             }
         };
     }

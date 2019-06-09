@@ -1,22 +1,17 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Application.Controller.PopUp.Find.FindCompanyPopUp;
-import Domain.Company;
-import Domain.Consultation;
-import Domain.Education;
-import Foundation.DbFacade;
-import UI.CompanyChoice;
+import Domain.DomainObjects.Company;
+import Domain.DomainObjects.Consultation;
+import Domain.DomainObjects.Education;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,11 +86,7 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
             }
             @Override
             protected boolean computeValue() {
-                if (companyNameIsValid.get() && cvrNrIsValid.get()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return companyNameIsValid.get() && cvrNrIsValid.get();
             }
         };
         resetForm();

@@ -1,9 +1,9 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Domain.EducationWish;
-import Domain.FinishedEducation;
-import Domain.Interview;
+import Domain.DomainObjects.EducationWish;
+import Domain.DomainObjects.FinishedEducation;
+import Domain.DomainObjects.Interview;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;

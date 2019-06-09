@@ -1,5 +1,6 @@
 package Domain;
 
+import Domain.DomainObjects.EducationWish;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -44,10 +45,30 @@ public class EducationWishTest {
     }
 
     @Test
-    public void equals1() {
+    public void equalsNullPointerTest() {
         EducationWish educationWish1 = new EducationWish(null,null,null);
         EducationWish educationWish2 = new EducationWish(null,null,null);
 
         assertEquals(educationWish1,educationWish2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+
+    }
+
+    @Test
+    public void equalsSameDomain(){
+
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+
+    }
+
+    @Test
+    public void equalsNullObjects(){
+
     }
 }

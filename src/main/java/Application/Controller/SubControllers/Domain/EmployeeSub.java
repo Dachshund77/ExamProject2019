@@ -1,8 +1,8 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Domain.Employee;
-import Domain.Interview;
+import Domain.DomainObjects.Employee;
+import Domain.DomainObjects.Interview;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -81,12 +81,8 @@ public class EmployeeSub extends AbstractController {
             }
             @Override
             protected boolean computeValue() {
-                if (employeeFirstNameIsValid.get() && employeeLastNameIsValid.get()
-                        && cprNrIsValid.get() && eMailIsValid.get() && phoneNrIsValid.get()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return employeeFirstNameIsValid.get() && employeeLastNameIsValid.get()
+                        && cprNrIsValid.get() && eMailIsValid.get() && phoneNrIsValid.get();
             }
         };
 

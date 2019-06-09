@@ -4,13 +4,17 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindEmployeeSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Employee;
+import Domain.DisplayObjects.DisplayEmployee;
+import Domain.DomainObjects.Employee;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+
+import java.sql.SQLException;
 
 public class FindEmployeeToChange extends AbstractController {
 
@@ -19,7 +23,7 @@ public class FindEmployeeToChange extends AbstractController {
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
-    private TableView<Employee> employeeTableView;
+    private TableView<DisplayEmployee> employeeTableView;
 
 
     @FXML
@@ -52,8 +56,26 @@ public class FindEmployeeToChange extends AbstractController {
 
     @FXML
     private void handleConfirmation(ActionEvent event) {
+        //Init values
+        Employee toBeChangedEmployee = null;
+
         //Get selection
-        Employee toBeChangedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+        DisplayEmployee selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem();
+        int id = selectedEmployee.getEmployeeID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeChangedEmployee = DbFacade.findEmployeeByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
         //Get the search container
         SearchContainer currentSearch = findEmployeeSubController.getFindSubController().getCurrentSearchContainer();

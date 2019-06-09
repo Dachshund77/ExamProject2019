@@ -2,7 +2,7 @@ package UI;
 
 import Application.Controller.PopUp.EducationReturnableController;
 //import Application.NEWSTUFF.Controller.EducationReturnableController;
-import Domain.Education;
+import Domain.DomainObjects.Education;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

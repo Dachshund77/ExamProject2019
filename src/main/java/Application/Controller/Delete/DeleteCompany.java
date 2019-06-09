@@ -8,6 +8,7 @@ import Domain.Company;
 import Domain.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
+import Domain.DomainObjects.Company;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;

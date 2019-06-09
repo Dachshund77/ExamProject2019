@@ -2,41 +2,46 @@ package Application.Controller.SubControllers.Find;
 
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
-import Domain.Company;
+import Domain.DisplayObjects.DisplayCompany;
+import Domain.DomainObjects.Company;
+import Foundation.DbFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import java.sql.SQLException;
 
 public class FindCompanySub extends AbstractController {
 
     @FXML
     private FindSub findSubController;
     @FXML
-    private TableView<Company> companyTableView;
+    private TableView<DisplayCompany> companyTableView;
     @FXML
-    private TableColumn<Company,Integer> companyIDColumn;
+    private TableColumn<DisplayCompany,Integer> companyIDColumn;
     @FXML
-    private TableColumn<Company,String> cvrNrColumn;
+    private TableColumn<DisplayCompany,String> cvrNrColumn;
     @FXML
-    private TableColumn<Company,String> companyNameColumn;
+    private TableColumn<DisplayCompany,String> companyNameColumn;
 
-    private ObservableList<Company> searchResultList;
-    private ObservableList<Company> displayData;
+
+    private ObservableList<DisplayCompany> displayData;
 
     public void initialize(){
         //Init values
         displayData = FXCollections.observableArrayList();
 
-        //Fetch the subController needed references
-        searchResultList = findSubController.getSearchResultList();
+        //Fetch the subController and register event handler
+        Button searchButton = findSubController.getSearchButton();
+        searchButton.setOnAction(event -> handleSearch());
 
-        //Register listener
-        searchResultList.addListener((ListChangeListener<? super Company>) observable -> formatDisplayData());
+        Button resetButton = findSubController.getResetButton();
+        resetButton.setOnAction(event -> displayData.clear());
 
         //Setup TableView
         companyTableView.setItems(displayData);
@@ -47,6 +52,23 @@ public class FindCompanySub extends AbstractController {
 
         companyTableView.getColumns().setAll(companyIDColumn,cvrNrColumn,companyNameColumn);
 
+    }
+
+    private void handleSearch(){
+        try {
+            DbFacade.connect();
+            SearchContainer container = findSubController.getCurrentSearchContainer();
+            displayData.addAll(DbFacade.findDisplayCompanies(container));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -60,22 +82,9 @@ public class FindCompanySub extends AbstractController {
         findSubController.initValues(searchContainer);
     }
 
-    /**
-     * Formats the output from the search query into Company objects that only occur once.
-     * @see Company
-     */
-    private void formatDisplayData(){
-        //Cleans out previous data
-        displayData.clear();
-        //
-        for (Company company : searchResultList) {
-            if (!displayData.contains(company)){
-                displayData.add(company);
-            }
-        }
-    }
 
-    public TableView<Company> getCompanyTableView() {
+
+    public TableView<DisplayCompany> getCompanyTableView() {
         return companyTableView;
     }
 
