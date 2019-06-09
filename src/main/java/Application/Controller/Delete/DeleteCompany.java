@@ -32,10 +32,13 @@ public class DeleteCompany extends AbstractController {
      */
     @FXML
     public void initialize(){
+        /*
         companySubController.companyIDText.setVisible(false);
         companySubController.companyNameTextField.setEditable(false);
         companySubController.cvrNrTextField.setEditable(false);
-
+        //TODO im very confused over why this is done so i replaced it with subController call, correct me if im wrong - Sven
+         */
+    companySubController.setDisabled(true);
     }
 
     /**

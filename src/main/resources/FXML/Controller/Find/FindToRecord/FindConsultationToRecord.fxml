@@ -30,6 +30,6 @@
         </HBox>
     </bottom>
     <center>
-        <fx:include fx:id="FindConsultationSub" source="../../SubController/Find/FindConsultationSub.fxml"/>
+        <fx:include fx:id="findConsultationSub" source="../../SubController/Find/FindConsultationSub.fxml"/>
     </center>
 </BorderPane>

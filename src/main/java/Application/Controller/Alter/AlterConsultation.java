@@ -74,7 +74,7 @@ public class AlterConsultation extends AbstractController {
                 consultationSubController.startDatePicker.getValue(), consultationSubController.endDatePicker.getValue(), null);
         try {
             DbFacade.connect();
-            //FIXME Need pop-up implementation ↓↓↓
+            //FIXME PopUpImplementation is done, remove if read -Sven
             //DbFacade.insertConsultation(createNewConsultationObj);
         } catch (SQLException e) {
             e.printStackTrace();

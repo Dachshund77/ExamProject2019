@@ -74,7 +74,7 @@ public class FindEmployeeToRecord extends AbstractController {
         SearchContainer currentSearch = findEmployeeSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.DELETE_EMPLOYEE.loadParent(currentSearch, toBeShownEmployee));
+        ((BorderPane) root).setCenter(ViewController.RECORD_EMPLOYEE.loadParent(currentSearch, toBeShownEmployee));
     }
 
 }

@@ -73,6 +73,6 @@ public class FindProviderToRecord extends AbstractController {
         SearchContainer currentSearch = findProviderSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.DELETE_PROVIDER.loadParent(currentSearch, toBeShownProvider));
+        ((BorderPane) root).setCenter(ViewController.RECORD_PROVIDER.loadParent(currentSearch, toBeShownProvider));
     }
 }

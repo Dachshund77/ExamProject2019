@@ -291,7 +291,6 @@ public class FindSub extends AbstractController {
     public void initValues(SearchContainer searchContainer) {
         this.previousSearchContainer = searchContainer;
         resetToPreviousSearch();
-        //handleSearch(new ActionEvent()); //TODO Remove later
     }
 
     private void handleCompanyIdInput() {
