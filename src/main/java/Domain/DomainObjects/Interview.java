@@ -87,6 +87,14 @@ public class Interview implements Domain{
         }
     }
 
+    public void setFinishedEducations(ArrayList<FinishedEducation> finishedEducations) {
+        this.finishedEducations = finishedEducations;
+    }
+
+    public void setEducationWishes(ArrayList<EducationWish> educationWishes) {
+        this.educationWishes = educationWishes;
+    }
+
     /**
      * A valid interview ID may not be negative.
      *

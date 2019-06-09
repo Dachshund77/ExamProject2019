@@ -99,7 +99,7 @@ BEGIN
            [@tbl_Employee].fld_EmployeeLastName  AS EmployeeLastName,
            [@tbl_Employee].fld_CprNr             AS EmployeeCprNr,
            [@tbl_Employee].fld_Email             AS EmployeeEmail,
-           [@tbl_Employee].fld_PhoneNr           AS EmployePhoneNr
+           [@tbl_Employee].fld_PhoneNr           AS EmployeePhoneNr
     FROM @tbl_Company
              INNER JOIN @tbl_Consultation ON [@tbl_Company].fld_CompanyID = [@tbl_Consultation].fld_CompanyID
              INNER JOIN @tbl_Consultation_Employee_Bridge ON [@tbl_Consultation].fld_ConsultationID =

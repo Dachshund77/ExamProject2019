@@ -94,10 +94,11 @@ BEGIN
     SELECT fld_ProviderID, fld_ProviderName
     FROM udf_Filter_tbl_Provider(@ProviderID, @ProviderName)
 
-    SELECT [prov1].fld_ProviderID   AS ProviderID,
-           [prov1].fld_ProviderName AS ProviderName,
-           [prov2].fld_ProviderID   AS ProviderID,
-           [prov2].fld_ProviderName AS ProviderName
+    SELECT [prov1].fld_ProviderID   AS ProviderID1,
+           [prov1].fld_ProviderName AS ProviderName1,
+
+           [prov2].fld_ProviderID   AS ProviderID2,
+           [prov2].fld_ProviderName AS ProviderName2
     FROM @tbl_Company
              INNER JOIN @tbl_Consultation ON [@tbl_Company].fld_CompanyID = [@tbl_Consultation].fld_CompanyID
              INNER JOIN @tbl_Consultation_Employee_Bridge ON [@tbl_Consultation].fld_ConsultationID =

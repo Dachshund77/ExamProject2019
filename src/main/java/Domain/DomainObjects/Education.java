@@ -80,6 +80,14 @@ public class Education implements Domain{
         }
     }
 
+    public void setDates(ArrayList<LocalDate> dates) {
+        this.dates = dates;
+    }
+
+    public void setProvider(Provider provider) {
+        this.provider = provider;
+    }
+
     /**
      * Amu nr may not be negative.
      * @param amuNr Integer to be tested.

@@ -49,6 +49,10 @@ public class Consultation implements Domain{
         return CONSULTATION_NAME_MAX_LENGTH;
     }
 
+    public void setEmployees(ArrayList<Employee> employees) {
+        this.employees = employees;
+    }
+
     /**
      * Converts empty String to null.
      * @param consultationName new consultationName.

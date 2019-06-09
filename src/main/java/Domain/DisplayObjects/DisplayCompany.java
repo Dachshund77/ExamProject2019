@@ -4,22 +4,22 @@ import java.util.Objects;
 
 public class DisplayCompany {
 
-    private String companyID;
+    private Integer companyID;
     private String cvrNr;
     private String companyName;
 
 
-    public DisplayCompany(String companyID, String cvrNr, String companyName) {
+    public DisplayCompany(Integer companyID, String cvrNr, String companyName) {
         this.companyID = companyID;
         this.cvrNr = cvrNr;
         this.companyName = companyName;
     }
 
-    public String getCompanyID() {
+    public Integer getCompanyID() {
         return companyID;
     }
 
-    public void setCompanyID(String companyID) {
+    public void setCompanyID(Integer companyID) {
         this.companyID = companyID;
     }
 

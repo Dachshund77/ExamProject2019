@@ -26,6 +26,10 @@ public class FinishedEducation implements Domain{
         return dateFinished;
     }
 
+    public void setEducation(Education education) {
+        this.education = education;
+    }
+
     /**
      * checks if finishedEducationID arent NULL and negative
      *

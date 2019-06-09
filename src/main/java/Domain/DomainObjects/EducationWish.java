@@ -27,6 +27,10 @@ public class EducationWish implements Domain{
       return priority;
     }
 
+    public void setEducation(Education education) {
+        this.education = education;
+    }
+
     public static int getMaxPriority() {
         return MAX_PRIORITY;
     }

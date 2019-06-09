@@ -10,7 +10,7 @@ BEGIN
            fld_EmployeeLastName AS EmployeeLastName,
            fld_CprNr AS EmployeeCprNr,
            fld_Email AS EmployeeEmail,
-           fld_PhoneNr AS EmployePhoneNr
+           fld_PhoneNr AS EmployeePhoneNr
     FROM udf_Filter_tbl_Employee(@fld_EmployeeID, @fld_EmployeeFirstName, @fld_EmployeeLastName, @fld_CprNr, @fld_Email,
                                  @fld_PhoneNr)
 END;

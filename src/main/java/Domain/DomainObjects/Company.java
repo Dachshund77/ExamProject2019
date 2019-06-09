@@ -10,17 +10,15 @@ public class Company implements Domain{
     private String cvrNr;
     private String companyName;
     private ArrayList<Consultation> consultations;
-    private ArrayList<Education> educationList;
 
     private static final int CVR_EXACT_LENGTH = 8;
     private static final int COMPANY_NAME_MAX_LENGTH = 50;
 
-    public Company(Integer companyID, String cvrNr, String companyName, ArrayList<Consultation> consultations, ArrayList<Education> educationList) {
+    public Company(Integer companyID, String cvrNr, String companyName, ArrayList<Consultation> consultations) {
         this.companyID = companyID;
         setCvrNr(cvrNr);
         setCompanyName(companyName);
         this.consultations = Objects.requireNonNullElseGet(consultations, ArrayList::new);
-        this.educationList = Objects.requireNonNullElseGet(educationList, ArrayList::new);
     }
 
 
@@ -38,10 +36,6 @@ public class Company implements Domain{
 
     public ArrayList<Consultation> getConsultations() {
         return consultations;
-    }
-
-    public ArrayList<Education> getEducationList() {
-        return educationList;
     }
 
     public static int getCvrExactLength() {
@@ -215,10 +209,6 @@ public class Company implements Domain{
             return false;
         }
 
-        if (!Objects.equals(this.consultations, other.consultations)) {
-            return false;
-        }
-
-        return Objects.equals(this.educationList, other.educationList);
+        return Objects.equals(this.consultations, other.consultations);
     }
 }

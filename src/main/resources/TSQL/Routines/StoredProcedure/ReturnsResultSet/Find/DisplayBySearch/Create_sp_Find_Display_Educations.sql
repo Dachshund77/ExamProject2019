@@ -94,17 +94,17 @@ BEGIN
     SELECT fld_ProviderID, fld_ProviderName
     FROM udf_Filter_tbl_Provider(@ProviderID, @ProviderName)
 
-    SELECT [edu1].fld_AmuNR                 AS EducationAmuNr,
-           [edu1].fld_EducationName         AS EducationName,
-           [edu1].fld_Description           AS EducationDescription,
-           [edu1].fld_NoOfDays              AS EducationNoOfDays,
-           [prov1].fld_ProviderName AS ProviderName,
+    SELECT [edu1].fld_AmuNR         AS EducationAmuNr1,
+           [edu1].fld_EducationName AS EducationName1,
+           [edu1].fld_Description   AS EducationDescription1,
+           [edu1].fld_NoOfDays      AS EducationNoOfDays1,
+           [prov1].fld_ProviderName AS ProviderName1,
 
-           [edu2].fld_AmuNR                 AS EducationAmuNr,
-           [edu2].fld_EducationName         AS EducationName,
-           [edu2].fld_Description           AS EducationDescription,
-           [edu2].fld_NoOfDays              AS EducationNoOfDays,
-           [prov2].fld_ProviderName AS ProviderName
+           [edu2].fld_AmuNR         AS EducationAmuNr2,
+           [edu2].fld_EducationName AS EducationName2,
+           [edu2].fld_Description   AS EducationDescription2,
+           [edu2].fld_NoOfDays      AS EducationNoOfDays2,
+           [prov2].fld_ProviderName AS ProviderName2
     FROM @tbl_Company
              INNER JOIN @tbl_Consultation ON [@tbl_Company].fld_CompanyID = [@tbl_Consultation].fld_CompanyID
              INNER JOIN @tbl_Consultation_Employee_Bridge ON [@tbl_Consultation].fld_ConsultationID =

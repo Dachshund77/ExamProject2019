@@ -143,6 +143,10 @@ public class Employee implements Domain{
         }
     }
 
+    public void setInterviews(ArrayList<Interview> interviews) {
+        this.interviews = interviews;
+    }
+
     public static boolean isValidEmployeeID(Integer employeeID) {
         return employeeIDInvalidCause(employeeID) == null;
     }
