@@ -30,9 +30,7 @@ public class EmployeeSub extends AbstractController {
     public Button removeInterview;
     public Button addInterview;
 
-    private ArrayList<Interview> interviews;
-
-    public BooleanBinding isValid; // Hook for parent class to activate confirm button
+    public BooleanBinding isValid;
     public Employee selectedEmployee;
 
     private SimpleBooleanProperty employeeFirstNameIsValid = new SimpleBooleanProperty(true);
@@ -90,22 +88,6 @@ public class EmployeeSub extends AbstractController {
     public void initValues(Employee employee) {
         selectedEmployee = employee;
         ArrayList<Interview> selectedEmployeeArray = selectedEmployee.getInterviews();
-        /*
-        for (Interview testIn: selectedEmployeeArray
-             ) {
-            if(testIn != null)
-            {
-                interviews.add(testIn);
-                list.add(testIn);
-            }
-            else
-                System.out.println(testIn);
-        }
-        */
-
-        /*f(selectedEmployee.getInterviews() != null) {
-            interviews.addAll(selectedEmployee.getInterviews());
-        }*/
         resetForm();
     }
 
@@ -214,20 +196,24 @@ public class EmployeeSub extends AbstractController {
         }
     }
 
+    /**
+     * This will remove the selected item from the TableView and list, to not be saved.
+     * @param event Upon selecting an item in the TableView and hitting the "Remove interview" button
+     */
     public void handleRemoveInterview(ActionEvent event){
         Interview selectedData = interviewTableView.getSelectionModel().getSelectedItem();
-        //list.remove(selectedData);
+        list.remove(selectedData);
     }
 
+    /**
+     * Opens a popup to add an interview to the employee.
+     * @param event Opens a popup to a search window
+     */
     public void handleAddInterview(ActionEvent event){
         InterviewChoice newSelectInterview = new InterviewChoice();
         Interview foundInterview = newSelectInterview.showAndReturn(new FindInterviewPopUp());
         if(foundInterview != null)
         list.add(foundInterview);
-    }
-
-    public void handleSeeInterview(ActionEvent event){
-
     }
 
     /**
@@ -241,10 +227,9 @@ public class EmployeeSub extends AbstractController {
         emailTextField.setDisable(bool);
         phoneNrTextField.setDisable(bool);
         removeInterview.setDisable(bool);
-        removeInterview.setVisible(false);
+        removeInterview.setVisible(!bool);
         addInterview.setDisable(bool);
-        addInterview.setVisible(false);
-        interviewTableView.setVisible(false);
+        addInterview.setVisible(!bool);
         interviewTableView.setDisable(bool);
     }
 
@@ -252,6 +237,8 @@ public class EmployeeSub extends AbstractController {
      * Method to reset the TextFields, either manually or through startup
      * Checks if you got here by selecting an employee or through new.
      * If an employee is selected, it will setup the fields with information
+     * If not it will set all TextFields, list and TableView to be cleared.
+     * This can also be used via the reset button, which returns everything to the point of when the window was opened.
      */
     public void resetForm(){
         if(selectedEmployee != null)
@@ -261,7 +248,8 @@ public class EmployeeSub extends AbstractController {
             cprNrTextField.setText(selectedEmployee.getCprNr());
             emailTextField.setText(selectedEmployee.getEmail());
             phoneNrTextField.setText(selectedEmployee.getPhoneNr());
-            list.addAll(selectedEmployee.getInterviews());
+            list.setAll(selectedEmployee.getInterviews());
+            employeeIDText.setText("Employee ID : " + selectedEmployee.getEmployeeID());
         }
         else
         {
@@ -275,8 +263,11 @@ public class EmployeeSub extends AbstractController {
         }
     }
 
+    /**
+     * Initializes information to be inserted into fields.
+     * @return A filled out Employee object
+     */
     public Employee getEmployee(){
-        //TODO Implement this
         Integer employeeID = null;
 
         if(selectedEmployee != null)
@@ -289,7 +280,6 @@ public class EmployeeSub extends AbstractController {
         String email = emailTextField.getText();
         String phoneNr = phoneNrTextField.getText();
         ArrayList<Interview> interviewArrayList = new ArrayList<>(list);
-        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
         return new Employee(employeeID,employeeFirstName,employeeLastName,cprNr,email,phoneNr,interviewArrayList);
     }
 }
