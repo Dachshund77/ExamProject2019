@@ -60,15 +60,8 @@ public class EmployeeSub extends AbstractController {
         interviewNameColumn.setCellValueFactory(new PropertyValueFactory<>("interviewName"));
 
         interviewTableView.getColumns().setAll(interviewIDColumn, interviewNameColumn);
-        Interview TestInterview =  new Interview(1,"Test 1",null,null,null,null,null,null,null);
-        Interview TestInterview2 =  new Interview(2,"Test 2",null,null,null,null,null,null,null);
-        Interview TestInterview3 =  new Interview(3,"Test 3",null,null,null,null,null,null,null);
 
         interviewTableView.setItems(list);
-
-        list.add(TestInterview);
-        list.add(TestInterview2);
-        list.add(TestInterview3);
 
         isValid = new BooleanBinding() {
             {
@@ -96,6 +89,20 @@ public class EmployeeSub extends AbstractController {
     @Override
     public void initValues(Employee employee) {
         selectedEmployee = employee;
+        ArrayList<Interview> selectedEmployeeArray = selectedEmployee.getInterviews();
+        for (Interview testIn: selectedEmployeeArray
+             ) {
+            if(testIn != null)
+            {
+                interviews.add(testIn);
+                list.add(testIn);
+            }
+            else
+                System.out.println(testIn);
+        }
+        /*f(selectedEmployee.getInterviews() != null) {
+            interviews.addAll(selectedEmployee.getInterviews());
+        }*/
         resetForm();
     }
 
@@ -206,13 +213,14 @@ public class EmployeeSub extends AbstractController {
 
     public void handleRemoveInterview(ActionEvent event){
         Interview selectedData = interviewTableView.getSelectionModel().getSelectedItem();
-        list.remove(selectedData);
+        //list.remove(selectedData);
     }
 
     public void handleAddInterview(ActionEvent event){
-        //open popup and stuff
         InterviewChoice newSelectInterview = new InterviewChoice();
         Interview foundInterview = newSelectInterview.showAndReturn(new FindInterviewPopUp());
+        if(foundInterview != null)
+        list.add(foundInterview);
     }
 
     public void handleSeeInterview(ActionEvent event){
@@ -250,6 +258,7 @@ public class EmployeeSub extends AbstractController {
             cprNrTextField.setText(selectedEmployee.getCprNr());
             emailTextField.setText(selectedEmployee.getEmail());
             phoneNrTextField.setText(selectedEmployee.getPhoneNr());
+            list.addAll(selectedEmployee.getInterviews());
         }
         else
         {
@@ -258,13 +267,16 @@ public class EmployeeSub extends AbstractController {
             cprNrTextField.setText("");
             emailTextField.setText("");
             phoneNrTextField.setText("");
+            list.removeAll();
+            interviewTableView.getItems().clear();
         }
     }
 
     public Employee getEmployee(){
         //TODO Implement this
         Integer employeeID = null;
-        if(selectedEmployee.getEmployeeID() != null)
+
+        if(selectedEmployee != null)
         {
             employeeID = selectedEmployee.getEmployeeID();
         }
@@ -273,7 +285,8 @@ public class EmployeeSub extends AbstractController {
         String cprNr = cprNrTextField.getText();
         String email = emailTextField.getText();
         String phoneNr = phoneNrTextField.getText();
+        ArrayList<Interview> interviewArrayList = new ArrayList<>(list);
         //build the object either with null id or loaded id, depending on if we change or not change and existing object.
-        return new Employee(employeeID,employeeFirstName,employeeLastName,cprNr,email,phoneNr,null);
+        return new Employee(employeeID,employeeFirstName,employeeLastName,cprNr,email,phoneNr,interviewArrayList);
     }
 }
