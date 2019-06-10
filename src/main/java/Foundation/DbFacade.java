@@ -575,7 +575,7 @@ public class DbFacade {
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW_BY_ID, interviewID);
 
         while (rs.next()) {
-            int newInterviewID = rs.getInt("fld_InterviewID");
+            int newInterviewID = rs.getInt("InterviewID");
             if (!rs.wasNull()) {
                 String newInterviewName = rs.getString("InterviewName");
                 Integer newInterviewProdScore = rs.getInt("InterviewProductUnderstanding");

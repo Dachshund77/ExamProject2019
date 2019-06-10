@@ -43,8 +43,7 @@ public class AlterCompany extends AbstractController {
         //Save search container for returning
         previousSearch = searchContainer;
         companySubController.initValues(company);
-        //propergate Consultation to setup form
-        //TODO THERE IS MISSING STUFF HERE -Sven
+
     }
 
     @FXML
@@ -72,7 +71,7 @@ public class AlterCompany extends AbstractController {
      *              which is then send to the database
      */
     @FXML //FIXME sends 2 objects to the company
-    private void handleConfirmation(ActionEvent event) {
+    private void handleConfirmation(ActionEvent event) { //TODO Need fix - Sven
 
         System.out.println(companySubController.isValid.get());
         Company createNewCompanyObj = new Company(null, companySubController.cvrNrTextField.getText(),

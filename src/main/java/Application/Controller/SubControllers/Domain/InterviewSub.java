@@ -263,7 +263,7 @@ public class InterviewSub extends AbstractController {
      * A check for the if the fields are valid
      * @param bool
      */
-    public void setDisabled(boolean bool){
+    public void setDisabled(boolean bool){ //TODO i dont think the tableviews should be visible whenever - Sven
         interViewNameTextField.setDisable(bool);
         productUnderstandingComboBox.setDisable(bool);
         problemUnderstandingComboBox.setDisable(bool);

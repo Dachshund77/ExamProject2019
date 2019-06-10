@@ -36,7 +36,7 @@ public class AlterEducation extends AbstractController {
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) {
+    private void handleCancel(ActionEvent event) { //TODO needs implementaion
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null){
@@ -52,7 +52,7 @@ public class AlterEducation extends AbstractController {
      * @param event sends an education object to the database
      */
     @FXML
-    private void handleConfirmation(ActionEvent event) {
+    private void handleConfirmation(ActionEvent event) { //TODO needs implementation
     }
 
     /**

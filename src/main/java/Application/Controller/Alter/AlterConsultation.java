@@ -68,7 +68,7 @@ public class AlterConsultation extends AbstractController {
      * @param event create consultation object and send it to the database
      */
     @FXML
-    private void handleConfirmation(ActionEvent event) {
+    private void handleConfirmation(ActionEvent event) { //TODO needs fix
         //Creates a new consultation Obj to send to the database
         Consultation createNewConsultationObj = new Consultation(null, consultationSubController.consultationNameTextField.getText(),
                 consultationSubController.startDatePicker.getValue(), consultationSubController.endDatePicker.getValue(), null);

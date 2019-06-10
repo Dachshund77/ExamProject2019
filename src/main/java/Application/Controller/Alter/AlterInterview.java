@@ -36,7 +36,7 @@ public class AlterInterview extends AbstractController {
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) {
+    private void handleCancel(ActionEvent event) { //TODO needs implementation
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null){
@@ -52,7 +52,7 @@ public class AlterInterview extends AbstractController {
      * @param event sends an interview object to the database
      */
     @FXML
-    private void handleConfirmation(ActionEvent event) {
+    private void handleConfirmation(ActionEvent event) { //TODO needs fix
         int productUnderstanding = Integer.parseInt(interviewSubController.productUnderstandingComboBox.getValue().toString());
         int problemUnderstanding = Integer.parseInt(interviewSubController.problemUnderstandingComboBox.getValue().toString());
         int qualityAwareness = Integer.parseInt(interviewSubController.qualityAwarenessComboBox.getValue().toString());

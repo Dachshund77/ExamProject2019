@@ -51,7 +51,7 @@ public class AlterEmployee extends AbstractController {
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) {
+    private void handleCancel(ActionEvent event) { //TODO need implementation
         //Return to main screen or search
         //if coming from search return to search with initValues
     }
@@ -64,10 +64,10 @@ public class AlterEmployee extends AbstractController {
      *              and then inserts them into database
      */
     @FXML
-    private void handleConfirmation(ActionEvent event) {
+    private void handleConfirmation(ActionEvent event) {//TODO need fix
         System.out.println(employeeSubController.isValid.get());
 
-        Employee createNewEmployeeObj = new Employee(null,employeeSubController.employeeFirstNameTextField.getText(),
+        Employee createNewEmployeeObj = new Employee(null,employeeSubController.employeeFirstNameTextField.getText(), //TODO also make fields private if possible, maybe  bit much on the inline
                 employeeSubController.employeeLastNameTextField.getText(),employeeSubController.cprNrTextField.getText(),
                 employeeSubController.emailTextField.getText(),employeeSubController.phoneNrTextField.getText(),null);
 
