@@ -21,6 +21,8 @@ public class DeleteCompany extends AbstractController {
     private CompanySub companySubController;
     @FXML
     private Button confirmationButton;
+    @FXML
+    private Button returnButton;
 
     private SearchContainer previousSearch;
 
@@ -77,5 +79,10 @@ public class DeleteCompany extends AbstractController {
 
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
 
+    }
+
+    public void handleReturn(ActionEvent event) {
+        Parent root = returnButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.FIND_COMPANY_TO_DELETE.loadParent(previousSearch));
     }
 }

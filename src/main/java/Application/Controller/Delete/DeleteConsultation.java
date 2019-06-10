@@ -8,7 +8,9 @@ import Domain.DomainObjects.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
 
@@ -18,6 +20,8 @@ public class DeleteConsultation extends AbstractController {
     private ConsultationSub consultationSubController;
     @FXML
     private Button confirmationButton;
+    @FXML
+    private Button returnButton;
 
     private SearchContainer previousSearch;
 
@@ -59,5 +63,10 @@ public class DeleteConsultation extends AbstractController {
             }
         }
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
+    }
+
+    public void handleReturn(ActionEvent event) {
+        Parent root = returnButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.FIND_CONSULTATION_TO_DELETE.loadParent(previousSearch));
     }
 }

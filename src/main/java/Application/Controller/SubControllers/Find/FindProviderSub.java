@@ -77,6 +77,7 @@ public class FindProviderSub extends AbstractController {
     public void initValues(SearchContainer searchContainer) {
         //Propagate the call further to the subController
         findSubController.initValues(searchContainer);
+        handleSearch();
     }
 
 

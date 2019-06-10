@@ -55,7 +55,7 @@ public class AlterConsultation extends AbstractController {
             */
 
             Parent root = cancelButton.getScene().getRoot();
-            ((BorderPane) root).setCenter(ViewController.ALTER_CONSULTATION.loadParent(previousSearch));
+            ((BorderPane) root).setCenter(ViewController.FIND_CONSULTATION_TO_CHANGE.loadParent(previousSearch));
         } else {
             cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }

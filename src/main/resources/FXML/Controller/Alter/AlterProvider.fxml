@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.geometry.Insets?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.Alter.AlterProvider">
-    <top>
-        <fx:include fx:id="providerSub" source="../SubController/Domain/ProviderSub.fxml"/>
-    </top>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.Alter.AlterProvider">
     <bottom>
         <HBox alignment="CENTER" BorderPane.alignment="CENTER">
             <children>
@@ -32,4 +27,7 @@
             </children>
         </HBox>
     </bottom>
+   <center>
+        <fx:include fx:id="providerSub" source="../SubController/Domain/ProviderSub.fxml" />
+   </center>
 </BorderPane>

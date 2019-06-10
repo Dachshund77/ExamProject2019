@@ -8,15 +8,20 @@ import Domain.DomainObjects.Employee;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
 
 public class DeleteEmployee extends AbstractController {
+
     @FXML
     private EmployeeSub employeeSubController;
     @FXML
     private Button confirmationButton;
+    @FXML
+    private Button returnButton;
 
     private SearchContainer previousSearch;
 
@@ -61,5 +66,10 @@ public class DeleteEmployee extends AbstractController {
             }
         }
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
+    }
+
+    public void handleReturn(ActionEvent event) {
+        Parent root = returnButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.FIND_EMPLOYEE_TO_DELETE.loadParent(previousSearch));
     }
 }

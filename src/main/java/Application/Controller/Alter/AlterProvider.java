@@ -57,7 +57,7 @@ public class AlterProvider extends AbstractController {
             */
 
             Parent root = cancelButton.getScene().getRoot();
-            ((BorderPane) root).setCenter(ViewController.ALTER_PROVIDER.loadParent(previousSearch));
+            ((BorderPane) root).setCenter(ViewController.FIND_PROVIDER_TO_CHANGE.loadParent(previousSearch));
         } else {
            cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }

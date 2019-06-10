@@ -8,15 +8,20 @@ import Domain.DomainObjects.Provider;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
 
 public class DeleteProvider extends AbstractController {
+
     @FXML
     private ProviderSub providerSubController;
     @FXML
     private Button confirmationButton;
+    @FXML
+    private Button returnButton;
 
     private SearchContainer previousSearch;
 
@@ -61,5 +66,10 @@ public class DeleteProvider extends AbstractController {
             }
         }
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
+    }
+
+    public void handleReturn(ActionEvent event) {
+        Parent root = returnButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.FIND_PROVIDER_TO_DELETE.loadParent(previousSearch));
     }
 }

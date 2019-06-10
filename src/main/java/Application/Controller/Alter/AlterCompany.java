@@ -58,7 +58,7 @@ public class AlterCompany extends AbstractController {
             */
 
             Parent root = cancelButton.getScene().getRoot();
-            ((BorderPane) root).setCenter(ViewController.ALTER_COMPANY.loadParent(previousSearch));
+            ((BorderPane) root).setCenter(ViewController.FIND_COMPANY_TO_CHANGE.loadParent(previousSearch));
         } else {
             cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }

@@ -8,15 +8,20 @@ import Domain.DomainObjects.Education;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
 
 public class DeleteEducation extends AbstractController {
+
     @FXML
     private EducationSub educationSubController;
     @FXML
     private Button confirmationButton;
+    @FXML
+    private Button returnButton;
 
     private SearchContainer previousSearch;
 
@@ -59,5 +64,10 @@ public class DeleteEducation extends AbstractController {
             }
         }
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
+    }
+
+    public void handleReturn(ActionEvent event) {
+        Parent root = returnButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.FIND_EDUCATION_TO_DELETE.loadParent(previousSearch));
     }
 }
