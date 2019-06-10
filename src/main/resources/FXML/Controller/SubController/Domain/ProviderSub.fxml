@@ -31,7 +31,7 @@
                <tooltip>
                   <Tooltip fx:id="providerNameTooltip" text="Test" />
                </tooltip></TextField>
-            <Text fx:id="providerIDText" strokeType="OUTSIDE" strokeWidth="0.0" text="providerIDText" textAlignment="CENTER" wrappingWidth="215.13671875" GridPane.columnIndex="1" />
+            <Text fx:id="providerIDText" strokeType="OUTSIDE" strokeWidth="0.0" text="New Provider" textAlignment="CENTER" wrappingWidth="215.13671875" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </center>

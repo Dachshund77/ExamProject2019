@@ -49,6 +49,8 @@ public class ProviderSub extends AbstractController {
     @Override
     public void initValues(Provider provider) {
         selectedProvider = provider;
+        //setting provider id text
+        providerIDText.setText("Updating Provider: "+selectedProvider.getProviderID());
         resetForm();
     }
 
@@ -97,9 +99,13 @@ public class ProviderSub extends AbstractController {
     }
 
     public Provider getProvider(){
-        //TODO Implement this
-        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
-        return null;
-    }
+        //get the provider id if we are changeig
+        Integer providerID = null;
+        if (selectedProvider != null){
+            providerID = selectedProvider.getProviderID();
+        }
+        String name = providerNameTextfield.getText();
 
+        return new Provider(providerID,name);
+    }
 }
