@@ -348,4 +348,9 @@ public class InterviewSub extends AbstractController {
         //build the object either with null id or loaded id, depending on if we change or not change and existing object.
         return null;
     }
+
+    public int getEmployeeID(){
+        //TODO Implement this
+        return 1;
+    }
 }

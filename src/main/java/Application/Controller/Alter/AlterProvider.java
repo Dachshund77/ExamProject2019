@@ -9,6 +9,7 @@ import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
@@ -73,11 +74,26 @@ public class AlterProvider extends AbstractController {
 
     @FXML
     private void handleConfirmation(ActionEvent event) { //TODO  need correction
+        Provider provider = providerSubController.getProvider();
 
-        Provider createProviderObj = new Provider(null, providerSubController.providerNameTextfield.getText());
+        //Send confirmation
+        if (provider.getProviderID() == null){
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Provider was added to the Database Successfully!");
+            info.showAndWait();
+        }else {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Provider was updated in the Database Successfully!");
+            info.showAndWait();
+        }
+
         try {
             DbFacade.connect();
-            DbFacade.insertProvider(createProviderObj);
+            DbFacade.insertProvider(provider);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -87,6 +103,8 @@ public class AlterProvider extends AbstractController {
                 e.printStackTrace();
             }
         }
+
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
     /**

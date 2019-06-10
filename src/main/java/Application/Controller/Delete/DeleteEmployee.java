@@ -9,10 +9,13 @@ import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class DeleteEmployee extends AbstractController {
 
@@ -52,20 +55,33 @@ public class DeleteEmployee extends AbstractController {
      * @param actionEvent
      */
     public void handleConfirmation(ActionEvent actionEvent) {
-
-        try {
-            DbFacade.connect();
-            DbFacade.deleteEmployee(employeeSubController.selectedEmployee.getEmployeeID());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Deletion Warning");
+        alert.setHeaderText("You are about to delete an Employee!");
+        alert.setContentText("This Action will delete this Employee and all related Interviews permanently!");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                DbFacade.disconnect();
+                DbFacade.connect();
+                DbFacade.deleteEmployee(employeeSubController.selectedEmployee.getEmployeeID());
+
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Employee was deleted from the Database Successfully!");
+                info.showAndWait();
+
             } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    DbFacade.disconnect();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
+            confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }
-        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
     public void handleReturn(ActionEvent event) {

@@ -9,6 +9,7 @@ import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
@@ -43,7 +44,6 @@ public class AlterCompany extends AbstractController {
         //Save search container for returning
         previousSearch = searchContainer;
         companySubController.initValues(company);
-
     }
 
     @FXML
@@ -71,15 +71,27 @@ public class AlterCompany extends AbstractController {
      *              which is then send to the database
      */
     @FXML //FIXME sends 2 objects to the company
-    private void handleConfirmation(ActionEvent event) { //TODO Need fix - Sven
+    private void handleConfirmation(ActionEvent event) {
+        Company company = companySubController.getCompany();
 
-        System.out.println(companySubController.isValid.get());
-        Company createNewCompanyObj = new Company(null, companySubController.cvrNrTextField.getText(),
-                companySubController.companyNameTextField.getText(), null);
-            //TODO rewirte the subcontroller to private, sorry
+        //Send confirmation
+        if (company.getCompanyID() == null){
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Company was added to the Database Successfully!");
+            info.showAndWait();
+        }else {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Company was updated in the Database Successfully!");
+            info.showAndWait();
+        }
+
         try {
             DbFacade.connect();
-            DbFacade.insertCompany(createNewCompanyObj);
+            DbFacade.insertCompany(company);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -89,7 +101,7 @@ public class AlterCompany extends AbstractController {
                 e.printStackTrace();
             }
         }
-
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
     /**

@@ -2,12 +2,16 @@ package Application.Controller.Alter;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.EmployeeSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.DomainObjects.Employee;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
 
@@ -51,9 +55,16 @@ public class AlterEmployee extends AbstractController {
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) { //TODO need implementation
+    private void handleCancel(ActionEvent event) {
         //Return to main screen or search
         //if coming from search return to search with initValues
+        if (previousSearch != null){
+            Parent root = cancelButton.getScene().getRoot();
+            ((BorderPane) root).setCenter(ViewController.FIND_EMPLOYEE_TO_CHANGE.loadParent(previousSearch));
+        } else {
+            // goto main screen
+            cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
+        }
     }
 
     /**
@@ -64,16 +75,27 @@ public class AlterEmployee extends AbstractController {
      *              and then inserts them into database
      */
     @FXML
-    private void handleConfirmation(ActionEvent event) {//TODO need fix
-        System.out.println(employeeSubController.isValid.get());
+    private void handleConfirmation(ActionEvent event) {
+        Employee employee = employeeSubController.getEmployee();
 
-        Employee createNewEmployeeObj = new Employee(null,employeeSubController.employeeFirstNameTextField.getText(), //TODO also make fields private if possible, maybe  bit much on the inline
-                employeeSubController.employeeLastNameTextField.getText(),employeeSubController.cprNrTextField.getText(),
-                employeeSubController.emailTextField.getText(),employeeSubController.phoneNrTextField.getText(),null);
+        //Send confirmation
+        if (employee.getEmployeeID() == null){
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Consultation was added to the Database Successfully!");
+            info.showAndWait();
+        }else {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Consultation was updated in the Database Successfully!");
+            info.showAndWait();
+        }
 
         try {
             DbFacade.connect();
-            DbFacade.insertEmployee(createNewEmployeeObj);
+            DbFacade.insertEmployee(employee); //TODO check that the relationShip between employee and Consultation is actually done somwhere
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
@@ -84,6 +106,7 @@ public class AlterEmployee extends AbstractController {
             }
         }
 
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
     /**

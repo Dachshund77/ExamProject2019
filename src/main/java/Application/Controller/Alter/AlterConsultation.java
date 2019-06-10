@@ -9,6 +9,7 @@ import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
@@ -69,13 +70,27 @@ public class AlterConsultation extends AbstractController {
      */
     @FXML
     private void handleConfirmation(ActionEvent event) { //TODO needs fix
-        //Creates a new consultation Obj to send to the database
-        Consultation createNewConsultationObj = new Consultation(null, consultationSubController.consultationNameTextField.getText(),
-                consultationSubController.startDatePicker.getValue(), consultationSubController.endDatePicker.getValue(), null);
+       Consultation consultation = consultationSubController.getConsultation();
+       int companyId =  consultationSubController.getCompanyID();
+
+        //Send confirmation
+        if (consultation.getConsultationID() == null){
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Consultation was added to the Database Successfully!");
+            info.showAndWait();
+        }else {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Consultation was updated in the Database Successfully!");
+            info.showAndWait();
+        }
+
         try {
             DbFacade.connect();
-            //FIXME PopUpImplementation is done, remove if read -Sven
-            //DbFacade.insertConsultation(createNewConsultationObj);
+            DbFacade.insertConsultation(consultation, companyId);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -85,6 +100,8 @@ public class AlterConsultation extends AbstractController {
                 e.printStackTrace();
             }
         }
+
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
     /**
