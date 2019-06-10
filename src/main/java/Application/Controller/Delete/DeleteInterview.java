@@ -65,11 +65,6 @@ public class DeleteInterview extends AbstractController {
                 DbFacade.connect();
                 DbFacade.deleteInterview(interviewSubController.selectedInterview.getInterviewID());
 
-                Alert info = new Alert(Alert.AlertType.INFORMATION);
-                info.setTitle("Success!");
-                info.setHeaderText(null);
-                info.setContentText("Interview was deleted from the Database Successfully!");
-                info.showAndWait();
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -79,6 +74,12 @@ public class DeleteInterview extends AbstractController {
                     e.printStackTrace();
                 }
             }
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Interview was deleted from the Database Successfully!");
+            info.showAndWait();
+
             confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }
     }

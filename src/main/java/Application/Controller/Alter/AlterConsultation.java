@@ -42,6 +42,8 @@ public class AlterConsultation extends AbstractController {
     public void initValues(SearchContainer searchContainer, Consultation consultation) {
         previousSearch = searchContainer;
         consultationSubController.initValues(consultation);
+        //Update confirmation button
+        confirmationButton.setText("Change");
     }
 
     @FXML
@@ -73,6 +75,20 @@ public class AlterConsultation extends AbstractController {
        Consultation consultation = consultationSubController.getConsultation();
        int companyId =  consultationSubController.getCompanyID();
 
+        try {
+            DbFacade.connect();
+            DbFacade.insertConsultation(consultation, companyId);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         //Send confirmation
         if (consultation.getConsultationID() == null){
             Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -86,19 +102,6 @@ public class AlterConsultation extends AbstractController {
             info.setHeaderText(null);
             info.setContentText("Consultation was updated in the Database Successfully!");
             info.showAndWait();
-        }
-
-        try {
-            DbFacade.connect();
-            DbFacade.insertConsultation(consultation, companyId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                DbFacade.disconnect();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());

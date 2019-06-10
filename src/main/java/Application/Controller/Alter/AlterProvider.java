@@ -44,7 +44,8 @@ public class AlterProvider extends AbstractController {
         //propergate Consultation to setup form
         providerSubController.initValues(provider);
 
-
+        //Change the confirm button text
+        confirmationButton.setText("Change");
     }
 
     @FXML
@@ -76,6 +77,19 @@ public class AlterProvider extends AbstractController {
     private void handleConfirmation(ActionEvent event) { //TODO  need correction
         Provider provider = providerSubController.getProvider();
 
+        try {
+            DbFacade.connect();
+            DbFacade.insertProvider(provider);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         //Send confirmation
         if (provider.getProviderID() == null){
             Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -89,19 +103,6 @@ public class AlterProvider extends AbstractController {
             info.setHeaderText(null);
             info.setContentText("Provider was updated in the Database Successfully!");
             info.showAndWait();
-        }
-
-        try {
-            DbFacade.connect();
-            DbFacade.insertProvider(provider);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                DbFacade.disconnect();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
