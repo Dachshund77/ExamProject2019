@@ -53,11 +53,6 @@ public class AlterCompany extends AbstractController {
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null){
-            /*
-            Company returnedCompany = findConsultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
-            SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
-            */
-
             Parent root = cancelButton.getScene().getRoot();
             ((BorderPane) root).setCenter(ViewController.FIND_COMPANY_TO_CHANGE.loadParent(previousSearch));
         } else {

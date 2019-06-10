@@ -32,7 +32,7 @@ public class ConsultationSub extends AbstractController {
     public Label startDateLabel;
     public Label endDateLabel;
 
-    private ArrayList<Employee> employeeArrayList;
+    public  ArrayList<Employee> employeeArrayList = new ArrayList<>();
 
     public BooleanBinding isValid;
     private SimpleBooleanProperty consultationNameIsValid = new SimpleBooleanProperty(true);
@@ -83,12 +83,28 @@ public class ConsultationSub extends AbstractController {
         resetForm();
     }
 
+    /**
+     * initalizes the values from the selected consultation
+     * it then sets the controls with the information about the consultations
+     */
     @Override
     public void initValues(Consultation consultation) {
         selectedConsultation = consultation;
         resetForm();
+        employeeArrayList.addAll(selectedConsultation.getEmployees());
     }
 
+    /**
+     * When the user inputs information into the textfield
+     * it will update for each keypress
+     * if the information in the textfield isn't valid
+     * then the textfield will continue to be red
+     * and a tooltip will show
+     *
+     * if the requirements are met, it will turn to normal color
+     * and the user can proceed
+     *
+     */
     public void handleConsultationNameInput() {
         if (Consultation.isValidConsultationName(consultationNameTextField.getText())) {
             consultationNameTextField.setTooltip(null);
@@ -104,11 +120,15 @@ public class ConsultationSub extends AbstractController {
         }
     }
 
+    /**
+     * Here the user selects a startdate and enddate for a consultation period
+     * if the end date is before the start date both DatePickers will become red
+     * and a tooltip will become present if the user hovers a cursor over the
+     * individual datePickers
+     */
     public void handleDatePickerInput() {
         LocalDate localDateStartDate = startDatePicker.getValue();
         LocalDate localDateEndDate = endDatePicker.getValue();
-        System.out.println(localDateStartDate);
-        System.out.println(localDateEndDate);
 
         if (localDateStartDate.isBefore(localDateEndDate)) {
             startDatePicker.setTooltip(null);
@@ -131,7 +151,7 @@ public class ConsultationSub extends AbstractController {
         }
     }
 
-
+    
     public void setDisabled(boolean bool) {
         consultationNameTextField.setDisable(bool);
         startDatePicker.setDisable(bool);
@@ -146,6 +166,13 @@ public class ConsultationSub extends AbstractController {
 
     }
 
+    /**
+     * When the user clicks on the "reset" button
+     * all the controls will be cleared
+     * if the user has arrived to this scene
+     * from "Change Consultation" it will reset its values
+     * back to the information from that search
+     */
     public void resetForm() {
         if (selectedConsultation != null) {
             consultationNameTextField.setText(selectedConsultation.getConsultationName());
@@ -159,10 +186,23 @@ public class ConsultationSub extends AbstractController {
         Company foundCompany = newSelectCompany.showAndReturn(new FindCompanyPopUp());
     }
 
+    /**
+     * When the user has made the needed changes
+     * a new Consultation object will be created which replaces
+     * the old information with the new information
+     * @return Consultation
+     */
+
     public Consultation getConsultation(){
-        //TODO Implement this
-        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
-        return null;
+        Integer consultationID = null;
+        if (selectedConsultation != null){
+            consultationID = selectedConsultation.getConsultationID();
+        }
+        String consultationName = consultationNameTextField.getText();
+        LocalDate ldStartDate = startDatePicker.getValue();
+        LocalDate ldEndDate = endDatePicker.getValue();
+        ArrayList<Employee> returnableEmployees = employeeArrayList;
+        return new Consultation(consultationID, consultationName, ldStartDate, ldEndDate, returnableEmployees);
     }
 
     public int getCompanyID(){//TODO Implement this

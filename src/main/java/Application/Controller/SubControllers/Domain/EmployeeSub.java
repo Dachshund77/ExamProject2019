@@ -1,8 +1,11 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Application.Controller.PopUp.Find.FindInterviewPopUp;
 import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
+import UI.EmployeeChoice;
+import UI.InterviewChoice;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -47,10 +50,6 @@ public class EmployeeSub extends AbstractController {
      */
     public void initialize(){
 
-        if(selectedEmployee != null)
-        {
-            interviewTableView.setVisible(false);
-        }
         employeeFirstNameTextField.textProperty().addListener((observable -> handleFirstNameInput()));
         employeeLastNameTextField.textProperty().addListener((observable -> handleLastNameInput()));
         cprNrTextField.textProperty().addListener((observable -> handleCprNrInput()));
@@ -212,6 +211,8 @@ public class EmployeeSub extends AbstractController {
 
     public void handleAddInterview(ActionEvent event){
         //open popup and stuff
+        InterviewChoice newSelectInterview = new InterviewChoice();
+        Interview foundInterview = newSelectInterview.showAndReturn(new FindInterviewPopUp());
     }
 
     public void handleSeeInterview(ActionEvent event){
@@ -219,9 +220,8 @@ public class EmployeeSub extends AbstractController {
     }
 
     /**
-     * A check for the if the fields are valid.
-     * For use in AlterEmployee to disable or enable "Confirm" button
-     * @param bool
+     * A method to disable Fields, in cases that needs it
+     * @param bool true or false, depending on if fields should be disabled
      */
     public void setDisabled(boolean bool){
         employeeFirstNameTextField.setDisable(bool);
@@ -263,7 +263,17 @@ public class EmployeeSub extends AbstractController {
 
     public Employee getEmployee(){
         //TODO Implement this
+        Integer employeeID = null;
+        if(selectedEmployee.getEmployeeID() != null)
+        {
+            employeeID = selectedEmployee.getEmployeeID();
+        }
+        String employeeFirstName = employeeFirstNameTextField.getText();
+        String employeeLastName = employeeLastNameTextField.getText();
+        String cprNr = cprNrTextField.getText();
+        String email = emailTextField.getText();
+        String phoneNr = phoneNrTextField.getText();
         //build the object either with null id or loaded id, depending on if we change or not change and existing object.
-        return null;
+        return new Employee(employeeID,employeeFirstName,employeeLastName,cprNr,email,phoneNr,null);
     }
 }

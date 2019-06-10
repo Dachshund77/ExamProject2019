@@ -30,13 +30,11 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
     public TableColumn<Consultation, LocalDate> consultationEndDateColumn;
     public TableView<Education> educationTableView;
     public TableColumn<Education, String> educationNameColumn;
-    public Button addCompany;
-    public Button newConsultationButton;
 
     // FIXME: 29/05/2019 there should probably bee a add education stuff here, but there some object reference issues with that
 
     public ArrayList<Consultation> consultationArrayList = new ArrayList<>();
-    public ArrayList<Education> educationArrayList;
+
 
     public Company selectedCompany;
 
@@ -46,20 +44,12 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
 
     public void initialize() {
 
-
         //Setting up consultation TableView
         consultationNameColumn.setCellValueFactory(new PropertyValueFactory<>("consultationName"));
         consultationStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         consultationEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         consultationTableView.getColumns().setAll(consultationNameColumn, consultationStartDateColumn, consultationEndDateColumn);
-
-         //Setting up EducationTableView
-        educationNameColumn.setCellValueFactory(new PropertyValueFactory<>("educationName"));
-        educationTableView.getColumns().setAll(educationNameColumn);
-        ObservableList<Education> educationList = FXCollections.observableArrayList();
-        educationTableView.setItems(educationList);
-
 
         //Hides the tableviews when the user selects "New Company"
         if (selectedCompany == null) {
@@ -93,14 +83,18 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
     }
 
     /**
-     * initializes the company domain
-     * and primes the resetform
+     * Loads the value from a selected company
+     * this method will then set the controls
+     * to have the information in them from the object
      *
      * @param company
      */
     @Override
     public void initValues(Company company) {
         selectedCompany = company;
+        consultationArrayList.addAll(selectedCompany.getConsultations());
+
+        companyIDText.setText("Updating Company: " +selectedCompany.getCompanyID());
         resetForm();
     }
 
@@ -111,9 +105,6 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
      * tooltip with the error cause will show
      */
     public void handleCvrNrInput() {
-        System.out.println(cvrNrTextField.getText());
-        System.out.println(Company.isValidCvrNr(cvrNrTextField.getText()));
-        System.out.println(Arrays.toString(cvrNrTextField.getStyleClass().toArray()));
         if (Company.isValidCvrNr(cvrNrTextField.getText())) {
             cvrNrTextField.setTooltip(null);
             cvrNrIsValid.set(true);
@@ -157,9 +148,6 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
     public void setDisabled(boolean bool) {
         companyNameTextField.setDisable(bool); //TODO we should add ja opacity style to this, the look of the disable textfield is horrifying
         cvrNrTextField.setDisable(bool);
-        //newConsultationButton.setDisable(bool); //Todo thoose button literaly do not exist, implement them or dont call them at all. NullPointerException else - Sven
-        //addCompany.setDisable(bool);
-
     }
 
     /**
@@ -177,9 +165,20 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
 
     }
 
-    public Company getCompany(){
-        //TODO Implement this
-        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
-        return null;
+    /**
+     * When the user has made the needed changes
+     * a new Company object will be created which replaces
+     * the old information with the new information
+     * @return Company
+     */
+    public Company getCompany() {
+        Integer companyID = null;
+        if (selectedCompany != null) {
+            companyID = selectedCompany.getCompanyID();
+        }
+        String companyName = companyNameTextField.getText();
+        String cvrNo = cvrNrTextField.getText();
+        ArrayList<Consultation> returnableConsultations = consultationArrayList;
+        return new Company(companyID, cvrNo, companyName, returnableConsultations);
     }
 }

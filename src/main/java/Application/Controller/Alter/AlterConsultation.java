@@ -51,12 +51,6 @@ public class AlterConsultation extends AbstractController {
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null){
-
-            /*
-            Consultation returnedConsultation = consultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
-            SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
-            */
-
             Parent root = cancelButton.getScene().getRoot();
             ((BorderPane) root).setCenter(ViewController.FIND_CONSULTATION_TO_CHANGE.loadParent(previousSearch));
         } else {
