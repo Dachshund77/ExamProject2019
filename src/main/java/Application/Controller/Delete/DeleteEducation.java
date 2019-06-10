@@ -63,11 +63,6 @@ public class DeleteEducation extends AbstractController {
                 DbFacade.connect();
                 DbFacade.deleteEducation(educationSubController.selectedEducation.getAmuNr());
 
-                Alert info = new Alert(Alert.AlertType.INFORMATION);
-                info.setTitle("Success!");
-                info.setHeaderText(null);
-                info.setContentText("Education was deleted from the Database Successfully!");
-                info.showAndWait();
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -77,6 +72,12 @@ public class DeleteEducation extends AbstractController {
                     e.printStackTrace();
                 }
             }
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Education was deleted from the Database Successfully!");
+            info.showAndWait();
+
             confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }
     }

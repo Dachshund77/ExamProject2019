@@ -18,6 +18,9 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Domain.InterviewSub">
+    <bottom>
+        <HBox alignment="CENTER" BorderPane.alignment="CENTER" />
+    </bottom>
     <center>
       <GridPane minHeight="200.0" minWidth="-Infinity" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -27,9 +30,12 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="9.0" prefWidth="9.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="129.0" minHeight="5.0" prefHeight="58.0" />
-          <RowConstraints maxHeight="262.0" minHeight="10.0" prefHeight="153.0" />
-          <RowConstraints fillHeight="false" maxHeight="187.0" minHeight="10.0" prefHeight="149.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="129.0" minHeight="5.0" prefHeight="54.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="262.0" minHeight="10.0" prefHeight="171.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="187.0" minHeight="0.0" prefHeight="6.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="187.0" minHeight="0.0" prefHeight="24.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="233.0" minHeight="111.0" prefHeight="135.0" />
+            <RowConstraints maxHeight="169.0" minHeight="21.0" prefHeight="21.0" />
         </rowConstraints>
          <children>
             <Text fx:id="interviewID" strokeType="OUTSIDE" strokeWidth="0.0" text="interviewID" textAlignment="CENTER" wrappingWidth="136.13671875" GridPane.columnIndex="1">
@@ -91,6 +97,9 @@
                      <padding>
                         <Insets bottom="6.0" top="2.0" />
                      </padding>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
                   </Label>
                   <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="153.0" text="Problem understanding">
                      <VBox.margin>
@@ -99,38 +108,34 @@
                   </Label>
                   <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="154.0" text="Quality awareness">
                      <VBox.margin>
-                        <Insets top="6.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="158.0" text="Cooperation">
                      <VBox.margin>
-                        <Insets top="6.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="151.0" text="Flexiblity">
                      <VBox.margin>
-                        <Insets top="6.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </Label>
                </children>
             </VBox>
-            <DatePicker fx:id="dateForFinishedEducation" GridPane.columnIndex="1" GridPane.rowIndex="2">
-               <GridPane.margin>
-                  <Insets top="-113.0" />
-               </GridPane.margin></DatePicker>
-            <TableView fx:id="finishedEducationTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <TableView fx:id="finishedEducationTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.rowSpan="2">
               <columns>
-                <TableColumn fx:id="educationWishNameColumn" prefWidth="162.0" text="Completed courses" />
-                <TableColumn fx:id="educationWishPriorityColumn" prefWidth="162.0" text="Completion date" />
+                <TableColumn fx:id="finishedEducationNameColumn" prefWidth="162.0" text="Completed courses" />
+                <TableColumn fx:id="finishedEducationDateColumn" prefWidth="162.0" text="Completion date" />
               </columns>
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </GridPane.margin>
             </TableView>
-            <TableView fx:id="educationWishTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <TableView fx:id="educationWishTableView" prefHeight="79.0" prefWidth="324.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2">
               <columns>
-                <TableColumn fx:id="finishedEducationNameColumn" prefWidth="162.0" text="Education wishes" />
-                <TableColumn fx:id="finishedEducationDateColumn" prefWidth="162.0" text="Priority" />
+                <TableColumn fx:id="educationWishNameColumn" prefWidth="162.0" text="Education wishes" />
+                <TableColumn fx:id="educationWishPriorityColumn" prefWidth="162.0" text="Priority" />
               </columns>
                <GridPane.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
@@ -143,40 +148,42 @@
                         <Insets left="5.0" top="25.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="removeEducationWishButton" mnemonicParsing="false" onAction="#handleAddFinishedEducation" text="Remove education">
+                  <Button fx:id="removeEducationWishButton" mnemonicParsing="false" onAction="#handleRemoveEducationWish" text="Remove education">
                      <HBox.margin>
                         <Insets left="5.0" top="25.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="pickEduForWishButton" mnemonicParsing="false" onAction="#handleRemoveEducationWish" text="Pick education">
+                  <Button fx:id="pickEduForWishButton" mnemonicParsing="false" text="Pick education">
                      <HBox.margin>
                         <Insets left="5.0" top="25.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="78.0" prefWidth="135.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <DatePicker fx:id="dateForFinishedEducation" />
+               </children></VBox>
+            <VBox alignment="TOP_RIGHT" prefHeight="200.0" prefWidth="100.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+               <children>
+                      <Button fx:id="addFinishedEducationButton" mnemonicParsing="false" onAction="#handleAddFinishedEducation" prefWidth="180.0" text="Add finished education">
+                     <VBox.margin>
+                        <Insets right="10.0" top="15.0" />
+                     </VBox.margin>
+                  </Button>
+                      <Button fx:id="removeFinishedEducationButton" mnemonicParsing="false" onAction="#handleRemoveFinishedEducation" prefHeight="25.0" prefWidth="180.0" text="Remove finished education">
+                     <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                      <Button fx:id="pickEduForFinishedEducationButton" mnemonicParsing="false" onAction="#handlePickFinishedEducation" prefWidth="180.0" text="Pick finished education">
+                     <VBox.margin>
+                        <Insets right="10.0" top="10.0" />
+                     </VBox.margin>
+                      </Button>
+               </children>
+            </VBox>
          </children>
       </GridPane>
    </center>
-   <bottom>
-        <HBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" BorderPane.alignment="CENTER">
-            <children>
-                <Button fx:id="removeFinishedEducationButton" mnemonicParsing="false" onAction="#handleRemoveFinishedEducation" prefWidth="163.0" text="Remove finished education">
-                    <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </HBox.margin>
-                </Button>
-                <Button fx:id="addFinishedEducationButton" mnemonicParsing="false" prefWidth="150.0" text="Add finished education">
-                    <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </HBox.margin>
-                </Button>
-                <Button fx:id="pickEduForFinishedEducationButton" mnemonicParsing="false" onAction="#handlePickFinishedEducation" prefWidth="150.0" text="Pick finished education">
-                    <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                    </HBox.margin>
-                </Button>
-            </children>
-        </HBox>
-   </bottom>
 </BorderPane>

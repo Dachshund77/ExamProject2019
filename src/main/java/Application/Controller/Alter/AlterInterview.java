@@ -40,6 +40,8 @@ public class AlterInterview extends AbstractController {
         previousSearch = searchContainer;
         //propergate Consultation to setup form
         interviewSubController.initValues(interview);
+        //Change the confirm button text
+        confirmationButton.setText("Change");
     }
 
     @FXML
@@ -65,6 +67,19 @@ public class AlterInterview extends AbstractController {
         Interview interview = interviewSubController.getInterview();
         int employeeId = interviewSubController.getEmployeeID();
 
+        try {
+            DbFacade.connect();
+            DbFacade.insertInterview(interview, employeeId);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         //Send confirmation
         if (interview.getInterviewID() == null){
             Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -80,18 +95,6 @@ public class AlterInterview extends AbstractController {
             info.showAndWait();
         }
 
-        try {
-            DbFacade.connect();
-            DbFacade.insertInterview(interview, employeeId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                DbFacade.disconnect();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 

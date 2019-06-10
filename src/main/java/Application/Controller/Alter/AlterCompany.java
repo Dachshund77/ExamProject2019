@@ -44,6 +44,8 @@ public class AlterCompany extends AbstractController {
         //Save search container for returning
         previousSearch = searchContainer;
         companySubController.initValues(company);
+        //Update confirmation button
+        confirmationButton.setText("Text");
     }
 
     @FXML
@@ -69,6 +71,18 @@ public class AlterCompany extends AbstractController {
     private void handleConfirmation(ActionEvent event) {
         Company company = companySubController.getCompany();
 
+        try {
+            DbFacade.connect();
+            DbFacade.insertCompany(company);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         //Send confirmation
         if (company.getCompanyID() == null){
             Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -84,18 +98,6 @@ public class AlterCompany extends AbstractController {
             info.showAndWait();
         }
 
-        try {
-            DbFacade.connect();
-            DbFacade.insertCompany(company);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                DbFacade.disconnect();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
