@@ -72,7 +72,7 @@ public class FindProviderPopUp extends ProviderReturnableController {
 
     @Override
     public String getURL() {
-        return ViewController.FIND_COMPANY_POPUP.getURL();
+        return ViewController.FIND_PROVIDER_POPUP.getURL();
     }
 
     /**

@@ -16,3 +16,8 @@
     -fx-text-fill: black;
     -fx-control-inner-background: red;
 }
+
+.Button-Error {
+    -fx-background-color: red;
+    -fx-border-color: black;
+}
