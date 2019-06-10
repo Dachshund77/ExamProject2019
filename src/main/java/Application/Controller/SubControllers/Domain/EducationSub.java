@@ -1,49 +1,69 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
+import Application.Controller.PopUp.Find.FindProviderPopUp;
 import Domain.DomainObjects.Education;
 import Domain.DomainObjects.Provider;
+import UI.ProviderChoice;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class EducationSub extends AbstractController {
 
-    public TextField educationNameTextField;
-    public TextArea descriptionTextArea;
-    public TextField noOfDaysTextField; // may be converted to a drop down if you want
-    public ListView<LocalDate> educationDatesListView;
-    public DatePicker educationDatePicker;
-    public Button addDateButton;
-    public Button removeDateButton;
-    public Text educationAmurNrText;
-    public Button pickProviderButton; //TODO NEED TO FIND A PLACE FOR THAT BUTTON
-    public Text providerNametext;
+    @FXML
+    private TextField educationNameTextField;
+    @FXML
+    private TextArea descriptionTextArea;
+    @FXML
+    private TextField noOfDaysTextField; // may be converted to a drop down if you want
+    @FXML
+    private ListView<LocalDate> educationDatesListView;
+    @FXML
+    private DatePicker educationDatePicker;
+    @FXML
+    private Button addDateButton;
+    @FXML
+    private Button removeDateButton;
+    @FXML
+    private Text educationAmurNrText;
+    @FXML
+    private Button selectProviderButton;
 
-    public ArrayList<LocalDate> dates;
+
+    public ObservableList<LocalDate> dates;
 
     public Provider selectedProvider; // The provider this education has
     public Education selectedEducation; // WHen coming from find this need to be loaded up
 
     public BooleanBinding isValid;
 
-
     //Flags for the booleanBinding
     private SimpleBooleanProperty educationNameIsValid = new SimpleBooleanProperty(true); //Those field should start out as true or false depending on if they may be null orn ot
     private SimpleBooleanProperty descriptionIsValid = new SimpleBooleanProperty(true); //What you chose ins actually not important, as we set them immideatly with the first call to the validation in reset form
     private SimpleBooleanProperty noOfDaysIsValid = new SimpleBooleanProperty(true); //This is just set tre since the the method for that is not implemented
+    private SimpleBooleanProperty validProvider = new SimpleBooleanProperty(false);
 
     public void initialize() {
         //setup ListView
-        educationDatesListView.setItems(FXCollections.observableArrayList(dates));
+        dates = FXCollections.observableArrayList();
+        educationDatesListView.setItems(dates);
 
+        //Setup the add date button to only be active when the datepicker has value
+        addDateButton.disableProperty().bind(educationDatePicker.valueProperty().isNull());
+
+        //Setup the remove date button to only be active when a date is picked
+        removeDateButton.disableProperty().bind(educationDatesListView.getSelectionModel().selectedItemProperty().isNull());
 
         //Setup The textfield listeners
         educationNameTextField.textProperty().addListener((observable) -> handleEducationNameInput());
@@ -61,15 +81,16 @@ public class EducationSub extends AbstractController {
                 bind(educationNameIsValid);
                 bind(descriptionIsValid);
                 bind(noOfDaysIsValid);
+                bind(validProvider);
                 // validate the actual expression
-                return educationNameIsValid.get() && descriptionIsValid.get() && noOfDaysIsValid.get();
+                return educationNameIsValid.get() && descriptionIsValid.get() && noOfDaysIsValid.get() && validProvider.get();
             }
         };
         resetForm();
     }
 
     @Override
-    public void initValues(Education education) {
+    public void initValues(Education education) { //TODO ADD DATES and setup
         selectedEducation = education;
         resetForm();
     }
@@ -79,12 +100,14 @@ public class EducationSub extends AbstractController {
         if (Education.isValidEducationName(educationNameTextField.getText())) { //put into method
             educationNameTextField.setTooltip(null); //Remove tooltip
             educationNameIsValid.set(true); //Activate flag
-            educationNameTextField.getStyleClass().remove("TextField-Error"); //At some point we can maybe style some stuff in the CSS file...
+            educationNameTextField.getStyleClass().removeAll("TextField-Error"); //At some point we can maybe style some stuff in the CSS file...
         } else {
             String invalidCause = Education.educationNameInvalidCause(educationNameTextField.getText());
             educationNameTextField.setTooltip(new Tooltip(invalidCause)); //set tooltip
             educationNameIsValid.set(false); //Set flag
-            educationNameTextField.getStyleClass().add("TextField-Error");
+            if (!educationNameTextField.getStyleClass().contains("TextField-Error")) {
+                educationNameTextField.getStyleClass().add("TextField-Error");
+            }
         }
     }
 
@@ -92,17 +115,34 @@ public class EducationSub extends AbstractController {
         if (Education.isValidDescription(descriptionTextArea.getText())) {
             descriptionTextArea.setTooltip(null);
             descriptionIsValid.set(true);
-            descriptionTextArea.getStyleClass().remove("TextArea-Error");
+            descriptionTextArea.getStyleClass().removeAll("TextArea-Error");
         } else {
             String invalidCause = Education.descriptionInvalidCause(descriptionTextArea.getText());
             descriptionTextArea.setTooltip(new Tooltip((invalidCause)));
             descriptionIsValid.set(false);
-            descriptionTextArea.getStyleClass().add("TextArea-Error");
+            if (!descriptionTextArea.getStyleClass().contains("TextArea-Error")) {
+                descriptionTextArea.getStyleClass().add("TextArea-Error");
+            }
         }
     }
 
     private void handleNoOfDaysInput() {
-        // fix for integer incoming but here the same stuff happens as the previous two
+        if (Education.isValidNoOfDays(noOfDaysTextField.getText())) {
+            noOfDaysTextField.setTooltip(null);
+            noOfDaysIsValid.set(true);
+            noOfDaysTextField.getStyleClass().removeAll("TextField-Error");
+        } else {
+            String invalidCause = Education.noOfDaysInvalidCause(noOfDaysTextField.getText());
+            noOfDaysTextField.setTooltip(new Tooltip((invalidCause)));
+            noOfDaysIsValid.set(false);
+            if (!noOfDaysTextField.getStyleClass().contains("TextField-Error")) {
+                noOfDaysTextField.getStyleClass().add("TextField-Error");
+            }
+        }
+    }
+
+    private void handleProviderPickedInput() {
+        //TODO need fxml implementation
     }
 
 
@@ -125,15 +165,29 @@ public class EducationSub extends AbstractController {
     }
 
     public void handleAddDate(ActionEvent event) {
+        LocalDate tempDate = educationDatePicker.getValue();
+        dates.add(tempDate);
+        educationDatePicker.setValue(null);
     }
 
     public void handleRemoveDate(ActionEvent event) {
+        LocalDate toBeRemoved = educationDatesListView.getSelectionModel().getSelectedItem();
+        dates.remove(toBeRemoved);
     }
 
-    public Education getEducation(){
+    public Education getEducation() {
         //TODO Implement this
         //build the object either with null id or loaded id, depending on if we change or not change and existing object.
         return null;
     }
 
+    public void handleProviderSelection(ActionEvent event) {
+        Provider returnedProvider = null;
+        ProviderChoice popUp = new ProviderChoice();
+        returnedProvider = popUp.showAndReturn(new FindProviderPopUp());
+
+        if (returnedProvider != null){
+
+        }
+    }
 }
