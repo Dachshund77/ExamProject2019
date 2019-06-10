@@ -63,11 +63,6 @@ public class DeleteConsultation extends AbstractController {
                 DbFacade.connect();
                 DbFacade.deleteConsultation(consultationSubController.selectedConsultation.getConsultationID());
 
-                Alert info = new Alert(Alert.AlertType.INFORMATION);
-                info.setTitle("Success!");
-                info.setHeaderText(null);
-                info.setContentText("Consultation was deleted from the Database Successfully!");
-                info.showAndWait();
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -78,6 +73,12 @@ public class DeleteConsultation extends AbstractController {
                     e.printStackTrace();
                 }
             }
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Consultation was deleted from the Database Successfully!");
+            info.showAndWait();
+
             confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }
     }

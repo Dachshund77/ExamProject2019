@@ -42,7 +42,8 @@ public class AlterEducation extends AbstractController {
     public void initValues(SearchContainer searchContainer, Education education) {
         previousSearch = searchContainer;
         educationSubController.initValues(education); // Be careful that you implement the correct init values, else you will get unsupported Exception
-
+        //Update confirmation button
+        confirmationButton.setText("Change");
     }
 
     @FXML
@@ -67,6 +68,21 @@ public class AlterEducation extends AbstractController {
     private void handleConfirmation(ActionEvent event) { //TODO needs implementation
         Education education = educationSubController.getEducation();
 
+
+
+        try {
+            DbFacade.connect();
+            DbFacade.insertEducation(education);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         //Send confirmation
         if (education.getAmuNr() == null){
             Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -82,18 +98,6 @@ public class AlterEducation extends AbstractController {
             info.showAndWait();
         }
 
-        try {
-            DbFacade.connect();
-            DbFacade.insertEducation(education);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                DbFacade.disconnect();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 

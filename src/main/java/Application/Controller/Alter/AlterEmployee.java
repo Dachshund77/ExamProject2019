@@ -52,6 +52,8 @@ public class AlterEmployee extends AbstractController {
         //propergate Consultation to setup form
         previousSearch = searchContainer;
         employeeSubController.initValues(employee);
+        //Update confirmation button
+        confirmationButton.setText("Change");
     }
 
     @FXML
@@ -78,6 +80,21 @@ public class AlterEmployee extends AbstractController {
     private void handleConfirmation(ActionEvent event) {
         Employee employee = employeeSubController.getEmployee();
 
+
+
+        try {
+            DbFacade.connect();
+            DbFacade.insertEmployee(employee); //TODO check that the relationShip between employee and Consultation is actually done somwhere
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                DbFacade.disconnect();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         //Send confirmation
         if (employee.getEmployeeID() == null){
             Alert info = new Alert(Alert.AlertType.INFORMATION);
@@ -91,19 +108,6 @@ public class AlterEmployee extends AbstractController {
             info.setHeaderText(null);
             info.setContentText("Consultation was updated in the Database Successfully!");
             info.showAndWait();
-        }
-
-        try {
-            DbFacade.connect();
-            DbFacade.insertEmployee(employee); //TODO check that the relationShip between employee and Consultation is actually done somwhere
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            try {
-                DbFacade.disconnect();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
