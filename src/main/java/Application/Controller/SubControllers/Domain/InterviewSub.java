@@ -159,7 +159,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleProblemUnderstandingBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
+        if(!problemUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(problemUnderstandingComboBox.getValue().toString());
             if (Interview.isValidProblemUnderstanding(chosenNum)) {
                 problemUnderstandingComboBox.setTooltip(null);
@@ -183,7 +183,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleQualityAwarenessBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
+        if(!qualityAwarenessComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(qualityAwarenessComboBox.getValue().toString());
             if (Interview.isValidQualityAwareness(chosenNum)) {
                 qualityAwarenessIsValid.set(true);
@@ -206,7 +206,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleCooperationBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
+        if(!cooperationComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(cooperationComboBox.getValue().toString());
             if (Interview.isValidCooperation(chosenNum)) {
                 cooperationComboBox.setTooltip(null);
@@ -229,7 +229,7 @@ public class InterviewSub extends AbstractController {
      */
     public void handleFlexibilityBox(ActionEvent event)
     {
-        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
+        if(!flexibilityComboBox.getValue().toString().equals(defaultComboBoxText)) {
             int chosenNum = Integer.parseInt(flexibilityComboBox.getValue().toString());
             if (Interview.isValidFlexibility(chosenNum)) {
                 flexibilityComboBox.setTooltip(null);
@@ -250,8 +250,11 @@ public class InterviewSub extends AbstractController {
     }
 
     public void handleAddFinishedEducation(ActionEvent event){
-        FinishedEducation newData = new FinishedEducation(null,null,LocalDate.now()); //TODO : Setup information to be inserted
-        finishedEducationList.add(newData);
+        if(dateForFinishedEducation.getValue() != null) {
+            LocalDate dateToInsert = dateForFinishedEducation.getValue();
+            FinishedEducation newData = new FinishedEducation(null, null, dateToInsert); //TODO : Setup information to be inserted
+            finishedEducationList.add(newData);
+        }
     }
 
     /**
