@@ -42,7 +42,7 @@ public class ConsultationSub extends AbstractController {
 
 
     public void initialize() {
-
+        employeeArrayList.addAll(selectedConsultation.getEmployees());
         /*
         Setting up the employee tableview
          */
@@ -162,7 +162,15 @@ public class ConsultationSub extends AbstractController {
     public Consultation getConsultation(){
         //TODO Implement this
         //build the object either with null id or loaded id, depending on if we change or not change and existing object.
-        return null;
+        Integer consulationID = null;
+        if (selectedConsultation.getConsultationID() != null){
+            consulationID = selectedConsultation.getConsultationID();
+        }
+        String consultationName = consultationNameTextField.getText();
+        ArrayList<Employee> returnableEmployees = employeeArrayList;
+        LocalDate ldStartDate = startDatePicker.getValue();
+        LocalDate ldEndDate = endDatePicker.getValue();
+        return new Consultation(consulationID, consultationName, ldStartDate, ldEndDate, returnableEmployees);
     }
 
     public int getCompanyID(){//TODO Implement this

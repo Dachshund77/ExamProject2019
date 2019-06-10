@@ -52,11 +52,6 @@ public class AlterProvider extends AbstractController {
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null){
-            /*
-            Provider returnedCompany = findConsultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
-            SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
-            */
-
             Parent root = cancelButton.getScene().getRoot();
             ((BorderPane) root).setCenter(ViewController.FIND_PROVIDER_TO_CHANGE.loadParent(previousSearch));
         } else {

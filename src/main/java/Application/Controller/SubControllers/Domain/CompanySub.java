@@ -30,13 +30,11 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
     public TableColumn<Consultation, LocalDate> consultationEndDateColumn;
     public TableView<Education> educationTableView;
     public TableColumn<Education, String> educationNameColumn;
-    public Button addCompany;
-    public Button newConsultationButton;
 
     // FIXME: 29/05/2019 there should probably bee a add education stuff here, but there some object reference issues with that
 
     public ArrayList<Consultation> consultationArrayList = new ArrayList<>();
-    public ArrayList<Education> educationArrayList;
+
 
     public Company selectedCompany;
 
@@ -54,11 +52,13 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
 
         consultationTableView.getColumns().setAll(consultationNameColumn, consultationStartDateColumn, consultationEndDateColumn);
 
-         //Setting up EducationTableView
+        /*
+        //Setting up EducationTableView
         educationNameColumn.setCellValueFactory(new PropertyValueFactory<>("educationName"));
         educationTableView.getColumns().setAll(educationNameColumn);
         ObservableList<Education> educationList = FXCollections.observableArrayList();
         educationTableView.setItems(educationList);
+         */
 
 
         //Hides the tableviews when the user selects "New Company"
@@ -84,6 +84,7 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
                 bind(companyNameIsValid);
                 bind(cvrNrIsValid);
             }
+
             @Override
             protected boolean computeValue() {
                 return companyNameIsValid.get() && cvrNrIsValid.get();
@@ -111,9 +112,6 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
      * tooltip with the error cause will show
      */
     public void handleCvrNrInput() {
-        System.out.println(cvrNrTextField.getText());
-        System.out.println(Company.isValidCvrNr(cvrNrTextField.getText()));
-        System.out.println(Arrays.toString(cvrNrTextField.getStyleClass().toArray()));
         if (Company.isValidCvrNr(cvrNrTextField.getText())) {
             cvrNrTextField.setTooltip(null);
             cvrNrIsValid.set(true);
@@ -157,9 +155,6 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
     public void setDisabled(boolean bool) {
         companyNameTextField.setDisable(bool); //TODO we should add ja opacity style to this, the look of the disable textfield is horrifying
         cvrNrTextField.setDisable(bool);
-        //newConsultationButton.setDisable(bool); //Todo thoose button literaly do not exist, implement them or dont call them at all. NullPointerException else - Sven
-        //addCompany.setDisable(bool);
-
     }
 
     /**
@@ -177,9 +172,14 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
 
     }
 
-    public Company getCompany(){
-        //TODO Implement this
-        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
-        return null;
+    public Company getCompany() {
+        Integer companyID = null;
+        if (selectedCompany.getCompanyID() != null) {
+            companyID = selectedCompany.getCompanyID();
+        }
+        String companyName = companyNameTextField.getText();
+        String cvrNo = cvrNrTextField.getText();
+        ArrayList<Consultation> returnableConsultations = consultationArrayList;
+        return new Company(companyID, companyName, cvrNo, returnableConsultations);
     }
 }
