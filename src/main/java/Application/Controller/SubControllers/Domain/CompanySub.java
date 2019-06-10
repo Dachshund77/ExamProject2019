@@ -44,22 +44,12 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
 
     public void initialize() {
 
-
         //Setting up consultation TableView
         consultationNameColumn.setCellValueFactory(new PropertyValueFactory<>("consultationName"));
         consultationStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         consultationEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         consultationTableView.getColumns().setAll(consultationNameColumn, consultationStartDateColumn, consultationEndDateColumn);
-
-        /*
-        //Setting up EducationTableView
-        educationNameColumn.setCellValueFactory(new PropertyValueFactory<>("educationName"));
-        educationTableView.getColumns().setAll(educationNameColumn);
-        ObservableList<Education> educationList = FXCollections.observableArrayList();
-        educationTableView.setItems(educationList);
-         */
-
 
         //Hides the tableviews when the user selects "New Company"
         if (selectedCompany == null) {
@@ -84,7 +74,6 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
                 bind(companyNameIsValid);
                 bind(cvrNrIsValid);
             }
-
             @Override
             protected boolean computeValue() {
                 return companyNameIsValid.get() && cvrNrIsValid.get();
@@ -94,14 +83,18 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
     }
 
     /**
-     * initializes the company domain
-     * and primes the resetform
+     * Loads the value from a selected company
+     * this method will then set the controls
+     * to have the information in them from the object
      *
      * @param company
      */
     @Override
     public void initValues(Company company) {
         selectedCompany = company;
+        consultationArrayList.addAll(selectedCompany.getConsultations());
+
+        companyIDText.setText("Updating Company: " +selectedCompany.getCompanyID());
         resetForm();
     }
 
@@ -172,14 +165,20 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
 
     }
 
+    /**
+     * When the user has made the needed changes
+     * a new Company object will be created which replaces
+     * the old information with the new information
+     * @return Company
+     */
     public Company getCompany() {
         Integer companyID = null;
-        if (selectedCompany.getCompanyID() != null) {
+        if (selectedCompany != null) {
             companyID = selectedCompany.getCompanyID();
         }
         String companyName = companyNameTextField.getText();
         String cvrNo = cvrNrTextField.getText();
         ArrayList<Consultation> returnableConsultations = consultationArrayList;
-        return new Company(companyID, companyName, cvrNo, returnableConsultations);
+        return new Company(companyID, cvrNo, companyName, returnableConsultations);
     }
 }
