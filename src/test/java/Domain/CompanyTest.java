@@ -1,5 +1,6 @@
 package Domain;
 
+import Domain.DomainObjects.Company;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -49,10 +50,30 @@ public class CompanyTest {
     }
 
     @Test
-    public void equals1() {
+    public void equalsNullPointerTest() {
         Company testCompany1 = new Company(null,null,null,null,null);
         Company testCompany2 = new Company(null,null,null,null,null);
 
         assertEquals(testCompany1, testCompany2);
+    }
+
+    @Test
+    public void equalsSameObjectTest(){
+
+    }
+
+    @Test
+    public void equalsSameDomain(){
+
+    }
+
+    @Test
+    public void equalsNotInstantOf(){
+
+    }
+
+    @Test
+    public void equalsNullObjects(){
+
     }
 }

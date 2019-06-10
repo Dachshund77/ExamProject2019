@@ -4,13 +4,17 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Find.FindEducationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Education;
+import Domain.DisplayObjects.DisplayEducation;
+import Domain.DomainObjects.Education;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+
+import java.sql.SQLException;
 
 public class FindEducationToChange extends AbstractController {
 
@@ -19,7 +23,7 @@ public class FindEducationToChange extends AbstractController {
     @FXML
     private Button confirmationButton; //Button needs to be disable when form is not correct
 
-    private TableView<Education> educationTableView;
+    private TableView<DisplayEducation> educationTableView;
 
 
     @FXML
@@ -50,10 +54,29 @@ public class FindEducationToChange extends AbstractController {
         root.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
+        //Init values
+        Education toBeChangedEducation = null;
+
         //Get selection
-        Education toBeChangedEducation = educationTableView.getSelectionModel().getSelectedItem();
+        DisplayEducation selectedEducation = educationTableView.getSelectionModel().getSelectedItem();
+        int id = selectedEducation.getAmuNr();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeChangedEducation = DbFacade.findEducationByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
         //Get the search container
         SearchContainer currentSearch = findEducationSubController.getFindSubController().getCurrentSearchContainer();

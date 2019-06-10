@@ -3,13 +3,16 @@ package Application.Controller.PopUp.Find;
 import Application.Controller.PopUp.EmployeeReturnableController;
 import Application.Controller.SubControllers.Find.FindEmployeeSub;
 import Application.Controller.ViewController;
-import Domain.Company;
-import Domain.Employee;
+import Domain.DisplayObjects.DisplayEmployee;
+import Domain.DomainObjects.Employee;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 public class FindEmployeePopUp extends EmployeeReturnableController {
     @FXML
@@ -19,7 +22,7 @@ public class FindEmployeePopUp extends EmployeeReturnableController {
     @FXML
     private Button cancelButton;
 
-    private TableView<Employee> employeeTableView;
+    private TableView<DisplayEmployee> employeeTableView;
     private Employee selectedEmployee;
 
 
@@ -35,9 +38,28 @@ public class FindEmployeePopUp extends EmployeeReturnableController {
 
     }
 
+    @SuppressWarnings("Duplicates")
+    @FXML
     public void handleConfirmation(ActionEvent actionEvent) {
+        //Get selection
+        DisplayEmployee selectedItem = employeeTableView.getSelectionModel().getSelectedItem();
+        int id = selectedItem.getEmployeeID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            selectedEmployee = DbFacade.findEmployeeByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
         Stage stage = (Stage) confirmationButton.getScene().getWindow();
-        selectedEmployee = employeeTableView.getSelectionModel().getSelectedItem(); //Confirmation can only be activated if something is selected
         stage.close();
     }
 

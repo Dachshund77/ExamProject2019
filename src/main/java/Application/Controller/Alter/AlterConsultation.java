@@ -2,12 +2,14 @@ package Application.Controller.Alter;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Consultation;
+import Domain.DomainObjects.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 
@@ -19,6 +21,9 @@ public class AlterConsultation extends AbstractController {
     private ConsultationSub consultationSubController;
     @FXML
     private Button confirmationButton;
+    @FXML
+    private Button cancelButton;
+
 
     private SearchContainer previousSearch;
 
@@ -29,6 +34,7 @@ public class AlterConsultation extends AbstractController {
     @FXML
     private void initialize() {
         confirmationButton.disableProperty().bind(consultationSubController.isValid.not());
+        consultationSubController.resetForm();
     }
 
 
@@ -44,8 +50,15 @@ public class AlterConsultation extends AbstractController {
         //if coming from search return to search with initValues
         if (previousSearch != null){
 
-        } else {
+            /*
+            Consultation returnedConsultation = consultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
+            SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
+            */
 
+            Parent root = cancelButton.getScene().getRoot();
+            ((BorderPane) root).setCenter(ViewController.FIND_CONSULTATION_TO_CHANGE.loadParent(previousSearch));
+        } else {
+            cancelButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }
     }
 
@@ -56,14 +69,28 @@ public class AlterConsultation extends AbstractController {
      * @param event create consultation object and send it to the database
      */
     @FXML
-    private void handleConfirmation(ActionEvent event) {
-        //Creates a new consultation Obj to send to the database
-        Consultation createNewConsultationObj = new Consultation(null, consultationSubController.consultationNameTextField.getText(),
-                consultationSubController.startDatePicker.getValue(), consultationSubController.endDatePicker.getValue(), null);
+    private void handleConfirmation(ActionEvent event) { //TODO needs fix
+       Consultation consultation = consultationSubController.getConsultation();
+       int companyId =  consultationSubController.getCompanyID();
+
+        //Send confirmation
+        if (consultation.getConsultationID() == null){
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Consultation was added to the Database Successfully!");
+            info.showAndWait();
+        }else {
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Success!");
+            info.setHeaderText(null);
+            info.setContentText("Consultation was updated in the Database Successfully!");
+            info.showAndWait();
+        }
+
         try {
             DbFacade.connect();
-            //FIXME Need pop-up implementation ↓↓↓
-            //DbFacade.insertConsultation(createNewConsultationObj);
+            DbFacade.insertConsultation(consultation, companyId);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -73,6 +100,8 @@ public class AlterConsultation extends AbstractController {
                 e.printStackTrace();
             }
         }
+
+        confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
     }
 
     /**

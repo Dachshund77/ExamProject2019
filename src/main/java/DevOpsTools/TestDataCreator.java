@@ -1,6 +1,6 @@
 package DevOpsTools;
 
-import Domain.*;
+import Domain.DomainObjects.*;
 import Foundation.DB;
 import Foundation.DbFacade;
 
@@ -38,7 +38,7 @@ public class TestDataCreator {
     //Properties
     private final int NO_OF_PROVIDERS_GENERATED = 3;
     private final int NO_OF_EDUCATIONS_GENERATED = 5;
-    private final int NO_OF_COMPANIES_GENERATED = 20;
+    private final int NO_OF_COMPANIES_GENERATED = 50;
     private final int MAX_DATES_EACH_EDUCATION = 3;
     private final int MAX_EDUCATION_WISHES_PER_INTERVIEW = 3;
     private final int MAX_FINISHED_EDUCATION_PER_INTERVIEW = 3;
@@ -218,7 +218,7 @@ public class TestDataCreator {
             educations.add(createEducation());
         }
 
-        return new Company(null,cvrNr, companyName.toString(),consultations,educations);
+        return new Company(null,cvrNr, companyName.toString(),consultations);
     }
 
     private LocalDate randomDate(){ //TODO parameterize and maybe understand that damn code block

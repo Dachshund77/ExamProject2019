@@ -1,19 +1,21 @@
 package Application.Controller.Find.FindToDelete;
 
 import Application.Controller.AbstractController;
-import Application.Controller.SubControllers.Find.FindEducationSub;
 import Application.Controller.SubControllers.Find.FindInterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Education;
-import Domain.Interview;
+import Domain.DisplayObjects.DisplayInterview;
+import Domain.DomainObjects.Interview;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 
 import javax.swing.text.View;
+import java.sql.SQLException;
 
 public class FindInterviewToDelete extends AbstractController {
 
@@ -26,13 +28,18 @@ public class FindInterviewToDelete extends AbstractController {
     @FXML
     private Button cancelButton;
 
+    private TableView<DisplayInterview> interviewTableView;
+
     /**
      * disables the confirm button
      * until the user has selected a company
      */
     @FXML
     private void initialize(){
-        confirmationButton.disableProperty().bind(findInterviewSubController.getInterviewTableView().getSelectionModel().selectedItemProperty().isNull());
+        // Load the TableView reference from subController
+        interviewTableView = findInterviewSubController.getInterviewTableView();
+
+        confirmationButton.disableProperty().bind(interviewTableView.getSelectionModel().selectedItemProperty().isNull());
     }
 
     /**
@@ -65,9 +72,31 @@ public class FindInterviewToDelete extends AbstractController {
      * Interview name
      * @param event
      */
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        Interview toBeDeletedInterview = findInterviewSubController.getInterviewTableView().getSelectionModel().getSelectedItem();
+        //Init values
+        Interview toBeDeletedInterview = null;
+
+        //Get selection
+        DisplayInterview selectedProvider = interviewTableView.getSelectionModel().getSelectedItem();
+        int id = selectedProvider.getInterviewID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeDeletedInterview = DbFacade.findInterviewByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
+
         SearchContainer currentSearch = findInterviewSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();

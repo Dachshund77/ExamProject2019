@@ -1,10 +1,9 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Domain.Education;
-import Domain.EducationWish;
-import Domain.FinishedEducation;
-import Domain.Interview;
+import Domain.DomainObjects.EducationWish;
+import Domain.DomainObjects.FinishedEducation;
+import Domain.DomainObjects.Interview;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -106,8 +105,7 @@ public class InterviewSub extends AbstractController {
 
     @Override
     public void initValues(Interview interview) {
-        selectedInterview = interview;
-        resetForm();
+        // hook up interview
     }
 
     /**
@@ -282,13 +280,31 @@ public class InterviewSub extends AbstractController {
      * A method to disable Fields, in cases that needs it
      * @param bool true or false, depending on if fields should be disabled
      */
-    public void setDisabled(boolean bool){
+    public void setDisabled(boolean bool){ //TODO i dont think the tableviews should be visible whenever - Sven
         interViewNameTextField.setDisable(bool);
         productUnderstandingComboBox.setDisable(bool);
         problemUnderstandingComboBox.setDisable(bool);
         qualityAwarenessComboBox.setDisable(bool);
         cooperationComboBox.setDisable(bool);
         flexibilityComboBox.setDisable(bool);
+        addEducationWishbutton.setDisable(bool);
+        addEducationWishbutton.setVisible(false);
+        removeEducationWishButton.setDisable(bool);
+        removeEducationWishButton.setVisible(false);
+        pickEduForWishButton.setDisable(bool);
+        pickEduForWishButton.setVisible(false);
+        addFinishedEducationButton.setDisable(bool);
+        addFinishedEducationButton.setVisible(false);
+        removeFinishedEducationButton.setDisable(bool);
+        removeFinishedEducationButton.setVisible(false);
+        pickEduForFinishedEducationButton.setDisable(bool);
+        pickEduForFinishedEducationButton.setVisible(false);
+        educationWishTableView.setVisible(false);
+        educationWishTableView.setDisable(bool);
+        finishedEducationTableView.setVisible(false);
+        finishedEducationTableView.setDisable(bool);
+        dateForFinishedEducation.setVisible(false);
+        dateForFinishedEducation.setDisable(bool);
     }
 
     /**
@@ -315,7 +331,6 @@ public class InterviewSub extends AbstractController {
             qualityAwarenessComboBox.setValue(selectedInterview.getProductUnderstanding());
             cooperationComboBox.setValue(selectedInterview.getProductUnderstanding());
             flexibilityComboBox.setValue(selectedInterview.getProductUnderstanding());
-            setDisabled(true);
         }
         else
         {
@@ -341,5 +356,16 @@ public class InterviewSub extends AbstractController {
 
         }
 
+    }
+
+    public Interview getInterview(){
+        //TODO Implement this
+        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
+        return null;
+    }
+
+    public int getEmployeeID(){
+        //TODO Implement this
+        return 1;
     }
 }

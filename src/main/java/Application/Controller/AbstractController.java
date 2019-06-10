@@ -1,7 +1,7 @@
 package Application.Controller;
 
 import Application.SearchContainer;
-import Domain.*;
+import Domain.DomainObjects.*;
 
 /**
  * Intermediate implementation for all controllers.

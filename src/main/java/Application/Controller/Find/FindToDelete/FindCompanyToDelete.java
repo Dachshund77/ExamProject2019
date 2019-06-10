@@ -1,21 +1,20 @@
 package Application.Controller.Find.FindToDelete;
 
 import Application.Controller.AbstractController;
-import Application.Controller.SubControllers.Domain.CompanySub;
 import Application.Controller.SubControllers.Find.FindCompanySub;
-import Application.Controller.SubControllers.Find.FindSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Company;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import Domain.DisplayObjects.DisplayCompany;
+import Domain.DomainObjects.Company;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
+
+import java.sql.SQLException;
 
 public class FindCompanyToDelete extends AbstractController {
 
@@ -27,14 +26,18 @@ public class FindCompanyToDelete extends AbstractController {
     @FXML
     private Button cancelButton;
 
-
+    private TableView<DisplayCompany> companyTableView;
     /**
      * disables the confirm button
      * until the user has selected a company
      */
     @FXML
     private void initialize(){
-        confirmationButton.disableProperty().bind(findCompanySubController.getCompanyTableView().getSelectionModel().selectedItemProperty().isNull());
+        // Load the TableView reference from subController
+        companyTableView = findCompanySubController.getCompanyTableView();
+
+        // hook up the confirmation button
+        confirmationButton.disableProperty().bind(companyTableView.getSelectionModel().selectedItemProperty().isNull());
     }
 
     /**
@@ -68,10 +71,29 @@ public class FindCompanyToDelete extends AbstractController {
      * Company CVR No.
      * @param event
      */
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
+        //Init values
+        Company toBeDeletedCompany = null;
 
-        Company toBeDeletedCompany = findCompanySubController.getCompanyTableView().getSelectionModel().getSelectedItem();
+        //Get selection
+        DisplayCompany selectedCompany = companyTableView.getSelectionModel().getSelectedItem();
+        int id = selectedCompany.getCompanyID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeDeletedCompany = DbFacade.findCompanyByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
 
         SearchContainer currentSearch = findCompanySubController.getFindSubController().getCurrentSearchContainer();
 

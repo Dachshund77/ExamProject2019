@@ -1,11 +1,8 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Application.Controller.PopUp.Alter.AlterInterviewPopUp;
-import Application.Controller.PopUp.Find.FindInterviewPopUp;
-import Domain.Employee;
-import Domain.Interview;
-import UI.InterviewChoice;
+import Domain.DomainObjects.Employee;
+import Domain.DomainObjects.Interview;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -29,11 +26,10 @@ public class EmployeeSub extends AbstractController {
     public TableColumn<Interview,String> interviewNameColumn;
     public Button removeInterview;
     public Button addInterview;
-    public Button seeDetailedInterviewButton; //maybe
 
     private ArrayList<Interview> interviews;
 
-    public BooleanBinding isValid;
+    public BooleanBinding isValid; // Hook for parent class to activate confirm button
     public Employee selectedEmployee;
 
     private SimpleBooleanProperty employeeFirstNameIsValid = new SimpleBooleanProperty(true);
@@ -50,6 +46,11 @@ public class EmployeeSub extends AbstractController {
      * Sets up a TableView if an employee has been selected, with interview data for them.
      */
     public void initialize(){
+
+        if(selectedEmployee != null)
+        {
+            interviewTableView.setVisible(false);
+        }
         employeeFirstNameTextField.textProperty().addListener((observable -> handleFirstNameInput()));
         employeeLastNameTextField.textProperty().addListener((observable -> handleLastNameInput()));
         cprNrTextField.textProperty().addListener((observable -> handleCprNrInput()));
@@ -80,14 +81,11 @@ public class EmployeeSub extends AbstractController {
             }
             @Override
             protected boolean computeValue() {
-                if (employeeFirstNameIsValid.get() && employeeLastNameIsValid.get()
-                        && cprNrIsValid.get() && eMailIsValid.get() && phoneNrIsValid.get()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return employeeFirstNameIsValid.get() && employeeLastNameIsValid.get()
+                        && cprNrIsValid.get() && eMailIsValid.get() && phoneNrIsValid.get();
             }
         };
+
         resetForm();
     }
 
@@ -207,28 +205,23 @@ public class EmployeeSub extends AbstractController {
         }
     }
 
-    /**
-     * A method to remove a interview from the TableView
-     * @param event Upon selecting an item from the table and clicking "Remove interview"
-     */
     public void handleRemoveInterview(ActionEvent event){
         Interview selectedData = interviewTableView.getSelectionModel().getSelectedItem();
         list.remove(selectedData);
     }
 
-    /**
-     * A method to add a interview to the Employee and Table
-     * @param event Upon clicking "Add interview"
-     */
     public void handleAddInterview(ActionEvent event){
         //open popup and stuff
-        InterviewChoice newSeeInterview = new InterviewChoice();
-        //Interview foundInterview = newSeeInterview.showAndReturn(new AlterInterviewPopUp()); //TODO : After Alter pop has been created
+    }
+
+    public void handleSeeInterview(ActionEvent event){
+
     }
 
     /**
-     * A method to disable TextFields, in cases that needs it
-     * @param bool true or false, depending on if fields should be disabled
+     * A check for the if the fields are valid.
+     * For use in AlterEmployee to disable or enable "Confirm" button
+     * @param bool
      */
     public void setDisabled(boolean bool){
         employeeFirstNameTextField.setDisable(bool);
@@ -236,6 +229,12 @@ public class EmployeeSub extends AbstractController {
         cprNrTextField.setDisable(bool);
         emailTextField.setDisable(bool);
         phoneNrTextField.setDisable(bool);
+        removeInterview.setDisable(bool);
+        removeInterview.setVisible(false);
+        addInterview.setDisable(bool);
+        addInterview.setVisible(false);
+        interviewTableView.setVisible(false);
+        interviewTableView.setDisable(bool);
     }
 
     /**
@@ -251,9 +250,6 @@ public class EmployeeSub extends AbstractController {
             cprNrTextField.setText(selectedEmployee.getCprNr());
             emailTextField.setText(selectedEmployee.getEmail());
             phoneNrTextField.setText(selectedEmployee.getPhoneNr());
-            interviewTableView.setVisible(true);
-            addInterview.setVisible(true);
-            removeInterview.setVisible(true);
         }
         else
         {
@@ -262,9 +258,12 @@ public class EmployeeSub extends AbstractController {
             cprNrTextField.setText("");
             emailTextField.setText("");
             phoneNrTextField.setText("");
-            interviewTableView.setVisible(false);
-            addInterview.setVisible(false);
-            removeInterview.setVisible(false);
         }
+    }
+
+    public Employee getEmployee(){
+        //TODO Implement this
+        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
+        return null;
     }
 }

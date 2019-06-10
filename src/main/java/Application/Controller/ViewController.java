@@ -1,7 +1,7 @@
 package Application.Controller;
 
 import Application.SearchContainer;
-import Domain.*;
+import Domain.DomainObjects.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -72,7 +72,15 @@ public enum ViewController {
     DELETE_EDUCATION("/FXML/Controller/Delete/DeleteEducation.fxml"),
     DELETE_EMPLOYEE("/FXML/Controller/Delete/DeleteEmployee.fxml"),
     DELETE_INTERVIEW("/FXML/Controller/Delete/DeleteInterview.fxml"),
-    DELETE_PROVIDER("/FXML/Controller/Delete/DeleteProvider.fxml");
+    DELETE_PROVIDER("/FXML/Controller/Delete/DeleteProvider.fxml"),
+
+    //Record Controller
+    RECORD_COMPANY("/FXML/Controller/Record/RecordCompany.fxml"),
+    RECORD_CONSULTATION("/FXML/Controller/Record/RecordConsultation.fxml"),
+    RECORD_EDUCATION("/FXML/Controller/Record/RecordEducation.fxml"),
+    RECORD_EMPLOYEE("/FXML/Controller/Record/RecordEmployee.fxml"),
+    RECORD_INTERVIEW("/FXML/Controller/Record/RecordInterview.fxml"),
+    RECORD_PROVIDER("/FXML/Controller/Record/RecordProvider.fxml");
 
     private final String URL;
 

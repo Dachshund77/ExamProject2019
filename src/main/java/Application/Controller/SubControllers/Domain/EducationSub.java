@@ -1,23 +1,19 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Domain.Education;
-import Domain.Provider;
+import Domain.DomainObjects.Education;
+import Domain.DomainObjects.Provider;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
-import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 public class EducationSub extends AbstractController {
 
-    public Text AmuNrText;
     public TextField educationNameTextField;
     public TextArea descriptionTextArea;
     public TextField noOfDaysTextField; // may be converted to a drop down if you want
@@ -57,11 +53,7 @@ public class EducationSub extends AbstractController {
                 bind(descriptionIsValid);
                 bind(noOfDaysIsValid);
                 // validate the actual expression
-                if (educationNameIsValid.get() && descriptionIsValid.get() && noOfDaysIsValid.get()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return educationNameIsValid.get() && descriptionIsValid.get() && noOfDaysIsValid.get();
             }
         };
         resetForm();
@@ -88,7 +80,6 @@ public class EducationSub extends AbstractController {
     }
 
     private void handleDescriptionInput() {
-        //Gets text validates it and reacts on it. Is called whenever something happens to the text property of the textfield
         if (Education.isValidDescription(descriptionTextArea.getText())) {
             descriptionTextArea.setTooltip(null);
             descriptionIsValid.set(true);
@@ -107,15 +98,12 @@ public class EducationSub extends AbstractController {
 
 
     public void setDisabled(boolean bool) {
-        //Was changed from set editable to set Disable same logic better naming convention for reflecting thr actual code
         educationNameTextField.setDisable(bool);
         descriptionTextArea.setDisable(bool);
         noOfDaysTextField.setDisable(bool);
     }
 
     public void resetForm() {
-        //Reset fields, set field if it has a selected Domain object
-        //If no previous education was loaded, just reset evrything  to start values, if education was loaded reset to educations fields.
         if (selectedEducation != null) {
             educationNameTextField.setText(selectedEducation.getEducationName());
             descriptionTextArea.setText(selectedEducation.getDescription());
@@ -125,6 +113,12 @@ public class EducationSub extends AbstractController {
             descriptionTextArea.setText("");
             noOfDaysTextField.setText("");
         }
+    }
+
+    public Education getEducation(){
+        //TODO Implement this
+        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
+        return null;
     }
 
 }

@@ -2,45 +2,49 @@ package Application.Controller.SubControllers.Find;
 
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
-import Domain.*;
+import Domain.DisplayObjects.DisplayEducation;
+import Domain.DomainObjects.*;
+import Foundation.DbFacade;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class FindEducationSub extends AbstractController {
     @FXML
     private FindSub findSubController;
     @FXML
-    private TableView<Education> educationTableView;
+    private TableView<DisplayEducation> educationTableView;
     @FXML
-    private TableColumn<Education, Integer> educationIDColumn;
+    private TableColumn<DisplayEducation, Integer> educationIDColumn;
     @FXML
-    private TableColumn<Education, String> educationDaysColumn;
+    private TableColumn<DisplayEducation, String> educationDaysColumn;
     @FXML
-    private TableColumn<Education, String> educationNameColumn;
+    private TableColumn<DisplayEducation, String> educationNameColumn;
     @FXML
-    private TableColumn<Education, String> providerNameColumn;
+    private TableColumn<DisplayEducation, String> providerNameColumn;
 
-    private ObservableList<Company> searchResultList;
-    private ObservableList<Education> displayData;
+
+    private ObservableList<DisplayEducation> displayData;
 
     public void initialize() {
         //Init values
         displayData = FXCollections.observableArrayList();
 
-        //Fetch the subController needed references
-        searchResultList = findSubController.getSearchResultList();
+        //Fetch the subController and register event handler
+        Button searchButton = findSubController.getSearchButton();
+        searchButton.setOnAction(event -> handleSearch());
 
-        //Register listener
-        searchResultList.addListener((ListChangeListener<? super Company>) observable -> formatDisplayData());
+        Button resetButton = findSubController.getResetButton();
+        resetButton.setOnAction(event -> displayData.clear());
 
         //Setup TableView
         educationTableView.setItems(displayData);
@@ -48,17 +52,27 @@ public class FindEducationSub extends AbstractController {
         educationIDColumn.setCellValueFactory(new PropertyValueFactory<>("amuNr"));
         educationDaysColumn.setCellValueFactory(new PropertyValueFactory<>("noOfDays"));
         educationNameColumn.setCellValueFactory(new PropertyValueFactory<>("educationName"));
-        providerNameColumn.setCellValueFactory(Education -> {
-            SimpleObjectProperty property = new SimpleObjectProperty();
-            if (Education == null || Education.getValue() == null || Education.getValue().getProvider() == null || Education.getValue().getProvider().getProviderName()== null){
-                return null;
-            }
-            property.setValue(Education.getValue().getProvider().getProviderName());
-            return property;
-        });
+        providerNameColumn.setCellValueFactory(new PropertyValueFactory<>("providerName") );
 
         educationTableView.getColumns().setAll(educationIDColumn, educationDaysColumn, educationNameColumn,providerNameColumn);
 
+    }
+
+    private void handleSearch(){
+        try {
+            DbFacade.connect();
+            SearchContainer container = findSubController.getCurrentSearchContainer();
+            displayData.addAll(DbFacade.findDisplayEducations(container));
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -70,51 +84,10 @@ public class FindEducationSub extends AbstractController {
     public void initValues(SearchContainer searchContainer) {
         //Propagate the call further to the subController
         findSubController.initValues(searchContainer);
+        handleSearch();
     }
 
-    /**
-     * Formats the output from the search query into Education objects that only occur once.
-     *
-     * @see Education
-     */
-    private void formatDisplayData() {
-        //Cleans out previous data
-        displayData.clear();
-        //
-        for (Company company : searchResultList) {
-            ArrayList<Education> educationList = company.getEducationList();
-            for (Education education : educationList) {
-                if (!displayData.contains(education)) {
-                    displayData.add(education);
-                }
-            }
-            ArrayList<Consultation> tempConsultations = company.getConsultations();
-            for (Consultation consultation : tempConsultations) {
-                ArrayList<Employee> tempEmployees = consultation.getEmployees();
-                for (Employee employee : tempEmployees) {
-                    ArrayList<Interview> tempInterview = employee.getInterviews();
-                    for (Interview interview : tempInterview) {
-                        ArrayList<FinishedEducation> tempFinEducations = interview.getFinishedEducations();
-                        for (FinishedEducation tempFinEducation : tempFinEducations) {
-                            Education tempEducation = tempFinEducation.getEducation();
-                            if (!displayData.contains(tempEducation)) {
-                                displayData.add(tempEducation);
-                            }
-                        }
-                        ArrayList<EducationWish> tempEducationWishes = interview.getEducationWishes();
-                        for (EducationWish tempEducationWish : tempEducationWishes) {
-                            Education tempEducation = tempEducationWish.getEducation();
-                            if (!displayData.contains(tempEducation)) {
-                                displayData.add(tempEducation);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public TableView<Education> getEducationTableView() {
+    public TableView<DisplayEducation> getEducationTableView() {
         return educationTableView;
     }
 

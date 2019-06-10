@@ -1,22 +1,17 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Application.Controller.PopUp.Find.FindCompanyPopUp;
-import Domain.Company;
-import Domain.Consultation;
-import Domain.Education;
-import Foundation.DbFacade;
-import UI.CompanyChoice;
+import Domain.DomainObjects.Company;
+import Domain.DomainObjects.Consultation;
+import Domain.DomainObjects.Education;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,11 +86,7 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
             }
             @Override
             protected boolean computeValue() {
-                if (companyNameIsValid.get() && cvrNrIsValid.get()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return companyNameIsValid.get() && cvrNrIsValid.get();
             }
         };
         resetForm();
@@ -158,20 +149,17 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
         }
     }
 
-    /*
-    public void handleCompanyPopUp(ActionEvent event){
-        CompanyChoice c = new CompanyChoice();
-        Company foundC = c.showAndReturn(new FindCompanyPopUp()); //TODO We are literly not doing anything with that value?
-    }*/
-
     /**
      * checks if both TextFields have valid content
      *
      * @param bool
      */
     public void setDisabled(boolean bool) {
-        companyNameTextField.setDisable(bool);
+        companyNameTextField.setDisable(bool); //TODO we should add ja opacity style to this, the look of the disable textfield is horrifying
         cvrNrTextField.setDisable(bool);
+        //newConsultationButton.setDisable(bool); //Todo thoose button literaly do not exist, implement them or dont call them at all. NullPointerException else - Sven
+        //addCompany.setDisable(bool);
+
     }
 
     /**
@@ -187,5 +175,11 @@ public class CompanySub extends AbstractController { //TODO CLEAN UP CODE THAT W
             cvrNrTextField.setText("");
         }
 
+    }
+
+    public Company getCompany(){
+        //TODO Implement this
+        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
+        return null;
     }
 }

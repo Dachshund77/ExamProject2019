@@ -2,15 +2,20 @@ package Application.Controller.Delete;
 
 import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
+import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Consultation;
-import Domain.Education;
+import Domain.DomainObjects.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.BorderPane;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class DeleteConsultation extends AbstractController {
 
@@ -18,12 +23,14 @@ public class DeleteConsultation extends AbstractController {
     private ConsultationSub consultationSubController;
     @FXML
     private Button confirmationButton;
+    @FXML
+    private Button returnButton;
 
     private SearchContainer previousSearch;
 
     @FXML
     public void initialize(){
-
+        consultationSubController.setDisabled(true);
     }
 
     /**
@@ -46,22 +53,37 @@ public class DeleteConsultation extends AbstractController {
      * @param actionEvent
      */
     public void handleConfirmation(ActionEvent actionEvent) {
-        Consultation createToDeleteConsultationObj = new Consultation(consultationSubController.selectedConsultation.getConsultationID(),
-                consultationSubController.selectedConsultation.getConsultationName(), consultationSubController.selectedConsultation.getStartDate(),
-                consultationSubController.selectedConsultation.getEndDate(), consultationSubController.selectedConsultation.getEmployees());
-
-        try {
-            DbFacade.connect();
-            DbFacade.deleteConsultation(createToDeleteConsultationObj.getConsultationID());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Deletion Warning");
+        alert.setHeaderText("You are about to delete a Consultation!");
+        alert.setContentText("This Action will delete this Consultation permanently!");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                DbFacade.disconnect();
+                DbFacade.connect();
+                DbFacade.deleteConsultation(consultationSubController.selectedConsultation.getConsultationID());
+
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Consultation was deleted from the Database Successfully!");
+                info.showAndWait();
+
             } catch (SQLException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    DbFacade.disconnect();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
+            confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }
+    }
 
+    public void handleReturn(ActionEvent event) {
+        Parent root = returnButton.getScene().getRoot();
+        ((BorderPane) root).setCenter(ViewController.FIND_CONSULTATION_TO_DELETE.loadParent(previousSearch));
     }
 }

@@ -1,9 +1,7 @@
 package Application.Controller.PopUp;
 
 import Application.Controller.AbstractController;
-import Application.Controller.Controllers;
-import Domain.Employee;
-import javafx.scene.Parent;
+import Domain.DomainObjects.Employee;
 
 public abstract class EmployeeReturnableController extends AbstractController {
 

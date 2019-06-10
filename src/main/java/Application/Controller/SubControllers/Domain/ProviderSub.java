@@ -1,13 +1,11 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Domain.Provider;
+import Domain.DomainObjects.Provider;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
 public class ProviderSub extends AbstractController {
@@ -37,11 +35,7 @@ public class ProviderSub extends AbstractController {
             @Override
             protected boolean computeValue() {
                 bind(providerNameIsValid);
-                if (providerNameIsValid.get()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return providerNameIsValid.get();
             }
         };
     }
@@ -88,7 +82,6 @@ public class ProviderSub extends AbstractController {
      */
     public void setDisabled(boolean bool) {
         providerNameTextfield.setDisable(bool);
-
     }
 
     /**
@@ -101,6 +94,12 @@ public class ProviderSub extends AbstractController {
         } else {
             providerNameTextfield.setText("");
         }
+    }
+
+    public Provider getProvider(){
+        //TODO Implement this
+        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
+        return null;
     }
 
 }

@@ -1,26 +1,19 @@
 package Application.Controller.Find.FindToDelete;
 
 import Application.Controller.AbstractController;
-import Application.Controller.PopUp.Find.FindConsultationPopUp;
-import Application.Controller.SubControllers.Domain.CompanySub;
-import Application.Controller.SubControllers.Find.FindCompanySub;
 import Application.Controller.SubControllers.Find.FindConsultationSub;
-import Application.Controller.SubControllers.Find.FindSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
-import Domain.Company;
-import Domain.Consultation;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import Domain.DisplayObjects.DisplayConsultation;
+import Domain.DomainObjects.Consultation;
+import Foundation.DbFacade;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
-
-import javax.swing.text.View;
+import java.sql.SQLException;
 
 public class FindConsultationToDelete extends AbstractController {
 
@@ -32,14 +25,18 @@ public class FindConsultationToDelete extends AbstractController {
     @FXML
     private Button cancelButton;
 
-
+    private TableView<DisplayConsultation> consultationTableView;
     /**
      * disables the confirm button
      * until the user has selected a consultation
      */
     @FXML
     private void initialize(){
-        confirmationButton.disableProperty().bind(findConsultationSubController.getConsultationTableView().getSelectionModel().selectedItemProperty().isNull());
+        // Load the TableView reference from subController
+        consultationTableView = findConsultationSubController.getConsultationTableView();
+
+        // hook up the confirmation button
+        confirmationButton.disableProperty().bind(consultationTableView.getSelectionModel().selectedItemProperty().isNull());
     }
 
     /**
@@ -74,9 +71,30 @@ public class FindConsultationToDelete extends AbstractController {
      * Consultation end date
      * @param event
      */
+    @SuppressWarnings("Duplicates")
     @FXML
     private void handleConfirmation(ActionEvent event) {
-        Consultation toBeDeletedConsultation = findConsultationSubController.getConsultationTableView().getSelectionModel().getSelectedItem();
+        //init values
+        Consultation toBeDeletedConsultation = null;
+
+        //Get selection
+        DisplayConsultation selectedConsultation = consultationTableView.getSelectionModel().getSelectedItem();
+        int id = selectedConsultation.getConsultationID();
+
+        //Fetch real from Database
+        try{
+            DbFacade.connect();
+            toBeDeletedConsultation = DbFacade.findConsultationByID(id);
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                DbFacade.disconnect();
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+
         SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();

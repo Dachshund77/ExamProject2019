@@ -1,5 +1,5 @@
 CREATE OR ALTER PROCEDURE sp_Place_Consultation(@ConsultationID INT OUTPUT ,
-                                       @ConsultationName VARCHAR(50),
+                                       @ConsultationName NVARCHAR(50),
                                        @StartDate DATE,
                                        @EndDate DATE,
                                        @CompanyID INT)

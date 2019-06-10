@@ -2,7 +2,7 @@ package Application.Controller.SubControllers.Find;
 
 import Application.Controller.AbstractController;
 import Application.SearchContainer;
-import Domain.Company;
+import Domain.DomainObjects.Company;
 import Foundation.DbFacade;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -87,13 +87,12 @@ public class FindSub extends AbstractController {
     private TextField providerNameTextField;
 
     @FXML
-    private Button searchButton; //TODO do i need this?
+    private Button searchButton;
     @FXML
     private Button resetButton; //TODO do i need this evt clean up
 
-    private ObservableList<Company> searchResultList = FXCollections.observableArrayList();
+
     private SearchContainer previousSearchContainer = null;
-    private SearchContainer currentSearchContainer = null;
 
     //BooleanBindings
     private BooleanBinding allValid;
@@ -292,7 +291,6 @@ public class FindSub extends AbstractController {
     public void initValues(SearchContainer searchContainer) {
         this.previousSearchContainer = searchContainer;
         resetToPreviousSearch();
-        handleSearch(new ActionEvent()); //TODO i have no idea if this works - Sven
     }
 
     private void handleCompanyIdInput() {
@@ -695,11 +693,14 @@ public class FindSub extends AbstractController {
         return companyBool && consultationBool && employeeBool && interviewBool && educationBool && providerBool;
     }
 
-    @FXML
-    private void handleSearch(ActionEvent event) {
+    /**
+     * Builds a searchContainer with the corresponding values of the
+     *filled out textboxes.
+     * @return SearchContainer with filled out values.
+     */
+    public SearchContainer getCurrentSearchContainer(){
         SearchContainer container = new SearchContainer();
 
-        //We operate under the assumption that the search button is not clicked before the integer is valid
         container.setCompanyID(companyIDTextField.getText());
         container.setCvrNr(cvrNrTextField.getText());
         container.setCompanyName(companyNameTextField.getText());
@@ -728,17 +729,7 @@ public class FindSub extends AbstractController {
         container.setProviderID(providerIDTextField.getText());
         container.setProviderName(providerNameTextField.getText());
 
-        currentSearchContainer = container;
-        //Connect to db
-        try {
-            DbFacade.connect();
-            searchResultList.clear();
-            searchResultList.addAll(DbFacade.findCompanies(container));
-
-            DbFacade.disconnect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return container;
     }
 
     /**
@@ -750,14 +741,11 @@ public class FindSub extends AbstractController {
     @FXML
     private void handleReset(ActionEvent event) {
         if (previousSearchContainer == null) {
-            currentSearchContainer = null;
             resetToEmpty();
         } else {
-            currentSearchContainer = previousSearchContainer;
             resetToPreviousSearch();
         }
         //Clear searchResultList
-        searchResultList.clear();
     }
 
     private void resetToEmpty() {
@@ -792,7 +780,7 @@ public class FindSub extends AbstractController {
 
     private void resetToPreviousSearch() {
         companyIDTextField.setText(previousSearchContainer.getCompanyIDasString());
-        cvrNrTextField.setText(previousSearchContainer.getCompanyName());
+        cvrNrTextField.setText(previousSearchContainer.getCvrNr());
         companyNameTextField.setText(previousSearchContainer.getCompanyName());
         //Consultation
         consultationMaxDatePicker.setValue(previousSearchContainer.getConsultationMaxDate());
@@ -840,11 +828,11 @@ public class FindSub extends AbstractController {
         educationMaxDatePicker.setValue(null);
     }
 
-    public ObservableList<Company> getSearchResultList() {
-        return searchResultList;
+    public Button getSearchButton() {
+        return searchButton;
     }
 
-    public SearchContainer getCurrentSearchContainer() {
-        return currentSearchContainer;
+    public Button getResetButton() {
+        return resetButton;
     }
 }

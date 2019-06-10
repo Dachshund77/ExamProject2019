@@ -1,7 +1,6 @@
 package Application;
 
-import Domain.*;
-import Foundation.DB;
+import Domain.DomainObjects.*;
 import Foundation.DbFacade;
 
 import java.time.LocalDate;
@@ -52,8 +51,8 @@ public class SearchContainer {
         return companyID;
     }
 
-    public String getCompanyIDasString(){
-        if (companyID == null){
+    public String getCompanyIDasString() {
+        if (companyID == null) {
             return null;
         } else {
             return companyID.toString();
@@ -120,8 +119,8 @@ public class SearchContainer {
         return consultationID;
     }
 
-    public String getConsultationIDasString(){
-        if (consultationID == null){
+    public String getConsultationIDasString() {
+        if (consultationID == null) {
             return null;
         } else {
             return consultationID.toString();
@@ -186,8 +185,8 @@ public class SearchContainer {
         return employeeID;
     }
 
-    public String getEmployeeIDasString(){
-        if (employeeID == null){
+    public String getEmployeeIDasString() {
+        if (employeeID == null) {
             return null;
         } else {
             return employeeID.toString();
@@ -330,8 +329,8 @@ public class SearchContainer {
         return interviewName;
     }
 
-    public String getInterviewIDasString(){
-        if (interviewID == null){
+    public String getInterviewIDasString() {
+        if (interviewID == null) {
             return null;
         } else {
             return interviewID.toString();
@@ -355,8 +354,8 @@ public class SearchContainer {
         return AmuNr;
     }
 
-    public String getAmuNrAsString(){
-        if (AmuNr == null){
+    public String getAmuNrAsString() {
+        if (AmuNr == null) {
             return null;
         } else {
             return AmuNr.toString();
@@ -405,8 +404,8 @@ public class SearchContainer {
         return educationNoOfDays;
     }
 
-    public String getEducationNoOfDaysAsString(){
-        if (educationNoOfDays == null){
+    public String getEducationNoOfDaysAsString() {
+        if (educationNoOfDays == null) {
             return null;
         } else {
             return educationNoOfDays.toString();
@@ -454,8 +453,8 @@ public class SearchContainer {
         return providerID;
     }
 
-    public String getProviderIDasString(){
-        if (providerID == null){
+    public String getProviderIDasString() {
+        if (providerID == null) {
             return null;
         } else {
             return providerID.toString();
@@ -498,6 +497,59 @@ public class SearchContainer {
         } else {
             this.providerName = providerName;
         }
+    }
+
+    private boolean isFilteringCompanies() {
+        return companyID != null || cvrNr != null || companyName != null;
+    }
+
+    private boolean isFilteringConsultations() {
+        return consultationID != null || consultationName != null || consultationMinDate != null || consultationMaxDate != null;
+    }
+
+    private boolean isFilteringEmployees() {
+        return employeeID != null || employeeFirstName != null || employeeLastName != null || cprNr != null || email != null || phoneNr != null;
+    }
+
+    private boolean isFilteringInterviews() {
+        return interviewID != null || interviewName != null;
+    }
+
+    private boolean isFilteringEducations() {
+        return AmuNr != null || educationName != null || educationNoOfDays != null || educationMinDate != null || educationMaxDate != null;
+    }
+
+    private boolean isFilteringProviders() {
+        return providerID != null || providerName != null;
+    }
+
+    public boolean isOnlyFilteringCompanies() {
+        return !isFilteringConsultations() || !isFilteringEducations() || !isFilteringEmployees() || !isFilteringInterviews() || !isFilteringProviders();
+    }
+
+    public boolean isOnlyFilteringConsultations() {
+        return !isFilteringCompanies() || !isFilteringEducations() || !isFilteringEmployees() || !isFilteringInterviews() || !isFilteringProviders();
+
+    }
+
+    public boolean isOnlyFilteringEmployees() {
+        return !isFilteringCompanies() || !isFilteringConsultations() || !isFilteringEducations() || !isFilteringInterviews() || !isFilteringProviders();
+
+    }
+
+    public boolean isOnlyFilteringInterviews() {
+        return !isFilteringCompanies() || !isFilteringConsultations() || !isFilteringEducations() || !isFilteringEmployees() || !isFilteringProviders();
+
+    }
+
+    public boolean isOnlyFilteringEducations() {
+        return !isFilteringCompanies() || !isFilteringConsultations() || !isFilteringEmployees() || !isFilteringInterviews() || !isFilteringProviders();
+
+    }
+
+    public boolean isOnlyFilteringProviders() {
+        return !isFilteringCompanies() || !isFilteringConsultations() || !isFilteringEducations() || !isFilteringEmployees() || !isFilteringInterviews();
+
     }
 
     //Company validation
@@ -1152,6 +1204,7 @@ public class SearchContainer {
         }
         return null;
     }
+
 
     @Override
     public boolean equals(Object obj) {

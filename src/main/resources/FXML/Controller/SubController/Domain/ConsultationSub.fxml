@@ -51,11 +51,11 @@
                <tooltip>
                   <Tooltip fx:id="endDateTooltip" text="Empty Tooltip" />
                </tooltip></DatePicker>
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="223.0" text="Start date" GridPane.columnIndex="2">
+            <Label fx:id="startDateLabel" alignment="CENTER" prefHeight="17.0" prefWidth="223.0" text="Start date" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets top="25.0" />
                </GridPane.margin></Label>
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="193.0" text="End Date" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Label fx:id="endDateLabel" alignment="CENTER" prefHeight="17.0" prefWidth="193.0" text="End Date" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="250.0" />
                </GridPane.margin></Label>

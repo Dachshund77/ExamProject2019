@@ -1,13 +1,15 @@
 package Foundation;
 
 import Application.SearchContainer;
-import Domain.*;
+import Domain.DisplayObjects.*;
+import Domain.DomainObjects.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Facade class that helps convert SQL data to objects.
@@ -19,6 +21,12 @@ import java.util.HashMap;
  */
 @SuppressWarnings("Duplicates") //Dont judge me, copy past code is the way to go here. -Sven
 public class DbFacade {
+
+    private static HashMap<Integer, Consultation> consultationCache = new HashMap<>();
+    private static HashMap<Integer, Employee> employeeCache = new HashMap<>();
+    private static HashMap<Integer, Interview> interviewCache = new HashMap<>();
+    private static HashMap<Integer, Education> educationCache = new HashMap<>();
+    private static HashMap<Integer, Provider> providerCache = new HashMap<>();
 
     /*
      * INSERTION
@@ -267,19 +275,6 @@ public class DbFacade {
             insertConsultation(consultation, newCompanyID);
         }
 
-        // 3 Insert education via method that returns the inserted ID
-        ArrayList<Education> educations = company.getEducationList();
-        ArrayList<Integer> newEducationIDs = new ArrayList<>();
-        for (Education education : educations) {
-            newEducationIDs.add(insertEducation(education));
-        }
-
-        // 4 With the returnValue we can make the bridge table, purge old one
-        for (Integer newEducationID : newEducationIDs) {
-            database.addStoredProcedureToBatch(Sp.INSERT_COMPANY_EDUCATION_BRIDGE, newCompanyID, newEducationID);
-        }
-        database.executeBatch();
-
         // 5 return value
         return newCompanyID;
     }
@@ -323,473 +318,6 @@ public class DbFacade {
         database.executeBatch();
 
         return newConsultationID;
-    }
-
-    /*
-     * SEARCHING BY VALUES(DYNAMIC)
-     */
-
-    /**
-     * Finds {@link Provider} Objects from the DataBase by specified search criteria.
-     * The search will be done by:
-     * <ul>
-     * <li>
-     * Strings will filter out any objects that does not match the Parameter in any place.
-     * </li>
-     * <li>
-     * Integer will filter out any objects that do not have exactly that value.
-     * </li>
-     * <li>
-     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
-     * </li>
-     * <li>
-     * Null Values are allowed as wild card, filtering out nothing.
-     * </li>
-     * </ul>
-     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
-     *
-     * @param providerID   Unique Primary key of a {@link Provider}.
-     * @param providerName {@link Provider} name as String.
-     * @return ArrayList of {@link Provider} Object.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We want never just the provider. Use Find Company
-     */
-    @Deprecated
-    public static ArrayList<Provider> findProviders(Integer providerID,
-                                                    String providerName) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER,
-                providerID,
-                providerName);
-
-        while (rs.next()) {
-            buildProvider(rs, providers);
-        }
-        return new ArrayList<>(providers.values());
-    }
-
-    /**
-     * Finds {@link Education} Objects from the DataBase by specified search criteria.
-     * The search will be done by:
-     * <ul>
-     * <li>
-     * Strings will filter out any objects that does not match the Parameter in any place.
-     * </li>
-     * <li>
-     * Integer will filter out any objects that do not have exactly that value.
-     * </li>
-     * <li>
-     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
-     * </li>
-     * <li>
-     * Null Values are allowed as wild card, filtering out nothing.
-     * </li>
-     * </ul>
-     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
-     *
-     * @param AmuNr             Unique Primary key of a {@link Education}.
-     * @param educationName     {@link Education} name as String.
-     * @param educationNoOfDays Number of Days this {@link Education} takes.
-     * @param educationMinDate  Minimum date a {@link Education} needs to have to be found.
-     * @param educationMaxDate  Maximum date a {@link Education} need to have to be found
-     * @param providerID        Unique Primary key of a {@link Provider}.
-     * @param providerName      {@link Provider} name as String.
-     * @return ArrayList of {@link Education} Object.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     */
-    public static ArrayList<Education> findEducations(Integer AmuNr,
-                                                      String educationName,
-                                                      Integer educationNoOfDays,
-                                                      LocalDate educationMinDate,
-                                                      LocalDate educationMaxDate,
-                                                      Integer providerID,
-                                                      String providerName) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION,
-                AmuNr,
-                educationName,
-                educationNoOfDays,
-                educationMinDate,
-                educationMaxDate,
-                providerID,
-                providerName);
-
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-        }
-        return new ArrayList<>(educations.values());
-    }
-
-    /**
-     * Finds {@link Interview} Objects from the DataBase by specified search criteria.
-     * The search will be done by:
-     * <ul>
-     * <li>
-     * Strings will filter out any objects that does not match the Parameter in any place.
-     * </li>
-     * <li>
-     * Integer will filter out any objects that do not have exactly that value.
-     * </li>
-     * <li>
-     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
-     * </li>
-     * <li>
-     * Null Values are allowed as wild card, filtering out nothing.
-     * </li>
-     * </ul>
-     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
-     *
-     * @param interviewID       Unique Primary key of a {@link Interview}.
-     * @param interviewName     {@link Interview} name as String.
-     * @param AmuNr             Unique Primary key of a {@link Education}.
-     * @param educationName     {@link Education} name as String.
-     * @param educationNoOfDays Number of Days this {@link Education} takes.
-     * @param educationMinDate  Minimum date a {@link Education} needs to have to be found.
-     * @param educationMaxDate  Maximum date a {@link Education} need to have to be found
-     * @param providerID        Unique Primary key of a {@link Provider}.
-     * @param providerName      {@link Provider} name as String.
-     * @return ArrayList of {@link Interview} Object.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just the Interview, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Interview> findInterviews(Integer interviewID,
-                                                      String interviewName,
-                                                      Integer AmuNr,
-                                                      String educationName,
-                                                      Integer educationNoOfDays,
-                                                      LocalDate educationMinDate,
-                                                      LocalDate educationMaxDate,
-                                                      Integer providerID,
-                                                      String providerName) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW,
-                interviewID,
-                interviewName,
-                AmuNr,
-                educationName,
-                educationNoOfDays,
-                educationMinDate,
-                educationMaxDate,
-                providerID,
-                providerName);
-
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-        }
-        return new ArrayList<>(interviews.values());
-    }
-
-    /**
-     * Finds {@link Employee} Objects from the DataBase by specified search criteria.
-     * The search will be done by:
-     * <ul>
-     * <li>
-     * Strings will filter out any objects that does not match the Parameter in any place.
-     * </li>
-     * <li>
-     * Integer will filter out any objects that do not have exactly that value.
-     * </li>
-     * <li>
-     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
-     * </li>
-     * <li>
-     * Null Values are allowed as wild card, filtering out nothing.
-     * </li>
-     * </ul>
-     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
-     *
-     * @param employeeID        Unique Primary key of a {@link Employee}.
-     * @param employeeFirstName {@link Employee} First name as String.
-     * @param employeeLastName  {@link Employee} Last name as String.
-     * @param cprNr             {@link Employee} CprNr as String.
-     * @param email             {@link Employee} Email Address as String.
-     * @param phoneNr           {@link Employee} PhoneNr as String.
-     * @param interviewID       Unique Primary key of a {@link Interview}.
-     * @param interviewName     {@link Interview} name as String.
-     * @param AmuNr             Unique Primary key of a {@link Education}.
-     * @param educationName     {@link Education} name as String.
-     * @param educationNoOfDays Number of Days this {@link Education} takes.
-     * @param educationMinDate  Minimum date a {@link Education} needs to have to be found.
-     * @param educationMaxDate  Maximum date a {@link Education} need to have to be found
-     * @param providerID        Unique Primary key of a {@link Provider}.
-     * @param providerName      {@link Provider} name as String.
-     * @return ArrayList of {@link Employee} Object.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just the Interview, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Employee> findEmployees(Integer employeeID,
-                                                    String employeeFirstName,
-                                                    String employeeLastName,
-                                                    String cprNr,
-                                                    String email,
-                                                    String phoneNr,
-                                                    Integer interviewID,
-                                                    String interviewName,
-                                                    Integer AmuNr,
-                                                    String educationName,
-                                                    Integer educationNoOfDays,
-                                                    LocalDate educationMinDate,
-                                                    LocalDate educationMaxDate,
-                                                    Integer providerID,
-                                                    String providerName) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE,
-                employeeID,
-                employeeFirstName,
-                employeeLastName,
-                cprNr,
-                email,
-                phoneNr,
-                interviewID,
-                interviewName,
-                AmuNr,
-                educationName,
-                educationNoOfDays,
-                educationMinDate,
-                educationMaxDate,
-                providerID,
-                providerName);
-
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
-        }
-        return new ArrayList<>(employees.values());
-    }
-
-    /**
-     * Finds {@link Consultation} Objects from the DataBase by specified search criteria.
-     * The search will be done by:
-     * <ul>
-     * <li>
-     * Strings will filter out any objects that does not match the Parameter in any place.
-     * </li>
-     * <li>
-     * Integer will filter out any objects that do not have exactly that value.
-     * </li>
-     * <li>
-     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
-     * </li>
-     * <li>
-     * Null Values are allowed as wild card, filtering out nothing.
-     * </li>
-     * </ul>
-     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
-     *
-     * @param consultationID      Unique Primary key of a {@link Consultation}.
-     * @param consultationName    {@link Consultation} name as String.
-     * @param consultationMinDate Minimum date a {@link Consultation} need to have to be found.
-     * @param consultationMaxDate Maximum date a {@link Consultation} need to have to be found.
-     * @param employeeID          Unique Primary key of a {@link Employee}.
-     * @param employeeFirstName   {@link Employee} First name as String.
-     * @param employeeLastName    {@link Employee} Last name as String.
-     * @param cprNr               {@link Employee} CprNr as String.
-     * @param email               {@link Employee} Email Address as String.
-     * @param phoneNr             {@link Employee} PhoneNr as String.
-     * @param interviewID         Unique Primary key of a {@link Interview}.
-     * @param interviewName       {@link Interview} name as String.
-     * @param AmuNr               Unique Primary key of a {@link Education}.
-     * @param educationName       {@link Education} name as String.
-     * @param educationNoOfDays   Number of Days this {@link Education} takes.
-     * @param educationMinDate    Minimum date a {@link Education} needs to have to be found.
-     * @param educationMaxDate    Maximum date a {@link Education} need to have to be found
-     * @param providerID          Unique Primary key of a {@link Provider}.
-     * @param providerName        {@link Provider} name as String.
-     * @return ArrayList of {@link Consultation} Object.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just the Interview, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Consultation> findConsultations(Integer consultationID,
-                                                            String consultationName,
-                                                            LocalDate consultationMinDate,
-                                                            LocalDate consultationMaxDate,
-                                                            Integer employeeID,
-                                                            String employeeFirstName,
-                                                            String employeeLastName,
-                                                            String cprNr,
-                                                            String email,
-                                                            String phoneNr,
-                                                            Integer interviewID,
-                                                            String interviewName,
-                                                            Integer AmuNr,
-                                                            String educationName,
-                                                            Integer educationNoOfDays,
-                                                            LocalDate educationMinDate,
-                                                            LocalDate educationMaxDate,
-                                                            Integer providerID,
-                                                            String providerName) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
-        HashMap<Integer, Consultation> consultations = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION,
-                consultationID,
-                consultationName,
-                consultationMinDate,
-                consultationMaxDate,
-                employeeID,
-                employeeFirstName,
-                employeeLastName,
-                cprNr,
-                email,
-                phoneNr,
-                interviewID,
-                interviewName,
-                AmuNr,
-                educationName,
-                educationNoOfDays,
-                educationMinDate,
-                educationMaxDate,
-                providerID,
-                providerName);
-
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
-            buildConsultation(rs, employees, consultations);
-        }
-        return new ArrayList<>(consultations.values());
-    }
-
-    /**
-     * Finds {@link Company} Objects from the DataBase by specified search criteria.
-     * The search will be done by:
-     * <ul>
-     * <li>
-     * Strings will filter out any objects that does not match the Parameter in any place.
-     * </li>
-     * <li>
-     * Integer will filter out any objects that do not have exactly that value.
-     * </li>
-     * <li>
-     * LocalDates will either filter out all objects that have earlier or later Date field, depending on the parameter.
-     * </li>
-     * <li>
-     * Null Values are allowed as wild card, filtering out nothing.
-     * </li>
-     * </ul>
-     * This method will also make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconect}.
-     *
-     * @param searchContainer The Contain for the search parameters
-     * @return ArrayList of {@link Company} Object.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     */
-    public static ArrayList<Company> findCompanies(SearchContainer searchContainer) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
-        HashMap<Integer, Consultation> consultations = new HashMap<>();
-        HashMap<Integer, Company> companies = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY,
-                searchContainer.getCompanyID(),
-                searchContainer.getCvrNr(),
-                searchContainer.getCompanyName(),
-                searchContainer.getConsultationID(),
-                searchContainer.getConsultationName(),
-                searchContainer.getConsultationMinDate(),
-                searchContainer.getConsultationMaxDate(),
-                searchContainer.getEmployeeID(),
-                searchContainer.getEmployeeFirstName(),
-                searchContainer.getEmployeeLastName(),
-                searchContainer.getCprNr(),
-                searchContainer.getEmail(),
-                searchContainer.getPhoneNr(),
-                searchContainer.getInterviewID(),
-                searchContainer.getInterviewName(),
-                searchContainer.getAmuNr(),
-                searchContainer.getEducationName(),
-                searchContainer.getEducationNoOfDays(),
-                searchContainer.getEducationMinDate(),
-                searchContainer.getEducationMaxDate(),
-                searchContainer.getProviderID(),
-                searchContainer.getProviderName());
-
-
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
-            buildConsultation(rs, employees, consultations);
-            buildCompany(rs, consultations, educations, companies);
-        }
-        return new ArrayList<>(companies.values());
     }
 
     /*
@@ -840,9 +368,8 @@ public class DbFacade {
      */
     public static boolean deleteInterview(int interviewID) throws SQLException {
         DB database = DB.getInstance();
-        return database.executeStoredProcedure(Sp.DELETE_INTERVIEW_BY_PK);
+        return database.executeStoredProcedure(Sp.DELETE_INTERVIEW_BY_PK, interviewID);
     }
-
 
     /**
      * Deletes a {@link Employee} from the DataBase by PrimaryKey.
@@ -891,152 +418,71 @@ public class DbFacade {
         return database.executeStoredProcedure(Sp.DELETE_COMPANY_BY_PK, companyID);
     }
 
+    /**
+     * Deletes a {@link FinishedEducation} from the DataBase by FK.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param interviewID Primary Key of the interview this finished Education will be removed from.
+     * @return True if deleted successfully.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static boolean deleteFinishedEducationByInterviewID(int interviewID) throws SQLException {
+        DB database = DB.getInstance();
+        return database.executeStoredProcedure(Sp.DELETE_FINISHED_EDUCATION_BY_INTERVIEW_ID, interviewID);
+    }
+
+    /**
+     * Deletes a {@link EducationWish} from the DataBase by FK.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param interviewID Primary Key of the interview this Education Wish will be removed from.
+     * @return True if deleted successfully.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static boolean deleteEducationWishByInterviewID(int interviewID) throws SQLException {
+        DB database = DB.getInstance();
+        return database.executeStoredProcedure(Sp.DELETE_EDUCATION_WISH_BY_INTERVIEW_ID, interviewID);
+    }
 
     /*
-     * GET BY PRIMARY KEY
+     * get by ID
      */
 
     /**
-     * Finds a {@link Provider} from the DataBase by PrimaryKey.
+     * Finds a {@link Company} from the DataBase by PrimaryKey.
      * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
      *
      * <br><br>
      * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      *
-     * @param providerID Primary Key of the element that should be returned.
-     * @return {@link Provider} Object with correct reference structure.
+     * @param companyID Primary Key of the element that should be returned.
+     * @return {@link Company} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
-     * @deprecated We never want just the one object, use find Companies
      */
-    @Deprecated
-    public static Provider findProvider(int providerID) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
+    public static Company findCompanyByID(int companyID) throws SQLException {
+        Company returnCompany = null;
+        //fetch information
+        ArrayList<Consultation> newConsultations = findConsultationByCompanyID(companyID);
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, providerID, null);
+        //getRet of data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY_BY_ID,companyID);
+        while (rs.next()){
+            int newCompanyId = rs.getInt("CompanyID");
+            if (!rs.wasNull()){
+                String newCompanyCvrNr = rs.getString("CompanyCvrNr");
+                String newCompanyName = rs.getString("CompanyName");
 
-        while (rs.next()) {
-            buildProvider(rs, providers);
+                returnCompany = new Company(newCompanyId,newCompanyCvrNr,newCompanyName,newConsultations);
+            }
         }
-        if (providers.isEmpty()) { //test if nothing was found
-            return null;
-        }
-        return new ArrayList<>(providers.values()).get(0);
-    }
 
-    /**
-     * Finds a {@link Education} from the DataBase by PrimaryKey.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @param educationID Primary Key of the element that should be returned.
-     * @return {@link Education} Object with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just the one object, use find Companies
-     */
-    @Deprecated
-    public static Education findEducation(int educationID) throws SQLException {
-        Education returnEducation = null;
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, educationID, null, null, null, null, null, null);
-
-        //get row by row
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-        }
-        if (educations.isEmpty()) { //test if nothing was found
-            return null;
-        }
-        return new ArrayList<>(educations.values()).get(0);
-    }
-
-    /**
-     * Finds a {@link Interview} from the DataBase by PrimaryKey.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @param interviewID Primary Key of the element that should be returned.
-     * @return {@link Interview} Object with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just the one object, use find Companies
-     */
-    @Deprecated
-    public static Interview findInterview(int interviewID) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW, interviewID, null, null, null, null, null, null, null, null);
-
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-        }
-        if (interviews.isEmpty()) { //test if nothing was found
-            return null;
-        }
-        return new ArrayList<>(interviews.values()).get(0);
-    }
-
-    /**
-     * Finds a {@link Employee} from the DataBase by PrimaryKey.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @param employeeID Primary Key of the element that should be returned.
-     * @return {@link Employee} Object with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just the one object, use find Companies
-     */
-    @Deprecated
-    public static Employee findEmployee(int employeeID) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
-
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE, employeeID, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
-        }
-        if (employees.isEmpty()) { //test if nothing was found
-            return null;
-        }
-        return new ArrayList<>(employees.values()).get(0);
+        clearCache();
+        return returnCompany;
     }
 
     /**
@@ -1050,604 +496,1024 @@ public class DbFacade {
      * @return {@link Consultation} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
-     * @deprecated We never want just the one object, use find Companies
      */
-    @Deprecated
-    public static Consultation findConsultation(int consultationID) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
-        HashMap<Integer, Consultation> consultations = new HashMap<>();
+    public static Consultation findConsultationByID(int consultationID) throws SQLException {
+        Consultation returnConsultation = null;
+        //fetch information
+        ArrayList<Employee> newEmployees = findEmployeesByConsultationID(consultationID);
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, consultationID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        //get rest of data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION_BY_ID,consultationID);
+        while(rs.next()){
+            int newConsultationId = rs.getInt("ConsultationID");
+            if (!rs.wasNull()){
+                String newConsultationName = rs.getString("ConsultationName");
+                LocalDate newConsultationStartDate = rs.getDate("ConsultationStartDate").toLocalDate();
+                LocalDate newConsultationEndDate = rs.getDate("ConsultationEndDate").toLocalDate();
 
-        while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
-            buildConsultation(rs, employees, consultations);
+                returnConsultation = new Consultation(newConsultationId,newConsultationName,newConsultationStartDate,newConsultationEndDate,newEmployees);
+            }
         }
-        if (consultations.isEmpty()) { //test if nothing was found
-            return null;
-        }
-        return new ArrayList<>(consultations.values()).get(0);
+        clearCache();
+        return returnConsultation;
     }
 
     /**
-     * Finds a {@link Company} from the DataBase by PrimaryKey.
+     * Finds a {@link Employee} from the DataBase by PrimaryKey.
      * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
      *
      * <br><br>
      * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
      *
-     * @param companyID Primary Key of the element that should be returned.
-     * @return {@link Company} Object with correct reference structure.
+     * @param employeeID Primary Key of the element that should be returned.
+     * @return {@link Employee} Object with correct reference structure.
      * @throws SQLException Exception thrown when encountered a fatal error.
      * @see DB
-     * @deprecated We never want just the one object, use find Companies
      */
-    @Deprecated
-    public static Company findCompany(int companyID) throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
-        HashMap<Integer, Consultation> consultations = new HashMap<>();
-        HashMap<Integer, Company> companies = new HashMap<>();
+    public static Employee findEmployeeByID(int employeeID) throws SQLException {
+        Employee returnEmployee = null;
+        //Fetch information
+        ArrayList<Interview> newInterviews = findInterviewsByEmployeeID(employeeID);
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY, companyID, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+        //get rest of Data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE_BY_ID, employeeID);
+        while (rs.next()){
+            int newEmployeeId = rs.getInt("EmployeeID");
+            if (!rs.wasNull()) {
+                String newEmployeeFirstName = rs.getString("EmployeeFirstName");
+                String newEmployeeLastName = rs.getString("EmployeeLastName");
+                String newEmployeeCpr = rs.getString("EmployeeCprNr");
+                String newEmployeeEmail = rs.getString("EmployeeEmail");
+                String newEmployeePhoneNr = rs.getString("EmployePhoneNr");
+
+                returnEmployee = new Employee(newEmployeeId, newEmployeeFirstName, newEmployeeLastName, newEmployeeCpr, newEmployeeEmail, newEmployeePhoneNr,newInterviews);
+            }
+        }
+        clearCache();
+        return returnEmployee;
+    }
+
+    /**
+     * Finds a {@link Interview} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param interviewID Primary Key of the element that should be returned.
+     * @return {@link Interview} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Interview findInterviewByID(int interviewID) throws SQLException {
+        Interview returnInterview = null;
+        //Fetch information deeper in the hierarchy
+        ArrayList<FinishedEducation> newFinishedEducations = findFinishedEducationsByInterviewID(interviewID);
+        ArrayList<EducationWish> newEducationWishes = findEducationWishesByInterviewID(interviewID);
+
+        //get rest of date
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW_BY_ID, interviewID);
 
         while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
-            buildConsultation(rs, employees, consultations);
-            buildCompany(rs, consultations, educations, companies);
+            int newInterviewID = rs.getInt("InterviewID");
+            if (!rs.wasNull()) {
+                String newInterviewName = rs.getString("InterviewName");
+                Integer newInterviewProdScore = rs.getInt("InterviewProductUnderstanding");
+                Integer newInterviewProbScore = rs.getInt("interviewProblemUnderstanding");
+                Integer newInterviewFlexScore = rs.getInt("InterviewFlexiblity");
+                Integer newInterviewQualityScore = rs.getInt("InterviewQualityAwarenes");
+                Integer newInterviewCooperation = rs.getInt("InterviewCooperation");
+
+                returnInterview = new Interview(newInterviewID, newInterviewName, newInterviewProdScore, newInterviewProbScore, newInterviewFlexScore, newInterviewQualityScore, newInterviewCooperation, newFinishedEducations, newEducationWishes);
+            }
         }
-        if (companies.isEmpty()) { //test if nothing was found
-            return null;
+        clearCache();
+        return returnInterview;
+    }
+
+    /**
+     * Finds a {@link Education} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param educationID Primary Key of the element that should be returned.
+     * @return {@link Education} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Education findEducationByID(int educationID) throws SQLException {
+        Education returnEducation = null;
+        //Fetch information deeper in the hierarchy
+        Provider newProvider = findProviderByEducationID(educationID);
+        ArrayList<LocalDate> newDates = findDatesByEducationID(educationID);
+
+        //Get rest of needed information and build
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION_BY_ID, educationID);
+
+        while (rs.next()) {
+            int newEducationID = rs.getInt("EducationAmuNr");
+            if (!rs.wasNull()) {
+                String newEducationName = rs.getString("EducationName");
+                String newEducationDescription = rs.getString("EducationDescription");
+                Integer newEducationNoOfDays = rs.getInt("EducationNoOfDays");
+
+                returnEducation = new Education(newEducationID, newEducationName, newEducationDescription, newEducationNoOfDays, newDates, newProvider);
+            }
         }
-        return new ArrayList<>(companies.values()).get(0);
+        clearCache();
+        return returnEducation;
+    }
+
+    /**
+     * Finds a {@link Provider} from the DataBase by PrimaryKey.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param providerID Primary Key of the element that should be returned.
+     * @return {@link Provider} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Provider findProviderByID(int providerID) throws SQLException {
+        Provider returnProvider = null;
+
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER_BY_ID, providerID);
+
+        while (rs.next()) {
+            int newProviderID = rs.getInt("ProviderID");
+            if (!rs.wasNull()) {
+                String newProviderName = rs.getString("ProviderName");
+
+                returnProvider = new Provider(newProviderID, newProviderName);
+            }
+        }
+        clearCache();
+        return returnProvider;
     }
 
     /*
-     *GETTING ALL VALUES
+     * Helper methods for finding by ID
      */
 
-    /**
-     * Finds all {@link Provider Providers} from the DataBase.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @return ArrayList of {@link Provider Provider} Objects with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just this method, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Provider> findAllProviders() throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
+    private static ArrayList<Consultation> findConsultationByCompanyID(int companyID) throws SQLException {
+        ArrayList<Consultation> returnArrayList = new ArrayList<>();
+        ArrayList<Consultation> newConsultations = new ArrayList<>();
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER, null, null);
-
+        //get the date
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATIONS_BY_COMPANY_ID, companyID);
         while (rs.next()) {
-            buildProvider(rs, providers);
+            int newConsultationId = rs.getInt("ConsultationID");
+            if (consultationCache.get(newConsultationId) != null) {
+                returnArrayList.add(consultationCache.get(newConsultationId));
+            } else if (!rs.wasNull()) {
+                String newConsultationName = rs.getString("ConsultationName");
+                LocalDate newConsultationStartDate = rs.getDate("ConsultationStartDate").toLocalDate();
+                LocalDate newConsultationEndDate = rs.getDate("ConsultationEndDate").toLocalDate();
+
+                Consultation tempConsultation = new Consultation(newConsultationId,newConsultationName,newConsultationStartDate,newConsultationEndDate,null);
+                newConsultations.add(tempConsultation);
+            }
         }
-        return new ArrayList<>(providers.values());
+        //add rest of data
+        for (Consultation newConsultation : newConsultations) {
+            int id = newConsultation.getConsultationID();
+            newConsultation.setEmployees(findEmployeesByConsultationID(id));
+
+            newConsultation = consultationCache.putIfAbsent(id, newConsultation);
+
+            returnArrayList.add(newConsultation);
+        }
+        return returnArrayList;
     }
 
-    /**
-     * Finds all {@link Education Educations} from the DataBase.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @return ArrayList of {@link Education} Objects with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just this method, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Education> findAllEducations() throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
+    private static ArrayList<Employee> findEmployeesByConsultationID(int consultationID) throws SQLException {
+        ArrayList<Employee> returnArrayList = new ArrayList<>();
+        ArrayList<Employee> newEmployees = new ArrayList<>();
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION, null, null, null, null, null, null, null);
-
+        //get the data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEES_BY_CONSULTATION_ID, consultationID);
         while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
+            int newEmployeeId = rs.getInt("EmployeeID");
+            //try to find in cache
+            if (employeeCache.get(newEmployeeId) != null) {
+                returnArrayList.add(employeeCache.get(newEmployeeId));
+            } else if (!rs.wasNull()) {
+                String newEmployeeFirstName = rs.getString("EmployeeFirstName");
+                String newEmployeeLastName = rs.getString("EmployeeLastName");
+                String newEmployeeCpr = rs.getString("EmployeeCprNr");
+                String newEmployeeEmail = rs.getString("EmployeeEmail");
+                String newEmployeePhoneNr = rs.getString("EmployePhoneNr");
+
+                Employee tempEmployee = new Employee(newEmployeeId, newEmployeeFirstName, newEmployeeLastName, newEmployeeCpr, newEmployeeEmail, newEmployeePhoneNr, null);
+                newEmployees.add(tempEmployee);
+            }
         }
-        return new ArrayList<>(educations.values());
+        //Add rest of data
+        for (Employee newEmployee : newEmployees) {
+            int id = newEmployee.getEmployeeID();
+            newEmployee.setInterviews(findInterviewsByEmployeeID(id));
+
+            newEmployee = employeeCache.putIfAbsent(id, newEmployee);
+
+            returnArrayList.add(newEmployee);
+        }
+        return returnArrayList;
     }
 
-    /**
-     * Finds all {@link Interview Interviews} from the DataBase.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @return ArrayList of {@link Interview} Objects with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just this method, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Interview> findAllInterviews() throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
+    private static ArrayList<Interview> findInterviewsByEmployeeID(int employeeID) throws SQLException {
+        ArrayList<Interview> returnArrayList = new ArrayList<>();
+        ArrayList<Interview> newInterviews = new ArrayList<>();
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEW, null, null, null, null, null, null, null, null, null);
-
+        //get the data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_INTERVIEWS_BY_EMPLOYEE_ID, employeeID);
         while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
+            int newInterviewId = rs.getInt("InterviewID");
+            //Try to find in cache
+            if (interviewCache.get(newInterviewId) != null) {
+                returnArrayList.add(interviewCache.get(newInterviewId));
+            } else if (!rs.wasNull()) { //else we build new
+                String newInterviewName = rs.getString("InterviewName");
+                Integer newInterviewProdScore = rs.getInt("InterviewProductUnderstanding");
+                Integer newInterviewProbScore = rs.getInt("interviewProblemUnderstanding");
+                Integer newInterviewFlexScore = rs.getInt("InterviewFlexiblity");
+                Integer newInterviewQualityScore = rs.getInt("InterviewQualityAwarenes");
+                Integer newInterviewCooperation = rs.getInt("InterviewCooperation");
+
+                Interview tempInterview = new Interview(newInterviewId, newInterviewName, newInterviewProdScore, newInterviewProbScore, newInterviewFlexScore, newInterviewQualityScore, newInterviewCooperation, null, null);
+                newInterviews.add(tempInterview);
+            }
         }
-        return new ArrayList<>(interviews.values());
+        //add rest of data to new interviews
+        for (Interview newInterview : newInterviews) {
+            int id = newInterview.getInterviewID();
+            newInterview.setEducationWishes(findEducationWishesByInterviewID(id));
+            newInterview.setFinishedEducations(findFinishedEducationsByInterviewID(id));
+
+            newInterview = interviewCache.putIfAbsent(id, newInterview);
+
+            returnArrayList.add(newInterview);
+        }
+        return returnArrayList;
     }
 
-    /**
-     * Finds all {@link Employee Employees} from the DataBase.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @return ArrayList of {@link Employee} Objects with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just this method, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Employee> findAllEmployees() throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
+    private static ArrayList<EducationWish> findEducationWishesByInterviewID(int interviewID) throws SQLException {
+        ArrayList<EducationWish> returnArrayList = new ArrayList<>();
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-
+        //get the data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATION_WISHES_BY_INTERVIEW_ID, interviewID);
         while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
+            int newEducationWishId = rs.getInt("EducationWishID");
+            if (!rs.wasNull()) {
+                Integer newEducationWishPriority = rs.getInt("EducationWishPriority");
+
+                EducationWish tempWish = new EducationWish(newEducationWishId, null, newEducationWishPriority);
+                returnArrayList.add(tempWish);
+            }
         }
-        return new ArrayList<>(employees.values());
+        //Attach the education to found wishes
+        for (EducationWish educationWish : returnArrayList) {
+            int id = educationWish.getEducationWishID();
+            educationWish.setEducation(findEducationByEducationWishID(id));
+        }
+        return returnArrayList;
     }
 
-    /**
-     * Finds all {@link Consultation Consultations} from the DataBase.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @return ArrayList of {@link Consultation} Objects with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just this method, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Consultation> findAllConsultations() throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
-        HashMap<Integer, Consultation> consultations = new HashMap<>();
+    private static ArrayList<FinishedEducation> findFinishedEducationsByInterviewID(int interviewID) throws SQLException {
+        ArrayList<FinishedEducation> returnArrayList = new ArrayList<>();
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-
+        //Get the data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_FINISHED_EDUCATIONS_BY_INTERVIEW_ID, interviewID);
         while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
-            buildConsultation(rs, employees, consultations);
+            int newFinishedEducationId = rs.getInt("FinishedEducationID");
+            if (!rs.wasNull()) {
+                LocalDate finishedDate = rs.getDate("FinishedEducationDate").toLocalDate();
+
+                FinishedEducation tempFinishedEducation = new FinishedEducation(newFinishedEducationId, null, finishedDate);
+                returnArrayList.add(tempFinishedEducation);
+            }
         }
-        return new ArrayList<>(consultations.values());
+        //Attach teh education to found FinishedEducations
+        for (FinishedEducation finishedEducation : returnArrayList) {
+            int id = finishedEducation.getFinishedEducationID();
+            finishedEducation.setEducation(findEducationByFinishedEducationID(id));
+        }
+        return returnArrayList;
     }
 
-    /**
-     * Finds all {@link Company Companies} from the DataBase.
-     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
-     *
-     * <br><br>
-     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
-     *
-     * @return ArrayList of {@link Company} Objects with correct reference structure.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     * @see DB
-     * @deprecated We never want just this method, use find Companies
-     */
-    @Deprecated
-    public static ArrayList<Company> findAllCompanies() throws SQLException {
-        //init needed values
-        HashMap<Integer, Provider> providers = new HashMap<>();
-        HashMap<Integer, Education> educations = new HashMap<>();
-        HashMap<Integer, Interview> interviews = new HashMap<>();
-        HashMap<Integer, FinishedEducation> finishedEducations = new HashMap<>();
-        HashMap<Integer, EducationWish> educationWishes = new HashMap<>();
-        HashMap<Integer, Employee> employees = new HashMap<>();
-        HashMap<Integer, Consultation> consultations = new HashMap<>();
-        HashMap<Integer, Company> companies = new HashMap<>();
+    private static Education findEducationByFinishedEducationID(int finishedEducationID) throws SQLException {
+        Education returnEducation = null;
 
-        //Getting data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATIONS_BY_FINISHED_EDUCATION_ID, finishedEducationID);
         while (rs.next()) {
-            buildProvider(rs, providers);
-            buildEducation(rs, educations, providers);
-            buildEducationWish(rs, educationWishes, educations);
-            buildFinishedEducation(rs, finishedEducations, educations);
-            buildInterview(rs, educationWishes, finishedEducations, interviews);
-            buildEmployee(rs, interviews, employees);
-            buildConsultation(rs, employees, consultations);
-            buildCompany(rs, consultations, educations, companies);
+            int newEducationId = rs.getInt("EducationAmuNr");
+            //Return if cached already
+            if (educationCache.get(newEducationId) != null) {
+                return educationCache.get(newEducationId);
+            }
+            if (!rs.wasNull()) {
+                String newEducationName = rs.getString("EducationName");
+                String newEducationDescription = rs.getString("EducationDescription");
+                Integer newEducationNoOfDays = rs.getInt("EducationNoOfDays");
+
+                returnEducation = new Education(newEducationId, newEducationName, newEducationDescription, newEducationNoOfDays, null, null);
+            }
         }
-        return new ArrayList<>(companies.values());
+        if (returnEducation != null) {
+            returnEducation.setProvider(findProviderByEducationID(returnEducation.getAmuNr()));
+            returnEducation.setDates(findDatesByEducationID(returnEducation.getAmuNr()));
+            returnEducation = educationCache.putIfAbsent(returnEducation.getAmuNr(), returnEducation);
+        }
+
+        return returnEducation;
+    }
+
+    private static Education findEducationByEducationWishID(int eudcationwishid) throws SQLException {
+        Education returnEducation = null;
+
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EDUCATIONS_BY_EDUCATION_WISH_ID, eudcationwishid);
+        while (rs.next()) {
+            int newEducationId = rs.getInt("EducationAmuNr");
+            //Return if cached already
+            if (educationCache.get(newEducationId) != null) {
+                return educationCache.get(newEducationId);
+            }
+            if (!rs.wasNull()) {
+                String newEducationName = rs.getString("EducationName");
+                String newEducationDescription = rs.getString("EducationDescription");
+                Integer newEducationNoOfDays = rs.getInt("EducationNoOfDays");
+
+                returnEducation = new Education(newEducationId, newEducationName, newEducationDescription, newEducationNoOfDays, null, null);
+            }
+        }
+        if (returnEducation != null) {
+            returnEducation.setProvider(findProviderByEducationID(returnEducation.getAmuNr()));
+            returnEducation.setDates(findDatesByEducationID(returnEducation.getAmuNr()));
+            returnEducation = educationCache.putIfAbsent(returnEducation.getAmuNr(), returnEducation);
+        }
+
+        return returnEducation;
+    }
+
+    private static Provider findProviderByEducationID(int educationID) throws SQLException {
+        Provider returnProvider = null;
+
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_PROVIDER_BY_EDUCATION_ID, educationID);
+        while (rs.next()) {
+            int newProviderID = rs.getInt("ProviderID");
+            //Immediately return if provider is cached already
+            if (providerCache.get(newProviderID) != null) {
+                return providerCache.get(newProviderID);
+            }
+            if (!rs.wasNull()) {
+                String newProviderName = rs.getString("ProviderName");
+                Provider newProvider = new Provider(newProviderID, newProviderName);
+
+                // if already in Cache
+                returnProvider = providerCache.putIfAbsent(newProvider.getProviderID(), newProvider);
+            }
+        }
+        return returnProvider;
+    }
+
+    private static ArrayList<LocalDate> findDatesByEducationID(int educationID) throws SQLException {
+        ArrayList<LocalDate> returnArrayList = new ArrayList<>();
+
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_DATES_BY_EDUCATION_ID, educationID);
+        while (rs.next()) {
+            LocalDate date = rs.getDate("Date").toLocalDate();
+            returnArrayList.add(date);
+        }
+        return returnArrayList;
+    }
+
+
+    private static void clearCache() {
+        consultationCache.clear();
+        employeeCache.clear();
+        interviewCache.clear();
+        educationCache.clear();
+        providerCache.clear();
     }
 
     /*
-     * HELPER METHODS FOR FINDING
+     * Find Display objects
      */
 
     /**
-     * Helper Method that builds a {@link Provider}.
+     * Finds all {@link DisplayCompany DisplayCompanies} from the DataBase.
+     * DisplayCompanies can be used to display data for the user. In addition display objects are more lightweight and should be
+     * the preferred database interaction if lots of objects are need to be displayed.
+     * Note that Display Objects are are only keeping the minimum required information of the corresponding Domain object.
      *
-     * @param rs              ResultSet of Data
-     * @param providerHashMap HashMap of Primary ID as key, {@link Provider} as value.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link DisplayCompany} Objects.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    private static void buildProvider(ResultSet rs, HashMap<Integer, Provider> providerHashMap) throws SQLException {
-        //Fetch values from rs and test if the rs contain the object
-        int id = rs.getInt("tbl_Provider_PK_fld_ProviderID");
-        if (!rs.wasNull()) { //Test for existences
-            String providerName = rs.getString("tbl_Provider_fld_ProviderName");
-
-            // Make new Provider
-            Provider provider = new Provider(id, providerName);
-
-            //Put provider in HashMap
-            providerHashMap.putIfAbsent(id, provider);
+    public static ArrayList<DisplayCompany> findDisplayCompanies(SearchContainer container) throws SQLException {
+        if (container.isOnlyFilteringCompanies()) {
+            return findAllDisplayCompanies(container);
+        } else {
+            return findFilteredDisplayCompanies(container);
         }
     }
 
     /**
-     * Helper Method that builds a {@link Education}.
-     * Note that this method must be called after {@link #buildProvider}
-     * for any given ResultSet row.
+     * Finds all {@link DisplayConsultation DisplayConsultations} from the DataBase.
+     * DisplayCompanies can be used to display data for the user. In addition display objects are more lightweight and should be
+     * the preferred database interaction if lots of objects are need to be displayed.
+     * Note that Display Objects are are only keeping the minimum required information of the corresponding Domain object.
      *
-     * @param rs               ResultSet of Data
-     * @param educationHashMap HashMap of Primary ID as key, {@link Education} as value.
-     * @param providerHashMap  HashMap of Primary ID as key, {@link Provider} as value.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link DisplayConsultation} Objects.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    private static void buildEducation(ResultSet rs,
-                                       HashMap<Integer, Education> educationHashMap,
-                                       HashMap<Integer, Provider> providerHashMap) throws SQLException {
-        //Fetch values from rs and test if the rs contain the object
-        int id = rs.getInt("tbl_Education_PK_fld_AmuNr");
-        if (!rs.wasNull()) { //Test for existences
-            String name = rs.getString("tbl_Education_fld_EducationName");
-            String description = rs.getString("tbl_Education_fld_Description");
-            int noOfDays = rs.getInt("tbl_Education_fld_NoOfDays"); //Can not be null in db
-            LocalDate localDate = rs.getDate("tbl_Date_fld_Date").toLocalDate();
-
-            //fetch the provider from the hashMap
-            Provider provider = null;
-            int providerId = rs.getInt("tbl_Education_FK_fld_ProviderID");
-            if (!rs.wasNull()) {
-                provider = providerHashMap.get(providerId);
-            }
-
-            //Make new Education
-            Education education = new Education(id, name, description, noOfDays, new ArrayList<>(), provider);
-
-            // Put education in hashMap and add date to the right reference
-            education = educationHashMap.putIfAbsent(id, education);
-            if (education != null) {
-                education.getDates().add(localDate);
-            }
+    public static ArrayList<DisplayConsultation> findDisplayConsultations(SearchContainer container) throws SQLException {
+        if (container.isOnlyFilteringConsultations()) {
+            return findAllDisplayConsultations(container);
+        } else {
+            return findFilteredDisplayConsultations(container);
         }
     }
 
     /**
-     * Helper Method that builds a {@link FinishedEducation}.
-     * Note that this method must be called after {@link #buildEducation}
-     * for any given ResultSet row.
+     * Finds all {@link DisplayEmployee DisplayEmployees} from the DataBase.
+     * DisplayCompanies can be used to display data for the user. In addition display objects are more lightweight and should be
+     * the preferred database interaction if lots of objects are need to be displayed.
+     * Note that Display Objects are are only keeping the minimum required information of the corresponding Domain object.
      *
-     * @param rs                       ResultSet of Data
-     * @param finishedEducationHashMap HashMap of Primary ID as key, {@link FinishedEducation} as value.
-     * @param educationHashMap         HashMap of Primary ID as key, {@link Education} as value.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link DisplayEmployee} Objects.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    private static void buildFinishedEducation(ResultSet rs,
-                                               HashMap<Integer, FinishedEducation> finishedEducationHashMap,
-                                               HashMap<Integer, Education> educationHashMap) throws SQLException {
-        // Fetch values from rs
-        int id = rs.getInt("tbl_FinishedEducation_PK_fld_FinishedEducationID");
-        if (!rs.wasNull()) { //Test for existences
-            LocalDate localDate = rs.getDate("tbl_FinishedEducation_fld_FinishedDate").toLocalDate();
-
-            // Fetch values from updated hashMap
-            int educationId = rs.getInt("tbl_FinishedEducation_FK_fld_AmuNr");
-            Education education = null;
-            if (!rs.wasNull()) {
-                education = educationHashMap.get(educationId);
-            }
-
-            // make new object
-            FinishedEducation finishedEducation = new FinishedEducation(id, education, localDate);
-
-            //Put Object in hashMap and add references
-            finishedEducationHashMap.putIfAbsent(id, finishedEducation);
+    public static ArrayList<DisplayEmployee> findDisplayEmployees(SearchContainer container) throws SQLException {
+        if (container.isOnlyFilteringEmployees()) {
+            return findAllDisplayEmployees(container);
+        } else {
+            return findFilteredDisplayEmployees(container);
         }
     }
 
     /**
-     * Helper Method that builds a {@link EducationWish}.
-     * Note that this method must be called after {@link #buildEducation}
-     * for any given ResultSet row.
+     * Finds all {@link DisplayInterview DisplayInterviews} from the DataBase.
+     * DisplayCompanies can be used to display data for the user. In addition display objects are more lightweight and should be
+     * the preferred database interaction if lots of objects are need to be displayed.
+     * Note that Display Objects are are only keeping the minimum required information of the corresponding Domain object.
      *
-     * @param rs                   ResultSet of Data
-     * @param educationWishHashMap HashMap of Primary ID as key, {@link EducationWish} as value.
-     * @param educationHashMap     HashMap of Primary ID as key, {@link Education} as value.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link DisplayInterview} Objects.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    private static void buildEducationWish(ResultSet rs,
-                                           HashMap<Integer, EducationWish> educationWishHashMap,
-                                           HashMap<Integer, Education> educationHashMap) throws SQLException {
-        // Fetch values from rs
-        int id = rs.getInt("tbl_EducationWish_PK_fld_EducationWishID");
-        if (!rs.wasNull()) { //Test for existences
-            int priority = rs.getInt("tbl_EducationWish_fld_WishPriority");
-
-            // Fetch values from updated hashMap
-            int educationId = rs.getInt("tbl_EducationWish_FK_fld_AmuNr");
-            Education education = null;
-            if (!rs.wasNull()) {
-                education = educationHashMap.get(educationId);
-            }
-
-            // make new object
-            EducationWish educationWish = new EducationWish(id, education, priority);
-
-            //Put Object in hashMap and add references
-            educationWishHashMap.putIfAbsent(id, educationWish);
+    public static ArrayList<DisplayInterview> findDisplayInterviews(SearchContainer container) throws SQLException {
+        if (container.isOnlyFilteringInterviews()) {
+            return findAllDisplayInterviews(container);
+        } else {
+            return findFilteredDisplayInterviews(container);
         }
     }
 
     /**
-     * Helper Method that builds a {@link Interview}.
-     * Note that this method must be called after {@link #buildFinishedEducation} and {@link #buildEducationWish}
-     * for any given ResultSet row.
+     * Finds all {@link DisplayEducation DisplayEducations} from the DataBase.
+     * DisplayCompanies can be used to display data for the user. In addition display objects are more lightweight and should be
+     * the preferred database interaction if lots of objects are need to be displayed.
+     * Note that Display Objects are are only keeping the minimum required information of the corresponding Domain object.
      *
-     * @param rs                       ResultSet of Data
-     * @param educationWishHashMap     HashMap of Primary ID as key, {@link EducationWish} as value.
-     * @param finishedEducationHashMap HashMap of Primary ID as key, {@link FinishedEducation} as value.
-     * @param interviewHashMap         HashMap of Primary ID as key, {@link Interview} as value.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link DisplayEducation} Objects.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    private static void buildInterview(ResultSet rs,
-                                       HashMap<Integer, EducationWish> educationWishHashMap,
-                                       HashMap<Integer, FinishedEducation> finishedEducationHashMap,
-                                       HashMap<Integer, Interview> interviewHashMap) throws SQLException {
-        // Fetch values from rs
-        int id = rs.getInt("tbl_Interview_PK_fld_InterviewID");
-        if (!rs.wasNull()) { //Test for existence
-            String name = rs.getString("tbl_Interview_fld_InterviewName");
-            Integer productUnderstanding = rs.getInt("tbl_Interview_fld_ProductUnderstanding"); //Can be null, rs set it to 0
-            if (rs.wasNull()) {
-                productUnderstanding = null;
-            }
-            Integer problemUnderstanding = rs.getInt("tbl_Interview_fld_ProblemUnderstanding");
-            if (rs.wasNull()) {
-                problemUnderstanding = null;
-            }
-            Integer flexibility = rs.getInt("tbl_Interview_fld_Flexibility");
-            if (rs.wasNull()) {
-                flexibility = null;
-            }
-            Integer qualityAwareness = rs.getInt("tbl_Interview_fld_QualityAwarness");
-            if (rs.wasNull()) {
-                qualityAwareness = null;
-            }
-            Integer cooperation = rs.getInt("tbl_Interview_fld_Cooperation");
-            if (rs.wasNull()) {
-                cooperation = null;
-            }
-
-            // Fetch values from updated hashMap
-            int eduWishID = rs.getInt("tbl_EducationWish_PK_fld_EducationWishID");
-            EducationWish educationWish = null;
-            if (!rs.wasNull()) {
-                educationWish = educationWishHashMap.get(eduWishID);
-            }
-
-            int finEduID = rs.getInt("tbl_FinishedEducation_PK_fld_FinishedEducationID");
-            FinishedEducation finishedEducation = null;
-            if (!rs.wasNull()) {
-                finishedEducation = finishedEducationHashMap.get(finEduID);
-            }
-
-            // make new object
-            Interview interview = new Interview(id, name, productUnderstanding, problemUnderstanding, flexibility, qualityAwareness, cooperation, new ArrayList<>(), new ArrayList<>());
-
-            //Put Object in hashMap and add references
-            interview = interviewHashMap.putIfAbsent(id, interview);
-            if (interview != null) {
-                interview.getEducationWishes().add(educationWish);
-                interview.getFinishedEducations().add(finishedEducation);
-            }
+    public static ArrayList<DisplayEducation> findDisplayEducations(SearchContainer container) throws SQLException {
+        if (container.isOnlyFilteringEducations()) {
+            return findAllDisplayEducations(container);
+        } else {
+            return findFilteredDisplayEducations(container);
         }
     }
 
     /**
-     * Helper Method that builds a {@link Employee}.
-     * Note that this method must be called after  {@link #buildInterview}
-     * for any given ResultSet row.
+     * Finds all {@link DisplayProvider DisplayProviders} from the DataBase.
+     * DisplayCompanies can be used to display data for the user. In addition display objects are more lightweight and should be
+     * the preferred database interaction if lots of objects are need to be displayed.
+     * Note that Display Objects are are only keeping the minimum required information of the corresponding Domain object.
      *
-     * @param rs               ResultSet of Data
-     * @param interviewHashMap HashMap of Primary ID as key, {@link Interview} as value.
-     * @param employeeHashMap  HashMap of Primary ID as key, {@link Employee} as value.
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @return ArrayList of {@link DisplayProvider} Objects.
      * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
      */
-    private static void buildEmployee(ResultSet rs,
-                                      HashMap<Integer, Interview> interviewHashMap,
-                                      HashMap<Integer, Employee> employeeHashMap) throws SQLException {
-        // Fetch values from rs
-        int id = rs.getInt("tbl_Employee_PK_fld_EmployeeID");
-        if (!rs.wasNull()) {
-            String firstName = rs.getString("tbl_Employee_fld_EmployeeFirstName");
-            String lastName = rs.getString("tbl_Employee_fld_EmployeeLastName");
-            String cpr = rs.getString("tbl_Employee_fld_CprNr");
-            String eMail = rs.getString("tbl_Employee_fld_Email");
-            String phoneNr = rs.getString("tbl_Employee_fld_PhoneNr");
-
-            // Fetch values from updated hashMap
-            int interviewId = rs.getInt("tbl_Interview_PK_fld_InterviewID");
-            Interview interview = null;
-            if (!rs.wasNull()) {
-                interview = interviewHashMap.get(interviewId);
-            }
-            // make new object
-            Employee employee = new Employee(id, firstName, lastName, cpr, eMail, phoneNr, new ArrayList<>());
-
-            //Put Object in hashMap and add references
-            employee = employeeHashMap.putIfAbsent(id, employee);
-            if (employee != null) {
-                employee.getInterviews().add(interview);
-            }
+    public static ArrayList<DisplayProvider> findDisplayProvider(SearchContainer container) throws SQLException {
+        if (container.isOnlyFilteringProviders()) {
+            return findAllDisplayProviders(container);
+        } else {
+            return findFilteredDisplayProviders(container);
         }
     }
 
-    /**
-     * Helper Method that builds a {@link Consultation}.
-     * Note that this method must be called after  {@link #buildEmployee}
-     * for any given ResultSet row.
-     *
-     * @param rs                  ResultSet of Data
-     * @param employeeHashMap     HashMap of Primary ID as key, {@link Employee} as value.
-     * @param consultationHashMap HashMap of Primary ID as key, {@link Consultation} as value.
-     * @throws SQLException Exception thrown when encountered a fatal error.
+    /*
+     * Find display when only filtering that table. Those method will not throw out unrelated items by inner joining.
      */
-    private static void buildConsultation(ResultSet rs,
-                                          HashMap<Integer, Employee> employeeHashMap,
-                                          HashMap<Integer, Consultation> consultationHashMap) throws SQLException {
-        // Fetch values from rs
-        int id = rs.getInt("tbl_Consultation_PK_fld_ConsultationID");
-        if (!rs.wasNull()) {
-            String name = rs.getString("tbl_Consultation_fld_ConsultationName");
-            LocalDate startDate = rs.getDate("tbl_Consultation_fld_StartDate").toLocalDate();
-            LocalDate endDate = rs.getDate("tbl_Consultation_fld_EndDate").toLocalDate();
 
-            // Fetch values from updated hashMap
-            int employeeId = rs.getInt("tbl_Consultation_Employee_Bridge_FK_fld_EmployeeID");
-            Employee employee = null;
+    private static ArrayList<DisplayCompany> findAllDisplayCompanies(SearchContainer container) throws SQLException {
+        //Init return value
+        HashSet<DisplayCompany> returnSet = new HashSet<>();
+
+        //Unpack needed values
+        Integer companyID = container.getCompanyID();
+        String companyCvr = container.getCvrNr();
+        String companyName = container.getCompanyName();
+
+        //Get ResultSet
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_ALL_DISPLAY_COMPANIES, companyID, companyCvr, companyName);
+
+        //Build objects
+        while (rs.next()) {
+            Integer displayCompanyId = rs.getInt("CompanyID");
             if (!rs.wasNull()) {
-                employee = employeeHashMap.get(employeeId);
-            }
+                String displayCvrNr = rs.getString("CompanyCvrNr");
+                String displayCompanyName = rs.getString("CompanyName");
 
-            // make new object
-            Consultation consultation = new Consultation(id, name, startDate, endDate, new ArrayList<>());
-
-            //Put Object in hashMap and add references
-            consultation = consultationHashMap.putIfAbsent(id, consultation);
-            if (consultation != null) {
-                consultation.getEmployees().add(employee);
+                //build object
+                DisplayCompany tempDisplayCompany = new DisplayCompany(displayCompanyId, displayCvrNr, displayCompanyName);
+                returnSet.add(tempDisplayCompany);
             }
         }
+
+        //Return list
+        return new ArrayList<>(returnSet);
     }
 
-    /**
-     * Helper Method that builds a {@link Company}.
-     * Note that this method must be called after  {@link #buildEmployee} and {@link #buildEducation}
-     * for any given ResultSet row.
-     *
-     * @param rs                  ResultSet of Data
-     * @param consultationHashMap HashMap of Primary ID as key, {@link Interview} as value.
-     * @param companyHashMap      HashMap of Primary ID as key, {@link Company} as value.
-     * @throws SQLException Exception thrown when encountered a fatal error.
-     */
-    private static void buildCompany(ResultSet rs,
-                                     HashMap<Integer, Consultation> consultationHashMap,
-                                     HashMap<Integer, Education> educationHashMap,
-                                     HashMap<Integer, Company> companyHashMap) throws SQLException {
-        // Fetch values from rs
-        int id = rs.getInt("tbl_Company_PK_fld_CompanyID");
-        if (!rs.wasNull()) {
-            String cvr = rs.getString("tbl_Company_fld_CvrNr");
-            String name = rs.getString("tbl_Company_fld_CompanyName");
+    private static ArrayList<DisplayConsultation> findAllDisplayConsultations(SearchContainer container) throws SQLException {
+        //Init return value
+        HashSet<DisplayConsultation> returnSet = new HashSet<>();
 
-            // Fetch values from updated hashMap
-            int consultationId = rs.getInt("tbl_Consultation_PK_fld_ConsultationID");
-            Consultation consultation = null;
+        //Unpack needed values
+        Integer consultationID = container.getConsultationID();
+        String consultationName = container.getConsultationName();
+        LocalDate consultationMinDate = container.getConsultationMinDate();
+        LocalDate consultationMaxDate = container.getConsultationMaxDate();
+
+        //Get ResultSet
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_ALL_DISPLAY_CONSULTATIONS, consultationID, consultationName, consultationMinDate, consultationMaxDate);
+
+        //Build objects
+        while (rs.next()) {
+            Integer displayConsultationId = rs.getInt("ConsultationID");
             if (!rs.wasNull()) {
-                consultation = consultationHashMap.get(consultationId);
-            }
+                String displayConsultationName = rs.getString("ConsultationName");
+                LocalDate displayConsultationStartDate = rs.getDate("ConsultationStartDate").toLocalDate();
+                LocalDate displayConsultationEndDate = rs.getDate("ConsultationEndDate").toLocalDate();
 
-            int educatiionId = rs.getInt("tbl_Company_Education_Bridge_FK_fld_AmurNr");
-            Education education = null;
-            if (!rs.wasNull()) {
-                education = educationHashMap.get(educatiionId);
-            }
-
-            // make new object
-            Company company = new Company(id, cvr, name, new ArrayList<>(), new ArrayList<>());
-
-            //Put Object in hashMap and add references
-            company = companyHashMap.putIfAbsent(id, company);
-            if (company != null) {
-                company.getConsultations().add(consultation);
-                company.getEducationList().add(education);
+                //build object
+                DisplayConsultation tempDisplayConsultation = new DisplayConsultation(displayConsultationId, displayConsultationName, displayConsultationStartDate, displayConsultationEndDate);
+                returnSet.add(tempDisplayConsultation);
             }
         }
+
+        //Return list
+        return new ArrayList<>(returnSet);
     }
 
+    private static ArrayList<DisplayEmployee> findAllDisplayEmployees(SearchContainer container) throws SQLException {
+        //Init return value
+        HashSet<DisplayEmployee> returnSet = new HashSet<>();
+
+        //Unpack needed values
+        Integer employeeID = container.getEmployeeID();
+        String employeeFirstName = container.getEmployeeFirstName();
+        String employeeLastName = container.getEmployeeLastName();
+        String employeeCprNr = container.getCprNr();
+        String employeeEMail = container.getEmail();
+        String employeePhone = container.getPhoneNr();
+
+        //Get ResultSet
+
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_ALL_DISPLAY_EMPLOYEES, employeeID, employeeFirstName, employeeLastName, employeeCprNr, employeeEMail, employeePhone);
+
+        //Build objects
+        while (rs.next()) {
+            Integer displayEmployeeId = rs.getInt("EmployeeID");
+            if (!rs.wasNull()) {
+                String displayEmployeeFirstName = rs.getString("EmployeeFirstName");
+                String displayEmployeeLastName = rs.getString("EmployeeLastName");
+                String displayEmployeeCprNr = rs.getString("EmployeeCprNr");
+                String displayEmployeeEmail = rs.getString("EmployeeEmail");
+                String displayEmployeePhoneNr = rs.getString("EmployeePhoneNr");
+
+                //Build Object
+                DisplayEmployee tempDisplayEmployee = new DisplayEmployee(displayEmployeeId, displayEmployeeFirstName, displayEmployeeLastName, displayEmployeeCprNr, displayEmployeeEmail, displayEmployeePhoneNr);
+                returnSet.add(tempDisplayEmployee);
+            }
+        }
+        //Return list
+        return new ArrayList<>(returnSet);
+    }
+
+    private static ArrayList<DisplayInterview> findAllDisplayInterviews(SearchContainer container) throws SQLException {
+        //Init return value
+        HashSet<DisplayInterview> returnSet = new HashSet<>();
+
+        //Unpack needed values
+        Integer interviewId = container.getInterviewID();
+        String interviewName = container.getInterviewName();
+
+        //Get ResultSet
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_ALL_DISPLAY_INTERVIEWS, interviewId, interviewName);
+
+        //Build object
+        while (rs.next()) {
+            int displayInterviewId = rs.getInt("InterviewID");
+            if (!rs.wasNull()) {
+                String displayInterviewName = rs.getString("InterviewName");
+                Integer displayInterviewProdScore = rs.getInt("InterviewProductUnderstanding"); //Can not be null anyway
+                Integer displayInterviewProbScore = rs.getInt("interviewProblemUnderstanding");
+                Integer displayInterviewFlexScore = rs.getInt("InterviewFlexiblity");
+                Integer displayInterviewQualityScore = rs.getInt("InterviewQualityAwarenes");
+                Integer displayInterviewCooperationScore = rs.getInt("InterviewCooperation");
+
+                //Build object
+                DisplayInterview tempDisplayInterview = new DisplayInterview(displayInterviewId, displayInterviewName, displayInterviewProdScore, displayInterviewProbScore, displayInterviewFlexScore, displayInterviewQualityScore, displayInterviewCooperationScore);
+                returnSet.add(tempDisplayInterview);
+            }
+        }
+        //Return list
+        return new ArrayList<>(returnSet);
+    }
+
+    private static ArrayList<DisplayEducation> findAllDisplayEducations(SearchContainer container) throws SQLException {
+        //Init return value
+        HashSet<DisplayEducation> returnSet = new HashSet<>();
+
+        //Unpack needed values
+        Integer educationAmuNr = container.getAmuNr();
+        String educationName = container.getEducationName();
+        Integer educationNoOfDays = container.getEducationNoOfDays();
+
+        //Get ResultSet
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_ALL_DISPLAY_EDUCATIONS, educationAmuNr, educationName, educationNoOfDays);
+
+        //Build objects
+        while (rs.next()) {
+            int displayEducationAmuNr = rs.getInt("EducationAmuNr");
+            if (!rs.wasNull()) {
+                String displayEducationName = rs.getString("EducationName");
+                String displayEducationDescription = rs.getString("EducationDescription");
+                Integer displayEducationNoOfDays = rs.getInt("EducationNoOfDays");
+                String displayEducationProviderName = rs.getString("ProviderName");
+
+                DisplayEducation tempDisplayEducation = new DisplayEducation(displayEducationAmuNr, displayEducationName, displayEducationDescription, displayEducationNoOfDays, displayEducationProviderName);
+                returnSet.add(tempDisplayEducation);
+            }
+        }
+        //Return list
+        return new ArrayList<>(returnSet);
+    }
+
+    private static ArrayList<DisplayProvider> findAllDisplayProviders(SearchContainer container) throws SQLException {
+        //Init return value
+        HashSet<DisplayProvider> returnSet = new HashSet<>();
+
+        //Unpack needed values
+        Integer providerId = container.getProviderID();
+        String providerName = container.getProviderName();
+
+        //Get ResultSet
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_ALL_DISPLAY_PROVIDERS, providerId, providerName);
+
+        //Build objects
+        while (rs.next()) {
+            int displayProviderId = rs.getInt("ProviderID");
+            if (!rs.wasNull()) {
+                String displayProviderName = rs.getString("ProviderName");
+
+                DisplayProvider tempDisplayProvider = new DisplayProvider(displayProviderId, displayProviderName);
+                returnSet.add(tempDisplayProvider);
+            }
+        }
+        //Return list
+        return new ArrayList<>(returnSet);
+    }
+
+    /*
+     * Find Display item by filtering all table together
+     */
+
+    private static ArrayList<DisplayCompany> findFilteredDisplayCompanies(SearchContainer container) throws SQLException {
+        //Init return collection
+        HashSet<DisplayCompany> returnSet = new HashSet<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_DISPLAY_COMPANIES,
+                container.getCompanyID(),
+                container.getCvrNr(),
+                container.getCompanyName(),
+                container.getConsultationID(),
+                container.getConsultationName(),
+                container.getConsultationMinDate(),
+                container.getConsultationMaxDate(),
+                container.getEmployeeID(),
+                container.getEmployeeFirstName(),
+                container.getEmployeeLastName(),
+                container.getCprNr(),
+                container.getEmail(),
+                container.getPhoneNr(),
+                container.getInterviewID(),
+                container.getInterviewName(),
+                container.getAmuNr(),
+                container.getEducationName(),
+                container.getEducationNoOfDays(),
+                container.getEducationMinDate(),
+                container.getEducationMaxDate(),
+                container.getProviderID(),
+                container.getProviderName());
+
+        //build object
+        while (rs.next()) {
+            int displayCompanyId = rs.getInt("CompanyID");
+            if (!rs.wasNull()) {
+                String displayCompanyCvr = rs.getString("CompanyCvrNr");
+                String displayCompanyName = rs.getString("CompanyName");
+
+                DisplayCompany tempDisplayCompany = new DisplayCompany(displayCompanyId, displayCompanyCvr, displayCompanyName);
+                returnSet.add(tempDisplayCompany);
+            }
+        }
+        //Return resultset
+        return new ArrayList<>(returnSet);
+    }
+
+    private static ArrayList<DisplayConsultation> findFilteredDisplayConsultations(SearchContainer container) throws SQLException {
+        //Init return collection
+        HashSet<DisplayConsultation> returnSet = new HashSet<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_DISPLAY_CONSULTATIONS,
+                container.getCompanyID(),
+                container.getCvrNr(),
+                container.getCompanyName(),
+                container.getConsultationID(),
+                container.getConsultationName(),
+                container.getConsultationMinDate(),
+                container.getConsultationMaxDate(),
+                container.getEmployeeID(),
+                container.getEmployeeFirstName(),
+                container.getEmployeeLastName(),
+                container.getCprNr(),
+                container.getEmail(),
+                container.getPhoneNr(),
+                container.getInterviewID(),
+                container.getInterviewName(),
+                container.getAmuNr(),
+                container.getEducationName(),
+                container.getEducationNoOfDays(),
+                container.getEducationMinDate(),
+                container.getEducationMaxDate(),
+                container.getProviderID(),
+                container.getProviderName());
+
+        //build object
+        while (rs.next()) {
+            int displayConsultationId = rs.getInt("ConsultationID");
+            if (!rs.wasNull()) {
+                String displayConsultationName = rs.getString("ConsultationName");
+                LocalDate displayConsultationStartDate = rs.getDate("ConsultationStartDate").toLocalDate();
+                LocalDate displayConsultationEndDate = rs.getDate("ConsultationEndDate").toLocalDate();
+
+                DisplayConsultation tempDisplayConsultation = new DisplayConsultation(displayConsultationId, displayConsultationName, displayConsultationStartDate, displayConsultationEndDate);
+                returnSet.add(tempDisplayConsultation);
+            }
+        }
+        //Return resultset
+        return new ArrayList<>(returnSet);
+    }
+
+    private static ArrayList<DisplayEmployee> findFilteredDisplayEmployees(SearchContainer container) throws SQLException {
+        //Init return collection
+        HashSet<DisplayEmployee> returnSet = new HashSet<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_DISPLAY_EMPLOYEES,
+                container.getCompanyID(),
+                container.getCvrNr(),
+                container.getCompanyName(),
+                container.getConsultationID(),
+                container.getConsultationName(),
+                container.getConsultationMinDate(),
+                container.getConsultationMaxDate(),
+                container.getEmployeeID(),
+                container.getEmployeeFirstName(),
+                container.getEmployeeLastName(),
+                container.getCprNr(),
+                container.getEmail(),
+                container.getPhoneNr(),
+                container.getInterviewID(),
+                container.getInterviewName(),
+                container.getAmuNr(),
+                container.getEducationName(),
+                container.getEducationNoOfDays(),
+                container.getEducationMinDate(),
+                container.getEducationMaxDate(),
+                container.getProviderID(),
+                container.getProviderName());
+
+        //build object
+        while (rs.next()) {
+            int displayEmployeeId = rs.getInt("EmployeeID");
+            if (!rs.wasNull()) {
+                String displayEmployeeFirstName = rs.getString("EmployeeFirstName");
+                String displayEmployeeLastName = rs.getString("EmployeeLastName");
+                String displayEmployeeCprNr = rs.getString("EmployeeCprNr");
+                String displayEmployeeEmail = rs.getString("EmployeeEmail");
+                String displayEmployeePhoneNr = rs.getString("EmployeePhoneNr");
+
+                DisplayEmployee tempDisplayEmployee = new DisplayEmployee(displayEmployeeId, displayEmployeeFirstName, displayEmployeeLastName, displayEmployeeCprNr, displayEmployeeEmail, displayEmployeePhoneNr);
+                returnSet.add(tempDisplayEmployee);
+            }
+        }
+        //Return resultset
+        return new ArrayList<>(returnSet);
+    }
+
+    private static ArrayList<DisplayInterview> findFilteredDisplayInterviews(SearchContainer container) throws SQLException {
+        //Init return collection
+        HashSet<DisplayInterview> returnSet = new HashSet<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_DISPLAY_INTERVIEWS,
+                container.getCompanyID(),
+                container.getCvrNr(),
+                container.getCompanyName(),
+                container.getConsultationID(),
+                container.getConsultationName(),
+                container.getConsultationMinDate(),
+                container.getConsultationMaxDate(),
+                container.getEmployeeID(),
+                container.getEmployeeFirstName(),
+                container.getEmployeeLastName(),
+                container.getCprNr(),
+                container.getEmail(),
+                container.getPhoneNr(),
+                container.getInterviewID(),
+                container.getInterviewName(),
+                container.getAmuNr(),
+                container.getEducationName(),
+                container.getEducationNoOfDays(),
+                container.getEducationMinDate(),
+                container.getEducationMaxDate(),
+                container.getProviderID(),
+                container.getProviderName());
+
+        //build object
+        while (rs.next()) {
+            int displayInterviewId = rs.getInt("InterviewID");
+            if (!rs.wasNull()) {
+                String displayinterviewName = rs.getString("InterviewName");
+                Integer displayInterviewProdScore = rs.getInt("InterviewProductUnderstanding");
+                Integer displayInterviewProbScore = rs.getInt("interviewProblemUnderstanding");
+                Integer displayInterviewFlexScore = rs.getInt("InterviewFlexiblity");
+                Integer displayInterviewQualityScore = rs.getInt("InterviewQualityAwarenes");
+                Integer displayInterviewCooperationScore = rs.getInt("InterviewCooperation");
+
+                DisplayInterview tempDisplayInterview = new DisplayInterview(displayInterviewId, displayinterviewName, displayInterviewProdScore, displayInterviewProbScore, displayInterviewFlexScore, displayInterviewQualityScore, displayInterviewCooperationScore);
+                returnSet.add(tempDisplayInterview);
+            }
+        }
+        //Return resultset
+        return new ArrayList<>(returnSet);
+    }
+
+    private static ArrayList<DisplayEducation> findFilteredDisplayEducations(SearchContainer container) throws SQLException {
+        //Init return collection
+        HashSet<DisplayEducation> returnSet = new HashSet<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_DISPLAY_EDUCATIONS,
+                container.getCompanyID(),
+                container.getCvrNr(),
+                container.getCompanyName(),
+                container.getConsultationID(),
+                container.getConsultationName(),
+                container.getConsultationMinDate(),
+                container.getConsultationMaxDate(),
+                container.getEmployeeID(),
+                container.getEmployeeFirstName(),
+                container.getEmployeeLastName(),
+                container.getCprNr(),
+                container.getEmail(),
+                container.getPhoneNr(),
+                container.getInterviewID(),
+                container.getInterviewName(),
+                container.getAmuNr(),
+                container.getEducationName(),
+                container.getEducationNoOfDays(),
+                container.getEducationMinDate(),
+                container.getEducationMaxDate(),
+                container.getProviderID(),
+                container.getProviderName());
+
+        //build object
+        while (rs.next()) {
+            //First set
+            int displayEducationId1 = rs.getInt("EducationAmuNr1");
+            if (!rs.wasNull()) {
+                String displayEducationName1 = rs.getString("EducationName1");
+                String displayEducationDescription1 = rs.getString("EducationDescription1");
+                Integer displayEducationNoOfDays1 = rs.getInt("EducationNoOfDays1");
+                String displayEducationProviderName1 = rs.getString("ProviderName1");
+
+                DisplayEducation tempDisplayEducation = new DisplayEducation(displayEducationId1, displayEducationName1, displayEducationDescription1, displayEducationNoOfDays1, displayEducationProviderName1);
+                returnSet.add(tempDisplayEducation);
+            }
+
+            //second set
+            int displayEducationId2 = rs.getInt("EducationAmuNr2");
+            if (!rs.wasNull()) {
+                String displayEducationName2 = rs.getString("EducationName2");
+                String displayEducationDescription2 = rs.getString("EducationDescription2");
+                Integer displayEducationNoOfDays2 = rs.getInt("EducationNoOfDays2");
+                String displayEducationProviderName2 = rs.getString("ProviderName2");
+
+                DisplayEducation tempDisplayEducation = new DisplayEducation(displayEducationId2, displayEducationName2, displayEducationDescription2, displayEducationNoOfDays2, displayEducationProviderName2);
+                returnSet.add(tempDisplayEducation);
+            }
+        }
+
+        //Return resultset
+        return new ArrayList<>(returnSet);
+    }
+
+    private static ArrayList<DisplayProvider> findFilteredDisplayProviders(SearchContainer container) throws SQLException {
+        //Init return collection
+        HashSet<DisplayProvider> returnSet = new HashSet<>();
+
+        //Getting data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_DISPLAY_PROVIDERS,
+                container.getCompanyID(),
+                container.getCvrNr(),
+                container.getCompanyName(),
+                container.getConsultationID(),
+                container.getConsultationName(),
+                container.getConsultationMinDate(),
+                container.getConsultationMaxDate(),
+                container.getEmployeeID(),
+                container.getEmployeeFirstName(),
+                container.getEmployeeLastName(),
+                container.getCprNr(),
+                container.getEmail(),
+                container.getPhoneNr(),
+                container.getInterviewID(),
+                container.getInterviewName(),
+                container.getAmuNr(),
+                container.getEducationName(),
+                container.getEducationNoOfDays(),
+                container.getEducationMinDate(),
+                container.getEducationMaxDate(),
+                container.getProviderID(),
+                container.getProviderName());
+
+        //build object
+        while (rs.next()) {
+            //First set
+            int displayProviderId1 = rs.getInt("ProviderID1");
+            if (!rs.wasNull()) {
+                String displayProviderName1 = rs.getString("ProviderName1");
+
+                DisplayProvider tempDisplayProvider = new DisplayProvider(displayProviderId1, displayProviderName1);
+                returnSet.add(tempDisplayProvider);
+            }
+
+            //second set
+            int displayProviderId2 = rs.getInt("ProviderID2");
+            if (!rs.wasNull()) {
+                String displayProviderName2 = rs.getString("ProviderName2");
+
+                DisplayProvider tempDisplayProvider = new DisplayProvider(displayProviderId2, displayProviderName2);
+                returnSet.add(tempDisplayProvider);
+            }
+        }
+
+        //Return resultset
+        return new ArrayList<>(returnSet);
+    }
 
     /**
      * Method to establish a connection to the Database.
@@ -1657,7 +1523,7 @@ public class DbFacade {
      * @throws SQLException Exception when SQL encounter a fatal problem
      * @see DB
      */
-    public static void connect() throws SQLException{
+    public static void connect() throws SQLException {
         DB.getInstance().connect();
     }
 
@@ -1667,10 +1533,9 @@ public class DbFacade {
      * @throws SQLException Exception when SQL encounter a fatal problem
      * @see DB
      */
-    public static void disconnect() throws SQLException{
+    public static void disconnect() throws SQLException {
         DB.getInstance().disconnect();
     }
-
 
 
 }
