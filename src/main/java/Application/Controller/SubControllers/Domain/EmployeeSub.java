@@ -260,4 +260,10 @@ public class EmployeeSub extends AbstractController {
             phoneNrTextField.setText("");
         }
     }
+
+    public Employee getEmployee(){
+        //TODO Implement this
+        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
+        return null;
+    }
 }

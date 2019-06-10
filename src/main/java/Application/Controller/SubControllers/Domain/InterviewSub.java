@@ -342,4 +342,10 @@ public class InterviewSub extends AbstractController {
 
         }
     }
+
+    public Interview getInterview(){
+        //TODO Implement this
+        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
+        return null;
+    }
 }

@@ -158,4 +158,10 @@ public class ConsultationSub extends AbstractController {
         CompanyChoice newSelectCompany = new CompanyChoice();
         Company foundCompany = newSelectCompany.showAndReturn(new FindCompanyPopUp());
     }
+
+    public Consultation getConsultation(){
+        //TODO Implement this
+        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
+        return null;
+    }
 }
