@@ -90,6 +90,7 @@ public class EmployeeSub extends AbstractController {
     public void initValues(Employee employee) {
         selectedEmployee = employee;
         ArrayList<Interview> selectedEmployeeArray = selectedEmployee.getInterviews();
+        /*
         for (Interview testIn: selectedEmployeeArray
              ) {
             if(testIn != null)
@@ -100,6 +101,8 @@ public class EmployeeSub extends AbstractController {
             else
                 System.out.println(testIn);
         }
+        */
+
         /*f(selectedEmployee.getInterviews() != null) {
             interviews.addAll(selectedEmployee.getInterviews());
         }*/

@@ -18,6 +18,7 @@ BEGIN
     ELSE
         BEGIN
             INSERT INTO tbl_Education VALUES (@NewProviderID, @NewEducationName, @newDescription, @newNoOfDays)
+            SET @AmuNr = SCOPE_IDENTITY()
         END
-    SET @AmuNr = SCOPE_IDENTITY()
+
 END;
