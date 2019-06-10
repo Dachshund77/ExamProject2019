@@ -5,6 +5,8 @@ import Domain.DomainObjects.Education;
 import Domain.DomainObjects.Provider;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
@@ -17,17 +19,21 @@ public class EducationSub extends AbstractController {
     public TextField educationNameTextField;
     public TextArea descriptionTextArea;
     public TextField noOfDaysTextField; // may be converted to a drop down if you want
-    public ListView<LocalDate> dateListView;
-    public DatePicker datePicker;
+    public ListView<LocalDate> educationDatesListView;
+    public DatePicker educationDatePicker;
     public Button addDateButton;
     public Button removeDateButton;
-    public Button pickProviderButton;
+    public Text educationAmurNrText;
+    public Button pickProviderButton; //TODO NEED TO FIND A PLACE FOR THAT BUTTON
+    public Text providerNametext;
 
     public ArrayList<LocalDate> dates;
+
     public Provider selectedProvider; // The provider this education has
     public Education selectedEducation; // WHen coming from find this need to be loaded up
 
     public BooleanBinding isValid;
+
 
     //Flags for the booleanBinding
     private SimpleBooleanProperty educationNameIsValid = new SimpleBooleanProperty(true); //Those field should start out as true or false depending on if they may be null orn ot
@@ -35,7 +41,10 @@ public class EducationSub extends AbstractController {
     private SimpleBooleanProperty noOfDaysIsValid = new SimpleBooleanProperty(true); //This is just set tre since the the method for that is not implemented
 
     public void initialize() {
-        //setup ListView (later at some point we will do that not relevant for demonstration purpose)
+        //setup ListView
+        educationDatesListView.setItems(FXCollections.observableArrayList(dates));
+
+
         //Setup The textfield listeners
         educationNameTextField.textProperty().addListener((observable) -> handleEducationNameInput());
         descriptionTextArea.textProperty().addListener((observable) -> handleDescriptionInput());
@@ -113,6 +122,12 @@ public class EducationSub extends AbstractController {
             descriptionTextArea.setText("");
             noOfDaysTextField.setText("");
         }
+    }
+
+    public void handleAddDate(ActionEvent event) {
+    }
+
+    public void handleRemoveDate(ActionEvent event) {
     }
 
     public Education getEducation(){
