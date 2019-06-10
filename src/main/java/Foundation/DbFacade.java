@@ -683,7 +683,7 @@ public class DbFacade {
             int id = newConsultation.getConsultationID();
             newConsultation.setEmployees(findEmployeesByConsultationID(id));
 
-            newConsultation = consultationCache.putIfAbsent(id, newConsultation);
+            consultationCache.put(id, newConsultation);
 
             returnArrayList.add(newConsultation);
         }
@@ -717,7 +717,7 @@ public class DbFacade {
             int id = newEmployee.getEmployeeID();
             newEmployee.setInterviews(findInterviewsByEmployeeID(id));
 
-            newEmployee = employeeCache.putIfAbsent(id, newEmployee);
+            employeeCache.put(id, newEmployee);
 
             returnArrayList.add(newEmployee);
         }
@@ -753,7 +753,7 @@ public class DbFacade {
             newInterview.setEducationWishes(findEducationWishesByInterviewID(id));
             newInterview.setFinishedEducations(findFinishedEducationsByInterviewID(id));
 
-            newInterview = interviewCache.putIfAbsent(id, newInterview);
+            interviewCache.put(id, newInterview);
 
             returnArrayList.add(newInterview);
         }
@@ -825,7 +825,7 @@ public class DbFacade {
         if (returnEducation != null) {
             returnEducation.setProvider(findProviderByEducationID(returnEducation.getAmuNr()));
             returnEducation.setDates(findDatesByEducationID(returnEducation.getAmuNr()));
-            returnEducation = educationCache.putIfAbsent(returnEducation.getAmuNr(), returnEducation);
+            educationCache.put(returnEducation.getAmuNr(), returnEducation);
         }
 
         return returnEducation;
@@ -852,7 +852,7 @@ public class DbFacade {
         if (returnEducation != null) {
             returnEducation.setProvider(findProviderByEducationID(returnEducation.getAmuNr()));
             returnEducation.setDates(findDatesByEducationID(returnEducation.getAmuNr()));
-            returnEducation = educationCache.putIfAbsent(returnEducation.getAmuNr(), returnEducation);
+            educationCache.put(returnEducation.getAmuNr(), returnEducation);
         }
 
         return returnEducation;
@@ -870,10 +870,10 @@ public class DbFacade {
             }
             if (!rs.wasNull()) {
                 String newProviderName = rs.getString("ProviderName");
-                Provider newProvider = new Provider(newProviderID, newProviderName);
+                returnProvider = new Provider(newProviderID, newProviderName);
 
                 // if already in Cache
-                returnProvider = providerCache.putIfAbsent(newProvider.getProviderID(), newProvider);
+                providerCache.put(returnProvider.getProviderID(), returnProvider);
             }
         }
         return returnProvider;
