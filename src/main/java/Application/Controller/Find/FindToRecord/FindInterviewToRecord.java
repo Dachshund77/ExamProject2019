@@ -5,6 +5,7 @@ import Application.Controller.SubControllers.Find.FindInterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.DisplayObjects.DisplayInterview;
+import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -51,6 +52,7 @@ public class FindInterviewToRecord extends AbstractController {
     private void handleConfirmation(ActionEvent event) {
         //Init values
         Interview toBeShownInterview = null;
+        Employee parentEmployee = null;
 
         //Get selection
         DisplayInterview selectedProvider = interviewTableView.getSelectionModel().getSelectedItem();
@@ -59,7 +61,7 @@ public class FindInterviewToRecord extends AbstractController {
         //Fetch real from Database
         try{
             DbFacade.connect();
-            toBeShownInterview = DbFacade.findInterviewByID(id);
+            parentEmployee = DbFacade.findEmployeeByInterviewID(id);
         }catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -69,11 +71,18 @@ public class FindInterviewToRecord extends AbstractController {
                 e.printStackTrace();
             }
         }
+        if (parentEmployee != null) {
+            for (Interview interview : parentEmployee.getInterviews()) {
+                if (interview.getInterviewID() == id){
+                    toBeShownInterview = interview;
+                }
+            }
+        }
 
 
         SearchContainer currentSearch = findInterviewSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.RECORD_INTERVIEW.loadParent(currentSearch, toBeShownInterview));
+        ((BorderPane) root).setCenter(ViewController.RECORD_INTERVIEW.loadParent(currentSearch, toBeShownInterview, parentEmployee));
     }
 }

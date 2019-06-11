@@ -25,6 +25,7 @@ public enum SpWithRs implements Procedure {
     FIND_FINISHED_EDUCATIONS_BY_INTERVIEW_ID("sp_Finished_Educations_By_Interview_ID"),
     FIND_INTERVIEWS_BY_EMPLOYEE_ID("sp_Find_Interviews_By_Employee_ID"),
     FIND_PROVIDER_BY_EDUCATION_ID("sp_Find_Provider_By_Education_ID"),
+    FIND_EMPLOYEE_BY_INTERVIEW_ID("sp_Find_Employee_By_Interview_ID"),
 
     //Find Display by search
     FIND_DISPLAY_COMPANIES("sp_Find_Display_Company"),

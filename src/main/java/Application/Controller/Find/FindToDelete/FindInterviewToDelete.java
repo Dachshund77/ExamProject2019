@@ -5,6 +5,7 @@ import Application.Controller.SubControllers.Find.FindInterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.DisplayObjects.DisplayInterview;
+import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -77,6 +78,7 @@ public class FindInterviewToDelete extends AbstractController {
     private void handleConfirmation(ActionEvent event) {
         //Init values
         Interview toBeDeletedInterview = null;
+        Employee parentEmployee = null;
 
         //Get selection
         DisplayInterview selectedProvider = interviewTableView.getSelectionModel().getSelectedItem();
@@ -85,7 +87,7 @@ public class FindInterviewToDelete extends AbstractController {
         //Fetch real from Database
         try{
             DbFacade.connect();
-            toBeDeletedInterview = DbFacade.findInterviewByID(id);
+            parentEmployee = DbFacade.findEmployeeByInterviewID(id);
         }catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -95,11 +97,19 @@ public class FindInterviewToDelete extends AbstractController {
                 e.printStackTrace();
             }
         }
+        //Find the attached interview
+        if (parentEmployee != null) {
+            for (Interview interview : parentEmployee.getInterviews()) {
+                if (interview.getInterviewID() == id){
+                    toBeDeletedInterview = interview;
+                }
+            }
+        }
 
 
         SearchContainer currentSearch = findInterviewSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.DELETE_INTERVIEW.loadParent(currentSearch, toBeDeletedInterview));
+        ((BorderPane) root).setCenter(ViewController.DELETE_INTERVIEW.loadParent(currentSearch, toBeDeletedInterview, parentEmployee));
     }
 }

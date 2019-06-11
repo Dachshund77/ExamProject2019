@@ -259,6 +259,11 @@ public class Education implements Domain{
     }
 
     @Override
+    public String toString() {
+        return educationName;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;

@@ -29,7 +29,7 @@ public class DeleteEducation extends AbstractController {
     private SearchContainer previousSearch;
 
     @FXML
-    public void initialize(){
+    public void initialize() {
         educationSubController.setDisabled(true);
     }
 
@@ -37,11 +37,12 @@ public class DeleteEducation extends AbstractController {
      * When the user has selected an education
      * the TextField in the scene will be populated
      * with the consultation name
+     *
      * @param searchContainer
      * @param education
      */
     @Override
-    public void initValues(SearchContainer searchContainer, Education education){
+    public void initValues(SearchContainer searchContainer, Education education) {
         previousSearch = searchContainer;
         educationSubController.initValues(education);
     }
@@ -50,6 +51,7 @@ public class DeleteEducation extends AbstractController {
      * When the user clicks "Confirm"
      * a new education object with all
      * the information is deleted from the database
+     *
      * @param actionEvent
      */
     public void handleConfirmation(ActionEvent actionEvent) {
@@ -58,10 +60,12 @@ public class DeleteEducation extends AbstractController {
         alert.setHeaderText("You are about to delete an Education!");
         alert.setContentText("This Action will delete this Education permanently!");
         Optional<ButtonType> result = alert.showAndWait();
+
+        boolean outcome = false;
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 DbFacade.connect();
-                DbFacade.deleteEducation(educationSubController.selectedEducation.getAmuNr());
+                outcome = DbFacade.deleteEducation(educationSubController.selectedEducation.getAmuNr());
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -72,11 +76,19 @@ public class DeleteEducation extends AbstractController {
                     e.printStackTrace();
                 }
             }
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
-            info.setHeaderText(null);
-            info.setContentText("Education was deleted from the Database Successfully!");
-            info.showAndWait();
+            if (outcome) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Education was deleted from the Database Successfully!");
+                info.showAndWait();
+            } else {
+                Alert info = new Alert(Alert.AlertType.ERROR);
+                info.setTitle("ERROR!");
+                info.setHeaderText(null);
+                info.setContentText("Encountered critical database error!");
+                info.showAndWait();
+            }
 
             confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }

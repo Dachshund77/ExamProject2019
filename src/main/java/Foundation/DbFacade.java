@@ -22,6 +22,7 @@ import java.util.HashSet;
 @SuppressWarnings("Duplicates") //Dont judge me, copy past code is the way to go here. -Sven
 public class DbFacade {
 
+    private static HashMap<Integer, Company> companyCache = new HashMap<>();
     private static HashMap<Integer, Consultation> consultationCache = new HashMap<>();
     private static HashMap<Integer, Employee> employeeCache = new HashMap<>();
     private static HashMap<Integer, Interview> interviewCache = new HashMap<>();
@@ -470,18 +471,18 @@ public class DbFacade {
         ArrayList<Consultation> newConsultations = findConsultationByCompanyID(companyID);
 
         //getRet of data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY_BY_ID,companyID);
-        while (rs.next()){
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY_BY_ID, companyID);
+        while (rs.next()) {
             int newCompanyId = rs.getInt("CompanyID");
-            if (!rs.wasNull()){
+            if (!rs.wasNull()) {
                 String newCompanyCvrNr = rs.getString("CompanyCvrNr");
                 String newCompanyName = rs.getString("CompanyName");
 
-                returnCompany = new Company(newCompanyId,newCompanyCvrNr,newCompanyName,newConsultations);
+                returnCompany = new Company(newCompanyId, newCompanyCvrNr, newCompanyName, newConsultations);
             }
         }
 
-        clearCache();
+        companyCache.put(returnCompany.getCompanyID(), returnCompany);
         return returnCompany;
     }
 
@@ -503,18 +504,18 @@ public class DbFacade {
         ArrayList<Employee> newEmployees = findEmployeesByConsultationID(consultationID);
 
         //get rest of data
-        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION_BY_ID,consultationID);
-        while(rs.next()){
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_CONSULTATION_BY_ID, consultationID);
+        while (rs.next()) {
             int newConsultationId = rs.getInt("ConsultationID");
-            if (!rs.wasNull()){
+            if (!rs.wasNull()) {
                 String newConsultationName = rs.getString("ConsultationName");
                 LocalDate newConsultationStartDate = rs.getDate("ConsultationStartDate").toLocalDate();
                 LocalDate newConsultationEndDate = rs.getDate("ConsultationEndDate").toLocalDate();
 
-                returnConsultation = new Consultation(newConsultationId,newConsultationName,newConsultationStartDate,newConsultationEndDate,newEmployees);
+                returnConsultation = new Consultation(newConsultationId, newConsultationName, newConsultationStartDate, newConsultationEndDate, newEmployees);
             }
         }
-        clearCache();
+        consultationCache.put(returnConsultation.getConsultationID(), returnConsultation);
         return returnConsultation;
     }
 
@@ -537,7 +538,7 @@ public class DbFacade {
 
         //get rest of Data
         ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE_BY_ID, employeeID);
-        while (rs.next()){
+        while (rs.next()) {
             int newEmployeeId = rs.getInt("EmployeeID");
             if (!rs.wasNull()) {
                 String newEmployeeFirstName = rs.getString("EmployeeFirstName");
@@ -546,10 +547,10 @@ public class DbFacade {
                 String newEmployeeEmail = rs.getString("EmployeeEmail");
                 String newEmployeePhoneNr = rs.getString("EmployePhoneNr");
 
-                returnEmployee = new Employee(newEmployeeId, newEmployeeFirstName, newEmployeeLastName, newEmployeeCpr, newEmployeeEmail, newEmployeePhoneNr,newInterviews);
+                returnEmployee = new Employee(newEmployeeId, newEmployeeFirstName, newEmployeeLastName, newEmployeeCpr, newEmployeeEmail, newEmployeePhoneNr, newInterviews);
             }
         }
-        clearCache();
+        employeeCache.put(returnEmployee.getEmployeeID(), returnEmployee);
         return returnEmployee;
     }
 
@@ -587,7 +588,9 @@ public class DbFacade {
                 returnInterview = new Interview(newInterviewID, newInterviewName, newInterviewProdScore, newInterviewProbScore, newInterviewFlexScore, newInterviewQualityScore, newInterviewCooperation, newFinishedEducations, newEducationWishes);
             }
         }
-        clearCache();
+        if (returnInterview != null) {
+            interviewCache.put(returnInterview.getInterviewID(), returnInterview);
+        }
         return returnInterview;
     }
 
@@ -622,7 +625,9 @@ public class DbFacade {
                 returnEducation = new Education(newEducationID, newEducationName, newEducationDescription, newEducationNoOfDays, newDates, newProvider);
             }
         }
-        clearCache();
+        if (returnEducation != null) {
+            educationCache.put(returnEducation.getAmuNr(), returnEducation);
+        }
         return returnEducation;
     }
 
@@ -651,8 +656,48 @@ public class DbFacade {
                 returnProvider = new Provider(newProviderID, newProviderName);
             }
         }
-        clearCache();
+        providerCache.put(returnProvider.getProviderID(), returnProvider);
         return returnProvider;
+    }
+
+    /**
+     * Finds a {@link Employee} from the DataBase by Interview Key.
+     * This method will make sure to rebuild the object references correctly. Note that this is a resource intensive operation.
+     *
+     * <br><br>
+     * <font color=red>Note</font> that the caller has to manage {@link DB#connect() connection} and {@link DB#disconnect() disconnect}.
+     *
+     * @param interviewID Primary Key of the element that should be returned.
+     * @return {@link Employee} Object with correct reference structure.
+     * @throws SQLException Exception thrown when encountered a fatal error.
+     * @see DB
+     */
+    public static Employee findEmployeeByInterviewID(int interviewID) throws SQLException {
+        Employee returnEmployee = null;
+        //Fetch information
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_EMPLOYEE_BY_INTERVIEW_ID, interviewID);
+        while (rs.next()) {
+            int newEmployeeId = rs.getInt("EmployeeID");
+            if (!rs.wasNull()) {
+                String newEmployeeFirstName = rs.getString("EmployeeFirstName");
+                String newEmployeeLastName = rs.getString("EmployeeLastName");
+                String newEmployeeCpr = rs.getString("EmployeeCprNr");
+                String newEmployeeEmail = rs.getString("EmployeeEmail");
+                String newEmployeePhoneNr = rs.getString("EmployePhoneNr");
+
+                returnEmployee = new Employee(newEmployeeId, newEmployeeFirstName, newEmployeeLastName, newEmployeeCpr, newEmployeeEmail, newEmployeePhoneNr, null);
+            }
+        }
+        // get rest of data
+        if (returnEmployee != null) {
+            ArrayList<Interview> interviews = findInterviewsByEmployeeID(returnEmployee.getEmployeeID());
+            returnEmployee.setInterviews(interviews);
+        }
+
+        if (returnEmployee != null) {
+            employeeCache.put(returnEmployee.getEmployeeID(), returnEmployee);
+        }
+        return returnEmployee;
     }
 
     /*
@@ -674,7 +719,7 @@ public class DbFacade {
                 LocalDate newConsultationStartDate = rs.getDate("ConsultationStartDate").toLocalDate();
                 LocalDate newConsultationEndDate = rs.getDate("ConsultationEndDate").toLocalDate();
 
-                Consultation tempConsultation = new Consultation(newConsultationId,newConsultationName,newConsultationStartDate,newConsultationEndDate,null);
+                Consultation tempConsultation = new Consultation(newConsultationId, newConsultationName, newConsultationStartDate, newConsultationEndDate, null);
                 newConsultations.add(tempConsultation);
             }
         }
@@ -892,6 +937,7 @@ public class DbFacade {
 
 
     private static void clearCache() {
+        companyCache.clear();
         consultationCache.clear();
         employeeCache.clear();
         interviewCache.clear();
@@ -1535,6 +1581,7 @@ public class DbFacade {
      */
     public static void disconnect() throws SQLException {
         DB.getInstance().disconnect();
+        clearCache();
     }
 
 

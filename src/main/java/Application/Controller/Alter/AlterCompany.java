@@ -52,7 +52,7 @@ public class AlterCompany extends AbstractController {
     private void handleCancel(ActionEvent event) {
         //Return to main screen or search
         //if coming from search return to search with initValues
-        if (previousSearch != null){
+        if (previousSearch != null) {
             Parent root = cancelButton.getScene().getRoot();
             ((BorderPane) root).setCenter(ViewController.FIND_COMPANY_TO_CHANGE.loadParent(previousSearch));
         } else {
@@ -71,10 +71,12 @@ public class AlterCompany extends AbstractController {
     private void handleConfirmation(ActionEvent event) {
         Company company = companySubController.getCompany();
 
+        boolean outcome = true;
         try {
             DbFacade.connect();
             DbFacade.insertCompany(company);
         } catch (SQLException e) {
+            outcome = false;
             e.printStackTrace();
         } finally {
             try {
@@ -84,17 +86,25 @@ public class AlterCompany extends AbstractController {
             }
         }
         //Send confirmation
-        if (company.getCompanyID() == null){
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
+        if (outcome) {
+            if (company.getCompanyID() == null) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Company was added to the Database Successfully!");
+                info.showAndWait();
+            } else {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Company was updated in the Database Successfully!");
+                info.showAndWait();
+            }
+        } else {
+            Alert info = new Alert(Alert.AlertType.ERROR);
+            info.setTitle("ERROR!");
             info.setHeaderText(null);
-            info.setContentText("Company was added to the Database Successfully!");
-            info.showAndWait();
-        }else {
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
-            info.setHeaderText(null);
-            info.setContentText("Company was updated in the Database Successfully!");
+            info.setContentText("Encountered critical database error!");
             info.showAndWait();
         }
 

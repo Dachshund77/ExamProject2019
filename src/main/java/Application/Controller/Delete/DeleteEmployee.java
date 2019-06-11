@@ -60,10 +60,12 @@ public class DeleteEmployee extends AbstractController {
         alert.setHeaderText("You are about to delete an Employee!");
         alert.setContentText("This Action will delete this Employee and all related Interviews permanently!");
         Optional<ButtonType> result = alert.showAndWait();
+
+        boolean outcome = false;
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 DbFacade.connect();
-                DbFacade.deleteEmployee(employeeSubController.selectedEmployee.getEmployeeID());
+                outcome = DbFacade.deleteEmployee(employeeSubController.selectedEmployee.getEmployeeID());
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -74,11 +76,20 @@ public class DeleteEmployee extends AbstractController {
                     e.printStackTrace();
                 }
             }
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
-            info.setHeaderText(null);
-            info.setContentText("Employee was deleted from the Database Successfully!");
-            info.showAndWait();
+
+            if (outcome) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Employee was deleted from the Database Successfully!");
+                info.showAndWait();
+            } else {
+                Alert info = new Alert(Alert.AlertType.ERROR);
+                info.setTitle("ERROR!");
+                info.setHeaderText(null);
+                info.setContentText("Encountered critical database error!");
+                info.showAndWait();
+            }
 
             confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
         }

@@ -220,6 +220,32 @@ public enum ViewController {
      * when a node should be replaced with the called controllers root node.
      * <br/><br/>
      * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(Employee) initValues(Employee)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param employee Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(Interview interview, Employee employee) {
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(interview, employee);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
+    }
+
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
      * {@link Controllers#initValues(Interview) initValues(Interview)} in the newly loaded controller and hence
      * the method needs to be overwritten in the new controller.
      *
@@ -420,6 +446,33 @@ public enum ViewController {
             parent = loader.load();
             Controllers newController = loader.getController();
             newController.initValues(searchContainer, interview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
+    }
+
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer, Interview) initValues(SearchContainer, Interview)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @param interview       Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer, Interview interview, Employee employee) {
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, interview, employee);
         } catch (IOException e) {
             e.printStackTrace();
         }
