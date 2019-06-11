@@ -12,24 +12,23 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Domain.EducationSub">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Domain.EducationSub">
    <center>
       <GridPane BorderPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints halignment="RIGHT" hgrow="NEVER" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="RIGHT" minWidth="10.0" />
+          <ColumnConstraints halignment="CENTER" minWidth="10.0" />
+            <ColumnConstraints halignment="CENTER" minWidth="10.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" />
         </rowConstraints>
          <children>
             <Text text="Education Name" GridPane.rowIndex="1">
@@ -56,34 +55,20 @@
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin></TextField>
-            <ListView fx:id="educationDatesListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
+            <ListView fx:id="educationDatesListView" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="3">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </ListView>
             <Text fx:id="educationAmurNrText" strokeType="OUTSIDE" strokeWidth="0.0" text="New Education" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-               <GridPane.margin>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </GridPane.margin>
-            </VBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <HBox alignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
                <children>
                   <DatePicker fx:id="educationDatePicker">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </DatePicker>
-                  <Button fx:id="addDateButton" mnemonicParsing="false" onAction="#handleAddDate" text="Add">
-                     <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-               <children>
-                  <Button fx:id="removeDateButton" mnemonicParsing="false" onAction="#handleRemoveDate" text="Remove">
+                  <Button fx:id="addDateButton" mnemonicParsing="false" onAction="#handleAddDate" prefWidth="100.0" text="Add">
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -98,10 +83,18 @@
             </Text>
             <Button fx:id="selectProviderButton" mnemonicParsing="false" onAction="#handleProviderSelection" text="providerButton" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <GridPane.margin>
-                  <Insets top="10.0" />
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="removeDateButton" mnemonicParsing="false" onAction="#handleRemoveDate" text="Remove" GridPane.columnIndex="2" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin>
             </Button>
          </children>
       </GridPane>
    </center>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </BorderPane>
