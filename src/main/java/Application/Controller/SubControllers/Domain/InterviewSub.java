@@ -409,11 +409,11 @@ public class InterviewSub extends AbstractController {
      */
     public void resetForm() {
         handleEmployeeSelectionInput();
-        if (selectedInterview != null) { //TODO employee button
+        if (selectedInterview != null) {
             resetValuesForFinished();
             resetValuesForWish();
 
-            selectedEmployee.set(null);
+            selectedEmployee.set(selectedParentEmployee);
 
             educationWishList.clear();
             educationWishList.addAll(selectedInterview.getEducationWishes());
@@ -452,7 +452,7 @@ public class InterviewSub extends AbstractController {
             resetValuesForFinished();
             resetValuesForWish();
 
-            selectedEmployee.set(selectedParentEmployee);
+            selectedEmployee.set(null);
 
             educationWishList.clear();
             finishedEducationList.clear();
