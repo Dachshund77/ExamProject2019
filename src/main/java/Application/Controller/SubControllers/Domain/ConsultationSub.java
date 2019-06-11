@@ -17,6 +17,7 @@ import javafx.scene.text.Text;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ConsultationSub extends AbstractController {
 
@@ -130,23 +131,27 @@ public class ConsultationSub extends AbstractController {
         LocalDate localDateStartDate = startDatePicker.getValue();
         LocalDate localDateEndDate = endDatePicker.getValue();
 
-        if (localDateStartDate.isBefore(localDateEndDate)) {
-            startDatePicker.setTooltip(null);
-            startDateIsValid.set(true);
-            startDatePicker.getStyleClass().removeAll("DatePicker-Error");
 
-            endDatePicker.setTooltip(null);
-            endDateIsValid.set(true);
-            endDatePicker.getStyleClass().removeAll("DatePicker-Error");
-        } else {
-            String invalidCause = Consultation.dateInvalidCause(localDateStartDate, localDateEndDate);
-            startDatePicker.setTooltip(new Tooltip(invalidCause));
-            startDateIsValid.set(false);
-            endDatePicker.setTooltip(new Tooltip(invalidCause));
-            endDateIsValid.set(false);
-            if (!endDatePicker.getStyleClass().contains("DatePicker-Error") && !startDatePicker.getStyleClass().contains("DatePicker-Error")){
-                startDatePicker.getStyleClass().add("DatePicker-Error");
-                endDatePicker.getStyleClass().add("DatePicker-Error");
+        if (localDateStartDate != null && localDateEndDate != null) {
+
+            if (localDateStartDate.isBefore(localDateEndDate)) {
+                startDatePicker.setTooltip(null);
+                startDateIsValid.set(true);
+                startDatePicker.getStyleClass().removeAll("DatePicker-Error");
+
+                endDatePicker.setTooltip(null);
+                endDateIsValid.set(true);
+                endDatePicker.getStyleClass().removeAll("DatePicker-Error");
+            } else {
+                String invalidCause = Consultation.dateInvalidCause(localDateStartDate, localDateEndDate);
+                startDatePicker.setTooltip(new Tooltip(invalidCause));
+                startDateIsValid.set(false);
+                endDatePicker.setTooltip(new Tooltip(invalidCause));
+                endDateIsValid.set(false);
+                if (!endDatePicker.getStyleClass().contains("DatePicker-Error") && !startDatePicker.getStyleClass().contains("DatePicker-Error")) {
+                    startDatePicker.getStyleClass().add("DatePicker-Error");
+                    endDatePicker.getStyleClass().add("DatePicker-Error");
+                }
             }
         }
     }
