@@ -4,6 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.InterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -42,9 +43,9 @@ public class DeleteInterview extends AbstractController {
      * @param interview
      */
     @Override
-    public void initValues(SearchContainer searchContainer, Interview interview){
+    public void initValues(SearchContainer searchContainer, Interview interview, Employee employee){
         previousSearch = searchContainer;
-        interviewSubController.initValues(interview);
+        interviewSubController.initValues(interview,employee);
     }
 
     /**

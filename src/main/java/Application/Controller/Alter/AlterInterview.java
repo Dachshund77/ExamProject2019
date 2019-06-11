@@ -4,6 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.InterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -35,11 +36,11 @@ public class AlterInterview extends AbstractController {
 
 
     @Override
-    public void initValues(SearchContainer searchContainer, Interview interview) {
+    public void initValues(SearchContainer searchContainer, Interview interview, Employee employee) {
         //Save search container for returning
         previousSearch = searchContainer;
         //propergate Consultation to setup form
-        interviewSubController.initValues(interview);
+        interviewSubController.initValues(interview, employee);
         //Change the confirm button text
         confirmationButton.setText("Change");
     }

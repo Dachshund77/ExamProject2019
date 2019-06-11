@@ -1,11 +1,15 @@
 package Application.Controller.SubControllers.Domain;
 
 import Application.Controller.AbstractController;
-import Domain.DomainObjects.EducationWish;
-import Domain.DomainObjects.FinishedEducation;
-import Domain.DomainObjects.Interview;
+import Application.Controller.PopUp.Find.FindEducationPopUp;
+import Application.Controller.PopUp.Find.FindEmployeePopUp;
+import Domain.DomainObjects.*;
+import UI.EducationChoice;
+import UI.EmployeeChoice;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,33 +25,32 @@ public class InterviewSub extends AbstractController {
     public Text interviewID;
     public TextField interViewNameTextField;
     public Tooltip interViewNameTooltip;
-    public ComboBox productUnderstandingComboBox;
-    public ComboBox problemUnderstandingComboBox;
-    public ComboBox qualityAwarenessComboBox;
-    public ComboBox cooperationComboBox;
-    public ComboBox flexibilityComboBox;
     public TableView<FinishedEducation> finishedEducationTableView;
     public TableColumn<FinishedEducation, String> finishedEducationNameColumn;
     public TableColumn<FinishedEducation, LocalDate> finishedEducationDateColumn;
     public TableView<EducationWish> educationWishTableView;
     public TableColumn<EducationWish, String> educationWishNameColumn;
     public TableColumn<EducationWish, Integer> educationWishPriorityColumn;
-    public Button addEducationWishbutton;
+    public Button addEducationWishButton;
     public Button removeEducationWishButton;
     public Button pickEduForWishButton;
     public Button addFinishedEducationButton;
     public Button removeFinishedEducationButton;
     public Button pickEduForFinishedEducationButton;
     public DatePicker dateForFinishedEducation;
-
-    public ArrayList<EducationWish> educationWishArrayList;
-    public ArrayList<FinishedEducation> finishedEducationArrayList;
+    public TextField priorityTextField;
+    public TextField flexScoreTextField;
+    public TextField coopScoreTextfield;
+    public TextField qualScoreTextField;
+    public TextField probScoreTextField;
+    public TextField prodScoreTextField;
+    public Button pickEmployeeButton;
 
     public Interview selectedInterview;
-
-    private String defaultComboBoxText = "1 - " + Interview.getQualityMaxValue();
+    public Employee selectedParentEmployee;
 
     public BooleanBinding isValid;
+
     private SimpleBooleanProperty interViewNameIsValid = new SimpleBooleanProperty(true);
     private SimpleBooleanProperty productUnderstandingIsValid = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty problemUnderstandingIsValid = new SimpleBooleanProperty(false);
@@ -55,26 +58,82 @@ public class InterviewSub extends AbstractController {
     private SimpleBooleanProperty cooperationIsValid = new SimpleBooleanProperty(false);
     private SimpleBooleanProperty flexibilityIsValid = new SimpleBooleanProperty(false);
 
-    ObservableList<Integer> numberList;
-    ObservableList<EducationWish> educationWishList = FXCollections.observableArrayList();
-    ObservableList<FinishedEducation> finishedEducationList = FXCollections.observableArrayList();
+    private ObservableList<EducationWish> educationWishList = FXCollections.observableArrayList();
+    private ObservableList<FinishedEducation> finishedEducationList = FXCollections.observableArrayList();
 
-    public void initialize(){
-        setQualityNumberList();
+    private SimpleObjectProperty<Education> selectedEduForFinished;
+    private SimpleObjectProperty<Education> selectedEduForWish;
+    private SimpleObjectProperty<Employee> selectedEmployee;
 
+    private BooleanBinding validWish;
+    private BooleanBinding validFinished;
+
+    private StringBinding pickEmployeeButtonText;
+
+    public void initialize() {
+        //init values
+        selectedEduForFinished = new SimpleObjectProperty<>(null);
+        selectedEduForWish = new SimpleObjectProperty<>(null);
+        selectedEmployee = new SimpleObjectProperty<>(null);
+
+        //Register listeners for validation
         interViewNameTextField.textProperty().addListener((observable -> handleInterviewNameInput()));
+        prodScoreTextField.textProperty().addListener(observable -> handleProdScoreInput());
+        probScoreTextField.textProperty().addListener(observable -> handleProbScoreInput());
+        flexScoreTextField.textProperty().addListener(observable -> handleFlexScoreInput());
+        qualScoreTextField.textProperty().addListener(observable -> handleQualScoreInput());
+        coopScoreTextfield.textProperty().addListener(observable -> handleCoopScoreInput());
+        priorityTextField.textProperty().addListener(observable -> handlePriorityInput());
+        selectedEmployee.addListener(observable -> handleEmployeeSelectionInput());
 
+
+        //Register listeners for remove
+        removeEducationWishButton.disableProperty().bind(educationWishTableView.getSelectionModel().selectedItemProperty().isNull());
+        removeFinishedEducationButton.disableProperty().bind(finishedEducationTableView.getSelectionModel().selectedItemProperty().isNull());
+
+        //Setup boolean binding for add buttons
+        validWish = new BooleanBinding() {
+            {
+                bind(selectedEduForWish);
+                bind(priorityTextField.textProperty());
+            }
+
+            @Override
+            protected boolean computeValue() {
+                return selectedEduForWish.isNotNull().get() && EducationWish.isValidPriority(priorityTextField.getText());
+            }
+        };
+
+        addEducationWishButton.disableProperty().bind(validWish.not());
+
+        validFinished = new BooleanBinding() {
+            {
+                bind(selectedEduForFinished);
+                bind(dateForFinishedEducation.valueProperty());
+            }
+
+            @Override
+            protected boolean computeValue() {
+                return selectedEduForFinished.isNotNull().get() && dateForFinishedEducation.valueProperty().isNotNull().get();
+            }
+        };
+
+        addFinishedEducationButton.disableProperty().bind(validFinished.not());
+
+        //Setup TableViews
         finishedEducationNameColumn.setCellValueFactory(new PropertyValueFactory<>("education"));
         finishedEducationDateColumn.setCellValueFactory(new PropertyValueFactory<>("dateFinished"));
+
         educationWishNameColumn.setCellValueFactory(new PropertyValueFactory<>("education"));
         educationWishPriorityColumn.setCellValueFactory(new PropertyValueFactory<>("priority"));
 
-        finishedEducationTableView.getColumns().setAll(finishedEducationNameColumn,finishedEducationDateColumn);
-        educationWishTableView.getColumns().setAll(educationWishNameColumn,educationWishPriorityColumn);
+        finishedEducationTableView.getColumns().setAll(finishedEducationNameColumn, finishedEducationDateColumn);
+        educationWishTableView.getColumns().setAll(educationWishNameColumn, educationWishPriorityColumn);
 
         finishedEducationTableView.setItems(finishedEducationList);
         educationWishTableView.setItems(educationWishList);
 
+        //Setup button validations
         isValid = new BooleanBinding() {
             {
                 bind(interViewNameIsValid);
@@ -83,29 +142,46 @@ public class InterviewSub extends AbstractController {
                 bind(qualityAwarenessIsValid);
                 bind(cooperationIsValid);
                 bind(flexibilityIsValid);
+                bind(selectedEmployee);
             }
+
             @Override
             protected boolean computeValue() {
-                if (interViewNameIsValid.get() && productUnderstandingIsValid.get() && problemUnderstandingIsValid.get()
-                        && qualityAwarenessIsValid.get() && cooperationIsValid.get() && flexibilityIsValid.get()){
-                    return true;
+                return interViewNameIsValid.get() && productUnderstandingIsValid.get() && problemUnderstandingIsValid.get()
+                        && qualityAwarenessIsValid.get() && cooperationIsValid.get() && flexibilityIsValid.get() && selectedEmployee.isNotNull().get();
+            }
+        };
+
+        //Setup binding for Pick Employee button
+        pickEmployeeButtonText = new StringBinding() {
+            {
+                bind(selectedEmployee);
+            }
+
+            @Override
+            protected String computeValue() {
+                if (selectedEmployee.get() == null) {
+                    return "Pick Employee";
                 } else {
-                    return false;
+                    int id = selectedEmployee.get().getEmployeeID();
+                    return ("ID: " + id);
                 }
             }
         };
-        resetForm();
+        pickEmployeeButton.textProperty().bind(pickEmployeeButtonText);
 
-        productUnderstandingComboBox.getItems().setAll(numberList);
-        problemUnderstandingComboBox.getItems().setAll(numberList);
-        qualityAwarenessComboBox.getItems().setAll(numberList);
-        cooperationComboBox.getItems().setAll(numberList);
-        flexibilityComboBox.getItems().setAll(numberList);
+        resetForm();
     }
 
     @Override
-    public void initValues(Interview interview) {
+    public void initValues(Interview interview, Employee employee) {
         // hook up interview
+        selectedInterview = interview;
+        selectedParentEmployee = employee;
+
+        selectedEmployee.set(employee);
+        interviewID.setText("Interview " + selectedInterview.getInterviewID());
+        resetForm();
     }
 
     /**
@@ -114,9 +190,8 @@ public class InterviewSub extends AbstractController {
      * Checks if the input is valid or not.
      * If the input is invalid, it displays a tooltip with the error and makes the field red
      */
-    public void handleInterviewNameInput(){
-        if(Interview.isValidInterviewName(interViewNameTextField.getText()))
-        {
+    private void handleInterviewNameInput() {
+        if (Interview.isValidInterviewName(interViewNameTextField.getText())) {
             interViewNameTextField.setTooltip(null);
             interViewNameIsValid.set(true);
             interViewNameTextField.getStyleClass().remove("TextField-Error");
@@ -124,251 +199,320 @@ public class InterviewSub extends AbstractController {
             String invalidCause = Interview.interviewNameInvalidCause(interViewNameTextField.getText());
             interViewNameTextField.setTooltip(new Tooltip(invalidCause));
             interViewNameIsValid.set(false);
-            if(!interViewNameTextField.getStyleClass().contains("TextField-Error"))
+            if (!interViewNameTextField.getStyleClass().contains("TextField-Error"))
                 interViewNameTextField.getStyleClass().add("TextField-Error");
         }
     }
 
-    /**
-     * Checks if the input is valid or not.
-     * If the input is wrong or has not changed, a tooltip is displayed.
-     * @param event When changing the value in the ComboBox
-     */
-    public void handleProductUnderstandingBox(ActionEvent event)
-    {
-        if(!productUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
-            int chosenNum = Integer.parseInt(productUnderstandingComboBox.getValue().toString());
-            if (Interview.isValidProductUnderstanding(chosenNum)) {
-                productUnderstandingComboBox.setTooltip(null);
-                productUnderstandingIsValid.set(true);
-                productUnderstandingComboBox.getStyleClass().removeAll("TextField-Error");
-            } else {
-                String invalidCause = Interview.productUnderstandingInvalidCause(chosenNum);
-                productUnderstandingComboBox.setTooltip(new Tooltip(invalidCause));
-                productUnderstandingIsValid.set(false);
-                if (!productUnderstandingComboBox.getStyleClass().contains("TextField-Error"))
-                    productUnderstandingComboBox.getStyleClass().add("TextField-Error");
-            }
+    private void handleProdScoreInput() {
+        if (Interview.isValidProductUnderstanding(prodScoreTextField.getText())) {
+            prodScoreTextField.setTooltip(null);
+            productUnderstandingIsValid.set(true);
+            prodScoreTextField.getStyleClass().remove("TextField-Error");
+        } else {
+            String invalidCause = Interview.productUnderstandingInvalidCause(prodScoreTextField.getText());
+            prodScoreTextField.setTooltip(new Tooltip(invalidCause));
+            productUnderstandingIsValid.set(false);
+            if (!prodScoreTextField.getStyleClass().contains("TextField-Error"))
+                prodScoreTextField.getStyleClass().add("TextField-Error");
         }
     }
 
-    /**
-     * Checks if the input is valid or not.
-     * If the input is wrong or has not changed, a tooltip is displayed.
-     * @param event When changing the value in the ComboBox
-     */
-    public void handleProblemUnderstandingBox(ActionEvent event)
-    {
-        if(!problemUnderstandingComboBox.getValue().toString().equals(defaultComboBoxText)) {
-            int chosenNum = Integer.parseInt(problemUnderstandingComboBox.getValue().toString());
-            if (Interview.isValidProblemUnderstanding(chosenNum)) {
-                problemUnderstandingComboBox.setTooltip(null);
-                problemUnderstandingIsValid.set(true);
-                problemUnderstandingComboBox.getStyleClass().removeAll("TextField-Error");
-            } else {
-                String invalidCause = Interview.problemUnderstandingInvalidCause(chosenNum);
-                problemUnderstandingComboBox.setTooltip(new Tooltip(invalidCause));
-                problemUnderstandingIsValid.set(false);
-                if (!problemUnderstandingComboBox.getStyleClass().contains("TextField-Error"))
-                    problemUnderstandingComboBox.getStyleClass().add("TextField-Error");
-            }
-        }
-
-    }
-
-    /**
-     * Checks if the input is valid or not.
-     * If the input is wrong or has not changed, a tooltip is displayed.
-     * @param event When changing the value in the ComboBox
-     */
-    public void handleQualityAwarenessBox(ActionEvent event)
-    {
-        if(!qualityAwarenessComboBox.getValue().toString().equals(defaultComboBoxText)) {
-            int chosenNum = Integer.parseInt(qualityAwarenessComboBox.getValue().toString());
-            if (Interview.isValidQualityAwareness(chosenNum)) {
-                qualityAwarenessIsValid.set(true);
-                qualityAwarenessComboBox.setTooltip(null);
-                qualityAwarenessComboBox.getStyleClass().removeAll("TextField-Error");
-            } else {
-                String invalidCause = Interview.qualityAwarenessInvalidCause(chosenNum);
-                qualityAwarenessComboBox.setTooltip(new Tooltip(invalidCause));
-                qualityAwarenessIsValid.set(false);
-                if (!qualityAwarenessComboBox.getStyleClass().contains("TextField-Error"))
-                    qualityAwarenessComboBox.getStyleClass().add("TextField-Error");
-            }
+    private void handleProbScoreInput() {
+        if (Interview.isValidProblemUnderstanding(probScoreTextField.getText())) {
+            probScoreTextField.setTooltip(null);
+            problemUnderstandingIsValid.set(true);
+            probScoreTextField.getStyleClass().remove("TextField-Error");
+        } else {
+            String invalidCause = Interview.problemUnderstandingInvalidCause(probScoreTextField.getText());
+            probScoreTextField.setTooltip(new Tooltip(invalidCause));
+            problemUnderstandingIsValid.set(false);
+            if (!probScoreTextField.getStyleClass().contains("TextField-Error"))
+                probScoreTextField.getStyleClass().add("TextField-Error");
         }
     }
 
-    /**
-     * Checks if the input is valid or not.
-     * If the input is wrong or has not changed, a tooltip is displayed.
-     * @param event When changing the value in the ComboBox
-     */
-    public void handleCooperationBox(ActionEvent event)
-    {
-        if(!cooperationComboBox.getValue().toString().equals(defaultComboBoxText)) {
-            int chosenNum = Integer.parseInt(cooperationComboBox.getValue().toString());
-            if (Interview.isValidCooperation(chosenNum)) {
-                cooperationComboBox.setTooltip(null);
-                cooperationIsValid.set(true);
-                cooperationComboBox.getStyleClass().removeAll("TextField-Error");
-            } else {
-                String invalidCause = Interview.cooperationInvalidCause(chosenNum);
-                cooperationComboBox.setTooltip(new Tooltip(invalidCause));
-                cooperationIsValid.set(false);
-                if (!cooperationComboBox.getStyleClass().contains("TextField-Error"))
-                    cooperationComboBox.getStyleClass().add("TextField-Error");
-            }
+    private void handleQualScoreInput() {
+        if (Interview.isValidQualityAwareness(qualScoreTextField.getText())) {
+            qualScoreTextField.setTooltip(null);
+            qualityAwarenessIsValid.set(true);
+            qualScoreTextField.getStyleClass().remove("TextField-Error");
+        } else {
+            String invalidCause = Interview.qualityAwarenessInvalidCause(qualScoreTextField.getText());
+            qualScoreTextField.setTooltip(new Tooltip(invalidCause));
+            qualityAwarenessIsValid.set(false);
+            if (!qualScoreTextField.getStyleClass().contains("TextField-Error"))
+                qualScoreTextField.getStyleClass().add("TextField-Error");
         }
     }
 
-    /**
-     * Checks if the input is valid or not.
-     * If the input is wrong or has not changed, a tooltip is displayed.
-     * @param event When changing the value in the ComboBox
-     */
-    public void handleFlexibilityBox(ActionEvent event)
-    {
-        if(!flexibilityComboBox.getValue().toString().equals(defaultComboBoxText)) {
-            int chosenNum = Integer.parseInt(flexibilityComboBox.getValue().toString());
-            if (Interview.isValidFlexibility(chosenNum)) {
-                flexibilityComboBox.setTooltip(null);
-                flexibilityIsValid.set(true);
-                flexibilityComboBox.getStyleClass().removeAll("TextField-Error");
-            } else {
-                String invalidCause = Interview.productUnderstandingInvalidCause(chosenNum);
-                flexibilityComboBox.setTooltip(new Tooltip(invalidCause));
-                flexibilityIsValid.set(false);
-                if (!flexibilityComboBox.getStyleClass().contains("TextField-Error"))
-                    flexibilityComboBox.getStyleClass().add("TextField-Error");
-            }
+    private void handleFlexScoreInput() {
+        if (Interview.isValidFlexibility(flexScoreTextField.getText())) {
+            flexScoreTextField.setTooltip(null);
+            flexibilityIsValid.set(true);
+            flexScoreTextField.getStyleClass().remove("TextField-Error");
+        } else {
+            String invalidCause = Interview.flexibilityInvalidCause(interViewNameTextField.getText());
+            flexScoreTextField.setTooltip(new Tooltip(invalidCause));
+            flexibilityIsValid.set(false);
+            if (!flexScoreTextField.getStyleClass().contains("TextField-Error"))
+                flexScoreTextField.getStyleClass().add("TextField-Error");
         }
     }
-    public void handleAddEducationWish(ActionEvent event){
-        EducationWish newData = new EducationWish(null,null,1); // TODO : Setup information to be inserted
+
+    private void handleCoopScoreInput() {
+        if (Interview.isValidCooperation(coopScoreTextfield.getText())) {
+            coopScoreTextfield.setTooltip(null);
+            cooperationIsValid.set(true);
+            coopScoreTextfield.getStyleClass().remove("TextField-Error");
+        } else {
+            String invalidCause = Interview.cooperationInvalidCause(coopScoreTextfield.getText());
+            coopScoreTextfield.setTooltip(new Tooltip(invalidCause));
+            cooperationIsValid.set(false);
+            if (!coopScoreTextfield.getStyleClass().contains("TextField-Error"))
+                coopScoreTextfield.getStyleClass().add("TextField-Error");
+        }
+    }
+
+    private void handleEmployeeSelectionInput() {
+        if (selectedEmployee.get() == null) {
+            if (!pickEmployeeButton.getStyleClass().contains("Button-Error")) {
+                pickEmployeeButton.getStyleClass().add("Button-Error");
+            }
+        } else {
+            pickEmployeeButton.getStyleClass().removeAll("Button-Error");
+        }
+    }
+
+    private void handlePriorityInput() {
+        if (EducationWish.isValidPriority(priorityTextField.getText())) {
+            priorityTextField.setTooltip(null);
+        } else {
+            String invalidCause = EducationWish.priorityInvalidCause(priorityTextField.getText());
+            priorityTextField.setTooltip(new Tooltip(invalidCause));
+        }
+    }
+
+    public void handleAddEducationWish(ActionEvent event) {
+        EducationWish newData = new EducationWish(null, selectedEduForWish.get(), Integer.parseInt(priorityTextField.getText()));
         educationWishList.add(newData);
+        resetValuesForWish();
     }
 
-    public void handleAddFinishedEducation(ActionEvent event){
-        if(dateForFinishedEducation.getValue() != null) {
+    public void handleAddFinishedEducation(ActionEvent event) {
+        if (dateForFinishedEducation.getValue() != null) {
             LocalDate dateToInsert = dateForFinishedEducation.getValue();
-            FinishedEducation newData = new FinishedEducation(null, null, dateToInsert); //TODO : Setup information to be inserted
+            FinishedEducation newData = new FinishedEducation(null, selectedEduForFinished.get(), dateToInsert);
             finishedEducationList.add(newData);
+            resetValuesForFinished();
         }
+    }
+
+    public void handlePickEduForWish(ActionEvent event) {
+        EducationChoice popUp = new EducationChoice();
+        Education foundEducation = popUp.showAndReturn(new FindEducationPopUp());
+        if (foundEducation != null) {
+            selectedEduForWish.set(foundEducation);
+            pickEduForWishButton.setText(foundEducation.getEducationName());
+        }
+    }
+
+    private void resetValuesForWish() {
+        priorityTextField.setText(null);
+        selectedEduForWish.set(null);
+        pickEduForWishButton.setText("Pick Education");
+    }
+
+    public void handlePickEduForFinished(ActionEvent event) {
+        EducationChoice popUp = new EducationChoice();
+        Education foundEducation = popUp.showAndReturn(new FindEducationPopUp());
+        if (foundEducation != null) {
+            selectedEduForFinished.set(foundEducation);
+            pickEduForFinishedEducationButton.setText(foundEducation.getEducationName());
+        }
+    }
+
+    private void resetValuesForFinished() {
+        dateForFinishedEducation.setValue(null);
+        selectedEduForFinished.set(null);
+        pickEduForFinishedEducationButton.setText("Pick Education");
     }
 
     /**
      * Removes an education wish from the table
+     *
      * @param event Upon selecting a wish and clicking the "Remove education" button
      */
-    public void handleRemoveEducationWish(ActionEvent event){
+    public void handleRemoveEducationWish(ActionEvent event) {
         EducationWish selectedData = educationWishTableView.getSelectionModel().getSelectedItem();
         educationWishList.remove(selectedData);
     }
 
     /**
      * Removes a finished education from the table
+     *
      * @param event Upon selecting a finished education and clicking the "Remove finished education" button
      */
-    public void handleRemoveFinishedEducation(ActionEvent event){
+    public void handleRemoveFinishedEducation(ActionEvent event) {
         FinishedEducation selectedData = finishedEducationTableView.getSelectionModel().getSelectedItem();
         finishedEducationList.remove(selectedData);
     }
 
-    public void handlePickFinishedEducation(ActionEvent actionEvent) {
-
-    }
-
     /**
      * A method to disable Fields, in cases that needs it
+     *
      * @param bool true or false, depending on if fields should be disabled
      */
-    public void setDisabled(boolean bool){ //TODO i dont think the tableviews should be visible whenever - Sven
+    @SuppressWarnings("Duplicates")
+    public void setDisabled(boolean bool) { //TODO Need implemetation
         interViewNameTextField.setDisable(bool);
-        productUnderstandingComboBox.setDisable(bool);
-        problemUnderstandingComboBox.setDisable(bool);
-        qualityAwarenessComboBox.setDisable(bool);
-        cooperationComboBox.setDisable(bool);
-        flexibilityComboBox.setDisable(bool);
-        addEducationWishbutton.setDisable(bool);
-        addEducationWishbutton.setVisible(false);
-        removeEducationWishButton.setDisable(bool);
-        removeEducationWishButton.setVisible(false);
-        pickEduForWishButton.setDisable(bool);
-        pickEduForWishButton.setVisible(false);
-        addFinishedEducationButton.setDisable(bool);
-        addFinishedEducationButton.setVisible(false);
-        removeFinishedEducationButton.setDisable(bool);
-        removeFinishedEducationButton.setVisible(false);
-        pickEduForFinishedEducationButton.setDisable(bool);
-        pickEduForFinishedEducationButton.setVisible(false);
-        educationWishTableView.setVisible(false);
+        prodScoreTextField.setDisable(bool);
+        probScoreTextField.setDisable(bool);
+        qualScoreTextField.setDisable(bool);
+        coopScoreTextfield.setDisable(bool);
+        flexScoreTextField.setDisable(bool);
+
         educationWishTableView.setDisable(bool);
-        finishedEducationTableView.setVisible(false);
         finishedEducationTableView.setDisable(bool);
-        dateForFinishedEducation.setVisible(false);
+
+        pickEduForWishButton.setDisable(bool);
+        pickEduForWishButton.setVisible(!bool);
+
+        priorityTextField.setDisable(bool);
+        priorityTextField.setVisible(!bool);
+
+        //addEducationWishButton.setDisable(bool);
+        addEducationWishButton.setVisible(!bool);
+
+        //removeEducationWishButton.setDisable(bool);
+        removeEducationWishButton.setVisible(!bool);
+
+        pickEduForFinishedEducationButton.setDisable(bool);
+        pickEduForFinishedEducationButton.setVisible(!bool);
+
         dateForFinishedEducation.setDisable(bool);
+        dateForFinishedEducation.setVisible(!bool);
+
+        //addFinishedEducationButton.setDisable(bool);
+        addFinishedEducationButton.setVisible(!bool);
+
+        //removeFinishedEducationButton.setDisable(bool);
+        removeFinishedEducationButton.setVisible(!bool);
+
+        pickEmployeeButton.setDisable(bool);
+        pickEmployeeButton.setVisible(!bool);
     }
 
-    /**
-     * Initalizes a ArrayList to provide the ComboBoxes with numbers.
-     * Numbers are depending on QUALITY_MAX_VALUE in Interview.java
-     */
-    public void setQualityNumberList() {
-        ArrayList<Integer> setNumberList = new ArrayList<>();
-        for (int i = 1; i < Interview.getQualityMaxValue() + 1; i++) {
-            setNumberList.add(i);
-        }
-        numberList = FXCollections.observableArrayList(setNumberList);
-    }
     /**
      * Method to reset fields and comboboxes, either manually or through startup.
      * Checks if the user got there by selecting an interview or if they want to create a new.
      */
-    public void resetForm(){
-        if(selectedInterview != null)
-        {
+    public void resetForm() {
+        handleEmployeeSelectionInput();
+        if (selectedInterview != null) { //TODO employee button
+            resetValuesForFinished();
+            resetValuesForWish();
+
+            selectedEmployee.set(null);
+
+            educationWishList.clear();
+            educationWishList.addAll(selectedInterview.getEducationWishes());
+
+            finishedEducationList.clear();
+            finishedEducationList.addAll(selectedInterview.getFinishedEducations());
+
             interViewNameTextField.setText(selectedInterview.getInterviewName());
-            productUnderstandingComboBox.setValue(selectedInterview.getProductUnderstanding());
-            problemUnderstandingComboBox.setValue(selectedInterview.getProductUnderstanding());
-            qualityAwarenessComboBox.setValue(selectedInterview.getProductUnderstanding());
-            cooperationComboBox.setValue(selectedInterview.getProductUnderstanding());
-            flexibilityComboBox.setValue(selectedInterview.getProductUnderstanding());
+            if (selectedInterview.getProductUnderstanding() != null) {
+                prodScoreTextField.setText(selectedInterview.getProductUnderstanding().toString());
+            } else {
+                prodScoreTextField.setText(null);
+            }
+            if (selectedInterview.getProblemUnderstanding() != null) {
+                probScoreTextField.setText(selectedInterview.getProblemUnderstanding().toString());
+            } else {
+                probScoreTextField.setText(null);
+            }
+            if (selectedInterview.getFlexibility() != null) {
+                flexScoreTextField.setText(selectedInterview.getFlexibility().toString());
+            } else {
+                flexScoreTextField.setText(null);
+            }
+            if (selectedInterview.getQualityAwareness() != null) {
+                qualScoreTextField.setText(selectedInterview.getQualityAwareness().toString());
+            } else {
+                qualScoreTextField.setText(null);
+            }
+            if (selectedInterview.getCooperation() != null) {
+                coopScoreTextfield.setText(selectedInterview.getCooperation().toString());
+            } else {
+                coopScoreTextfield.setText(null);
+            }
+
+        } else {
+            resetValuesForFinished();
+            resetValuesForWish();
+
+            selectedEmployee.set(selectedParentEmployee);
+
+            educationWishList.clear();
+            finishedEducationList.clear();
+
+            interViewNameTextField.setText(null);
+            prodScoreTextField.setText(null);
+            probScoreTextField.setText(null);
+            flexScoreTextField.setText(null);
+            qualScoreTextField.setText(null);
+            coopScoreTextfield.setText(null);
         }
-        else
-        {
-            interViewNameTextField.setText("");
-            productUnderstandingComboBox.setValue(defaultComboBoxText); //FIXME : Does not reset to default text in ComboBoxes, if a value has been picked beforehand.
-            problemUnderstandingComboBox.setValue(defaultComboBoxText);
-            qualityAwarenessComboBox.setValue(defaultComboBoxText);
-            cooperationComboBox.setValue(defaultComboBoxText);
-            flexibilityComboBox.setValue(defaultComboBoxText);
-
-            String startToolTipComboBox = "Change to a number between 1 and " + Interview.getQualityMaxValue();
-            productUnderstandingComboBox.setTooltip(new Tooltip(startToolTipComboBox));
-            problemUnderstandingComboBox.setTooltip(new Tooltip(startToolTipComboBox));
-            qualityAwarenessComboBox.setTooltip(new Tooltip(startToolTipComboBox));
-            cooperationComboBox.setTooltip(new Tooltip(startToolTipComboBox));
-            flexibilityComboBox.setTooltip(new Tooltip(startToolTipComboBox));
-
-            productUnderstandingIsValid.set(false);
-            problemUnderstandingIsValid.set(false);
-            qualityAwarenessIsValid.set(false);
-            cooperationIsValid.set(false);
-            flexibilityIsValid.set(false);
-
-        }
-
     }
 
-    public Interview getInterview(){
-        //TODO Implement this
-        //build the object either with null id or loaded id, depending on if we change or not change and existing object.
-        return null;
+    @SuppressWarnings("Duplicates")
+    public Interview getInterview() { //TODO needs implementation
+        Integer id = null;
+        if (selectedInterview != null){
+            id = selectedInterview.getInterviewID();
+        }
+        String name = interViewNameTextField.getText();
+
+        Integer prod = null;
+        if (prodScoreTextField.getText() != null && !prodScoreTextField.getText().trim().isEmpty()) {
+             prod = Integer.parseInt(prodScoreTextField.getText());
+        }
+
+        Integer prob = null;
+        if (prodScoreTextField.getText() != null && !prodScoreTextField.getText().trim().isEmpty()) {
+             prob = Integer.parseInt(probScoreTextField.getText());
+        }
+
+        Integer flex = null;
+        if (flexScoreTextField.getText() !=null && !flexScoreTextField.getText().trim().isEmpty()) {
+             flex = Integer.parseInt(flexScoreTextField.getText());
+        }
+
+        Integer qual = null;
+        if(qualScoreTextField.getText() != null && !qualScoreTextField.getText().trim().isEmpty()) {
+            qual = Integer.parseInt(qualScoreTextField.getText());
+        }
+
+        Integer coop = null;
+        if (coopScoreTextfield.getText() != null && !coopScoreTextfield.getText().trim().isEmpty()){
+            coop = Integer.parseInt(coopScoreTextfield.getText());
+        }
+        ArrayList<FinishedEducation> finishedEducations = new ArrayList<>(finishedEducationList);
+        ArrayList<EducationWish> educationWishes = new ArrayList<>(educationWishList);
+        return new Interview(id,name,prod,prob,flex,qual,coop,finishedEducations,educationWishes);
     }
 
-    public int getEmployeeID(){
-        //TODO Implement this
-        return 1;
+    public int getEmployeeID() {
+        return selectedEmployee.get().getEmployeeID();
+    }
+
+
+    public void handlePickEmployee(ActionEvent event) {
+        EmployeeChoice popUp = new EmployeeChoice();
+        Employee foundEducation = popUp.showAndReturn(new FindEmployeePopUp());
+        if (foundEducation != null) {
+            selectedEmployee.set(foundEducation);
+        }
     }
 }
