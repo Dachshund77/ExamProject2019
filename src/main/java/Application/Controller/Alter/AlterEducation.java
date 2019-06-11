@@ -65,16 +65,16 @@ public class AlterEducation extends AbstractController {
      * @param event sends an education object to the database
      */
     @FXML
-    private void handleConfirmation(ActionEvent event) { //TODO needs implementation
+    private void handleConfirmation(ActionEvent event) {
         Education education = educationSubController.getEducation();
 
-
-
+        boolean outcome = true;
         try {
             DbFacade.connect();
             DbFacade.insertEducation(education);
 
         } catch (SQLException e) {
+            outcome = false;
             e.printStackTrace();
         } finally {
             try {
@@ -84,17 +84,25 @@ public class AlterEducation extends AbstractController {
             }
         }
         //Send confirmation
-        if (education.getAmuNr() == null){
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
+        if (outcome) {
+            if (education.getAmuNr() == null) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Education was added to the Database Successfully!");
+                info.showAndWait();
+            } else {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Education was updated in the Database Successfully!");
+                info.showAndWait();
+            }
+        } else {
+            Alert info = new Alert(Alert.AlertType.ERROR);
+            info.setTitle("ERROR!");
             info.setHeaderText(null);
-            info.setContentText("Education was added to the Database Successfully!");
-            info.showAndWait();
-        }else {
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
-            info.setHeaderText(null);
-            info.setContentText("Education was updated in the Database Successfully!");
+            info.setContentText("Encountered critical database error!");
             info.showAndWait();
         }
 

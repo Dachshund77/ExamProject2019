@@ -72,11 +72,13 @@ public class AlterProvider extends AbstractController {
     private void handleConfirmation(ActionEvent event) { //TODO  need correction
         Provider provider = providerSubController.getProvider();
 
+        boolean outcome = true;
         try {
             DbFacade.connect();
             DbFacade.insertProvider(provider);
 
         } catch (SQLException e) {
+            outcome = false;
             e.printStackTrace();
         } finally {
             try {
@@ -85,18 +87,27 @@ public class AlterProvider extends AbstractController {
                 e.printStackTrace();
             }
         }
+
         //Send confirmation
-        if (provider.getProviderID() == null){
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
+        if (outcome) {
+            if (provider.getProviderID() == null) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Provider was added to the Database Successfully!");
+                info.showAndWait();
+            } else {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Provider was updated in the Database Successfully!");
+                info.showAndWait();
+            }
+        } else {
+            Alert info = new Alert(Alert.AlertType.ERROR);
+            info.setTitle("ERROR!");
             info.setHeaderText(null);
-            info.setContentText("Provider was added to the Database Successfully!");
-            info.showAndWait();
-        }else {
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
-            info.setHeaderText(null);
-            info.setContentText("Provider was updated in the Database Successfully!");
+            info.setContentText("Encountered critical database error!");
             info.showAndWait();
         }
 
