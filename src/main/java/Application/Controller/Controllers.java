@@ -83,6 +83,22 @@ public interface Controllers {
      * This method need to be overridden to work correctly.
      * </p>
      * Consult {@link ViewController} Enum class if custom values are needed.
+     * @param employee Object passed to the new Controller
+     * @see AbstractController
+     */
+    void initValues(Interview interview, Employee employee);
+
+    /**
+     * Method that will load the controller with needed information.
+     * This method can be used to pass information from one Controller to another.
+     * <br><br>
+     * <p>
+     * <font color="Red">
+     * IMPORTANT:
+     * </font>
+     * This method need to be overridden to work correctly.
+     * </p>
+     * Consult {@link ViewController} Enum class if custom values are needed.
      * @param interview Object passed to the new Controller
      * @see AbstractController
      */
@@ -203,6 +219,23 @@ public interface Controllers {
      * @see AbstractController
      */
     void initValues(SearchContainer searchContainer, Interview interview);
+
+    /**
+     * Method that will load the controller with needed information.
+     * This method can be used to pass information from one Controller to another.
+     * <br><br>
+     * <p>
+     * <font color="Red">
+     * IMPORTANT:
+     * </font>
+     * This method need to be overridden to work correctly.
+     * </p>
+     * Consult {@link ViewController} Enum class if custom values are needed.
+     * @param searchContainer Object passed to the new Controller
+     * @param interview Object passed to the new Controller
+     * @see AbstractController
+     */
+    void initValues(SearchContainer searchContainer, Interview interview, Employee employee);
 
     /**
      * Method that will load the controller with needed information.

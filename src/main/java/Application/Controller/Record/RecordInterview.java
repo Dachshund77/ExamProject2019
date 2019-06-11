@@ -4,6 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.InterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,9 +25,9 @@ public class RecordInterview extends AbstractController {
     }
 
     @Override
-    public void initValues(SearchContainer searchContainer, Interview interview) {
+    public void initValues(SearchContainer searchContainer, Interview interview, Employee employee) {
         previousSearchContainer = searchContainer;
-        interviewSubController.initValues(interview);
+        interviewSubController.initValues(interview, employee);
     }
 
     public void handleReturn(ActionEvent event) {

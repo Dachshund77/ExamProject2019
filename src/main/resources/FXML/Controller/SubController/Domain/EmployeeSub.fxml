@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Domain.EmployeeSub">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.Controller.SubControllers.Domain.EmployeeSub">
     
     <center>
         <GridPane BorderPane.alignment="CENTER">
@@ -31,42 +31,56 @@
                 <RowConstraints maxHeight="165.0" minHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="165.0" minHeight="30.0" prefHeight="25.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="343.0" minHeight="10.0" prefHeight="109.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="343.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="343.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <Label alignment="CENTER" prefHeight="17.0" prefWidth="142.0" text="Employee first name" GridPane.rowIndex="2" />
-                <Label alignment="CENTER" prefHeight="17.0" prefWidth="126.0" text="Employee last name" GridPane.rowIndex="3" />
-                <Label alignment="CENTER" prefHeight="17.0" prefWidth="200.0" text="CPR No." GridPane.rowIndex="4" />
-                <Label alignment="CENTER" prefHeight="17.0" prefWidth="188.0" text="Phone No." GridPane.rowIndex="6" />
-                <Label fx:id="employeeIDText" alignment="CENTER" prefHeight="17.0" prefWidth="258.0" text="New customer employee" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label alignment="CENTER" prefHeight="17.0" prefWidth="142.0" text="Employee first name" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></Label>
+                <Label alignment="CENTER" prefHeight="17.0" prefWidth="126.0" text="Employee last name" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></Label>
+                <Label alignment="CENTER" prefHeight="17.0" prefWidth="200.0" text="CPR No." GridPane.rowIndex="4">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></Label>
+                <Label alignment="CENTER" prefHeight="17.0" prefWidth="188.0" text="Phone No." GridPane.rowIndex="6">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></Label>
+                <Label fx:id="employeeIDText" alignment="CENTER" prefHeight="17.0" prefWidth="258.0" text="New customer employee" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></Label>
                 <TextField fx:id="employeeFirstNameTextField" onKeyTyped="#handleFirstNameInput" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <tooltip>
                         <Tooltip fx:id="employeeFirstnameTooltip" text="Empty Tooltip" />
                     </tooltip>
                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </GridPane.margin></TextField>
                 <TextField fx:id="employeeLastNameTextField" onKeyTyped="#handleLastNameInput" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <tooltip>
                         <Tooltip fx:id="employeeLastNameTooltip" text="Empty Tooltip" />
                     </tooltip>
                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </GridPane.margin></TextField>
                 <TextField fx:id="cprNrTextField" onKeyTyped="#handleCprNrInput" GridPane.columnIndex="1" GridPane.rowIndex="4">
                     <tooltip>
                         <Tooltip fx:id="cprNrTooltip" text="Empty Tooltip" />
                     </tooltip>
                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </GridPane.margin></TextField>
                 <TextField fx:id="phoneNrTextField" onKeyTyped="#handlePhoneNrInput" GridPane.columnIndex="1" GridPane.rowIndex="6">
                     <tooltip>
                         <Tooltip fx:id="phoneNrTooltip" text="Empty Tooltip" />
                     </tooltip>
                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </GridPane.margin></TextField>
                 <TableView fx:id="interviewTableView" prefHeight="121.0" prefWidth="234.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" GridPane.rowSpan="7">
                     <columns>
@@ -74,21 +88,33 @@
                         <TableColumn fx:id="interviewNameColumn" prefWidth="120.0" text="Interview name" />
                     </columns>
                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </GridPane.margin>
                 </TableView>
-                <Label alignment="CENTER" prefHeight="17.0" prefWidth="128.0" text="Email" GridPane.rowIndex="5" />
+                <Label alignment="CENTER" prefHeight="17.0" prefWidth="128.0" text="Email" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></Label>
                 <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="5">
                     <GridPane.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </GridPane.margin>
                     <tooltip>
                         <Tooltip fx:id="emailTooltip" text="Empty Tooltip" />
                     </tooltip>
                 </TextField>
-            <Button fx:id="addInterview" mnemonicParsing="false" onAction="#handleAddInterview" prefWidth="110.0" text="Add interview" GridPane.columnIndex="2" GridPane.rowIndex="8" />
-            <Button fx:id="removeInterview" mnemonicParsing="false" onAction="#handleRemoveInterview" prefWidth="110.0" text="Remove interview" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+            <Button fx:id="addInterview" mnemonicParsing="false" onAction="#handleAddInterview" prefWidth="110.0" text="Add interview" GridPane.columnIndex="2" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></Button>
+            <Button fx:id="removeInterview" mnemonicParsing="false" onAction="#handleRemoveInterview" prefWidth="110.0" text="Remove interview" GridPane.columnIndex="3" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </GridPane.margin></Button>
             </children>
         </GridPane>
     </center>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </BorderPane>

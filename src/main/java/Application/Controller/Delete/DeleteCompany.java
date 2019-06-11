@@ -74,10 +74,12 @@ public class DeleteCompany extends AbstractController {
         alert.setHeaderText("You are about to delete a Company!");
         alert.setContentText("This Action will delete this Company and all related Consultations permanently!");
         Optional<ButtonType> result = alert.showAndWait();
+
+        boolean outcome = false;
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
                 DbFacade.connect();
-                DbFacade.deleteCompany(companySubController.selectedCompany.getCompanyID());
+                outcome = DbFacade.deleteCompany(companySubController.selectedCompany.getCompanyID());
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -88,14 +90,21 @@ public class DeleteCompany extends AbstractController {
                     e.printStackTrace();
                 }
             }
+            if (outcome) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Company was deleted from the Database Successfully!");
+                info.showAndWait();
 
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
-            info.setHeaderText(null);
-            info.setContentText("Company was deleted from the Database Successfully!");
-            info.showAndWait();
-
-            confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
+                confirmationButton.getScene().setRoot(ViewController.MAIN_CONTROLLER.loadParent());
+            } else {
+                Alert info = new Alert(Alert.AlertType.ERROR);
+                info.setTitle("ERROR!");
+                info.setHeaderText(null);
+                info.setContentText("Encountered critical database error!");
+                info.showAndWait();
+            }
         }
 
     }

@@ -69,11 +69,13 @@ public class AlterConsultation extends AbstractController {
        Consultation consultation = consultationSubController.getConsultation();
        int companyId =  consultationSubController.getCompanyID();
 
+       boolean outcome = true;
         try {
             DbFacade.connect();
             DbFacade.insertConsultation(consultation, companyId);
 
         } catch (SQLException e) {
+            outcome = false;
             e.printStackTrace();
         } finally {
             try {
@@ -84,17 +86,25 @@ public class AlterConsultation extends AbstractController {
         }
 
         //Send confirmation
-        if (consultation.getConsultationID() == null){
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
-            info.setHeaderText(null);
-            info.setContentText("Consultation was added to the Database Successfully!");
-            info.showAndWait();
+        if (outcome) {
+            if (consultation.getConsultationID() == null) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Consultation was added to the Database Successfully!");
+                info.showAndWait();
+            } else {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Consultation was updated in the Database Successfully!");
+                info.showAndWait();
+            }
         }else {
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
+            Alert info = new Alert(Alert.AlertType.ERROR);
+            info.setTitle("ERROR!");
             info.setHeaderText(null);
-            info.setContentText("Consultation was updated in the Database Successfully!");
+            info.setContentText("Encountered critical database error!");
             info.showAndWait();
         }
 

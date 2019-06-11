@@ -4,6 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.InterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -35,17 +36,17 @@ public class AlterInterview extends AbstractController {
 
 
     @Override
-    public void initValues(SearchContainer searchContainer, Interview interview) {
+    public void initValues(SearchContainer searchContainer, Interview interview, Employee employee) {
         //Save search container for returning
         previousSearch = searchContainer;
         //propergate Consultation to setup form
-        interviewSubController.initValues(interview);
+        interviewSubController.initValues(interview, employee);
         //Change the confirm button text
         confirmationButton.setText("Change");
     }
 
     @FXML
-    private void handleCancel(ActionEvent event) { //TODO needs implementation
+    private void handleCancel(ActionEvent event) {
         //Return to main screen or search
         //if coming from search return to search with initValues
         if (previousSearch != null) {
@@ -67,11 +68,13 @@ public class AlterInterview extends AbstractController {
         Interview interview = interviewSubController.getInterview();
         int employeeId = interviewSubController.getEmployeeID();
 
+        boolean outcome = true;
         try {
             DbFacade.connect();
             DbFacade.insertInterview(interview, employeeId);
 
         } catch (SQLException e) {
+            outcome = false;
             e.printStackTrace();
         } finally {
             try {
@@ -81,17 +84,25 @@ public class AlterInterview extends AbstractController {
             }
         }
         //Send confirmation
-        if (interview.getInterviewID() == null){
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
+        if (outcome) {
+            if (interview.getInterviewID() == null) {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Interview was added to the Database Successfully!");
+                info.showAndWait();
+            } else {
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Success!");
+                info.setHeaderText(null);
+                info.setContentText("Interview was updated in the Database Successfully!");
+                info.showAndWait();
+            }
+        } else {
+            Alert info = new Alert(Alert.AlertType.ERROR);
+            info.setTitle("ERROR!");
             info.setHeaderText(null);
-            info.setContentText("Interview was added to the Database Successfully!");
-            info.showAndWait();
-        }else {
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Success!");
-            info.setHeaderText(null);
-            info.setContentText("Interview was updated in the Database Successfully!");
+            info.setContentText("Encountered critical database error!");
             info.showAndWait();
         }
 

@@ -5,6 +5,7 @@ import Application.Controller.SubControllers.Find.FindInterviewSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.DisplayObjects.DisplayInterview;
+import Domain.DomainObjects.Employee;
 import Domain.DomainObjects.Interview;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -57,6 +58,7 @@ public class FindInterviewToChange extends AbstractController {
     @FXML
     private void handleConfirmation(ActionEvent event) {
         Interview toBeChangedInterview = null;
+        Employee parentEmployee = null;
 
         //Get selection
         DisplayInterview selectedInterview = interviewTableView.getSelectionModel().getSelectedItem();
@@ -65,7 +67,7 @@ public class FindInterviewToChange extends AbstractController {
         //Fetch real from Database
         try{
             DbFacade.connect();
-            toBeChangedInterview = DbFacade.findInterviewByID(id);
+            parentEmployee = DbFacade.findEmployeeByInterviewID(id);
         }catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -75,13 +77,20 @@ public class FindInterviewToChange extends AbstractController {
                 e.printStackTrace();
             }
         }
-
+        //Find the attached interview
+        if (parentEmployee != null) {
+            for (Interview interview : parentEmployee.getInterviews()) {
+                if (interview.getInterviewID() == id){
+                    toBeChangedInterview = interview;
+                }
+            }
+        }
         //Get the search container
         SearchContainer currentSearch = findInterviewSubController.getFindSubController().getCurrentSearchContainer();
 
         //Goto Change Company
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.ALTER_INTERVIEW.loadParent(currentSearch, toBeChangedInterview));
+        ((BorderPane) root).setCenter(ViewController.ALTER_INTERVIEW.loadParent(currentSearch, toBeChangedInterview, parentEmployee));
 
     }
 }

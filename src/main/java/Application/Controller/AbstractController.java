@@ -30,6 +30,11 @@ public abstract class AbstractController implements Controllers {
     }
 
     @Override
+    public void initValues(Interview interview, Employee employee){
+        throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
+    }
+
+    @Override
     public void initValues(Interview interview){
         throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
     }
@@ -66,6 +71,11 @@ public abstract class AbstractController implements Controllers {
 
     @Override
     public void initValues(SearchContainer searchContainer, Interview interview){
+        throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
+    }
+
+    @Override
+    public void initValues(SearchContainer searchContainer, Interview interview, Employee employee){
         throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
     }
 
