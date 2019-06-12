@@ -156,6 +156,7 @@ public class ConsultationSub extends AbstractController {
      * and a tooltip will become present if the user hovers a cursor over the
      * individual datePickers
      */
+    @SuppressWarnings("Duplicates")
     public void handleDatePickerInput() {
         LocalDate localDateStartDate = startDatePicker.getValue();
         LocalDate localDateEndDate = endDatePicker.getValue();
@@ -181,6 +182,16 @@ public class ConsultationSub extends AbstractController {
                     startDatePicker.getStyleClass().add("DatePicker-Error");
                     endDatePicker.getStyleClass().add("DatePicker-Error");
                 }
+            }
+        } else {
+            String invalidCause = Consultation.dateInvalidCause(localDateStartDate, localDateEndDate);
+            startDatePicker.setTooltip(new Tooltip(invalidCause));
+            startDateIsValid.set(false);
+            endDatePicker.setTooltip(new Tooltip(invalidCause));
+            endDateIsValid.set(false);
+            if (!endDatePicker.getStyleClass().contains("DatePicker-Error") && !startDatePicker.getStyleClass().contains("DatePicker-Error")) {
+                startDatePicker.getStyleClass().add("DatePicker-Error");
+                endDatePicker.getStyleClass().add("DatePicker-Error");
             }
         }
     }
@@ -210,8 +221,16 @@ public class ConsultationSub extends AbstractController {
     public void resetForm() { //TODO need fix
         if (selectedConsultation != null) {
             consultationNameTextField.setText(selectedConsultation.getConsultationName());
+            startDatePicker.setValue(selectedConsultation.getStartDate());
+            endDatePicker.setValue(selectedConsultation.getEndDate());
+            handleDatePickerInput();
+            selectedParentCompany.set(orginalParentCompany);
         } else {
             consultationNameTextField.setText("");
+            startDatePicker.setValue(null);
+            endDatePicker.setValue(null);
+            handleDatePickerInput();
+            selectedParentCompany.set(null);
         }
     }
 

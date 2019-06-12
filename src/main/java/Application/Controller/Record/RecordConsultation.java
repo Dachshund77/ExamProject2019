@@ -4,6 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DomainObjects.Company;
 import Domain.DomainObjects.Consultation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,9 +26,9 @@ public class RecordConsultation extends AbstractController {
     }
 
     @Override
-    public void initValues(SearchContainer searchContainer, Consultation consultation) {
+    public void initValues(SearchContainer searchContainer, Consultation consultation, Company company) {
         previousSearchContainer = searchContainer;
-        consultationSubController.initValues(consultation);
+        consultationSubController.initValues(consultation, company);
     }
 
     public void handleReturn(ActionEvent event) {

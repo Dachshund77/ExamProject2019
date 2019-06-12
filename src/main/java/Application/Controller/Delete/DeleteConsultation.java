@@ -4,6 +4,7 @@ import Application.Controller.AbstractController;
 import Application.Controller.SubControllers.Domain.ConsultationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
+import Domain.DomainObjects.Company;
 import Domain.DomainObjects.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -41,9 +42,9 @@ public class DeleteConsultation extends AbstractController {
      * @param consultation
      */
     @Override
-    public void initValues(SearchContainer searchContainer, Consultation consultation){
+    public void initValues(SearchContainer searchContainer, Consultation consultation, Company company){
         previousSearch = searchContainer;
-        consultationSubController.initValues(consultation);
+        consultationSubController.initValues(consultation, company);
     }
 
     /**
