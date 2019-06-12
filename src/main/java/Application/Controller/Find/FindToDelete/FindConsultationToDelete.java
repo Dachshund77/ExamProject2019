@@ -5,6 +5,7 @@ import Application.Controller.SubControllers.Find.FindConsultationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.DisplayObjects.DisplayConsultation;
+import Domain.DomainObjects.Company;
 import Domain.DomainObjects.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -76,6 +77,7 @@ public class FindConsultationToDelete extends AbstractController {
     private void handleConfirmation(ActionEvent event) {
         //init values
         Consultation toBeDeletedConsultation = null;
+        Company parentCompany = null;
 
         //Get selection
         DisplayConsultation selectedConsultation = consultationTableView.getSelectionModel().getSelectedItem();
@@ -84,7 +86,7 @@ public class FindConsultationToDelete extends AbstractController {
         //Fetch real from Database
         try{
             DbFacade.connect();
-            toBeDeletedConsultation = DbFacade.findConsultationByID(id);
+            parentCompany = DbFacade.findCompanyByConsultationID(id);
         }catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -94,10 +96,18 @@ public class FindConsultationToDelete extends AbstractController {
                 e.printStackTrace();
             }
         }
+        //find the attached consultation
+        if (parentCompany != null){
+            for (Consultation consultation : parentCompany.getConsultations()) {
+                if (consultation.getConsultationID() == id){
+                    toBeDeletedConsultation = consultation;
+                }
+            }
+        }
 
         SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.DELETE_CONSULTATION.loadParent(currentSearch, toBeDeletedConsultation));
+        ((BorderPane) root).setCenter(ViewController.DELETE_CONSULTATION.loadParent(currentSearch, toBeDeletedConsultation, parentCompany));
     }
 }

@@ -46,6 +46,10 @@ public class Company implements Domain{
         return COMPANY_NAME_MAX_LENGTH;
     }
 
+    public void setConsultations(ArrayList<Consultation> consultations) {
+        this.consultations = consultations;
+    }
+
     /**
      * Converts empty strings to null.
      *

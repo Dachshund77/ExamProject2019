@@ -7,7 +7,9 @@ import Domain.DomainObjects.Consultation;
 import Domain.DomainObjects.Employee;
 import UI.CompanyChoice;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,7 +40,10 @@ public class ConsultationSub extends AbstractController {
     private SimpleBooleanProperty consultationNameIsValid = new SimpleBooleanProperty(true);
     private SimpleBooleanProperty startDateIsValid = new SimpleBooleanProperty(true);
     private SimpleBooleanProperty endDateIsValid = new SimpleBooleanProperty(true);
-    public Consultation selectedConsultation;
+
+    public Consultation selectedConsultation = null;
+    private Company orginalParentCompany = null;
+    private SimpleObjectProperty<Company> selectedParentCompany = new SimpleObjectProperty<>();
 
 
     public void initialize() {
@@ -74,12 +79,34 @@ public class ConsultationSub extends AbstractController {
             bind(consultationNameIsValid);
             bind(startDateIsValid);
             bind(endDateIsValid);
+            bind(selectedParentCompany);
             }
             @Override
             protected boolean computeValue() {
-                return consultationNameIsValid.get() && startDateIsValid.get() && endDateIsValid.get();
+                return consultationNameIsValid.get() && startDateIsValid.get() && endDateIsValid.get() && selectedParentCompany.isNotNull().get();
             }
         };
+
+        //visual for company button text
+        StringBinding companyButtonVisual = new StringBinding() {
+            {
+                bind(selectedParentCompany);
+            }
+            @Override
+            protected String computeValue() {
+                if (selectedParentCompany.isNull().get()){
+                    if (!selectCompanyButton.getStyleClass().contains("Button-Error")){
+                        selectCompanyButton.getStyleClass().add("Button-Error");
+                    }
+                    return "Pick Company";
+                } else {
+                    selectCompanyButton.getStyleClass().removeAll("Button-Error");
+                    return "ID "+selectedParentCompany.get().getCompanyID();
+                }
+            }
+        };
+        selectCompanyButton.textProperty().bind(companyButtonVisual);
+
         resetForm();
     }
 
@@ -88,8 +115,10 @@ public class ConsultationSub extends AbstractController {
      * it then sets the controls with the information about the consultations
      */
     @Override
-    public void initValues(Consultation consultation) {
+    public void initValues(Consultation consultation, Company company) {
         selectedConsultation = consultation;
+        orginalParentCompany = company;
+        selectedParentCompany.set(company);
         resetForm();
         employeeArrayList.addAll(selectedConsultation.getEmployees());
     }
@@ -173,7 +202,7 @@ public class ConsultationSub extends AbstractController {
      * from "Change Consultation" it will reset its values
      * back to the information from that search
      */
-    public void resetForm() {
+    public void resetForm() { //TODO need fix
         if (selectedConsultation != null) {
             consultationNameTextField.setText(selectedConsultation.getConsultationName());
         } else {
@@ -184,6 +213,7 @@ public class ConsultationSub extends AbstractController {
     public void handleSelectCompany(ActionEvent actionEvent) {
         CompanyChoice newSelectCompany = new CompanyChoice();
         Company foundCompany = newSelectCompany.showAndReturn(new FindCompanyPopUp());
+        selectedParentCompany.set(foundCompany);
     }
 
     /**
@@ -205,7 +235,7 @@ public class ConsultationSub extends AbstractController {
         return new Consultation(consultationID, consultationName, ldStartDate, ldEndDate, returnableEmployees);
     }
 
-    public int getCompanyID(){//TODO Implement this
-        return 1;
+    public int getCompanyID(){
+        return selectedParentCompany.get().getCompanyID();
     }
 }

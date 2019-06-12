@@ -5,6 +5,7 @@ import Application.Controller.SubControllers.Find.FindConsultationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.DisplayObjects.DisplayConsultation;
+import Domain.DomainObjects.Company;
 import Domain.DomainObjects.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -58,6 +59,7 @@ public class FindConsultationToChange extends AbstractController {
     private void handleConfirmation(ActionEvent event) {
         //init values
         Consultation toBeChangedConsultation = null;
+        Company parentCompany = null;
 
         //Get selection
         DisplayConsultation selectedConsultation = consultationTableView.getSelectionModel().getSelectedItem();
@@ -66,7 +68,7 @@ public class FindConsultationToChange extends AbstractController {
         //Fetch real from Database
         try{
             DbFacade.connect();
-            toBeChangedConsultation = DbFacade.findConsultationByID(id);
+            parentCompany = DbFacade.findCompanyByConsultationID(id);
         }catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -76,12 +78,20 @@ public class FindConsultationToChange extends AbstractController {
                 e.printStackTrace();
             }
         }
+        //find the attached consultation
+        if (parentCompany != null){
+            for (Consultation consultation : parentCompany.getConsultations()) {
+                if (consultation.getConsultationID() == id){
+                    toBeChangedConsultation = consultation;
+                }
+            }
+        }
 
         //Get the search container
         SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
 
         //Goto Change Company
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.ALTER_CONSULTATION.loadParent(currentSearch, toBeChangedConsultation));
+        ((BorderPane) root).setCenter(ViewController.ALTER_CONSULTATION.loadParent(currentSearch, toBeChangedConsultation, parentCompany));
     }
 }

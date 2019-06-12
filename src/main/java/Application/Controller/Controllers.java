@@ -131,6 +131,22 @@ public interface Controllers {
      * This method need to be overridden to work correctly.
      * </p>
      * Consult {@link ViewController} Enum class if custom values are needed.
+     * @param consultation Object passed to the new Controller
+     * @see AbstractController
+     */
+    void initValues(Consultation consultation, Company company);
+
+    /**
+     * Method that will load the controller with needed information.
+     * This method can be used to pass information from one Controller to another.
+     * <br><br>
+     * <p>
+     * <font color="Red">
+     * IMPORTANT:
+     * </font>
+     * This method need to be overridden to work correctly.
+     * </p>
+     * Consult {@link ViewController} Enum class if custom values are needed.
      * @param company Object passed to the new Controller
      * @see AbstractController
      */
@@ -253,6 +269,23 @@ public interface Controllers {
      * @see AbstractController
      */
     void initValues(SearchContainer searchContainer, Consultation consultation);
+
+    /**
+     * Method that will load the controller with needed information.
+     * This method can be used to pass information from one Controller to another.
+     * <br><br>
+     * <p>
+     * <font color="Red">
+     * IMPORTANT:
+     * </font>
+     * This method need to be overridden to work correctly.
+     * </p>
+     * Consult {@link ViewController} Enum class if custom values are needed.
+     * @param searchContainer Object passed to the new Controller
+     * @param consultation Object passed to the new Controller
+     * @see AbstractController
+     */
+    void initValues(SearchContainer searchContainer, Consultation consultation, Company company);
 
     /**
      * Method that will load the controller with needed information.

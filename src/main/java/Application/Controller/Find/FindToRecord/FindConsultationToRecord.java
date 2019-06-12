@@ -5,6 +5,7 @@ import Application.Controller.SubControllers.Find.FindConsultationSub;
 import Application.Controller.ViewController;
 import Application.SearchContainer;
 import Domain.DisplayObjects.DisplayConsultation;
+import Domain.DomainObjects.Company;
 import Domain.DomainObjects.Consultation;
 import Foundation.DbFacade;
 import javafx.event.ActionEvent;
@@ -52,6 +53,7 @@ public class FindConsultationToRecord extends AbstractController {
     private void handleConfirmation(ActionEvent event) {
         //init values
         Consultation toBeShownConsultation = null;
+        Company parentCompany = null;
 
         //Get selection
         DisplayConsultation selectedConsultation = consultationTableView.getSelectionModel().getSelectedItem();
@@ -60,7 +62,7 @@ public class FindConsultationToRecord extends AbstractController {
         //Fetch real from Database
         try{
             DbFacade.connect();
-            toBeShownConsultation = DbFacade.findConsultationByID(id);
+            parentCompany = DbFacade.findCompanyByConsultationID(id);
         }catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -70,10 +72,18 @@ public class FindConsultationToRecord extends AbstractController {
                 e.printStackTrace();
             }
         }
+        //find the attached consultation
+        if (parentCompany != null){
+            for (Consultation consultation : parentCompany.getConsultations()) {
+                if (consultation.getConsultationID() == id){
+                    toBeShownConsultation = consultation;
+                }
+            }
+        }
 
         SearchContainer currentSearch = findConsultationSubController.getFindSubController().getCurrentSearchContainer();
 
         Parent root = confirmationButton.getScene().getRoot();
-        ((BorderPane) root).setCenter(ViewController.RECORD_CONSULTATION.loadParent(currentSearch, toBeShownConsultation));
+        ((BorderPane) root).setCenter(ViewController.RECORD_CONSULTATION.loadParent(currentSearch, toBeShownConsultation, parentCompany));
     }
 }

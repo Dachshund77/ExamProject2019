@@ -66,7 +66,7 @@ public class DeleteProvider extends AbstractController {
         if (result.isPresent() && result.get() == ButtonType.OK){
             try {
                 DbFacade.connect();
-                outcome = DbFacade.deleteInterview(providerSubController.selectedProvider.getProviderID());
+                outcome = DbFacade.deleteProvider(providerSubController.selectedProvider.getProviderID());
 
             } catch (SQLException e) {
                 e.printStackTrace();

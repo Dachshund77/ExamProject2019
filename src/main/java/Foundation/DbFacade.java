@@ -87,9 +87,8 @@ public class DbFacade {
         // 3 Insert dates with amurNr
         ArrayList<LocalDate> dates = education.getDates();
         for (LocalDate date : dates) {
-            database.addStoredProcedureToBatch(Sp.PLACE_DATE, null, amuNr, date);
+            database.executeStoredProcedure(Sp.PLACE_DATE, null, amuNr, date);
         }
-        database.executeBatch();
 
         // 4 return amu nr
         return amuNr;
@@ -314,9 +313,8 @@ public class DbFacade {
 
         // 4 with the return value of insert employee we can reinsert bridge table
         for (Integer newEmployeeID : newEmployeeIDs) {
-            database.addStoredProcedureToBatch(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE, newConsultationID, newEmployeeID);
+            database.executeStoredProcedure(Sp.INSERT_CONSULTATION_EMPLOYEE_BRIDGE, newConsultationID, newEmployeeID);
         }
-        database.executeBatch();
 
         return newConsultationID;
     }
@@ -481,8 +479,9 @@ public class DbFacade {
                 returnCompany = new Company(newCompanyId, newCompanyCvrNr, newCompanyName, newConsultations);
             }
         }
-
-        companyCache.put(returnCompany.getCompanyID(), returnCompany);
+        if (returnCompany != null) {
+            companyCache.put(returnCompany.getCompanyID(), returnCompany);
+        }
         return returnCompany;
     }
 
@@ -698,6 +697,32 @@ public class DbFacade {
             employeeCache.put(returnEmployee.getEmployeeID(), returnEmployee);
         }
         return returnEmployee;
+    }
+
+    public static Company findCompanyByConsultationID(int consultationID) throws SQLException{
+        Company returnCompany = null;
+
+
+        //getRet of data
+        ResultSet rs = DB.getInstance().executeStoredProcedure(SpWithRs.FIND_COMPANY_BY_CONSULTATION_ID, consultationID);
+        Integer newCompanyId = null;
+        while (rs.next()) {
+            newCompanyId = rs.getInt("CompanyID");
+            if (!rs.wasNull()) {
+                String newCompanyCvrNr = rs.getString("CompanyCvrNr");
+                String newCompanyName = rs.getString("CompanyName");
+
+                returnCompany = new Company(newCompanyId, newCompanyCvrNr, newCompanyName, null);
+            }
+        }
+        if (returnCompany != null) {
+
+            //fetch consultations
+            ArrayList<Consultation> newConsultations = findConsultationByCompanyID(newCompanyId);
+            returnCompany.setConsultations(newConsultations);
+            companyCache.put(returnCompany.getCompanyID(), returnCompany);
+        }
+        return returnCompany;
     }
 
     /*

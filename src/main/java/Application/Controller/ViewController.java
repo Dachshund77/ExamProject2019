@@ -512,6 +512,33 @@ public enum ViewController {
      * when a node should be replaced with the called controllers root node.
      * <br/><br/>
      * <font color=red>NOTE</font> that this method will invoke
+     * {@link Controllers#initValues(SearchContainer, Consultation) initValues(SearchContainer, Consultation)} in the newly loaded controller and hence
+     * the method needs to be overwritten in the new controller.
+     *
+     * @param searchContainer Value that will be passed to the new Controller.
+     * @param consultation    Value that will be passed to the new Controller.
+     * @return Parent of specified Controller.
+     */
+    public Parent loadParent(SearchContainer searchContainer, Consultation consultation, Company company) {
+        Parent parent = null;
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource(URL));
+            parent = loader.load();
+            Controllers newController = loader.getController();
+            newController.initValues(searchContainer, consultation, company);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parent;
+    }
+
+    /**
+     * Returns the root node for the new controller.
+     * This method should be used when no previous scene is loaded or
+     * when a node should be replaced with the called controllers root node.
+     * <br/><br/>
+     * <font color=red>NOTE</font> that this method will invoke
      * {@link Controllers#initValues(SearchContainer, Company) initValues(SearchContainer, Company)} in the newly loaded controller and hence
      * the method needs to be overwritten in the new controller.
      *

@@ -45,6 +45,11 @@ public abstract class AbstractController implements Controllers {
     }
 
     @Override
+    public void initValues(Consultation consultation, Company company){
+        throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
+    }
+
+    @Override
     public void initValues(Company company){
         throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
     }
@@ -81,6 +86,11 @@ public abstract class AbstractController implements Controllers {
 
     @Override
     public void initValues(SearchContainer searchContainer, Consultation consultation){
+        throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
+    }
+
+    @Override
+    public void initValues(SearchContainer searchContainer, Consultation consultation, Company company){
         throw new UnsupportedOperationException("initValues was not Overridden! Please consult the documentation!");
     }
 
